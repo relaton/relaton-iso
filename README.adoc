@@ -149,24 +149,24 @@ iso191152.relations
 The ISO standards use a subset of the generic bibliographic fields specified in the https://github.com/riboseinc/isodoc-models#iso-bibliographic-item[IsoBibliographicItem model]:
 
 * Title: 
-  * English; French
-  * titleIntro; titleMain; titlePart
+** English; French
+** titleIntro; titleMain; titlePart
 * DocIdentifier:
-  * project number; part number; technical committee document number
+** project number; part number; technical committee document number
 * Source: the ISO page from which the standard may be purchased or downloaded
 * Type: IsoDocumentType (International Standard, Technical Specification, Technical Report, Publicly Available Specification, International Workshop Agreement, Guide)
 * Project Group:
-  * Technical Committee, Subcommittee, Workgroup, Secretariat
-  * Technical Committee Number, Subcommittee Number, Workgroup Number
-  * Technical Committee Type, Subcommittee Type, Workgroup Type (e.g. JTC)
-  * Organization:Name (ISO; other standards organisations, for standards jointly published with ISO)
+** Technical Committee, Subcommittee, Workgroup, Secretariat
+** Technical Committee Number, Subcommittee Number, Workgroup Number
+** Technical Committee Type, Subcommittee Type, Workgroup Type (e.g. JTC)
+** Organization:Name (ISO; other standards organisations, for standards jointly published with ISO)
 * ICS: refer https://www.iso.org/publication/PUB100033.html
 * Status
-  * Stage, Substage
+** Stage, Substage
 * Edition
 * Date:Published
 * Abstract
 * Relations
-  * Obsoletes, Updates
+** Obsoletes, Updates
 
 All FormattedString instances are returned by default as  a text/plain string; if required, they are returned as a text/html string.
