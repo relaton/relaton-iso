@@ -1,0 +1,146 @@
+= IsoBib: retrieve ISO Standards for bibliographic use using the BibliographicItem model
+
+IsoBib is a Ruby gem that implements the https://github.com/riboseinc/isodoc-models#iso-bibliographic-item[IsoBibliographicItem model].
+
+You can use it to retrieve metadata of ISO Standards from https://www.iso.org, and access such metadata through the `IsoBibliographicItem` object.
+
+
+== Usage
+
+
+=== Search for a standard using keywords
+
+[source,ruby]
+----
+IsoBibliography.search("19115")
+=> [
+<<IsoBibliographicItem: docIdentifier <<projectNumber:19115; partNumber: 1>>; edition: 1 ...>>,
+<<IsoBibliographicItem: docIdentifier <<projectNumber:19115; partNumber: 1>>; edition: 2 ...>>,
+...
+]
+
+collection = IsoBibliography.search("19115")
+iso191151 = collection.first
+iso191152 = collection[1]
+----
+
+
+=== IsoBibliographicItem Localized Strings
+
+[source,ruby]
+----
+iso191151.title
+=> [
+<<IsoLocalizedTitle: titleIntro: "Geographic information"; titleMain: "Metadata"; titlePart: "Part 1: Fundamentals"; language: "en"; script: "latn">>,
+<<IsoLocalizedTitle: titleIntro: "Information géographique"; titleMain: "Métadonnées"; titlePart: "Partie 1: Principes de base"; language: "fr"; script: "latn">>
+]
+
+iso191151.title(lang: "en")
+=> <<IsoLocalizedTitle: titleIntro: "Geographic information"; titleMain: "Metadata"; titlePart: "Part 1: Fundamentals"; language: "en"; script: "latn">>,
+
+iso191151.title(lang: "en").to_s
+=> "Geographic information -- Metadata -- Part 1: Fundamentals"
+
+iso191151.abstract(lang: "en").to_s
+=> "ISO 19115-1:2014 defines the schema required for describing geographic information and services by means of metadata. It provides information about the identification, the extent, the quality, the spatial and temporal aspects, the content, the spatial reference, the portrayal, distribution, and other properties of digital geographic data and services.
+...
+"
+----
+
+=== IsoBibliographicItem references
+
+----
+iso191151.shortref
+=> "ISO 19115-1:2014"
+----
+
+
+=== IsoBibliographicItem URLs
+
+[source,ruby]
+----
+iso191151.url
+=> "https://www.iso.org/standard/53798.html"
+
+iso191151.url(:obp)
+=> "https://www.iso.org/obp/ui/#!iso:std:53798:en"
+
+iso191151.url(:rss)
+=> "https://www.iso.org/contents/data/standard/05/37/53798.detail.rss"
+
+iso191152.url
+=> "https://www.iso.org/standard/67039.html"
+----
+
+
+=== IsoBibliographicItem ICS
+
+[source,ruby]
+----
+iso191151.ics
+=> <<BibliographicIcs code: ["35", "240", "70"]; title: "IT applications in science">>
+----
+
+=== IsoBibliographicItem BibliographicDates
+
+[source,ruby]
+----
+iso191151.dates
+=> [<<BibliographicDate type: "publish"; date: <<DateTime: 2014-04>> >>]
+
+iso191151.dates.filter(type: "publish").first.date
+=> <<DateTime: 2014-04>>
+# The actual date/time can be found on the `url(:rss)` link
+# <description>
+# <![CDATA[This document reached stage 60.60 on 2014-03-19, TC/SC: ISO/TC 211, ICS: 35.240.70]]>
+# </description>
+----
+
+
+=== IsoBibliographicItem DocumentStatus
+
+----
+iso191151.status
+=> <<IsoDocumentStatus stage: 60; substage: 60, status: "Published">>
+
+# Publish-pending document
+iso191152.status
+=> <<IsoDocumentStatus stage: 60; substage: 00, status: "Under development">>
+----
+
+[source,ruby]
+----
+wg = iso191151.workgroup
+=> <<IsoProjectGroup technicalCommittee: <<IsoSubgroup: type: :technicalCommittee; number: 211; name: "Geographic information/Geomatics">> >>
+
+wg == iso191151.contributors.first.entity
+=> true
+
+wg.url
+=> "https://www.iso.org/committee/54904.html"
+----
+
+
+=== Document relations of a standard
+
+[source,ruby]
+----
+iso191151.relations
+=> <<DocRelationCollection content: [
+<<DocRelation type: :replace; identifier: "ISO 19115:2003">>,
+<<DocRelation type: :replace; identifier: "ISO 19115:2003/Cor 1:2006">>,
+<<DocRelation type: :amendment; identifier: "ISO 19115-1:2014/Amd 1:2018">>
+] >>
+
+iso191151.relations.replaces
+=> <<DocRelationCollection content: [
+<<DocRelation type: :replace; identifier: "ISO 19115:2003">>,
+<<DocRelation type: :replace; identifier: "ISO 19115:2003/Cor 1:2006">>
+] >>
+
+iso191152.relations
+=> <<DocRelationCollection content: [
+<<DocRelation type: :replace; identifier: "ISO 19115-2:2009">>,
+]
+----
+
