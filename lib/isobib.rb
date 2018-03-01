@@ -1,2 +1,2 @@
 require "isobib/version"
-require "isobib/iso_bibliographic_item"
+require "isobib/iso_bibliography"

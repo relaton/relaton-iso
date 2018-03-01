@@ -1,4 +1,4 @@
-require 'iso_bibliographic_item'
+require "isobib/iso_bibliographic_item"
 
 module Isobib
   class IsoBibliography

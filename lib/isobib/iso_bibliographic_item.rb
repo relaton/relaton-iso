@@ -1,5 +1,6 @@
-require 'iso_document_id'
-require 'iso_document_type'
+require "isobib/iso_document_status"
+require "isobib/iso_localized_title"
+require "isobib/iso_project_group"
 
 module Isobib
   class IsoDocumentId
