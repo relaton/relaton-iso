@@ -1,11 +1,19 @@
+require "isobib/bibliographic_item"
 require "isobib/iso_document_status"
 require "isobib/iso_localized_title"
 require "isobib/iso_project_group"
 
 module Isobib
+
   class IsoDocumentId
-    attr_accessor :ts_document_number, :project_number, :part_number,
-      :iso_bibliographic_item
+    # @return [Integer]
+    attr_accessor :ts_document_number
+
+    # @return [Integer]
+    attr_accessor :project_number
+
+    # @return [Integer]
+    attr_accessor :part_number
   end
 
   module IsoDocumentType
@@ -17,30 +25,42 @@ module Isobib
   end
 
   class Ics
-    attr_accessor :field, :group, :subgroup, :iso_bibliographic_item
+    # @return [Integer]
+    attr_accessor :field
+
+    # @return [Integer]
+    attr_accessor :group
+
+    # @return [Integer]
+    attr_accessor :subgroup
   end
 
-  class IsoBibliographicItem
-    attr_accessor :docidentifier, :title, :type, :status, :workgroup, :ics
+  class IsoBibliographicItem < BibliographicItem
+    # @return [IsoDocumentId]
+    attr_accessor :docidentifier
 
-    # docidentifier - IsoDocumentId
-    # title - IsoLocalizedTitle
-    # type - IsoDocumentType
-    # status - IsoDocumentStatus
-    # workgroup - IsoProjectWorkgroup
-    # ics - Ics
+    # @return [Array<IsoLocalizedTitle>]
+    attr_accessor :title
+
+    # @return [IsoDocumentType]
+    attr_accessor :type
+
+    # @return [IsoDocumentStatus]
+    attr_accessor :status
+
+    # @return [IsoProjectRoup]
+    attr_accessor :workgroup
+
+    # @return [Ics]
+    attr_accessor :ics
+
     def initialize(docidentifier, title, type, status, workgroup, ics)
       @docidentifier = docidentifier
-      docidentifier.iso_bibliographic_item = self
       @title         = [title]
-      title.iso_bibliographic_item = self
       @type          = type
       @stattus       = status
-      status.iso_bibliographic_item = self
       @workgroup     = workgroup
-      workgroup.iso_bibliographic_item = self
       @ics           = ics
-      ics.iso_bibliographic_item = self
     end
   end
 end

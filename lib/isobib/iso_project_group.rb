@@ -1,16 +1,34 @@
-module Isobib
-  class IsoProjectGroup
-    attr_accessor :technical_committe, :subcomitte, :workgroup, :secretariat,
-      :iso_bibliographic_item
+require 'isobib/organization'
 
-    # technical_commite - IsoSubgroup
-    def initialize(technical_committe)
+module Isobib
+  class IsoProjectGroup < Organization
+    # @return [IsoSubgroup]
+    attr_accessor :technical_committe
+
+    # @return [IsoSubgroup]
+    attr_accessor :subcomitte
+
+    # @return [IsoSubgroup]
+    attr_accessor :workgroup
+
+    # @return [String]
+    attr_accessor :secretariat
+
+    def initialize(name, technical_committe)
+      super name
       @technical_committe = technical_committe
     end
   end
 
   class IsoSubgroup
-    attr_accessor :type, :number, :name, :iso_project_group
+    # @return [String]
+    attr_accessor :type
+
+    # @return [Integer]
+    attr_accessor :number
+
+    # @return [String]
+    attr_accessor :name
 
     def initialize(name)
       @name = name

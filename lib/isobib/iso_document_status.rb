@@ -1,13 +1,6 @@
+require 'isobib/document_status'
+
 module Isobib
-  class IsoDocumentStatus
-    attr_accessor :stage, :substage, :iso_bibliographic_item
-
-    def initialize(stage, substage)
-      @stage    = stage
-      @substage = substage
-    end
-  end
-
   module IsoDocumentStageCodes
     PREELIMINARY = "00"
     PROPOSAL     = "10"
@@ -28,5 +21,19 @@ module Isobib
     REPEAT_CURRENT_PHASE      = "92"
     ABADON                    = "98"
     PROCEED                   = "99"
+  end
+
+  class IsoDocumentStatus < DocumentStatus
+    # @return [IsoDocumentStageCodes]
+    attr_accessor :stage
+
+    # @return [IsoDocumentSubstageCodes]
+    attr_accessor :substage
+
+    def initialize(status, stage, substage)
+      super status
+      @stage    = stage
+      @substage = substage
+    end
   end
 end
