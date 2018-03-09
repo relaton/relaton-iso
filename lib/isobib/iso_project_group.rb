@@ -14,24 +14,32 @@ module Isobib
     # @return [String]
     attr_accessor :secretariat
 
-    def initialize(name, technical_committe)
-      super name
-      @technical_committe = technical_committe
+    # @param name [String]
+    # @param url [String]
+    # @param technical_commite [Hash]
+    def initialize(name:, url:, technical_committe:)
+      super name: name, uri: URI(url)
+      @technical_committe = IsoSubgroup.new(technical_committe)
     end
   end
 
   class IsoSubgroup
     # @return [String]
-    attr_accessor :type
+    attr_reader :type
 
     # @return [Integer]
-    attr_accessor :number
+    attr_reader :number
 
     # @return [String]
-    attr_accessor :name
+    attr_reader :name
 
-    def initialize(name)
-      @name = name
+    # @param name [String]
+    # @param type [String]
+    # @param number [Integer]
+    def initialize(name:, type:, number:)
+      @name   = name
+      @type   = type
+      @number = number
     end
   end
 end

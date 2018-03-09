@@ -6,6 +6,7 @@ module Isobib
     # @return [LocalizedString]
     attr_accessor :status
 
+    # @param status [LocalizedString]
     def initialize(status)
       @status = status
     end

@@ -1,3 +1,5 @@
+require 'uri'
+
 module Isobib
 
   class ContactMethod
@@ -15,6 +17,7 @@ module Isobib
     # @return [Organization]
     attr_accessor :organization
 
+    # @param organization [Organization]
     def initialize(organization)
       @organization = organization
       @description  = []
@@ -28,8 +31,15 @@ module Isobib
     # @return [Array<ContactMethod>]
     attr_accessor :contacts
 
-    def initialize
+    # @param uri [URI]
+    def initialize(uri)
+      @uri = uri
       @contacts = []
+    end
+
+    # @return [String]
+    def url
+      @uri.to_s
     end
   end
 end

@@ -1,3 +1,5 @@
+require "time"
+
 module Isobib
   module BibliographicDateType
     PUBLISHED = 'published'
@@ -12,14 +14,18 @@ module Isobib
     attr_accessor :type
 
     # @return [DateTime]
-    attr_accessor :form
+    attr_accessor :from
     
     # @return [DateTime]
     attr_accessor :to
 
-    def initialize(type, form)
+    # @param type [String]
+    # @param from [String]
+    # @param to [String]
+    def initialize(type:, from:, to: nil)
       @type = type
-      @form = form
+      @from = DateTime.parse(from)
+      @to   = DateTime.parse(to) if to
     end
   end
 end
