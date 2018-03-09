@@ -7,9 +7,9 @@ RSpec.describe Isobib::BibliographicItem do
 
     from = DateTime.now
     owner = Isobib::Contributor.new
-    copyright = Isobib::CopyrightAccociation.new from, owner
+    copyright = Isobib::CopyrightAssociation.new from, owner
     bib_item.copyright = copyright
-    expect(bib_item.copyright.is_a? Isobib::CopyrightAccociation).to be_truthy
+    expect(bib_item.copyright.is_a? Isobib::CopyrightAssociation).to be_truthy
 
     docid = Isobib::DocumentIdentifier.new "docid"
     bib_item.add_docidentifier docid

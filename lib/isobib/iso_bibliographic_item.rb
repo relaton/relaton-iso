@@ -2,6 +2,13 @@ require "isobib/bibliographic_item"
 require "isobib/iso_document_status"
 require "isobib/iso_localized_title"
 require "isobib/iso_project_group"
+require "isobib/document_relation_collection"
+
+class Array
+  def filter(type:)
+    select { |e| e.type == type }
+  end
+end
 
 module Isobib
 
@@ -14,6 +21,13 @@ module Isobib
 
     # @return [Integer]
     attr_accessor :part_number
+
+    # @param project_number [Integer]
+    # @param part_number [Integer]
+    def initialize(project_number:, part_number:)
+      @project_number = project_number
+      @part_number    = part_number
+    end
   end
 
   module IsoDocumentType
@@ -33,34 +47,100 @@ module Isobib
 
     # @return [Integer]
     attr_accessor :subgroup
+
+    # @param field [Integer]
+    # @param group [Integer]
+    # @param subgroup [Integer]
+    def initialize(field:, group:, subgroup:)
+      @field    = field
+      @group    = group
+      @subgroup = subgroup
+    end
   end
 
   class IsoBibliographicItem < BibliographicItem
     # @return [IsoDocumentId]
-    attr_accessor :docidentifier
+    attr_reader :docidentifier
 
-    # @return [Array<IsoLocalizedTitle>]
-    attr_accessor :title
+    # @!attribute [r] title
+    #   @return [Array<IsoLocalizedTitle>]
 
     # @return [IsoDocumentType]
-    attr_accessor :type
+    attr_reader :type
 
     # @return [IsoDocumentStatus]
-    attr_accessor :status
+    attr_reader :status
 
-    # @return [IsoProjectRoup]
-    attr_accessor :workgroup
+    # @return [IsoProjectGroup]
+    attr_reader :workgroup
 
-    # @return [Ics]
-    attr_accessor :ics
+    # @return [BibliographicIcs]
+    attr_reader :ics
 
-    def initialize(docidentifier, title, type, status, workgroup, ics)
-      @docidentifier = docidentifier
-      @title         = [title]
+    # @param docid [Hash]
+    # @param titles [Array<Hash>]
+    # @param type [String]
+    # @param status [Hash]
+    # @param workgroup [Hash]
+    # @param ics [Hash]
+    # @param dates [Array<Hash>]
+    # @param abstract [Array<Hash>]
+    # @param contributors [Array<Hash>]
+    # @param copyright [Hash]
+    # @param source [Array<Hash>]
+    # @param relations [Array<Hash>]
+    def initialize(docid:, edition: nil, titles:, type:, docstatus:, workgroup:,
+        ics:, dates: [], abstract: [], contributors: [], copyright: nil, source: [],
+        relations: [])
+      super()
+      @docidentifier = IsoDocumentId.new docid
+      @edition       = edition
+      @title         = titles.map { |t| IsoLocalizedTitle.new(t) }
       @type          = type
-      @stattus       = status
-      @workgroup     = workgroup
-      @ics           = ics
+      @status        = IsoDocumentStatus.new(docstatus)
+      @workgroup     = IsoProjectGroup.new(workgroup)
+      @contributors << ContributionInfo.new(entity: @workgroup)
+      @ics           = Ics.new(ics)
+      @dates         = dates.map { |d| BibliographicDate.new(d) }
+      @abstract      = abstract.map { |a| FormattedString.new(a) }
+      @contributors  += contributors.map do |c|
+        ContributionInfo.new(entity: Organization.new(c[:entity]), role: c[:role])
+      end
+      @copyright     = CopyrightAssociation.new(copyright) if copyright
+      @source        = source.map { |s| TypedUri.new(s) }
+      @relations     = DocRelationCollection.new(relations)
+    end
+
+    # Add title to the list of titles.
+    # @param t [IsoLocalizedTitle]
+    def add_title(t)
+      @title << t
+    end
+
+    # @param lang [String] language code Iso639
+    # @return [IsoLocalizedTitle]
+    def title(lang: nil)
+      if lang
+        @title.find { |t| t.language == lang}
+      else
+        @title
+      end
+    end
+
+    # @todo need to add ISO/IEC/IEEE
+    # @return [String]
+    def shortref
+      contributor = @contributors.find do |c|
+        c.role.select { |r| r.type == ContributorRoleTypes::PUBLISHER }.any?
+      end
+
+      "#{contributor&.entity&.name} #{@docidentifier.project_number}-#{@docidentifier.part_number}:#{@copyright.from.year}"
+    end
+    
+    # @param type [Symbol] type of url, can be :src/:obp/:rss
+    # @return [String]
+    def url(type = :src)
+      @source.find { |s| s.type == type.to_s }.content.to_s
     end
   end
 end

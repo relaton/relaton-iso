@@ -13,6 +13,8 @@ module Isobib
     # @return [String]
     attr_accessor :value
 
+    # @param type [OrgIdentifierType]
+    # @param value [String]
     def initialize(type, value)
       @type  = type
       @value = value
@@ -21,14 +23,16 @@ module Isobib
 
   class Organization < Contributor
     # @return [LocalizedString]
-    attr_accessor :name
+    attr_reader :name
 
     # @return [Array<OrgIdentifier>]
     attr_accessor :identifiers
 
-    def initialize(name)
-      super()
-      @name = name
+    # @param name [String]
+    # @param uri [URI]
+    def initialize(name:, uri: nil)
+      super(uri)
+      @name = LocalizedString.new(name)
       @identifiers = []
     end
   end

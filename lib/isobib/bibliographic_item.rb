@@ -1,3 +1,7 @@
+require "isobib/formatted_string"
+require "isobib/contribution_info"
+require "isobib/bibliographic_date"
+
 module Isobib
   module BibItemType
     ARTICLE      = 'article'
@@ -26,20 +30,38 @@ module Isobib
     end
   end
 
-  class CopyrightAccociation
+  class CopyrightAssociation
 
     # @return [DateTime]
-    attr_accessor :from
+    attr_reader :from
 
     # @return [DateTime]
-    attr_accessor :to
+    attr_reader :to
 
     # @return [Contributor]
-    attr_accessor :owner
+    attr_reader :owner
 
-    def initialize(from, owner)
-      @from  = from
-      @owner = owner
+    # @param owner [Hash] contributor
+    # @param from [String] date
+    # @param to [String] date
+    def initialize(owner:, from:, to: nil)
+      @owner = Contributor.new(owner)
+      @from  = DateTime.parse(from)
+      @to    = DateTime.parse(to) if to
+    end
+  end
+
+  class TypedUri
+    # @return [Symbol] :src/:obp/:rss
+    attr_reader :type
+    # @retutn [URI]
+    attr_reader :content
+
+    # @param type [String] src/obp/rss
+    # @param content [String]
+    def initialize(type:, content:)
+      @type    = type
+      @content = URI content
     end
   end
 
@@ -48,7 +70,7 @@ module Isobib
     # @return [Array<FormattedString>]
     attr_accessor :title
 
-    # @return [URI]
+    # @return [Array<TypedUri>]
     attr_accessor :source
 
     # @return [BibItemType]
@@ -78,8 +100,8 @@ module Isobib
     # @return [FormattedString]
     attr_accessor :formatted_ref
 
-    # @return [Arra<FormattedString>]
-    attr_accessor :abstract
+    # @!attribute [r] abstract
+    #   @return [Arra<FormattedString>]
 
     # @return [DocumentStatus]
     attr_accessor :status
@@ -87,7 +109,7 @@ module Isobib
     # @return [CopyrightAssociation]
     attr_accessor :copyright
 
-    # @return [Array<DocumentRelation>]
+    # @return [DocRelationCollection]
     attr_accessor :relations
 
     def initialize
@@ -102,8 +124,19 @@ module Isobib
       @relations     = []
     end
 
+    # @param docid [DocumentIdentifier]
     def add_docidentifier(docid)
       @docidentifier << docid
+    end
+
+    # @param lang [String] language code Iso639
+    # @return [FormattedString, Array<FormattedString>]
+    def abstract(lang: nil)
+      if lang
+        @abstract.find { |a| a.language.include? lang }
+      else
+        @abstract
+      end
     end
 
     # def add_contributor(contributor)

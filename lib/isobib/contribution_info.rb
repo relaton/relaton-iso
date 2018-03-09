@@ -8,12 +8,13 @@ module Isobib
 
   class ContributorRole
 
-    # @return [FormattedString]
+    # @return [Array<FormattedString>]
     attr_accessor :description
 
-    # @return [Array<ContributorRoleType>]
-    attr_accessor :type
+    # @return [ContributorRoleType]
+    attr_reader :type
 
+    # @param type [ContributorRoleType]
     def initialize(type)
       @type = type
       @description = []
@@ -25,12 +26,14 @@ module Isobib
     # @return [Array<ContributorRole>]
     attr_accessor :role
 
-    # @return [Contributor]
+    # @return [Contributor, Organization, IsoProjectGroup]
     attr_accessor :entity
 
-    def initialize(entity)
+    # @param entity [Contributor, Organization, IsoProjectGroup]
+    # @param role [Array<String>]
+    def initialize(entity:, role: [])
       @entity = entity
-      @role   = []
+      @role   = role.map{ |r| ContributorRole.new(r) }
     end
   end
 end

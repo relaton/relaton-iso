@@ -1,3 +1,5 @@
+require "isobib/localized_string"
+
 module Isobib
   module StringFormat
     PLAIN    = 'plain'
@@ -13,9 +15,10 @@ module Isobib
     # @return [StringFormat]
     attr_accessor :type
 
+    # @param content [String]
     # @param type [StringFormat] the format type, default plain.
-    def initialize(type = StringFormat::PLAIN)
-      super
+    def initialize(content:, language:, script:, type: StringFormat::PLAIN)
+      super(content, language, script)
       @type = type
     end
   end

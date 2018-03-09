@@ -7,12 +7,22 @@ module Isobib
     attr_accessor :script
 
     # @return [String]
-    attr_accessor :content
+    attr_reader :content
 
-    def initialize(content)
+    # @param content [String]
+    # @param language [String] language code Iso639
+    # @param script [String] script code Iso15924
+    def initialize(content, language = nil, script = nil)
       @language = []
+      @language << language if language
       @script   = []
+      @script << script if script
       @content  = content
+    end
+
+    # @return [String]
+    def to_s
+      @content
     end
   end
 end

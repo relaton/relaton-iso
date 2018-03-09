@@ -1,4 +1,5 @@
-require 'isobib/document_status'
+require "isobib/document_status"
+require "isobib/localized_string"
 
 module Isobib
   module IsoDocumentStageCodes
@@ -30,8 +31,11 @@ module Isobib
     # @return [IsoDocumentSubstageCodes]
     attr_accessor :substage
 
-    def initialize(status, stage, substage)
-      super status
+    # @param status [String]
+    # @param stage [IsoDocumentStageCodes]
+    # @param substage [IsoDocumentSubstageCodes]
+    def initialize(status:, stage:, substage:)
+      super LocalizedString.new(status)
       @stage    = stage
       @substage = substage
     end

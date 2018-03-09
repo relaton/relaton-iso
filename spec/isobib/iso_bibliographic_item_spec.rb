@@ -3,7 +3,7 @@ require "isobib/iso_bibliographic_item"
 RSpec.describe Isobib::IsoBibliographicItem do
   it "create iso bibliographic item" do
     docid = Isobib::IsoDocumentId.new
-    title = Isobib::IsoLocalizedTitle.new "Title intro", "Tile main", "en", "us"
+    title = Isobib::IsoLocalizedTitle.new "Title intro", "Tile main", "en", "latn"
     status = Isobib::LocalizedString.new "new status"
     iso_doc_status = Isobib::IsoDocumentStatus.new status,
       Isobib::IsoDocumentStageCodes::PREELIMINARY,
