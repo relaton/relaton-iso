@@ -1,3 +1,4 @@
+require "isoics"
 require "isobib/bibliographic_item"
 require "isobib/iso_document_status"
 require "isobib/iso_localized_title"
@@ -38,23 +39,24 @@ module Isobib
     INTERNATIONAL_WORKSHOP_AGREEMENT = "internationalWorkshopAgreement"
   end
 
-  class Ics
-    # @return [Integer]
-    attr_accessor :field
+  class Ics < Isoics::ICS
+    # # @return [Integer]
+    # attr_accessor :field
 
-    # @return [Integer]
-    attr_accessor :group
+    # # @return [Integer]
+    # attr_accessor :group
 
-    # @return [Integer]
-    attr_accessor :subgroup
+    # # @return [Integer]
+    # attr_accessor :subgroup
 
     # @param field [Integer]
     # @param group [Integer]
     # @param subgroup [Integer]
     def initialize(field:, group:, subgroup:)
-      @field    = field
-      @group    = group
-      @subgroup = subgroup
+      super fieldcode: field, groupcode: group, subgroupcode: subgroup
+      # @field    = field
+      # @group    = group
+      # @subgroup = subgroup
     end
   end
 

@@ -83,4 +83,9 @@ RSpec.describe Isobib::IsoBibliography do
   it "return replace realations" do
     expect(results.first.relations.replaces.length).to eq 2
   end
+
+  it "return ICS" do
+    expect(results.first.ics.fieldcode).to eq "35"
+    expect(results.first.ics.description).to eq "IT applications in science"
+  end
 end
