@@ -32,7 +32,7 @@ module Isobib
     attr_accessor :contacts
 
     # @param uri [URI]
-    def initialize(uri)
+    def initialize(uri = nil)
       @uri = uri
       @contacts = []
     end
