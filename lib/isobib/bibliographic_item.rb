@@ -13,7 +13,7 @@ module Isobib
     PRESENTATION = 'presentation'
     THESIS       = 'thesis'
     TECHREPORT   = 'techreport'
-    STANDARD     = 'standsrd'
+    STANDARD     = 'standard'
     UNPUBLISHED  = 'unpublished'
   end
 

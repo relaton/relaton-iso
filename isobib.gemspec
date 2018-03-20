@@ -26,7 +26,13 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "byebug"
+  # spec.add_development_dependency "byebug"
+  spec.add_development_dependency "pry-byebug"
+
   spec.add_dependency "isoics"
+  spec.add_dependency "algoliasearch"
+  spec.add_dependency "nokogiri"
+  # spec.add_dependency "capybara"
+  # spec.add_dependency "poltergeist"
 end
 

@@ -17,9 +17,9 @@ module Isobib
     # @param name [String]
     # @param url [String]
     # @param technical_commite [Hash]
-    def initialize(name:, url:, technical_committe:)
+    def initialize(name:, url:, technical_committee:)
       super name: name, uri: URI(url)
-      @technical_committe = IsoSubgroup.new(technical_committe)
+      @technical_committe = IsoSubgroup.new(technical_committee)
     end
   end
 

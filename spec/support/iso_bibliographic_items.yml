@@ -29,8 +29,8 @@
   workgroup:
     name: ISO
     url: https://www.iso.org/committee/54904.html
-    technical_committe:
-      type: techicalCommitte
+    technical_committee:
+      type: techicalCommittee
       name: Geographic information/Geomatics
       number: 211
   
@@ -116,8 +116,8 @@
   workgroup:
     name: ISO
     url: https://www.iso.org/committee/54904.html
-    technical_committe:
-      type: techicalCommitte
+    technical_committee:
+      type: techicalCommittee
       name: Geographic information/Geomatics
       number: 211
   
