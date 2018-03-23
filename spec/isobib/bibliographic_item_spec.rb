@@ -5,9 +5,9 @@ RSpec.describe Isobib::BibliographicItem do
     bib_item = Isobib::BibliographicItem.new
     expect(bib_item.title.is_a? Array).to be_truthy
 
-    from = DateTime.now.to_s
-    owner = Isobib::Contributor.new
-    copyright = Isobib::CopyrightAssociation.new from: from, owner: owner
+    # from = DateTime.now.to_s
+    # owner = Isobib::Contributor.new
+    copyright = Isobib::CopyrightAssociation.new from: "2014", owner: {name: "ISO" }
     bib_item.copyright = copyright
     expect(bib_item.copyright.is_a? Isobib::CopyrightAssociation).to be_truthy
 

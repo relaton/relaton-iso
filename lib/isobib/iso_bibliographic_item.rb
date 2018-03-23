@@ -76,7 +76,7 @@ module Isobib
     # @return [IsoProjectGroup]
     attr_reader :workgroup
 
-    # @return [BibliographicIcs]
+    # @return [Array<Ics>]
     attr_reader :ics
 
     # @param docid [Hash]
@@ -84,7 +84,7 @@ module Isobib
     # @param type [String]
     # @param status [Hash]
     # @param workgroup [Hash]
-    # @param ics [Hash]
+    # @param ics [Array<Hash>]
     # @param dates [Array<Hash>]
     # @param abstract [Array<Hash>]
     # @param contributors [Array<Hash>]
@@ -101,8 +101,8 @@ module Isobib
       @type          = type
       @status        = IsoDocumentStatus.new(docstatus)
       @workgroup     = IsoProjectGroup.new(workgroup)
-      @contributors << ContributionInfo.new(entity: @workgroup)
-      @ics           = Ics.new(ics)
+      @contributors << ContributionInfo.new(entity: @workgroup, role: ["publisher"])
+      @ics           = ics.map { |i| Ics.new(i) }
       @dates         = dates.map { |d| BibliographicDate.new(d) }
       @abstract      = abstract.map { |a| FormattedString.new(a) }
       @contributors  += contributors.map do |c|
@@ -136,7 +136,7 @@ module Isobib
         c.role.select { |r| r.type == ContributorRoleTypes::PUBLISHER }.any?
       end
 
-      "#{contributor&.entity&.name} #{@docidentifier.project_number}-#{@docidentifier.part_number}:#{@copyright.from.year}"
+      "#{contributor&.entity&.name} #{@docidentifier.project_number}-#{@docidentifier.part_number}:#{@copyright.from&.year}"
     end
     
     # @param type [Symbol] type of url, can be :src/:obp/:rss

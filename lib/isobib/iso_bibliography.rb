@@ -12,7 +12,12 @@ module Isobib
       # @return [Array<IsoBibliographicItem>]
       def search(text)
         @@iso_bibliographic_items = Scrapper.get(text).map do |item|
-          IsoBibliographicItem.new item
+          begin
+            IsoBibliographicItem.new item
+          rescue => e
+            require "pry-byebug"; binding.pry
+            e
+          end
         end
       end
     end
