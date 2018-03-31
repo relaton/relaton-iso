@@ -20,6 +20,14 @@ module Isobib
       #       e
       #     end
       #   end
+        @@iso_bibliographic_items = Scrapper.get(text).map do |item|
+          begin
+            IsoBibliographicItem.new item
+          rescue => e
+            require "pry-byebug"; binding.pry
+            e
+          end
+        end
       end
     end
   end
