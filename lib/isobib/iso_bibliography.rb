@@ -12,22 +12,17 @@ module Isobib
       # @return [Array<IsoBibliographicItem>]
       def search(text)
         Scrapper.new text
-      #   @@iso_bibliographic_items = Scrapper.get(text).map do |item|
-      #     begin
-      #       IsoBibliographicItem.new item
-      #     rescue => e
-      #       require "pry-byebug"; binding.pry
-      #       e
-      #     end
-      #   end
-        @@iso_bibliographic_items = Scrapper.get(text).map do |item|
-          begin
-            IsoBibliographicItem.new item
-          rescue => e
-            require "pry-byebug"; binding.pry
-            e
-          end
-        end
+      end
+
+      def search_and_fetch(text)
+        Scrapper.get(text) #.map do |item|
+          # begin
+          # item
+          # rescue => e
+          #   require "pry-byebug"; binding.pry
+          #   e
+          # end
+        # end
       end
     end
   end

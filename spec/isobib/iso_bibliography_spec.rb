@@ -1,5 +1,5 @@
 require "isobib/iso_bibliography"
-require "yaml"
+# require "yaml"
 
 RSpec.describe Isobib::IsoBibliography do
 
@@ -25,6 +25,13 @@ RSpec.describe Isobib::IsoBibliography do
       hits += 1
       break if hits > 1
     end
+  end
+
+  it "search and fetch" do
+    mock_algolia 2
+    mock_http_net 40
+    results = Isobib::IsoBibliography.search_and_fetch("19115")
+    expect(results.size).to be 10
   end
 
   describe "iso bibliography item" do

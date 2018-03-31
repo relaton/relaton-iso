@@ -6,7 +6,7 @@ require "algoliasearch"
 require "isobib/hit"
 require "nokogiri"
 require "net/http"
-require "open-uri"
+# require "open-uri"
 require "isobib/workers_pool"
 # require "capybara/poltergeist"
 
@@ -37,6 +37,9 @@ module Isobib
         end
         idx = n - @docs["page"] * @docs["hitsPerPage"]
         yield Hit.new(@docs["hits"][idx])
+      end
+    end
+
     class << self
 
       # @param text [String]
@@ -72,8 +75,8 @@ module Isobib
       # Parse page.
       # @param hit [Hash]
       # @return [Hash]
-      def parse_page(hit)
-        doc, url = get_page "#{hit["path"].match(/\/contents\/.*/).to_s}.html"
+      def parse_page(hit_data)
+        doc, url = get_page "#{hit_data["path"].match(/\/contents\/.*/).to_s}.html"
 
         # Fetch edition.
         edition = doc.xpath("//strong[contains(text(), 'Edition')]/..")
@@ -106,54 +109,24 @@ module Isobib
           abstract << {
             content:  abstract_content,
             language: lang[:lang],
-            script:   "latn"
+            script:   script(lang[:lang])
           } unless abstract_content.empty?
         end
 
-        {
+        IsoBibliographicItem.new(
           docid:     fetch_docid(doc),
           edition:   edition,
           titles:    titles,
-          type:      fetch_type(hit["title"]),
-          docstatus: fetch_status(doc, hit["status"]),
+          type:      fetch_type(hit_data["title"]),
+          docstatus: fetch_status(doc, hit_data["status"]),
           ics:       fetch_ics(doc),
           dates:     fetch_dates(doc),
           workgroup: fetch_workgroup(doc),
           abstract:  abstract,
-          copyright: fetch_copyright(hit["title"], doc),
+          copyright: fetch_copyright(hit_data["title"], doc),
           source:    fetch_source(doc, url),
           relations: fetch_relations(doc)
-        }
-
-          # # Get obp page with js.
-          # browser = Capybara.current_session
-          # browser.vivsit obp
-
-          # langs = browser.all("div.languages div[role=button]").map do |lang_btn|
-          #   lang_btn.text
-          # end
-
-          # title_splitter = [32, 226, 128, 148, 32].pack('C*').force_encoding('utf-8')
-          # langs.each do |lang|
-          #   lang_btn = browser.all("div.languages div[role=button]").select do |lb|
-          #     lb.text == lang
-          #   end
-
-          #   unless lang_btn["class"].split.include? "v-button-down"
-          #     lang_btn.click
-          #   end
-
-          #   # Fetch titles.
-          #   title_intro, title_main, title_part = browser.all("div.std-title").first
-          #     .text.split title_splitter
-          #   titles << {
-          #     title_intro: title_intro,
-          #     title_main:  title_main,
-          #     title_par:   title_part,
-          #     language:    lang,
-          #     script:      "latn"
-          #   }
-          # end
+        )
       end
 
       # Get page.
@@ -258,8 +231,18 @@ module Isobib
           title_main:  main,
           title_part:  part,
           language:    lang,
-          script:      "latn"
+          script:      script(lang)
         }
+      end
+
+      # Return ISO script code.
+      # @param lang [String]
+      # @return [String]
+      def script(lang)
+        case lang
+        when "en", "fr" then "latn"
+        when "ru" then "cyrl"
+        end
       end
 
       # Fetch dates

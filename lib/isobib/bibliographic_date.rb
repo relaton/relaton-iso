@@ -26,9 +26,6 @@ module Isobib
       @type = type
       @from = DateTime.strptime(from, "%Y-%d")
       @to   = DateTime.strptime(to, "%Y-%d") if to
-    # rescue => e
-      # puts e.backtrace
-      # puts "Wrong date: " + from
     end
   end
 end
