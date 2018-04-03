@@ -1,7 +1,6 @@
 # require "nokogiri"
 # require "net/http"
 # require "open-uri"
-require "isobib/iso_bibliographic_item"
 
 module Isobib
   class Hit
@@ -12,9 +11,10 @@ module Isobib
     end
 
     # Parse page.
-    # @return [Hash]
+    # @return [Isobib::IsoBibliographicItem]
     def fetch
-      Scrapper.parse_page @hit
+      @iso_bib_item = Scrapper.parse_page @hit unless @iso_bib_item
+      @iso_bib_item
     end
   end
 end

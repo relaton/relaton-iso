@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "isobib/iso_bibliographic_item"
 require "isobib/scrapper"
+require "isobib/hit_pages"
 
 module Isobib
   class IsoBibliography
@@ -9,11 +10,14 @@ module Isobib
     class << self
 
       # @param text [String]
-      # @return [Array<IsoBibliographicItem>]
+      # @return [Isobib::HitPages]
       def search(text)
-        Scrapper.new text
+        # Scrapper.new text
+        HitPages.new text
       end
 
+      # @param text [String]
+      # @return [Array<IsoBibliographicItem>]
       def search_and_fetch(text)
         Scrapper.get(text) #.map do |item|
           # begin

@@ -9,6 +9,7 @@ require "net/http"
 # require "open-uri"
 require "isobib/workers_pool"
 # require "capybara/poltergeist"
+require "isobib/iso_bibliographic_item"
 
 # Capybara.request_driver :poltergeist do |app|
 #   Capybara::Poltergeist::Driver.new app, js_errors: false
@@ -25,18 +26,17 @@ module Isobib
       @text = text
       @index = Algolia::Index.new "all_en"
       @docs = @index.search text, facetFilters: ["category:standard"]
-      @nb_hits = @docs["nbHits"]
+      # @nb_hits = @docs["nbHits"]
     end
 
     def each(&block)
       next_page = @docs["page"] + 1
-      @nb_hits.times do |n|
+      @docs["nbHits"].times do |n|
         unless next_page * @docs["hitsPerPage"] > n
-          @docs = @index.search @text, facetFilters: ["category:standard"], page: next_page
+          next_hits_page next_page
           next_page = @docs["page"] + 1
         end
-        idx = n - @docs["page"] * @docs["hitsPerPage"]
-        yield Hit.new(@docs["hits"][idx])
+        yield Hit.new(@docs["hits"][n])
       end
     end
 
@@ -289,6 +289,19 @@ module Isobib
         from = title.match(/(?<=:)\d{4}/).to_s
         from = doc.xpath("//span[@itemprop='releaseDate']").text.match(/\d{4}/).to_s if from.empty?
         { owner: { name: owner_name }, from: from }
+      end
+    end
+
+    private
+
+    def next_hits_page(next_page)
+      page = @index.search @text, facetFilters: ["category:standard"], page: next_page
+      page.each do |key, value|
+        if key == "hits"
+          @docs[key] += value
+        else
+          @docs[key] = value
+        end
       end
     end
   end

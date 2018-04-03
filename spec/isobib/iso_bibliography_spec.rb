@@ -3,28 +3,34 @@ require "isobib/iso_bibliography"
 
 RSpec.describe Isobib::IsoBibliography do
 
-  it "return hit instances" do
+  it "return HitPages instance" do
     mock_algolia 2
-    scrapper = Isobib::IsoBibliography.search("19155")
-    hits = []
-    scrapper.each do |hit|
-      hits << hit
-    end
-    expect(hits.length).to eq 10
-    expect(hits.first).to be_instance_of Isobib::Hit
+    hit_pages = Isobib::IsoBibliography.search("19155")
+    # hits = []
+    # scrapper.each do |hit|
+    #   hits << hit
+    # end
+    # expect(hits.length).to eq 10
+    expect(hit_pages).to be_instance_of Isobib::HitPages
+    expect(hit_pages.first).to be_instance_of Isobib::HitCollection
+    expect(hit_pages[1]).to be_instance_of Isobib::HitCollection
   end
 
-  it "fetch items from hit" do
+  it "fetch hits of page" do
     mock_algolia 1
-    mock_http_net 8
+    mock_http_net 20
 
-    scrapper = Isobib::IsoBibliography.search("19155")
-    hits = 0
-    scrapper.each do |hit|
-      expect(hit.fetch).to be_instance_of Isobib::IsoBibliographicItem
-      hits += 1
-      break if hits > 1
-    end
+    hit_pages = Isobib::IsoBibliography.search("19155")
+    expect(hit_pages.first.fetched).to be_falsy
+    expect(hit_pages[0].fetch).to be_instance_of Isobib::HitCollection
+    expect(hit_pages.first.fetched).to be_truthy
+    expect(hit_pages[0].first).to be_instance_of Isobib::Hit
+    # hits = 0
+    # scrapper.each do |hit|
+    #   expect(hit.fetch).to be_instance_of Isobib::IsoBibliographicItem
+    #   hits += 1
+    #   break if hits > 1
+    # end
   end
 
   it "search and fetch" do
@@ -38,13 +44,14 @@ RSpec.describe Isobib::IsoBibliography do
     let(:isobib_item) do
       mock_algolia 1
       mock_http_net 4
-      scrapper = Isobib::IsoBibliography.search("19155")
-      item = nil
-      scrapper.each do |hit|
-        item = hit.fetch
-        break
-      end
-      item
+      hit_pages = Isobib::IsoBibliography.search("19155")
+      hit_pages.first.first.fetch
+      # item = nil
+      # scrapper.each do |hit|
+      #   item = hit.fetch
+      #   break
+      # end
+      # item
     end
 
     it "return list of titles" do
