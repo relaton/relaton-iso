@@ -5,6 +5,9 @@ module Isobib
   class HitPages < Array
     Algolia.init application_id: "JCL49WV5AR", api_key: "dd1b9e1ab383f4d4817d29cd5e96d3f0"
 
+    # @return [String]
+    attr_reader :text
+
     # @param text [String]
     def initialize(text)
       @text = text
@@ -13,7 +16,7 @@ module Isobib
       # @nb_hits = resp["nbHits"]
       @nb_pages = resp["nbPages"]
       # @hits_per_page = resp["hitsPerPage"]
-      self << HitCollection.new(resp["hits"])
+      self << HitCollection.new(resp["hits"], self)
     end
 
     # @return [Isobib::HitCollection]
@@ -28,7 +31,7 @@ module Isobib
       return if i + 1 > @nb_pages
       while Array.instance_method(:size).bind(self).call < i + 1
         resp = @index.search(@text, facetFilters: ["category:standard"], page: i) 
-        self << HitCollection.new(resp["hits"])
+        self << HitCollection.new(resp["hits"], self)
       end
       super
     end
@@ -46,6 +49,14 @@ module Isobib
       @nb_pages.times do |n|
         yield self[n]
       end
+    end
+
+    def to_s
+      inspect
+    end
+
+    def inspect
+      "<#{self.class}:#{'0x00%x' % (object_id << 1)} @text=#{@text} @pages=#{@nb_pages}>"
     end
 
     # @return [Integer]

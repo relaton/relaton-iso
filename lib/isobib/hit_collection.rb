@@ -6,10 +6,14 @@ module Isobib
     # @return [TrueClass, FalseClass]
     attr_reader :fetched
 
+    # @return [Isobib::HitPages]
+    attr_reader :hit_pages
+
     # @param hits [Array<Hash>]
-    def initialize(hits)
-      concat hits.map { |h| Hit.new h }
+    def initialize(hits, hit_pages = nil)
+      concat hits.map { |h| Hit.new(h, self) }
       @fetched = false
+      @hit_pages = hit_pages
     end
 
     # @return [Isobib::HitCollection]
@@ -24,6 +28,14 @@ module Isobib
       workers.result
       @fetched = true
       self
+    end
+
+    def to_s
+      inspect
+    end
+
+    def inspect
+      "<#{self.class}:#{'0x00%x' % (object_id << 1)} @fetched=#{@fetched}>"
     end
   end
 end
