@@ -137,7 +137,7 @@ module Isobib
     def initialize(**args)
       @title         = []
       @docidentifier = []
-      @dates         = args[:dates].map { |d| BibliographicDate.new(d) }
+      @dates         = (args[:dates] || []).map { |d| BibliographicDate.new(d) }
       @contributors  = (args[:contributors] || []).map do |c|
         ContributionInfo.new(entity: Organization.new(c[:entity]),
                              role:   c[:role])
@@ -145,8 +145,10 @@ module Isobib
       @notes         = []
       @language      = args[:language]
       @script        = args[:script]
-      @abstract      = args[:abstract].map { |a| FormattedString.new(a) }
-      @relations     = DocRelationCollection.new(args[:relations])
+      @abstract      = (args[:abstract] || []).map do |a|
+        FormattedString.new(a)
+      end
+      @relations = DocRelationCollection.new(args[:relations] || [])
     end
     # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
