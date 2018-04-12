@@ -29,15 +29,16 @@
   workgroup:
     name: ISO
     url: https://www.iso.org/committee/54904.html
-    technical_committe:
-      type: techicalCommitte
+    technical_committee:
+      type: techicalCommittee
       name: Geographic information/Geomatics
       number: 211
   
   ics: 
-    field: '35'
-    group: '240'
-    subgroup: '70'
+    -
+      field: '35'
+      group: '240'
+      subgroup: '70'
 
   dates:
     -
@@ -116,15 +117,16 @@
   workgroup:
     name: ISO
     url: https://www.iso.org/committee/54904.html
-    technical_committe:
-      type: techicalCommitte
+    technical_committee:
+      type: techicalCommittee
       name: Geographic information/Geomatics
       number: 211
   
   ics: 
-    field: '35'
-    group: '240'
-    subgroup: '70'
+    -
+      field: '35'
+      group: '240'
+      subgroup: '70'
 
   dates:
     -

@@ -24,8 +24,8 @@ module Isobib
     # @param to [String]
     def initialize(type:, from:, to: nil)
       @type = type
-      @from = DateTime.parse(from)
-      @to   = DateTime.parse(to) if to
+      @from = DateTime.strptime(from, "%Y-%d")
+      @to   = DateTime.strptime(to, "%Y-%d") if to
     end
   end
 end

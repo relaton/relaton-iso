@@ -13,7 +13,7 @@ module Isobib
     PRESENTATION = 'presentation'
     THESIS       = 'thesis'
     TECHREPORT   = 'techreport'
-    STANDARD     = 'standsrd'
+    STANDARD     = 'standard'
     UNPUBLISHED  = 'unpublished'
   end
 
@@ -45,8 +45,8 @@ module Isobib
     # @param from [String] date
     # @param to [String] date
     def initialize(owner:, from:, to: nil)
-      @owner = Contributor.new(owner)
-      @from  = DateTime.parse(from)
+      @owner = Organization.new(owner)
+      @from  = DateTime.strptime(from, "%Y") unless from.empty?
       @to    = DateTime.parse(to) if to
     end
   end
@@ -61,7 +61,7 @@ module Isobib
     # @param content [String]
     def initialize(type:, content:)
       @type    = type
-      @content = URI content
+      @content = URI content if content
     end
   end
 
