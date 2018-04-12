@@ -1,56 +1,67 @@
-require "isobib/formatted_string"
-require "isobib/contribution_info"
-require "isobib/bibliographic_date"
+# frozen_string_literal: true
+
+require 'isobib/formatted_string'
+require 'isobib/contribution_info'
+require 'isobib/bibliographic_date'
 
 module Isobib
-  module BibItemType
-    ARTICLE      = 'article'
-    BOOK         = 'book'
-    BOOKLET      = 'booklet'
-    CONFERENCE   = 'conference'
-    MANUAL       = 'manual'
-    PROCEEDINGS  = 'proceedings'
-    PRESENTATION = 'presentation'
-    THESIS       = 'thesis'
-    TECHREPORT   = 'techreport'
-    STANDARD     = 'standard'
-    UNPUBLISHED  = 'unpublished'
-  end
+  # module BibItemType
+  #   ARTICLE      = 'article'
+  #   BOOK         = 'book'
+  #   BOOKLET      = 'booklet'
+  #   CONFERENCE   = 'conference'
+  #   MANUAL       = 'manual'
+  #   PROCEEDINGS  = 'proceedings'
+  #   PRESENTATION = 'presentation'
+  #   THESIS       = 'thesis'
+  #   TECHREPORT   = 'techreport'
+  #   STANDARD     = 'standard'
+  #   UNPUBLISHED  = 'unpublished'
+  # end
 
+  # Document identifier.
   class DocumentIdentifier
+    # @return [String]
+    attr_reader :id
 
     # @return [String]
-    attr_accessor :id
-
-    # @return [String]
-    attr_accessor :type
+    attr_reader :type
 
     def initialize(id)
       @id = id
     end
   end
 
+  # Copyright association.
   class CopyrightAssociation
-
-    # @return [DateTime]
+    # @return [Time]
     attr_reader :from
 
-    # @return [DateTime]
+    # @return [Time]
     attr_reader :to
 
-    # @return [Contributor]
+    # @return [Isobib::ContributionInfo]
     attr_reader :owner
 
     # @param owner [Hash] contributor
     # @param from [String] date
     # @param to [String] date
     def initialize(owner:, from:, to: nil)
-      @owner = Organization.new(owner)
-      @from  = DateTime.strptime(from, "%Y") unless from.empty?
-      @to    = DateTime.parse(to) if to
+      @owner = ContributionInfo.new entity: Organization.new(owner)
+      @from  = Time.strptime(from, '%Y') unless from.empty?
+      @to    = Time.parse(to) if to
+    end
+
+    def to_xml(builder)
+      builder.copyright do
+        builder.from from.year
+        builder.to to.year if to
+        owner.to_xml builder
+      end
     end
   end
 
+  # Typed URI
   class TypedUri
     # @return [Symbol] :src/:obp/:rss
     attr_reader :type
@@ -63,66 +74,81 @@ module Isobib
       @type    = type
       @content = URI content if content
     end
+
+    def to_xml(builder)
+      builder.source(content.to_s, type: type)
+    end
   end
 
+  # Bibliographic item
   class BibliographicItem
+    # @return [Array<Isobib::FormattedString>]
+    attr_reader :title
 
-    # @return [Array<FormattedString>]
-    attr_accessor :title
+    # @return [Array<Isobib::TypedUri>]
+    attr_reader :source
 
-    # @return [Array<TypedUri>]
-    attr_accessor :source
+    # @return [Isobib::BibItemType]
+    attr_reader :type
 
-    # @return [BibItemType]
-    attr_accessor :type
+    # @return [Array<Isobib::DocumentIdentifier>]
+    attr_reader :docidentifier
 
-    # @return [Array<DocumentIdentifier>]
-    attr_accessor :docidentifier
+    # @return [Array<Isobib::BibliographicDate>]
+    attr_reader :dates
 
-    # @return [Array<BibliographicDate>]
-    attr_accessor :dates
-
-    # @return [Array<ContributionInfo>]
-    attr_accessor :contributors
+    # @return [Array<Isobib::ContributionInfo>]
+    attr_reader :contributors
 
     # @return [String]
-    attr_accessor :edition
+    attr_reader :edition
 
-    # @return [Array<FormattedString>]
-    attr_accessor :notes
+    # @return [Array<Isobib::FormattedString>]
+    attr_reader :notes
 
     # @return [Array<String>] language Iso639 code
-    attr_accessor :language
+    attr_reader :language
 
     # @return [Array<String>] script Iso15924 code
-    attr_accessor :script
+    attr_reader :script
 
-    # @return [FormattedString]
-    attr_accessor :formatted_ref
+    # @return [Isobib::FormattedString]
+    attr_reader :formatted_ref
 
     # @!attribute [r] abstract
     #   @return [Arra<FormattedString>]
 
-    # @return [DocumentStatus]
-    attr_accessor :status
+    # @return [Isobib::DocumentStatus]
+    attr_reader :status
 
-    # @return [CopyrightAssociation]
-    attr_accessor :copyright
+    # @return [Isobib::CopyrightAssociation]
+    attr_reader :copyright
 
-    # @return [DocRelationCollection]
-    attr_accessor :relations
+    # @return [Isobib::DocRelationCollection]
+    attr_reader :relations
 
-    def initialize
+    # @param language [Arra<String>]
+    # @param script [Array<String>]
+    # @param dates [Array<Hash>]
+    # @param contributors [Array<Hash>]
+    # @param abstract [Array<Hash>]
+    # @param relations [Array<Hash>]
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    def initialize(**args)
       @title         = []
       @docidentifier = []
-      @dates         = []
-      @contributors  = []
+      @dates         = args[:dates].map { |d| BibliographicDate.new(d) }
+      @contributors  = (args[:contributors] || []).map do |c|
+        ContributionInfo.new(entity: Organization.new(c[:entity]),
+                             role:   c[:role])
+      end
       @notes         = []
-      @language      = []
-      @script        = []
-      @abstract      = []
-      @relations     = []
+      @language      = args[:language]
+      @script        = args[:script]
+      @abstract      = args[:abstract].map { |a| FormattedString.new(a) }
+      @relations     = DocRelationCollection.new(args[:relations])
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     # @param docid [DocumentIdentifier]
     def add_docidentifier(docid)
@@ -138,9 +164,5 @@ module Isobib
         @abstract
       end
     end
-
-    # def add_contributor(contributor)
-    #   @contributors << contributor
-    # end
   end
 end

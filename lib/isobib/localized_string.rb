@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Isobib
+  # Localized string.
   class LocalizedString
     # @return [Array<String>] language Iso639 code
     attr_accessor :language
@@ -15,14 +18,20 @@ module Isobib
     def initialize(content, language = nil, script = nil)
       @language = []
       @language << language if language
-      @script   = []
+      @script = []
       @script << script if script
-      @content  = content
+      @content = content
     end
 
     # @return [String]
     def to_s
-      @content
+      content
+    end
+
+    def to_xml(builder)
+      builder.parent['language'] = language.join(',') if language.any?
+      builder.parent['script']   = script.join(',') if script.any?
+      builder.text content
     end
   end
 end

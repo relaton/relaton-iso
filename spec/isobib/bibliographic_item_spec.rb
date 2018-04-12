@@ -1,17 +1,18 @@
-require "isobib/bibliographic_item"
+# frozen_string_literal: true
+
+require 'isobib/bibliographic_item'
 
 RSpec.describe Isobib::BibliographicItem do
-  it "create bibliographic item" do
+  it 'create bibliographic item' do
     bib_item = Isobib::BibliographicItem.new
-    expect(bib_item.title.is_a? Array).to be_truthy
+    expect(bib_item.title).to be_instance_of Array
 
-    # from = DateTime.now.to_s
-    # owner = Isobib::Contributor.new
-    copyright = Isobib::CopyrightAssociation.new from: "2014", owner: {name: "ISO" }
+    copyright = Isobib::CopyrightAssociation.new from:  '2014',
+                                                 owner: { name: 'ISO' }
     bib_item.copyright = copyright
-    expect(bib_item.copyright.is_a? Isobib::CopyrightAssociation).to be_truthy
+    expect(bib_item.copyright).to be_instance_of Isobib::CopyrightAssociation
 
-    docid = Isobib::DocumentIdentifier.new "docid"
+    docid = Isobib::DocumentIdentifier.new 'docid'
     bib_item.add_docidentifier docid
     expect(bib_item.docidentifier.length).to eq 1
   end

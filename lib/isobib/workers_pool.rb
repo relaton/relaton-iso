@@ -1,17 +1,22 @@
-require 'thread'
+# frozen_string_literal: true
 
+# Workers poll.
 class WorkersPool
-  def initialize(num_workers = 2, &block)
+  attr_accessor :nb_hits
+
+  def initialize(num_workers = 2)
     @num_workers = num_workers < 2 ? 2 : num_workers
     @queue = SizedQueue.new(num_workers * 2)
     @result = []
-    @threads = num_workers.times.map do
+    @nb_hits = 0
+  end
+
+  def worker(&block)
+    @threads = Array.new @num_workers do
       Thread.new do
-        res = []
         until (item = @queue.pop) == :END
-          @result << block.call(item)
+          @result << yield(item) if block
         end
-        res
       end
     end
   end
@@ -23,6 +28,7 @@ class WorkersPool
 
   def <<(item)
     @queue << item
+    self
   end
 
   def end

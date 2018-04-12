@@ -1,19 +1,22 @@
+# frozen_string_literal: true
+
 module Isobib
+  # ISO localized string.
   class IsoLocalizedTitle
     # @return [String]
-    attr_accessor :title_intro
+    attr_reader :title_intro
 
     # @return [String]
-    attr_accessor :title_main
+    attr_reader :title_main
 
     # @return [String]
-    attr_accessor :title_part
+    attr_reader :title_part
 
     # @return [String] language code Iso639
-    attr_accessor :language
+    attr_reader :language
 
     # @return [String] script code Iso15924
-    attr_accessor :script
+    attr_reader :script
 
     # @param title_intro [String]
     # @param title_main [String]
@@ -25,12 +28,18 @@ module Isobib
       @title_main  = title_main
       @title_part  = title_part
       @language    = language
-      @scrip       = script
+      @script      = script
     end
 
     # @return [String]
     def to_s
       "#{@title_intro} -- #{@title_main} -- #{@title_part}"
+    end
+
+    def to_xml(builder)
+      builder.title(format: 'text/plain', language: language, scrip: script) do
+        builder.text to_s
+      end
     end
   end
 end

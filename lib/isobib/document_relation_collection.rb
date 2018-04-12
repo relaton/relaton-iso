@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Isobib
   module DocumentRelationType
     PARENT        = 'parent'
@@ -13,71 +15,73 @@ module Isobib
   end
 
   class SpecificLocalityType
-    SECTION   = "section"
-    CLAUSE    = "clause"
-    PART      = "part"
-    PARAGRAPH = "paragraph"
-    CHAPTER   = "chapter"
-    PAGE      = "page"
-    WHOLE     = "whole"
-    TABLE     = "table"
-    ANNEX     = "annex"
-    FIGURE    = "figure"
-    NOTE      = "note"
-    EXAMPLE   = "example"
+    SECTION   = 'section'
+    CLAUSE    = 'clause'
+    PART      = 'part'
+    PARAGRAPH = 'paragraph'
+    CHAPTER   = 'chapter'
+    PAGE      = 'page'
+    WHOLE     = 'whole'
+    TABLE     = 'table'
+    ANNEX     = 'annex'
+    FIGURE    = 'figure'
+    NOTE      = 'note'
+    EXAMPLE   = 'example'
     # generic String is allowed
   end
 
+  # Bibliographic item locality.
   class BibItemLocality
     # @return [SpecificLocalityType]
-    attr_accessor :type
+    attr_reader :type
 
     # @return [LocalizedString]
-    attr_accessor :referenceFrom
+    attr_reader :reference_from
 
     # @return [LocalizedString]
-    attr_accessor :referenceTo
+    attr_reader :reference_to
 
     # @param type [String]
     # @param referenceFrom [LocalizedString]
     # @param referenceTo [LocalizedString]
-    def initialize(type, referenceFrom, referenceTo = nil)
-      @type          = type
-      @referenceFrom = referenceFrom
-      @referenceTo   = referenceTo
+    def initialize(type, reference_from, reference_to = nil)
+      @type           = type
+      @reference_from = reference_from
+      @reference_to   = reference_to
     end
   end
 
+  # Documett relation
   class DocumentRelation
     # @return [DocumentRelationType]
-    attr_accessor :type
+    attr_reader :type
 
-    attr_accessor :identifier
+    attr_reader :identifier
 
     # @return [BibliographicItem]
-    attr_accessor :bibitem
+    attr_reader :bibitem
 
     # @return [Array<BibItemLocality>]
-    attr_accessor :bib_locality
+    attr_reader :bib_locality
 
     # @param type [String]
     # @param identifier [String]
-    def initialize(type:, identifier: , bib_locality: [])
+    def initialize(type:, identifier:, bib_locality: [])
       @type         = type
       @identifier   = identifier
       @bib_locality = bib_locality
     end
   end
 
+  # Document relations collection
   class DocRelationCollection < Array
-
     def initialize(relations)
       super relations.map { |r| DocumentRelation.new(r) }
     end
 
     # @return [Array<DocumentRelation>]
     def replaces
-      select { |r| r.type == "replace" }
+      select { |r| r.type == 'replace' }
     end
   end
 end
