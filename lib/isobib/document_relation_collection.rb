@@ -1,34 +1,34 @@
 # frozen_string_literal: true
 
 module Isobib
-  module DocumentRelationType
-    PARENT        = 'parent'
-    CHILD         = 'child'
-    OBSOLETES     = 'obsoletes'
-    UPDATES       = 'updates'
-    COMPLEMENTS   = 'complements'
-    DERIVED_FORM  = 'derivedForm'
-    ADOPTED_FORM  = 'adoptedForm'
-    EQUIVALENT    = 'equivalent'
-    IDENTICAL     = 'identical'
-    NONEQUIVALENT = 'nonequivalent'
-  end
+  # module DocumentRelationType
+  #   PARENT        = 'parent'
+  #   CHILD         = 'child'
+  #   OBSOLETES     = 'obsoletes'
+  #   UPDATES       = 'updates'
+  #   COMPLEMENTS   = 'complements'
+  #   DERIVED_FORM  = 'derivedForm'
+  #   ADOPTED_FORM  = 'adoptedForm'
+  #   EQUIVALENT    = 'equivalent'
+  #   IDENTICAL     = 'identical'
+  #   NONEQUIVALENT = 'nonequivalent'
+  # end
 
-  class SpecificLocalityType
-    SECTION   = 'section'
-    CLAUSE    = 'clause'
-    PART      = 'part'
-    PARAGRAPH = 'paragraph'
-    CHAPTER   = 'chapter'
-    PAGE      = 'page'
-    WHOLE     = 'whole'
-    TABLE     = 'table'
-    ANNEX     = 'annex'
-    FIGURE    = 'figure'
-    NOTE      = 'note'
-    EXAMPLE   = 'example'
-    # generic String is allowed
-  end
+  # class SpecificLocalityType
+  #   SECTION   = 'section'
+  #   CLAUSE    = 'clause'
+  #   PART      = 'part'
+  #   PARAGRAPH = 'paragraph'
+  #   CHAPTER   = 'chapter'
+  #   PAGE      = 'page'
+  #   WHOLE     = 'whole'
+  #   TABLE     = 'table'
+  #   ANNEX     = 'annex'
+  #   FIGURE    = 'figure'
+  #   NOTE      = 'note'
+  #   EXAMPLE   = 'example'
+  #   # generic String is allowed
+  # end
 
   # Bibliographic item locality.
   class BibItemLocality
@@ -53,10 +53,11 @@ module Isobib
 
   # Documett relation
   class DocumentRelation
-    # @return [DocumentRelationType]
+    # @return [String]
     attr_reader :type
 
-    attr_reader :identifier
+    # @return [String]
+    attr_reader :identifier, :url
 
     # @return [BibliographicItem]
     attr_reader :bibitem
@@ -66,10 +67,18 @@ module Isobib
 
     # @param type [String]
     # @param identifier [String]
-    def initialize(type:, identifier:, bib_locality: [])
+    def initialize(type:, identifier:, url:, bib_locality: [])
       @type         = type
       @identifier   = identifier
+      @url          = url
       @bib_locality = bib_locality
+    end
+
+    def to_xml(builder)
+      builder.relation(type: type) do
+        builder.identifier identifier
+        builder.url url
+      end
     end
   end
 

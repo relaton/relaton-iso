@@ -23,7 +23,7 @@ module Isobib
 
     # @return [Isobib::HitCollection]
     def last
-      collections[@nb_pages - 1]
+      collection(@nb_pages - 1)
     end
 
     # @param i [Integer]
@@ -31,12 +31,7 @@ module Isobib
     def [](idx)
       # collection i
       return if idx + 1 > @nb_pages
-      while Array.instance_method(:size).bind(self).call < idx + 1
-        resp = @index.search(@text,
-                             facetFilters: ['category:standard'],
-                             page: idx)
-        self << HitCollection.new(resp['hits'], self)
-      end
+      collection idx
       super
     end
 
@@ -87,13 +82,13 @@ module Isobib
     # @return [Isobib::HitCollection]
     def collection(idx)
       return if idx + 1 > @nb_pages
-      while size < idx + 1
+      while Array.instance_method(:size).bind(self).call < idx + 1
         resp = @index.search(@text,
                              facetFilters: ['category:standard'],
                              page:         idx)
-        self << HitCollection.new(resp['hits'])
+        self << HitCollection.new(resp['hits'], self)
       end
-      self[idx]
+      Array.instance_method(:[]).bind(self).call idx
     end
   end
 end

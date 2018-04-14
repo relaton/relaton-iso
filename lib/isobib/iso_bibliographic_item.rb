@@ -163,6 +163,7 @@ module Isobib
         abstract.each { |a| builder.abstract { a.to_xml(builder) } }
         status.to_xml builder
         copyright.to_xml builder
+        relations.each { |r| r.to_xml builder }
       end
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength

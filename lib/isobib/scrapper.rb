@@ -48,6 +48,40 @@ module Isobib
         iso_docs
       end
 
+      # Parse page.
+      # @param hit [Hash]
+      # @return [Hash]
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      def parse_page(hit_data)
+        doc, url = get_page "#{hit_data['path'].match(%r{\/contents\/.*})}.html"
+
+        # Fetch edition.
+        edition = doc.xpath("//strong[contains(text(), 'Edition')]/..")
+                     .children.last.text.match(/\d+/).to_s
+
+        titles, abstract = fetch_titles_abstract(doc)
+
+        IsoBibliographicItem.new(
+          docid:     fetch_docid(doc),
+          edition:   edition,
+          language:  langs(doc).map { |l| l[:lang] },
+          script:    langs(doc).map { |l| script(l[:lang]) },
+          titles:    titles,
+          type:      fetch_type(hit_data['title']),
+          docstatus: fetch_status(doc, hit_data['status']),
+          ics:       fetch_ics(doc),
+          dates:     fetch_dates(doc),
+          workgroup: fetch_workgroup(doc),
+          abstract:  abstract,
+          copyright: fetch_copyright(hit_data['title'], doc),
+          source:    fetch_source(doc, url),
+          relations: fetch_relations(doc)
+        )
+      end
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+      private
+
       # Start algolia search workers.
       # @param text[String]
       # @param iso_workers [Isobib::WorkersPool]
@@ -88,40 +122,10 @@ module Isobib
         iso_workers.end unless next_page < res['nbPages']
       end
 
-      # Parse page.
-      # @param hit [Hash]
-      # @return [Hash]
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      def parse_page(hit_data)
-        doc, url = get_page "#{hit_data['path'].match(%r{\/contents\/.*})}.html"
-
-        # Fetch edition.
-        edition = doc.xpath("//strong[contains(text(), 'Edition')]/..")
-                     .children.last.text.match(/\d+/).to_s
-
-        titles, abstract = fetch_titles_abstract(doc)
-
-        IsoBibliographicItem.new(
-          docid:     fetch_docid(doc),
-          edition:   edition,
-          language:  langs(doc).map { |l| l[:lang] },
-          script:    langs(doc).map { |l| script(l[:lang]) },
-          titles:    titles,
-          type:      fetch_type(hit_data['title']),
-          docstatus: fetch_status(doc, hit_data['status']),
-          ics:       fetch_ics(doc),
-          dates:     fetch_dates(doc),
-          workgroup: fetch_workgroup(doc),
-          abstract:  abstract,
-          copyright: fetch_copyright(hit_data['title'], doc),
-          source:    fetch_source(doc, url),
-          relations: fetch_relations(doc)
-        )
-      end
-
       # Fetch titles and abstracts.
       # @param doc [Nokigiri::HTML::Document]
       # @return [Array<Array>]
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def fetch_titles_abstract(doc)
         titles   = []
         abstract = []
@@ -198,25 +202,39 @@ module Isobib
       # @return [Hash]
       def fetch_workgroup(doc)
         wg_link = doc.css('div.entry-name.entry-block a')[0]
-        wg_url = DOMAIN + wg_link['href']
+        # wg_url = DOMAIN + wg_link['href']
         workgroup = wg_link.text.split '/'
-        { name: workgroup[0], url: wg_url, technical_committee: {
-          name:   doc.css('div.entry-title')[0].text,
-          type:   'technicalCommittee',
-          number: workgroup[1].match(/\d+/).to_s.to_i
-        } }
+        { name:                'ISO',            # workgroup[0],
+          url:                 'www.iso.org',    # wg_url,
+          technical_committee: {
+            name:   doc.css('div.entry-title')[0].text,
+            type:   'technicalCommittee',
+            number: workgroup[1].match(/\d+/).to_s.to_i
+          } }
       end
 
       # Fetch relations.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
+      # rubocop:disable Metrics/MethodLength
       def fetch_relations(doc)
-        doc.css('ul.steps li').map do |r|
+        doc.css('ul.steps li').inject([]) do |a, r|
           r_type = r.css('strong').text
-          r_identifier = r.css('a').children.last.text
-          { type: r_type, identifier: r_identifier }
+          type = case r_type
+                 when 'Previously' then 'obsoletes'
+                 when 'Corrigenda/Amendments', 'Revised by' then 'updatedBy'
+                 else r_type
+                 end
+          if ['Now', 'Now under review'].include? type
+            a
+          else
+            a + r.css('a').map do |id|
+              { type: type, identifier: id.text, url: id['href'] }
+            end
+          end
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
       # Fetch type.
       # @param title [String]
@@ -314,19 +332,19 @@ module Isobib
       end
     end
 
-    private
-
-    def next_hits_page(next_page)
-      page = @index.search @text, facetFilters: ['category:standard'],
-                                  page:         next_page
-      page.each do |key, value|
-        if key == 'hits'
-          @docs[key] += value
-        else
-          @docs[key] = value
-        end
-      end
-    end
+    # private
+    #
+    # def next_hits_page(next_page)
+    #   page = @index.search @text, facetFilters: ['category:standard'],
+    #                               page:         next_page
+    #   page.each do |key, value|
+    #     if key == 'hits'
+    #       @docs[key] += value
+    #     else
+    #       @docs[key] = value
+    #     end
+    #   end
+    # end
   end
   # rubocop:enable Metrics/ModuleLength
 end

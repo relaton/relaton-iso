@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require 'isobib/iso_bibliography'
-# require "yaml"
 
 RSpec.describe Isobib::IsoBibliography do
+  let(:hit_pages) { Isobib::IsoBibliography.search('19115') }
+
   it 'return HitPages instance' do
     mock_algolia 2
     hit_pages = Isobib::IsoBibliography.search('19155')
@@ -16,7 +17,7 @@ RSpec.describe Isobib::IsoBibliography do
     mock_algolia 1
     mock_http_net 20
 
-    hit_pages = Isobib::IsoBibliography.search('19155')
+    hit_pages = Isobib::IsoBibliography.search('19115')
     expect(hit_pages.first.fetched).to be_falsy
     expect(hit_pages[0].fetch).to be_instance_of Isobib::HitCollection
     expect(hit_pages.first.fetched).to be_truthy
@@ -28,6 +29,55 @@ RSpec.describe Isobib::IsoBibliography do
     mock_http_net 40
     results = Isobib::IsoBibliography.search_and_fetch('19115')
     expect(results.size).to be 10
+  end
+
+  it 'return string of hit' do
+    mock_algolia 1
+    hit_pages = Isobib::IsoBibliography.search('19115')
+    expect(hit_pages.first[0].to_s).to eq '<Isobib::Hit:'\
+    "#{format('%#.14x', hit_pages.first[0].object_id << 1)} "\
+    '@text="19115" @fullIdentifier="" @matchedWords=["19115"] '\
+    '@category="standard" @title="ISO 19115-1:2014/Amd 1:2018 ">'
+  end
+
+  it 'return xml of hit' do
+    mock_algolia 1
+    mock_http_net 4
+    hit_pages = Isobib::IsoBibliography.search('19115')
+    # File.open 'spec/support/hit.xml', 'w' do |f|
+    #   f.write hit_pages.first[2].to_xml
+    # end
+    expect(hit_pages.first[2].to_xml).to eq File.read('spec/support/hit.xml')
+  end
+
+  it 'return last page of hits' do
+    mock_algolia 2
+    expect(hit_pages.last).to be_instance_of Isobib::HitCollection
+  end
+
+  it 'iteration pages of hits' do
+    mock_algolia 2
+    expect(hit_pages.size).to eq 2
+    pages = hit_pages.map { |p| p }
+    expect(pages.size).to eq 2
+    hit_pages.each { |p| expect(p).to be_instance_of Isobib::HitCollection }
+  end
+
+  it 'return string of hit pages' do
+    mock_algolia 1
+    expect(hit_pages.to_s).to eq(
+      "<Isobib::HitPages:#{format('%#.14x', hit_pages.object_id << 1)} "\
+      '@text=19115 @pages=2>'
+    )
+  end
+
+  it 'return documents in xml format' do
+    mock_algolia 2
+    mock_http_net 40
+    # File.open 'spec/support/hit_pages.xml', 'w' do |f|
+    #   f.write hit_pages.to_xml
+    # end
+    expect(hit_pages.to_xml).to eq File.read 'spec/support/hit_pages.xml'
   end
 
   describe 'iso bibliography item' do
@@ -100,7 +150,7 @@ RSpec.describe Isobib::IsoBibliography do
     end
 
     it 'return worgroup\'s url' do
-      expect(isobib_item.workgroup.url).to eq 'https://www.iso.org/committee/54904.html'
+      expect(isobib_item.workgroup.url).to eq 'www.iso.org'
     end
 
     it 'return relations' do
