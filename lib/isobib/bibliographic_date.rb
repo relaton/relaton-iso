@@ -1,31 +1,33 @@
-require "time"
+# frozen_string_literal: true
+
+require 'time'
 
 module Isobib
-  module BibliographicDateType
-    PUBLISHED = 'published'
-    ACCESSED  = 'accessed'
-    CREATED   = 'created'
-    ACTIVATED = 'activated'
-  end
-
+  # Bibliographic date.
   class BibliographicDate
-
     # @return [BibliographicDateType]
-    attr_accessor :type
+    attr_reader :type
 
     # @return [DateTime]
-    attr_accessor :from
-    
-    # @return [DateTime]
-    attr_accessor :to
+    attr_reader :from
 
-    # @param type [String]
+    # @return [DateTime]
+    attr_reader :to
+
+    # @param type [String] "published", "accessed", "created", "activated"
     # @param from [String]
     # @param to [String]
     def initialize(type:, from:, to: nil)
       @type = type
-      @from = DateTime.strptime(from, "%Y-%d")
-      @to   = DateTime.strptime(to, "%Y-%d") if to
+      @from = Time.strptime(from, '%Y-%d')
+      @to   = Time.strptime(to, '%Y-%d') if to
+    end
+
+    def to_xml(builder)
+      builder.date(type: type) do
+        builder.from from.year
+        builder.to to.year if to
+      end
     end
   end
 end

@@ -1,39 +1,55 @@
+# frozen_string_literal: true
+
+# Isobib module
 module Isobib
-  module ContributorRoleTypes
-    AUTHOR        = 'author'
-    EDITOR        = 'editor'
-    CARETIGRAPHER = 'cartographer'
-    PUBLISHER     = 'publisher'
-  end
-
+  # Contributor's role.
   class ContributorRole
-
     # @return [Array<FormattedString>]
-    attr_accessor :description
+    attr_reader :description
 
     # @return [ContributorRoleType]
     attr_reader :type
 
-    # @param type [ContributorRoleType]
-    def initialize(type)
+    # @param type [ContributorRoleType] allowed types "author", "editor",
+    #   "cartographer", "publisher"
+    def initialize(type, description = [])
       @type = type
-      @description = []
+      @description = description.map { |d| FormattedString.new d }
+    end
+
+    def to_xml(builder)
+      builder.role(type: type) do
+        description.each do |d|
+          builder.description do |desc|
+            d.to_xml(desc)
+          end
+        end
+      end
     end
   end
 
+  # Contribution info.
   class ContributionInfo
-
     # @return [Array<ContributorRole>]
-    attr_accessor :role
+    attr_reader :role
 
-    # @return [Contributor, Organization, IsoProjectGroup]
-    attr_accessor :entity
+    # @return
+    #   [Isobib::Person, Isosbib::Organization, Isosbib::IsoProjectGroup]
+    attr_reader :entity
 
-    # @param entity [Contributor, Organization, IsoProjectGroup]
+    # @param entity
+    #   [Isobib::Person, Isobib::Organization, Isobib::IsoProjectGroup]
     # @param role [Array<String>]
-    def initialize(entity:, role: [])
+    def initialize(entity:, role: ['publisher'])
       @entity = entity
-      @role   = role.map{ |r| ContributorRole.new(r) }
+      @role   = role.map { |r| ContributorRole.new(r) }
+    end
+
+    def to_xml(builder)
+      builder.contributor do
+        role.each { |r| r.to_xml builder }
+        entity.to_xml builder
+      end
     end
   end
 end

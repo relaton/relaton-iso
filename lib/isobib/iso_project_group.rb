@@ -1,18 +1,21 @@
+# frozen_string_literal: true
+
 require 'isobib/organization'
 
 module Isobib
+  # ISO project group.
   class IsoProjectGroup < Organization
-    # @return [IsoSubgroup]
-    attr_accessor :technical_committe
+    # @return [Isobib::IsoSubgroup]
+    attr_reader :technical_committe
 
-    # @return [IsoSubgroup]
-    attr_accessor :subcomitte
+    # @return [IIsobib::soSubgroup]
+    attr_reader :subcomitte
 
-    # @return [IsoSubgroup]
-    attr_accessor :workgroup
+    # @return [IIsobib::soSubgroup]
+    attr_reader :workgroup
 
     # @return [String]
-    attr_accessor :secretariat
+    attr_reader :secretariat
 
     # @param name [String]
     # @param url [String]
@@ -23,6 +26,7 @@ module Isobib
     end
   end
 
+  # ISO subgroup.
   class IsoSubgroup
     # @return [String]
     attr_reader :type

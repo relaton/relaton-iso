@@ -1,32 +1,23 @@
-# encoding: utf-8
-require "isobib/iso_bibliographic_item"
-require "isobib/scrapper"
-require "isobib/hit_pages"
+# frozen_string_literal: true
+
+require 'isobib/iso_bibliographic_item'
+require 'isobib/scrapper'
+require 'isobib/hit_pages'
 
 module Isobib
+  # Class methods for search ISO standards.
   class IsoBibliography
-    # @@iso_bibliographic_items = []
-
     class << self
-
       # @param text [String]
       # @return [Isobib::HitPages]
       def search(text)
-        # Scrapper.new text
         HitPages.new text
       end
 
       # @param text [String]
       # @return [Array<IsoBibliographicItem>]
       def search_and_fetch(text)
-        Scrapper.get(text) #.map do |item|
-          # begin
-          # item
-          # rescue => e
-          #   require "pry-byebug"; binding.pry
-          #   e
-          # end
-        # end
+        Scrapper.get(text)
       end
     end
   end
