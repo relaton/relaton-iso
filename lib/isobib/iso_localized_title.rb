@@ -37,7 +37,7 @@ module Isobib
     end
 
     def to_xml(builder)
-      builder.title(format: 'text/plain', language: language, scrip: script) do
+      builder.title(format: 'text/plain', language: language, script: script) do
         builder.text to_s
       end
     end

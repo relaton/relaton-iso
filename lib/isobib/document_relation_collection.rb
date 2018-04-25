@@ -32,18 +32,18 @@ module Isobib
 
   # Bibliographic item locality.
   class BibItemLocality
-    # @return [SpecificLocalityType]
+    # @return [Isobib::SpecificLocalityType]
     attr_reader :type
 
-    # @return [LocalizedString]
+    # @return [Isobib::LocalizedString]
     attr_reader :reference_from
 
-    # @return [LocalizedString]
+    # @return [Isobib::LocalizedString]
     attr_reader :reference_to
 
     # @param type [String]
-    # @param referenceFrom [LocalizedString]
-    # @param referenceTo [LocalizedString]
+    # @param referenceFrom [Isobib::LocalizedString]
+    # @param referenceTo [Isobib::LocalizedString]
     def initialize(type, reference_from, reference_to = nil)
       @type           = type
       @reference_from = reference_from
@@ -59,10 +59,10 @@ module Isobib
     # @return [String]
     attr_reader :identifier, :url
 
-    # @return [BibliographicItem]
+    # @return [Isobib::BibliographicItem]
     attr_reader :bibitem
 
-    # @return [Array<BibItemLocality>]
+    # @return [Array<Isobib::BibItemLocality>]
     attr_reader :bib_locality
 
     # @param type [String]
@@ -76,8 +76,11 @@ module Isobib
 
     def to_xml(builder)
       builder.relation(type: type) do
-        builder.identifier identifier
-        builder.url url
+        builder.bibitem do
+          builder.formattedref identifier
+          builder.docidentifier identifier
+        end
+        # builder.url url
       end
     end
   end
@@ -88,7 +91,7 @@ module Isobib
       super relations.map { |r| DocumentRelation.new(r) }
     end
 
-    # @return [Array<DocumentRelation>]
+    # @return [Array<Isobib::DocumentRelation>]
     def replaces
       select { |r| r.type == 'replace' }
     end

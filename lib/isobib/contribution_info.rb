@@ -46,10 +46,7 @@ module Isobib
     end
 
     def to_xml(builder)
-      builder.contributor do
-        role.each { |r| r.to_xml builder }
-        entity.to_xml builder
-      end
+      entity.to_xml builder
     end
   end
 end

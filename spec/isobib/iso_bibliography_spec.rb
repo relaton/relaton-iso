@@ -15,7 +15,7 @@ RSpec.describe Isobib::IsoBibliography do
 
   it 'fetch hits of page' do
     mock_algolia 1
-    mock_http_net 20
+    mock_http_net 10
 
     hit_pages = Isobib::IsoBibliography.search('19115')
     expect(hit_pages.first.fetched).to be_falsy
@@ -26,7 +26,7 @@ RSpec.describe Isobib::IsoBibliography do
 
   it 'search and fetch' do
     mock_algolia 2
-    mock_http_net 40
+    mock_http_net 20
     results = Isobib::IsoBibliography.search_and_fetch('19115')
     expect(results.size).to be 10
   end
@@ -42,7 +42,7 @@ RSpec.describe Isobib::IsoBibliography do
 
   it 'return xml of hit' do
     mock_algolia 1
-    mock_http_net 4
+    mock_http_net 2
     hit_pages = Isobib::IsoBibliography.search('19115')
     # File.open 'spec/support/hit.xml', 'w' do |f|
     #   f.write hit_pages.first[2].to_xml
@@ -73,7 +73,7 @@ RSpec.describe Isobib::IsoBibliography do
 
   it 'return documents in xml format' do
     mock_algolia 2
-    mock_http_net 40
+    mock_http_net 20
     # File.open 'spec/support/hit_pages.xml', 'w' do |f|
     #   f.write hit_pages.to_xml
     # end
@@ -83,7 +83,7 @@ RSpec.describe Isobib::IsoBibliography do
   describe 'iso bibliography item' do
     let(:isobib_item) do
       mock_algolia 1
-      mock_http_net 4
+      mock_http_net 2
       hit_pages = Isobib::IsoBibliography.search('19155')
       hit_pages.first.first.fetch
     end
@@ -205,7 +205,7 @@ RSpec.describe Isobib::IsoBibliography do
     resp = double 'resp'
     expect(resp).to receive(:body) do
       File.read "spec/support/#{uri.path.tr('/', '_')}"
-    end
+    end.at_least :once
     expect(resp).to receive(:code).and_return('200').at_most :once
     resp
   end

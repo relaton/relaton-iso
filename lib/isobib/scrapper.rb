@@ -53,7 +53,7 @@ module Isobib
       # @return [Hash]
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def parse_page(hit_data)
-        doc, url = get_page "#{hit_data['path'].match(%r{\/contents\/.*})}.html"
+        doc, url = get_page "/standard/#{hit_data['path'].match(/\d+$/)}.html"
 
         # Fetch edition.
         edition = doc.xpath("//strong[contains(text(), 'Edition')]/..")
@@ -65,7 +65,7 @@ module Isobib
           docid:     fetch_docid(doc),
           edition:   edition,
           language:  langs(doc).map { |l| l[:lang] },
-          script:    langs(doc).map { |l| script(l[:lang]) },
+          script:    langs(doc).map { |l| script(l[:lang]) }.uniq,
           titles:    titles,
           type:      fetch_type(hit_data['title']),
           docstatus: fetch_status(doc, hit_data['status']),
@@ -154,12 +154,13 @@ module Isobib
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
       def langs(doc)
-        [{ lang: 'en' }] +
-          doc.css('ul#lang-switcher ul li a').map do |lang_link|
-            lang_path = lang_link.attr('href')
-            lang = lang_path.match(%r{^\/(\w{2})\/})[1]
-            { lang: lang, path: lang_path }
-          end
+        lgs = [{ lang: 'en' }]
+        doc.css('ul#lang-switcher ul li a').each do |lang_link|
+          lang_path = lang_link.attr('href')
+          lang = lang_path.match(%r{^\/(fr)\/})
+          lgs << { lang: lang[1], path: lang_path } if lang
+        end
+        lgs
       end
 
       # Get page.
@@ -174,6 +175,11 @@ module Isobib
           url = DOMAIN + path
           uri = URI url
           resp = Net::HTTP.get_response uri
+        end
+        n = 0
+        while resp.body !~ /<strong/ && n < 10 do
+          resp = Net::HTTP.get_response uri
+          n += 1
         end
         [Nokogiri::HTML(resp.body), url]
       end
@@ -204,8 +210,9 @@ module Isobib
         wg_link = doc.css('div.entry-name.entry-block a')[0]
         # wg_url = DOMAIN + wg_link['href']
         workgroup = wg_link.text.split '/'
-        { name:                'ISO',            # workgroup[0],
-          url:                 'www.iso.org',    # wg_url,
+        { name:                'International Organization for Standardization',
+          abbreviation:        'ISO',
+          url:                 'www.iso.org',
           technical_committee: {
             name:   doc.css('div.entry-title')[0].text,
             type:   'technicalCommittee',
@@ -221,8 +228,9 @@ module Isobib
         doc.css('ul.steps li').inject([]) do |a, r|
           r_type = r.css('strong').text
           type = case r_type
-                 when 'Previously' then 'obsoletes'
-                 when 'Corrigenda/Amendments', 'Revised by' then 'updatedBy'
+                 when 'Previously', 'Will be replaced by' then 'obsoletes'
+                 when 'Corrigenda/Amendments', 'Revised by', 'Now confirmed'
+                   'updates'
                  else r_type
                  end
           if ['Now', 'Now under review'].include? type
@@ -240,14 +248,14 @@ module Isobib
       # @param title [String]
       # @return [String]
       def fetch_type(title)
-        type_match = title.match(%r{^(ISO|IWA)(?:\/IEC\s|\/IEEE\s|\/PRF\s|\/NP\s
-          |\s|\/)(TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))}x)
+        type_match = title.match(%r{^(ISO|IWA|IEC)(?:\/IEC\s|\/IEEE\s|\/PRF\s|
+          \/NP\s|\s|\/)(TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))}x)
         if TYPES[type_match[2]]
           TYPES[type_match[2]]
         elsif type_match[1] == 'ISO'
-          'internationalStandard'
+          'international-standard'
         elsif type_match[1] == 'IWA'
-          'internationalWorkshopAgreement'
+          'international-workshop-agreement'
         end
         # rescue => _e
         #   puts 'Unknown document type: ' + title
@@ -274,8 +282,7 @@ module Isobib
       # @return [String]
       def script(lang)
         case lang
-        when 'en', 'fr' then 'latn'
-        when 'ru' then 'cyrl'
+        when 'en', 'fr' then 'Latn'
         end
       end
 

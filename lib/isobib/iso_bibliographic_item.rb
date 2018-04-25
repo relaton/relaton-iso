@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 require 'isoics'
 require 'isobib/bibliographic_item'
@@ -34,7 +34,7 @@ module Isobib
     end
 
     def to_xml(builder)
-      builder.docidentifier(project_number, part: part_number)
+      builder.docidentifier(project_number + '-' + part_number)
     end
   end
 
@@ -135,11 +135,7 @@ module Isobib
     # @todo need to add ISO/IEC/IEEE
     # @return [String]
     def shortref
-      contributor = @contributors.find do |c|
-        c.role.select { |r| r.type == 'publisher' }.any?
-      end
-      "#{contributor&.entity&.name} #{@docidentifier.project_number}-"\
-      "#{@docidentifier.part_number}:#{@copyright.from&.year}"
+      "#{id(' ')}:#{@copyright.from&.year}"
     end
 
     # @param type [Symbol] type of url, can be :src/:obp/:rss
@@ -151,12 +147,17 @@ module Isobib
     # @return [String]
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def to_xml(builder)
-      builder.send(:'standard-document', type: type) do
+      builder.send(:bibitem, type: type, id: id) do
         title.each { |t| t.to_xml builder }
         source.each { |s| s.to_xml builder }
         docidentifier.to_xml builder
         dates.each { |d| d.to_xml builder }
-        contributors.each { |c| c.to_xml builder }
+        contributors.each do |c|
+          builder.contributor do
+            c.role.each { |r| r.to_xml builder }
+            c.to_xml builder
+          end
+        end
         builder.edition edition
         language.each { |l| builder.language l }
         script.each { |s| builder.script s }
@@ -167,5 +168,22 @@ module Isobib
       end
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+    private
+
+    def contributor
+      @contributors.find do |c|
+        c.role.select { |r| r.type == 'publisher' }.any?
+      end
+    end
+
+    def id(delim = '')
+      idstr = "#{contributor&.entity&.abbreviation}"\
+              "#{delim}#{@docidentifier.project_number}"
+      unless @docidentifier.part_number.empty?
+        idstr << "-#{@docidentifier.part_number}"
+      end
+      idstr
+    end
   end
 end

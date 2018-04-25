@@ -56,7 +56,7 @@ module Isobib
       builder.copyright do
         builder.from from.year
         builder.to to.year if to
-        owner.to_xml builder
+        builder.owner { owner.to_xml builder }
       end
     end
   end
