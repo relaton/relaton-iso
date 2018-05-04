@@ -35,9 +35,9 @@ module Isobib
     # @return [Array<Isobin::ContactMethod>]
     attr_reader :contacts
 
-    # @param uri [URI]
-    def initialize(uri = nil)
-      @uri = uri
+    # @param url [String]
+    def initialize(url = nil)
+      @uri = URI url if url
       @contacts = []
     end
 

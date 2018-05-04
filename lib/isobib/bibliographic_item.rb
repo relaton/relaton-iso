@@ -140,7 +140,7 @@ module Isobib
       @dates         = (args[:dates] || []).map { |d| BibliographicDate.new(d) }
       @contributors  = (args[:contributors] || []).map do |c|
         ContributionInfo.new(entity: Organization.new(c[:entity]),
-                             role:   c[:role])
+                             role:   c[:roles])
       end
       @notes         = []
       @language      = args[:language]

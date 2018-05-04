@@ -21,7 +21,7 @@ module Isobib
     # @param url [String]
     # @param technical_commite [Hash]
     def initialize(name:, abbreviation: nil, url:, technical_committee:)
-      super name: name, abbreviation: abbreviation, uri: URI(url)
+      super name: name, abbreviation: abbreviation, url: url
       @technical_committe = IsoSubgroup.new(technical_committee)
     end
   end

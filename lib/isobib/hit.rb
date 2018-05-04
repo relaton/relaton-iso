@@ -41,14 +41,14 @@ module Isobib
     end
 
     # @return [String]
-    def to_xml(builder = nil)
+    def to_xml(builder = nil, **opts)
       if builder
-        fetch.to_xml builder
+        fetch.to_xml builder, opts
       else
         builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
-          fetch.to_xml xml
+          fetch.to_xml xml, opts
         end
-        builder.to_xml
+        builder.doc.root.to_xml
       end
     end
   end

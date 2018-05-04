@@ -40,9 +40,10 @@ module Isobib
     attr_reader :identifiers
 
     # @param name [String]
-    # @param uri [URI]
-    def initialize(name:, abbreviation: nil, uri: nil)
-      super(uri)
+    # @param abbreviation [String]
+    # @param url [String]
+    def initialize(name:, abbreviation: nil, url: nil)
+      super(url)
       @name         = LocalizedString.new name
       @abbreviation = LocalizedString.new abbreviation
       @identifiers  = []

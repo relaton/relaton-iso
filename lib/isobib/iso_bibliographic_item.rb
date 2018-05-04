@@ -97,7 +97,7 @@ module Isobib
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def initialize(**args)
       super_args = args.select do |k|
-        %i[language script dates abstract relations].include? k
+        %i[language script dates abstract contributors relations].include? k
       end
       super(super_args)
       @docidentifier = IsoDocumentId.new args[:docid]
@@ -106,8 +106,8 @@ module Isobib
       @type          = args[:type]
       @status        = IsoDocumentStatus.new(args[:docstatus])
       @workgroup     = IsoProjectGroup.new(args[:workgroup])
-      @contributors.unshift ContributionInfo.new(entity: @workgroup,
-                                                 role:   ['publisher'])
+      # @contributors.unshift ContributionInfo.new(entity: @workgroup,
+      #                                            role:   ['publisher'])
       @ics = args[:ics].map { |i| Ics.new(i) }
       if args[:copyright]
         @copyright = CopyrightAssociation.new(args[:copyright])
@@ -118,9 +118,9 @@ module Isobib
 
     # Add title to the list of titles.
     # @param iso_localized_title [IsoLocalizedTitle]
-    def add_title(iso_localized_title)
-      @title << iso_localized_title
-    end
+    # def add_title(iso_localized_title)
+    #   @title << iso_localized_title
+    # end
 
     # @param lang [String] language code Iso639
     # @return [IsoLocalizedTitle]
@@ -134,8 +134,13 @@ module Isobib
 
     # @todo need to add ISO/IEC/IEEE
     # @return [String]
-    def shortref
-      "#{id(' ')}:#{@copyright.from&.year}"
+    def shortref(**opts)
+      year = if opts[:all_parts] then ':All Parts'
+             elsif opts[:no_year] then ''
+             else ':' + @copyright.from&.year&.to_s
+             end
+
+      "#{id(' ')}#{year}"
     end
 
     # @param type [Symbol] type of url, can be :src/:obp/:rss
@@ -146,12 +151,13 @@ module Isobib
 
     # @return [String]
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-    def to_xml(builder)
+    def to_xml(builder, **opts)
       builder.send(:bibitem, type: type, id: id) do
         title.each { |t| t.to_xml builder }
         source.each { |s| s.to_xml builder }
-        docidentifier.to_xml builder
-        dates.each { |d| d.to_xml builder }
+        # docidentifier.to_xml builder
+        builder.docidentifier shortref(opts.merge(no_year: true))
+        dates.each { |d| d.to_xml builder, opts }
         contributors.each do |c|
           builder.contributor do
             c.role.each { |r| r.to_xml builder }
@@ -165,21 +171,24 @@ module Isobib
         status.to_xml builder
         copyright.to_xml builder
         relations.each { |r| r.to_xml builder }
+        if opts[:note]
+          builder.note("ISO DATE: #{opts[:note]}", format: 'text/plain')
+        end
       end
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     private
 
-    def contributor
-      @contributors.find do |c|
+    def publishers
+      @contributors.select do |c|
         c.role.select { |r| r.type == 'publisher' }.any?
       end
     end
 
     def id(delim = '')
-      idstr = "#{contributor&.entity&.abbreviation}"\
-              "#{delim}#{@docidentifier.project_number}"
+      contribs = publishers.map { |p| p&.entity&.abbreviation }.join '/'
+      idstr = "#{contribs}#{delim}#{@docidentifier.project_number}"
       unless @docidentifier.part_number.empty?
         idstr << "-#{@docidentifier.part_number}"
       end

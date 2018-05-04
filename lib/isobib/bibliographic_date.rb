@@ -23,9 +23,9 @@ module Isobib
       @to   = Time.strptime(to, '%Y-%d') if to
     end
 
-    def to_xml(builder)
+    def to_xml(builder, **opts)
       builder.date(type: type) do
-        builder.from from.year
+        builder.from(opts[:no_year] ? '--' : from.year)
         builder.to to.year if to
       end
     end
