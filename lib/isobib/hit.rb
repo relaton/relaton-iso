@@ -41,7 +41,7 @@ module Isobib
     end
 
     # @return [String]
-    def to_xml(builder = nil, **opts)
+    def to_xml(builder = nil, opts = {})
       if builder
         fetch.to_xml builder, opts
       else

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    isobib (0.1.0)
+    isobib (0.1.1)
       algoliasearch
       isoics
       nokogiri

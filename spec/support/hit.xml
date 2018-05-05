@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <bibitem type="international-standard" id="ISO19115-2">
   <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- Part 2: Extensions for imagery and gridded data</title>
   <title format="text/plain" language="fr" script="Latn">Information géographique -- Métadonnées -- Partie 2: Extensions pour les images et les matrices</title>
   <source type="src">https://www.iso.org/standard/39229.html</source>
   <source type="obp">https://www.iso.org/obp/ui/#!iso:std:39229:en</source>
   <source type="rss">https://www.iso.org/contents/data/standard/03/92/39229.detail.rss</source>
-  <docidentifier>19115-2</docidentifier>
+  <docidentifier>ISO 19115-2</docidentifier>
   <date type="published">
     <from>2009</from>
   </date>

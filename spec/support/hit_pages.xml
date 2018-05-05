@@ -6,7 +6,7 @@
     <source type="src">https://www.iso.org/standard/73118.html</source>
     <source type="obp">https://www.iso.org/obp/ui/#!iso:std:73118:en</source>
     <source type="rss">https://www.iso.org/contents/data/standard/07/31/73118.detail.rss</source>
-    <docidentifier>19115-1</docidentifier>
+    <docidentifier>ISO 19115-1</docidentifier>
     <date type="published">
       <from>2018</from>
     </date>
@@ -39,7 +39,7 @@
     <source type="src">https://www.iso.org/standard/53798.html</source>
     <source type="obp">https://www.iso.org/obp/ui/#!iso:std:53798:en</source>
     <source type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</source>
-    <docidentifier>19115-1</docidentifier>
+    <docidentifier>ISO 19115-1</docidentifier>
     <date type="published">
       <from>2014</from>
     </date>
@@ -92,7 +92,7 @@
     <source type="src">https://www.iso.org/standard/39229.html</source>
     <source type="obp">https://www.iso.org/obp/ui/#!iso:std:39229:en</source>
     <source type="rss">https://www.iso.org/contents/data/standard/03/92/39229.detail.rss</source>
-    <docidentifier>19115-2</docidentifier>
+    <docidentifier>ISO 19115-2</docidentifier>
     <date type="published">
       <from>2009</from>
     </date>
@@ -133,7 +133,7 @@
     <source type="src">https://www.iso.org/standard/67039.html</source>
     <source type="obp"/>
     <source type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</source>
-    <docidentifier>19115-2</docidentifier>
+    <docidentifier>ISO 19115-2</docidentifier>
     <date type="published">
       <from>2018</from>
     </date>
@@ -172,7 +172,7 @@
     <source type="src">https://www.iso.org/standard/44361.html</source>
     <source type="obp"/>
     <source type="rss">https://www.iso.org/contents/data/standard/04/43/44361.detail.rss</source>
-    <docidentifier>19115-</docidentifier>
+    <docidentifier>ISO 19115</docidentifier>
     <date type="published">
       <from>2006</from>
     </date>
@@ -217,7 +217,7 @@
     <source type="src">https://www.iso.org/standard/26020.html</source>
     <source type="obp"/>
     <source type="rss">https://www.iso.org/contents/data/standard/02/60/26020.detail.rss</source>
-    <docidentifier>19115-</docidentifier>
+    <docidentifier>ISO 19115</docidentifier>
     <date type="published">
       <from>2003</from>
     </date>
@@ -263,12 +263,12 @@
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem type="technicalSpecification" id="ISO19115-3">
+  <bibitem type="technicalSpecification" id="ISO/TS19115-3">
     <title format="text/plain" language="en" script="Latn">Geographic information --  Metadata -- Part 3: XML schema implementation for fundamental concepts</title>
     <source type="src">https://www.iso.org/standard/32579.html</source>
     <source type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</source>
     <source type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</source>
-    <docidentifier>19115-3</docidentifier>
+    <docidentifier>ISO/TS 19115-3</docidentifier>
     <date type="published">
       <from>2016</from>
     </date>
@@ -278,6 +278,13 @@
         <name>International Organization for Standardization</name>
         <abbreviation>ISO</abbreviation>
         <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name></name>
+        <abbreviation>TS</abbreviation>
       </organization>
     </contributor>
     <edition>1</edition>
@@ -296,12 +303,12 @@
       </owner>
     </copyright>
   </bibitem>
-  <bibitem type="technicalSpecification" id="ISO19139">
+  <bibitem type="technicalSpecification" id="ISO/TS19139">
     <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- XML schema implementation</title>
     <source type="src">https://www.iso.org/standard/32557.html</source>
     <source type="obp">https://www.iso.org/obp/ui/#!iso:std:32557:en</source>
     <source type="rss">https://www.iso.org/contents/data/standard/03/25/32557.detail.rss</source>
-    <docidentifier>19139-</docidentifier>
+    <docidentifier>ISO/TS 19139</docidentifier>
     <date type="published">
       <from>2007</from>
     </date>
@@ -311,6 +318,13 @@
         <name>International Organization for Standardization</name>
         <abbreviation>ISO</abbreviation>
         <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name></name>
+        <abbreviation>TS</abbreviation>
       </organization>
     </contributor>
     <edition>1</edition>
@@ -335,12 +349,12 @@
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem type="technicalSpecification" id="ISO19139-2">
+  <bibitem type="technicalSpecification" id="ISO/TS19139-2">
     <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- XML schema implementation</title>
     <source type="src">https://www.iso.org/standard/57104.html</source>
     <source type="obp">https://www.iso.org/obp/ui/#!iso:std:57104:en</source>
     <source type="rss">https://www.iso.org/contents/data/standard/05/71/57104.detail.rss</source>
-    <docidentifier>19139-2</docidentifier>
+    <docidentifier>ISO/TS 19139-2</docidentifier>
     <date type="published">
       <from>2012</from>
     </date>
@@ -350,6 +364,13 @@
         <name>International Organization for Standardization</name>
         <abbreviation>ISO</abbreviation>
         <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name></name>
+        <abbreviation>TS</abbreviation>
       </organization>
     </contributor>
     <edition>1</edition>
@@ -374,12 +395,12 @@
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem type="technicalSpecification" id="ISO19157-2">
+  <bibitem type="technicalSpecification" id="ISO/TS19157-2">
     <title format="text/plain" language="en" script="Latn">Geographic information  -- Data quality -- Part 2: XML schema implementation</title>
     <source type="src">https://www.iso.org/standard/66197.html</source>
     <source type="obp">https://www.iso.org/obp/ui/#!iso:std:66197:en</source>
     <source type="rss">https://www.iso.org/contents/data/standard/06/61/66197.detail.rss</source>
-    <docidentifier>19157-2</docidentifier>
+    <docidentifier>ISO/TS 19157-2</docidentifier>
     <date type="published">
       <from>2016</from>
     </date>
@@ -389,6 +410,13 @@
         <name>International Organization for Standardization</name>
         <abbreviation>ISO</abbreviation>
         <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name></name>
+        <abbreviation>TS</abbreviation>
       </organization>
     </contributor>
     <edition>1</edition>

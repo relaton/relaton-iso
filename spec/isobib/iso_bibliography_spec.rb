@@ -145,9 +145,9 @@ RSpec.describe Isobib::IsoBibliography do
       expect(isobib_item.workgroup).to be_instance_of Isobib::IsoProjectGroup
     end
 
-    it 'workgroup equal first contributor entity' do
-      expect(isobib_item.workgroup).to eq isobib_item.contributors.first.entity
-    end
+    # it 'workgroup equal first contributor entity' do
+    #   expect(isobib_item.workgroup).to eq isobib_item.contributors.first.entity
+    # end
 
     it 'return worgroup\'s url' do
       expect(isobib_item.workgroup.url).to eq 'www.iso.org'
