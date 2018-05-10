@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'isobib/iso_bibliographic_item'
+# require 'isobib/iso_bibliographic_item'
 require 'isobib/scrapper'
 require 'isobib/hit_pages'
 

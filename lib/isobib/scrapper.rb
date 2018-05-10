@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require 'algoliasearch'
+require 'iso_bib_item'
 require 'isobib/hit'
 require 'nokogiri'
 require 'net/http'
 require 'isobib/workers_pool'
-require 'isobib/iso_bibliographic_item'
+# require 'isobib/iso_bibliographic_item'
 
 # Capybara.request_driver :poltergeist do |app|
 #   Capybara::Poltergeist::Driver.new app, js_errors: false
@@ -61,7 +62,7 @@ module Isobib
 
         titles, abstract = fetch_titles_abstract(doc)
 
-        IsoBibliographicItem.new(
+        IsoBibItem::IsoBibliographicItem.new(
           docid:        fetch_docid(doc),
           edition:      edition,
           language:     langs(doc).map { |l| l[:lang] },
@@ -164,6 +165,7 @@ module Isobib
         lgs
       end
 
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       # Get page.
       # @param path [String] page's path
       # @return [Array<Nokogiri::HTML::Document, String>]
@@ -178,12 +180,13 @@ module Isobib
           resp = Net::HTTP.get_response uri
         end
         n = 0
-        while resp.body !~ /<strong/ && n < 10 do
+        while resp.body !~ /<strong/ && n < 10
           resp = Net::HTTP.get_response uri
           n += 1
         end
         [Nokogiri::HTML(resp.body), url]
       end
+      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
       # Fetch docid.
       # @param doc [Nokogiri::HTML::Document]
@@ -299,6 +302,7 @@ module Isobib
         dates
       end
 
+      # rubocop:disable Metrics/MethodLength
       def fetch_contributors(title)
         title.sub(/\s.*/, '').split('/').map do |abbrev|
           case abbrev
@@ -313,6 +317,7 @@ module Isobib
             roles: ['publisher'] }
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
       # Fetch ICS.
       # @param doc [Nokogiri::HTML::Document]
