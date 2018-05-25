@@ -12,14 +12,14 @@ You can use it to retrieve metadata of ISO Standards from https://www.iso.org, a
 
 [source,ruby]
 ----
-IsoBibliography.search("19115")
+Isobib::IsoBibliography.search("19115")
 => [
 <<IsoBibliographicItem: docIdentifier <<projectNumber:19115; partNumber: 1>>; edition: 1 ...>>,
 <<IsoBibliographicItem: docIdentifier <<projectNumber:19115; partNumber: 1>>; edition: 2 ...>>,
 ...
 ]
 
-collection = IsoBibliography.search("19115")
+collection = Isobib::IsoBibliography.search("19115")
 iso191151 = collection.first
 iso191152 = collection[1]
 ----
