@@ -16,7 +16,7 @@ GEM
     diff-lcs (1.3)
     docile (1.1.5)
     httpclient (2.8.3)
-    iso-bib-item (0.1.0)
+    iso-bib-item (0.1.1)
       isoics
       nokogiri
     isoics (0.1.5)

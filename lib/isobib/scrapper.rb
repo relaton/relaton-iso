@@ -297,7 +297,7 @@ module Isobib
         dates = []
         publish_date = doc.xpath("//span[@itemprop='releaseDate']").text
         unless publish_date.empty?
-          dates << { type: 'published', from: publish_date }
+          dates << { type: 'published', on: publish_date }
         end
         dates
       end
