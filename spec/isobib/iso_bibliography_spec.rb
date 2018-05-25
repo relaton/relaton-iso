@@ -44,10 +44,9 @@ RSpec.describe Isobib::IsoBibliography do
     mock_algolia 1
     mock_http_net 2
     hit_pages = Isobib::IsoBibliography.search('19115')
-    # File.open 'spec/support/hit.xml', 'w' do |f|
-    #   f.write hit_pages.first[2].to_xml
-    # end
-    expect(hit_pages.first[2].to_xml).to eq File.read('spec/support/hit.xml')
+    file_path = 'spec/support/hit.xml'
+    File.write file_path, hit_pages.first[2].to_xml unless File.exist? file_path
+    expect(hit_pages.first[2].to_xml).to eq File.read file_path
   end
 
   it 'return last page of hits' do
@@ -74,10 +73,9 @@ RSpec.describe Isobib::IsoBibliography do
   it 'return documents in xml format' do
     mock_algolia 2
     mock_http_net 20
-    # File.open 'spec/support/hit_pages.xml', 'w' do |f|
-    #   f.write hit_pages.to_xml
-    # end
-    expect(hit_pages.to_xml).to eq File.read 'spec/support/hit_pages.xml'
+    file_path = 'spec/support/hit_pages.xml'
+    File.write file_path, hit_pages.to_xml unless File.exist? file_path
+    expect(hit_pages.to_xml).to eq File.read file_path
   end
 
   describe 'iso bibliography item' do
@@ -129,7 +127,7 @@ RSpec.describe Isobib::IsoBibliography do
     it 'return dates' do
       expect(isobib_item.dates.length).to eq 1
       expect(isobib_item.dates.first.type).to eq 'published'
-      expect(isobib_item.dates.first.from).to be_instance_of Time
+      expect(isobib_item.dates.first.on).to be_instance_of Time
     end
 
     # it 'filter dates by type' do
