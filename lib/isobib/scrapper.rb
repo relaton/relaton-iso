@@ -252,8 +252,9 @@ module Isobib
       # @param title [String]
       # @return [String]
       def fetch_type(title)
-        type_match = title.match(%r{^(ISO|IWA|IEC)(?:\/IEC\s|\/IEEE\s|\/PRF\s|
-          \/NP\s|\s|\/)(TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))}x)
+        type_match = title.match(%r{^(ISO|IWA|IEC)(?:(/IEC|/IEEE|/PRF|
+          /NP)*\s|/)(TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))}x)
+        #return "international-standard" if type_match.nil?
         if TYPES[type_match[2]]
           TYPES[type_match[2]]
         elsif type_match[1] == 'ISO'
