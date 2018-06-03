@@ -172,16 +172,16 @@ module Isobib
       def get_page(path)
         url = DOMAIN + path
         uri = URI url
-        resp = Net::HTTP.get_response uri
+        resp = Net::HTTP.get_response(uri)#.encode("UTF-8")
         if resp.code == '301'
           path = resp['location']
           url = DOMAIN + path
           uri = URI url
-          resp = Net::HTTP.get_response uri
+          resp = Net::HTTP.get_response(uri)#.encode("UTF-8")
         end
         n = 0
         while resp.body !~ /<strong/ && n < 10
-          resp = Net::HTTP.get_response uri
+          resp = Net::HTTP.get_response(uri)#.encode("UTF-8")
           n += 1
         end
         [Nokogiri::HTML(resp.body), url]
@@ -271,8 +271,18 @@ module Isobib
       # @param lang [String]
       # @return [Hash]
       def fetch_title(doc, lang)
-        intro, main, part = doc.css("h3[itemprop='description']")
+        titles = doc.css("h3[itemprop='description']")
                                .text.split ' -- '
+        case titles.size
+        when 1
+          intro, main, part = nil, titles[0], nil
+        when 2
+          intro, main, part = titles[0], titles[1], nil
+        when 3
+          intro, main, part = titles[0], titles[1], titles[2]
+        else
+          intro, main, part = titles[0], titles[1], titles[2..-1].join(" -- ")
+        end
         {
           title_intro: intro,
           title_main:  main,
