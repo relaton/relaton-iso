@@ -281,7 +281,7 @@ module Isobib
         when 3
           intro, main, part = titles[0], titles[1], titles[2]
         else
-          intro, main, part = titles[0], titles[1], titles[2..-1].join(" -- ")
+          intro, main, part = titles[0], titles[1], titles[2..-1]&.join(" -- ")
         end
         {
           title_intro: intro,
