@@ -4,169 +4,158 @@ IsoBib is a Ruby gem that implements the https://github.com/riboseinc/isodoc-mod
 
 You can use it to retrieve metadata of ISO Standards from https://www.iso.org, and access such metadata through the `IsoBibliographicItem` object.
 
+== Installation
+
+Add this line to your application's Gemfile:
+
+[source,ruby]
+----
+gem 'isobib'
+----
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install isobib
 
 == Usage
-
 
 === Search for a standard using keywords
 
 [source,ruby]
 ----
 Isobib::IsoBibliography.search("19115")
-=> [
-<<IsoBibliographicItem: docIdentifier <<projectNumber:19115; partNumber: 1>>; edition: 1 ...>>,
-<<IsoBibliographicItem: docIdentifier <<projectNumber:19115; partNumber: 1>>; edition: 2 ...>>,
+=> [[<Isobib::Hit:0x007fd1d9cc6980 @text="19115" @fullIdentifier="" @matchedWords=["19115"] @category="standard" @title="ISO 19115-1:2014/Amd 1:2018 ">,
+  <Isobib::Hit:0x007fd1d9cc6958 @text="19115" @fullIdentifier="" @matchedWords=["19115"] @category="standard" @title="ISO 19115-1:2014 Geographic information -- Metadata -- Part 1: Fundamentals">,
+  <Isobib::Hit:0x007fd1d9cc6930 @text="19115" @fullIdentifier="" @matchedWords=["19115"] @category="standard" @title="ISO 19115-2:2009 Geographic information -- Metadata -- Part 2: Extensions for imagery and gridded data">,
 ...
-]
+]]
 
-collection = Isobib::IsoBibliography.search("19115")
-iso191151 = collection.first
-iso191152 = collection[1]
+hit_pages = Isobib::IsoBibliography.search("19115")
+hit_collection = hit_pages.first
+iso191151 = hit_collection.first.fetch
+iso191152 = hit_collection[1].fetch
 ----
 
-
-=== IsoBibliographicItem Localized Strings
+=== XML serialization
 
 [source,ruby]
 ----
-iso191151.title
-=> [
-<<IsoLocalizedTitle: titleIntro: "Geographic information"; titleMain: "Metadata"; titlePart: "Part 1: Fundamentals"; language: "en"; script: "latn">>,
-<<IsoLocalizedTitle: titleIntro: "Information géographique"; titleMain: "Métadonnées"; titlePart: "Partie 1: Principes de base"; language: "fr"; script: "latn">>
-]
-
-iso191151.title(lang: "en")
-=> <<IsoLocalizedTitle: titleIntro: "Geographic information"; titleMain: "Metadata"; titlePart: "Part 1: Fundamentals"; language: "en"; script: "latn">>,
-
-iso191151.title(lang: "en").to_s
-=> "Geographic information -- Metadata -- Part 1: Fundamentals"
-
-iso191151.abstract(lang: "en").to_s
-=> "ISO 19115-1:2014 defines the schema required for describing geographic information and services by means of metadata. It provides information about the identification, the extent, the quality, the spatial and temporal aspects, the content, the spatial reference, the portrayal, distribution, and other properties of digital geographic data and services.
-...
-"
+item.to_xml
+=>"<bibitem type='international-standard' id='ISO19115-1'>
+  <title format='text/plain' language='en' script='Latn'>Geographic information -- Metadata -- Part 1: Fundamentals</title>
+  <title format='text/plain' language='fr' script='Latn'>Information géographique -- Métadonnées -- Partie 1: Principes de base</title>
+  <source type='src'>https://www.iso.org/standard/53798.html</source>
+  <source type='obp'>https://www.iso.org/obp/ui/#!iso:std:53798:en</source>
+  <source type='rss'>https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</source>
+  <docidentifier>ISO 19115-1</docidentifier>
+  <date type='published'>
+    <on>2014</on>
+  </date>
+  <contributor>
+    <role type='publisher'/>
+    <organization>
+      <name>International Organization for Standardization</name>
+      <abbreviation>ISO</abbreviation>
+      <uri>www.iso.org</uri>
+    </organization>
+  </contributor>
+  <edition>1</edition>
+  <language>en</language>
+  <language>fr</language>
+  <script>Latn</script>
+  <abstract format='plain' language='en' script='Latn'>
+    ISO 19115-1:2014 defines the schema required for describing geographic
+    information and services by means of metadata. It provides information about
+    the identification, the extent, the quality, the spatial and temporal
+    aspects, the content, the spatial reference, the portrayal, distribution,
+    and other properties of digital geographic data and services.ISO
+    19115-1:2014 is applicable to:-the cataloguing of all types of resources,
+    clearinghouse activities, and the full description of datasets and
+    services;-geographic services, geographic datasets, dataset series, and
+    individual geographic features and feature properties.ISO 19115-1:2014
+    defines:-mandatory and conditional metadata sections, metadata entities, and
+    metadata elements;-the minimum set of metadata required to serve most
+    metadata applications (data discovery, determining data fitness for use,
+    data access, data transfer, and use of digital data and services);-optional
+    metadata elements to allow for a more extensive standard description of
+    resources, if required;-a method for extending metadata to fit specialized
+    needs.Though ISO 19115-1:2014 is applicable to digital data and services,
+    its principles can be extended to many other types of resources such as
+    maps, charts, and textual documents as well as non-geographic data. Certain
+    conditional metadata elements might not apply to these other forms of data.
+  </abstract>
+  <abstract format='plain' language='fr' script='Latn'>
+    L'ISO 19115-1:2014 définit le schéma requis pour décrire des informations
+    géographiques et des services au moyen de métadonnées. Elle fournit des
+    informations concernant l'identification, l'étendue, la qualité, les aspects
+    spatiaux et temporels, le contenu, la référence spatiale, la représentation
+    des données, la distribution et d'autres propriétés des données
+    géographiques numériques et des services.L'ISO 19115-1:2014 est
+    applicable:-au catalogage de tous les types de ressources, des activités des
+    centres d'informations et à la description complète des jeux de données et
+    des services,-aux services géographiques, jeux de données géographiques,
+    séries de jeux de données, entités géographiques individuelles et propriétés
+    d'entités.L'ISO 19115-1:2014 définit:-des sections relatives aux métadonnées
+    obligatoires et facultatives, aux entités de métadonnées et aux éléments de
+    métadonnées,-le jeu minimal de métadonnées requis pour répondre au besoin de
+    la plupart des applications des métadonnées (la découverte des données, la
+    détermination de l'adéquation des données à une utilisation, l'accès aux
+    données, le transfert des données et l'utilisation des données numériques et
+    des services),-les éléments de métadonnées facultatifs pour permettre une
+    description standard plus poussée des ressources, si cela est nécessaire,-un
+    procédé d'extension des métadonnées pour s'adapter aux besoins
+    spéciaux.L'ISO 19115-1:2014 est applicable aux données numériques et
+    services, ses principes peuvent être étendus à bien d'autres types de
+    ressources telles que les cartes, les graphes et les documents textes, de
+    même qu'à des données non géographiques. Certains éléments de métadonnées
+    conditionnels peuvent ne pas s'appliquer à ces autres formes de données.
+  </abstract>
+  <status>Published</status>
+  <copyright>
+    <from>2014</from>
+    <owner>
+      <organization>
+        <name>ISO</name>
+        <abbreviation/>
+      </organization>
+    </owner>
+  </copyright>
+  <relation type='obsoletes'>
+    <bibitem>
+      <formattedref>ISO 19115:2003</formattedref>
+      <docidentifier>ISO 19115:2003</docidentifier>
+    </bibitem>
+  </relation>
+  <relation type='obsoletes'>
+    <bibitem>
+      <formattedref>ISO 19115:2003/Cor 1:2006</formattedref>
+      <docidentifier>ISO 19115:2003/Cor 1:2006</docidentifier>
+    </bibitem>
+  </relation>
+  <relation type='updates'>
+    <bibitem>
+      <formattedref>ISO 19115-1:2014/Amd 1:2018</formattedref>
+      <docidentifier>ISO 19115-1:2014/Amd 1:2018</docidentifier>
+    </bibitem>
+  </relation>
+  <ics>IT applications in science</ics>
+</bibitem>"
 ----
 
-=== IsoBibliographicItem references
+== Development
 
-----
-iso191151.shortref
-=> "ISO 19115-1:2014"
-----
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
-=== IsoBibliographicItem URLs
+== Contributing
 
-[source,ruby]
-----
-iso191151.url
-=> "https://www.iso.org/standard/53798.html"
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/iso-bib-item.
 
-iso191151.url(:obp)
-=> "https://www.iso.org/obp/ui/#!iso:std:53798:en"
+== License
 
-iso191151.url(:rss)
-=> "https://www.iso.org/contents/data/standard/05/37/53798.detail.rss"
-
-iso191152.url
-=> "https://www.iso.org/standard/67039.html"
-----
-
-
-=== IsoBibliographicItem ICS
-
-[source,ruby]
-----
-iso191151.ics
-=> <<BibliographicIcs code: ["35", "240", "70"]; title: "IT applications in science">>
-----
-
-=== IsoBibliographicItem BibliographicDates
-
-[source,ruby]
-----
-iso191151.dates
-=> [<<BibliographicDate type: "publish"; date: <<DateTime: 2014-04>> >>]
-
-iso191151.dates.filter(type: "publish").first.date
-=> <<DateTime: 2014-04>>
-# The actual date/time can be found on the `url(:rss)` link
-# <description>
-# <![CDATA[This document reached stage 60.60 on 2014-03-19, TC/SC: ISO/TC 211, ICS: 35.240.70]]>
-# </description>
-----
-
-
-=== IsoBibliographicItem DocumentStatus
-
-----
-iso191151.status
-=> <<IsoDocumentStatus stage: 60; substage: 60, status: "Published">>
-
-# Publish-pending document
-iso191152.status
-=> <<IsoDocumentStatus stage: 60; substage: 00, status: "Under development">>
-----
-
-[source,ruby]
-----
-wg = iso191151.workgroup
-=> <<IsoProjectGroup technicalCommittee: <<IsoSubgroup: type: :technicalCommittee; number: 211; name: "Geographic information/Geomatics">> >>
-
-wg == iso191151.contributors.first.entity
-=> true
-
-wg.url
-=> "https://www.iso.org/committee/54904.html"
-----
-
-
-=== Document relations of a standard
-
-[source,ruby]
-----
-iso191151.relations
-=> <<DocRelationCollection content: [
-<<DocRelation type: :replace; identifier: "ISO 19115:2003">>,
-<<DocRelation type: :replace; identifier: "ISO 19115:2003/Cor 1:2006">>,
-<<DocRelation type: :amendment; identifier: "ISO 19115-1:2014/Amd 1:2018">>
-] >>
-
-iso191151.relations.replaces
-=> <<DocRelationCollection content: [
-<<DocRelation type: :replace; identifier: "ISO 19115:2003">>,
-<<DocRelation type: :replace; identifier: "ISO 19115:2003/Cor 1:2006">>
-] >>
-
-iso191152.relations
-=> <<DocRelationCollection content: [
-<<DocRelation type: :replace; identifier: "ISO 19115-2:2009">>,
-]
-----
-
-== BibliographicItem
-
-The ISO standards use a subset of the generic bibliographic fields specified in the https://github.com/riboseinc/isodoc-models#iso-bibliographic-item[IsoBibliographicItem model]:
-
-* Title: 
-** English; French
-** titleIntro; titleMain; titlePart
-* DocIdentifier:
-** project number; part number; technical committee document number
-* Source: the ISO page from which the standard may be purchased or downloaded
-* Type: IsoDocumentType (International Standard, Technical Specification, Technical Report, Publicly Available Specification, International Workshop Agreement, Guide)
-* Project Group:
-** Technical Committee, Subcommittee, Workgroup, Secretariat
-** Technical Committee Number, Subcommittee Number, Workgroup Number
-** Technical Committee Type, Subcommittee Type, Workgroup Type (e.g. JTC)
-** Organization:Name (ISO; other standards organisations, for standards jointly published with ISO)
-* ICS: refer https://www.iso.org/publication/PUB100033.html
-* Status
-** Stage, Substage
-* Edition
-* Date:Published
-* Abstract
-* Relations
-** Obsoletes, Updates
-
-All FormattedString instances are returned by default as  a text/plain string; if required, they are returned as a text/html string.
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
