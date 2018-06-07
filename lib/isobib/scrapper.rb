@@ -274,6 +274,8 @@ module Isobib
         titles = doc.css("h3[itemprop='description']")
                                .text.split ' -- '
         case titles.size
+        when 0
+          intro, main, part = nil, "", nil
         when 1
           intro, main, part = nil, titles[0], nil
         when 2
@@ -335,7 +337,7 @@ module Isobib
       # @return [Array<Hash>]
       def fetch_ics(doc)
         doc.xpath('//strong[contains(text(), '\
-        "'ICS')]/../following-sibling::dd/div/a").map do |i|
+                  "'ICS')]/../following-sibling::dd/div/a").map do |i|
           code = i.text.match(/[\d\.]+/).to_s.split '.'
           { field: code[0], group: code[1], subgroup: code[2] }
         end
@@ -349,7 +351,7 @@ module Isobib
         obp_elms = doc.xpath("//a[contains(@href, '/obp/ui/')]")
         obp = obp_elms.attr('href').value if obp_elms.any?
         rss = DOMAIN + doc.xpath("//a[contains(@href, 'rss')]").attr('href')
-                          .value
+          .value
         [
           { type: 'src', content: url },
           { type: 'obp', content: obp },
@@ -365,7 +367,7 @@ module Isobib
         from = title.match(/(?<=:)\d{4}/).to_s
         if from.empty?
           from = doc.xpath("//span[@itemprop='releaseDate']").text
-                    .match(/\d{4}/).to_s
+            .match(/\d{4}/).to_s
         end
         { owner: { name: owner_name }, from: from }
       end
