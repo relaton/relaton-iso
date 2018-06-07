@@ -36,8 +36,7 @@ Isobib::IsoBibliography.search("19115")
 
 hit_pages = Isobib::IsoBibliography.search("19115")
 hit_collection = hit_pages.first
-iso191151 = hit_collection.first.fetch
-iso191152 = hit_collection[1].fetch
+item = hit_collection[1].fetch
 ----
 
 === XML serialization
