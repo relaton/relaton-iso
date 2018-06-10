@@ -33,8 +33,4 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'algoliasearch'
   spec.add_dependency 'iso-bib-item', '~> 0.1.2'
-  # spec.add_dependency 'isoics'
-  # spec.add_dependency 'nokogiri'
-  # spec.add_dependency "capybara"
-  # spec.add_dependency "poltergeist"
 end
