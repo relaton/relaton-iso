@@ -279,7 +279,11 @@ module Isobib
         when 1
           intro, main, part = nil, titles[0], nil
         when 2
-          intro, main, part = titles[0], titles[1], nil
+          if /^(Part|Partie) \d+:/.match? titles[1]
+            intro, main, part = nil, titles[0], titles[1]
+          else
+            intro, main, part = titles[0], titles[1], nil
+          end
         when 3
           intro, main, part = titles[0], titles[1], titles[2]
         else
