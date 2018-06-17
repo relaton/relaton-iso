@@ -1,5 +1,9 @@
 = IsoBib: retrieve ISO Standards for bibliographic use using the BibliographicItem model
 
+image:https://img.shields.io/gem/v/isobib.svg["Gem Version", link="https://rubygems.org/gems/isobib"]
+image:https://img.shields.io/travis/riboseinc/isobib/master.svg["Build Status", link="https://travis-ci.org/riboseinc/isobib"]
+image:https://codeclimate.com/github/riboseinc/isobib/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/riboseinc/isobib"]
+
 IsoBib is a Ruby gem that implements the https://github.com/riboseinc/isodoc-models#iso-bibliographic-item[IsoBibliographicItem model].
 
 You can use it to retrieve metadata of ISO Standards from https://www.iso.org, and access such metadata through the `IsoBibliographicItem` object.
