@@ -143,7 +143,6 @@ module Isobib
         return ret[:ret] if ret[:ret]
         fetch_ref_err(code, year, ret[:years])
       end
-
     end
   end
 end
