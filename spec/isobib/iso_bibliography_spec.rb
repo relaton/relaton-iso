@@ -110,9 +110,10 @@ RSpec.describe Isobib::IsoBibliography do
     end
 
     it 'return shortref' do
+      pubdate = isobib_item.dates.select { |d| d.type == "published" }
       shortref = "ISO #{isobib_item.docidentifier.project_number}-"\
       "#{isobib_item.docidentifier.part_number}:"\
-        "#{isobib_item.copyright.from&.year}"
+      "#{pubdate&.first&.on&.year}"
       expect(isobib_item.shortref).to eq shortref
     end
 
@@ -166,6 +167,51 @@ RSpec.describe Isobib::IsoBibliography do
       expect(isobib_item.ics.first.description)
         .to eq 'IT applications in science'
     end
+  end
+
+  describe 'isobib_get' do
+    let(:hit_pages) { Isobib::IsoBibliography.search('19115') }
+
+    it "gets a code" do
+      mock_algolia 1
+      mock_http_net 2
+      results = Isobib::IsoBibliography.isobib_get('ISO 19115-1', nil, {})
+      expect(results).to include %(<bibitem type="international-standard" id="ISO19115-1">)
+      expect(results).to include %(<on>2014</on>)
+      expect(results).to include %(<docidentifier>ISO 19115-1</docidentifier>)
+      expect(results).not_to include %(<docidentifier>ISO 19115</docidentifier>)
+    end
+
+    it "gets an all-parts code" do
+      mock_algolia 1
+      mock_http_net 2
+      results = Isobib::IsoBibliography.isobib_get('ISO 19115', nil, {all_parts: true})
+      expect(results).to include %(<bibitem type="international-standard" id="ISO19115">)
+      expect(results).to include %(<docidentifier>ISO 19115-1</docidentifier>)
+      expect(results).to include %(<docidentifier>ISO 19115: All Parts</docidentifier>)
+    end
+
+    it "gets a code and year successfully" do
+      mock_algolia 2
+      mock_http_net 2
+      results = Isobib::IsoBibliography.isobib_get('ISO 19115', "2003", {})
+      expect(results).to include %(<on>2003</on>)
+      expect(results).not_to include %(<docidentifier>ISO 19115-1</docidentifier>)
+      expect(results).to include %(<docidentifier>ISO 19115</docidentifier>)
+    end
+
+    it "gets a code and year unsuccessfully" do
+      mock_algolia 2
+      mock_http_net 2
+      results = Isobib::IsoBibliography.isobib_get('ISO 19115', "2014", {})
+      expect(results).to be nil
+    end
+
+    it "gets a frozen reference for IEV" do
+      results = Isobib::IsoBibliography.isobib_get('IEV', nil, {})
+      expect(results).to include %(<bibitem type="international-standard" id="IEV">)
+    end
+
   end
 
   private

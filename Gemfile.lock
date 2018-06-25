@@ -8,7 +8,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    algoliasearch (1.22.0)
+    algoliasearch (1.23.2)
       httpclient (~> 2.8, >= 2.8.3)
       json (>= 1.5.1)
     byebug (10.0.2)
@@ -17,7 +17,7 @@ GEM
     docile (1.3.1)
     duplicate (1.1.1)
     httpclient (2.8.3)
-    iso-bib-item (0.1.5)
+    iso-bib-item (0.1.7)
       duplicate
       isoics (~> 0.1.6)
       nokogiri
@@ -58,6 +58,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.16)
+  byebug
   isobib!
   pry-byebug
   rake (~> 10.0)

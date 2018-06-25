@@ -220,7 +220,7 @@ module Isobib
           technical_committee: {
             name:   wg_link.text + doc.css('div.entry-title')[0].text,
             type:   'technicalCommittee',
-            number: workgroup[1].match(/\d+/).to_s.to_i
+            number: workgroup[1]&.match(/\d+/)&.to_s&.to_i
           } }
       end
 
