@@ -24,7 +24,7 @@ module Isobib
       # @param year [String] the year the standard was published (optional)
       # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required
       # @return [String] Relaton XML serialisation of reference
-      def isobib_get(code, year, opts)
+      def get(code, year, opts)
         return iev.to_xml if code.casecmp? "IEV"
         code += "-1" if opts[:all_parts]
         ret = isobib_get1(code, year, opts)
