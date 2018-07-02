@@ -76,7 +76,7 @@ module Isobib
           workgroup:    fetch_workgroup(doc),
           abstract:     abstract,
           copyright:    fetch_copyright(hit_data['title'], doc),
-          source:       fetch_source(doc, url),
+          link:       fetch_link(doc, url),
           relations:    fetch_relations(doc)
         )
       end
@@ -347,11 +347,11 @@ module Isobib
         end
       end
 
-      # Fetch sources.
+      # Fetch links.
       # @param doc [Nokogiri::HTML::Document]
       # @param url [String]
       # @return [Array<Hash>]
-      def fetch_source(doc, url)
+      def fetch_link(doc, url)
         obp_elms = doc.xpath("//a[contains(@href, '/obp/ui/')]")
         obp = obp_elms.attr('href').value if obp_elms.any?
         rss = DOMAIN + doc.xpath("//a[contains(@href, 'rss')]").attr('href')
