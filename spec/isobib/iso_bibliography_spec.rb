@@ -207,6 +207,22 @@ RSpec.describe Isobib::IsoBibliography do
       expect(results).to be nil
     end
 
+      it "warns when a code matches a resource but the year does not" do
+      mock_algolia 2
+      mock_http_net 2
+      expect { Isobib::IsoBibliography.get('ISO 19115', "2014", {}) }.to output(/There was no match for 2014, though there were matches found for 2003/).to_stderr 
+    end
+
+    it "warns when resource with part number not found on ISO website" do
+      mock_algolia 2
+      expect { results = Isobib::IsoBibliography.get('ISO 19115-30', "2014", {}) }.to output(/The provided document part may not exist, or the document may no longer be published in parts/).to_stderr 
+    end
+
+    it "warns when resource without part number not found on ISO website" do
+      mock_algolia 2
+      expect { results = Isobib::IsoBibliography.get('ISO 00000', "2014", {}) }.to output(/If you wanted to cite all document parts for the reference/).to_stderr
+    end
+
     it "gets a frozen reference for IEV" do
       results = Isobib::IsoBibliography.get('IEV', nil, {})
       expect(results).to include %(<bibitem type="international-standard" id="IEV">)
