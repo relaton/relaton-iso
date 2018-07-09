@@ -25,7 +25,7 @@ module Isobib
       # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required
       # @return [String] Relaton XML serialisation of reference
       def get(code, year, opts)
-        return iev.to_xml if code.casecmp? "IEV"
+        return iev.to_xml if code.casecmp("IEV") == 0
         code += "-1" if opts[:all_parts]
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
@@ -42,7 +42,7 @@ module Isobib
           "The code must be exactly like it is on the website."
         warn "(There was no match for #{year}, though there were matches "\
           "found for #{missed_years.join(', ')}.)" unless missed_years.empty?
-        if /\d-\d/.match? code
+        if /\d-\d/ =~ code
           warn "The provided document part may not exist, or the document "\
             "may no longer be published in parts."
         else
@@ -70,7 +70,7 @@ module Isobib
           ret = page.select do |i|
             i.hit["title"] &&
               i.hit["title"].match(docidrx).to_s == code &&
-              !corrigrx.match?(i.hit["title"])
+              !(corrigrx =~ i.hit["title"])
           end
           return ret unless ret.empty?
         end
@@ -137,7 +137,7 @@ module Isobib
       end
 
       def isobib_get1(code, year, opts)
-        return iev if code.casecmp? "IEV"
+        return iev if code.casecmp("IEV") == 0
         result = isobib_search_filter(code) or return nil
         ret = isobib_results_filter(result, year)
         return ret[:ret] if ret[:ret]
