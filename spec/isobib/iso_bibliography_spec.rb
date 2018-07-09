@@ -250,7 +250,7 @@ RSpec.describe Isobib::IsoBibliography do
   # Mock http get pages requests.
   def mock_http_net(num)
     expect(Net::HTTP).to receive(:get_response).with(kind_of(URI)) do |uri|
-      if uri.path.match? %r{\/contents\/}
+      if uri.path =~ %r{\/contents\/}
         # When path is from json response then redirect.
         resp = Net::HTTPMovedPermanently.new '1.1', '301', 'Moved Permanently'
         resp['location'] = "/standard/#{uri.path.match(/\d+\.html$/)}"

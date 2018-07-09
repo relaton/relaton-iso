@@ -20,7 +20,7 @@ GEM
       nokogiri (>= 1.4.3)
     httpclient (2.8.3)
     iso-bib-item (0.1.10)
-      duplicate (~> 1.1.1)
+      duplicate
       isoics (~> 0.1.6)
       nokogiri
     isoics (0.1.6)
