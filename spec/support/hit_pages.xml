@@ -3,9 +3,9 @@
   <bibitem type="international-standard" id="ISO19115-1">
     <title format="text/plain" language="en" script="Latn"> --  -- </title>
     <title format="text/plain" language="fr" script="Latn"> --  -- </title>
-    <source type="src">https://www.iso.org/standard/73118.html</source>
-    <source type="obp">https://www.iso.org/obp/ui/#!iso:std:73118:en</source>
-    <source type="rss">https://www.iso.org/contents/data/standard/07/31/73118.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/73118.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:73118:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/07/31/73118.detail.rss</uri>
     <docidentifier>ISO 19115-1</docidentifier>
     <date type="published">
       <on>2018</on>
@@ -36,9 +36,9 @@
   <bibitem type="international-standard" id="ISO19115-1">
     <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- Part 1: Fundamentals</title>
     <title format="text/plain" language="fr" script="Latn">Information géographique -- Métadonnées -- Partie 1: Principes de base</title>
-    <source type="src">https://www.iso.org/standard/53798.html</source>
-    <source type="obp">https://www.iso.org/obp/ui/#!iso:std:53798:en</source>
-    <source type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/53798.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:53798:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
     <docidentifier>ISO 19115-1</docidentifier>
     <date type="published">
       <on>2014</on>
@@ -89,9 +89,9 @@
   <bibitem type="international-standard" id="ISO19115-2">
     <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- Part 2: Extensions for imagery and gridded data</title>
     <title format="text/plain" language="fr" script="Latn">Information géographique -- Métadonnées -- Partie 2: Extensions pour les images et les matrices</title>
-    <source type="src">https://www.iso.org/standard/39229.html</source>
-    <source type="obp">https://www.iso.org/obp/ui/#!iso:std:39229:en</source>
-    <source type="rss">https://www.iso.org/contents/data/standard/03/92/39229.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/39229.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:39229:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/03/92/39229.detail.rss</uri>
     <docidentifier>ISO 19115-2</docidentifier>
     <date type="published">
       <on>2009</on>
@@ -130,9 +130,9 @@
   <bibitem type="international-standard" id="ISO19115-2">
     <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- Part 2: Extensions for acquisition and processing</title>
     <title format="text/plain" language="fr" script="Latn">Information géographique -- Métadonnées -- Partie 2: Extensions pour l'acquisition et le traitement</title>
-    <source type="src">https://www.iso.org/standard/67039.html</source>
-    <source type="obp"/>
-    <source type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/67039.html</uri>
+    <uri type="obp"/>
+    <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
     <docidentifier>ISO 19115-2</docidentifier>
     <date type="published">
       <on>2018</on>
@@ -169,9 +169,9 @@
   <bibitem type="international-standard" id="ISO19115">
     <title format="text/plain" language="en" script="Latn"> --  -- </title>
     <title format="text/plain" language="fr" script="Latn"> --  -- </title>
-    <source type="src">https://www.iso.org/standard/44361.html</source>
-    <source type="obp"/>
-    <source type="rss">https://www.iso.org/contents/data/standard/04/43/44361.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/44361.html</uri>
+    <uri type="obp"/>
+    <uri type="rss">https://www.iso.org/contents/data/standard/04/43/44361.detail.rss</uri>
     <docidentifier>ISO 19115</docidentifier>
     <date type="published">
       <on>2006</on>
@@ -214,9 +214,9 @@
   <bibitem type="international-standard" id="ISO19115">
     <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- </title>
     <title format="text/plain" language="fr" script="Latn">Information géographique -- Métadonnées -- </title>
-    <source type="src">https://www.iso.org/standard/26020.html</source>
-    <source type="obp"/>
-    <source type="rss">https://www.iso.org/contents/data/standard/02/60/26020.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/26020.html</uri>
+    <uri type="obp"/>
+    <uri type="rss">https://www.iso.org/contents/data/standard/02/60/26020.detail.rss</uri>
     <docidentifier>ISO 19115</docidentifier>
     <date type="published">
       <on>2003</on>
@@ -265,9 +265,9 @@
   </bibitem>
   <bibitem type="technicalSpecification" id="ISO/TS19115-3">
     <title format="text/plain" language="en" script="Latn">Geographic information --  Metadata -- Part 3: XML schema implementation for fundamental concepts</title>
-    <source type="src">https://www.iso.org/standard/32579.html</source>
-    <source type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</source>
-    <source type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/32579.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</uri>
     <docidentifier>ISO/TS 19115-3</docidentifier>
     <date type="published">
       <on>2016</on>
@@ -305,9 +305,9 @@
   </bibitem>
   <bibitem type="technicalSpecification" id="ISO/TS19139">
     <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- XML schema implementation</title>
-    <source type="src">https://www.iso.org/standard/32557.html</source>
-    <source type="obp">https://www.iso.org/obp/ui/#!iso:std:32557:en</source>
-    <source type="rss">https://www.iso.org/contents/data/standard/03/25/32557.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/32557.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32557:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32557.detail.rss</uri>
     <docidentifier>ISO/TS 19139</docidentifier>
     <date type="published">
       <on>2007</on>
@@ -351,9 +351,9 @@
   </bibitem>
   <bibitem type="technicalSpecification" id="ISO/TS19139-2">
     <title format="text/plain" language="en" script="Latn">Geographic information -- Metadata -- XML schema implementation</title>
-    <source type="src">https://www.iso.org/standard/57104.html</source>
-    <source type="obp">https://www.iso.org/obp/ui/#!iso:std:57104:en</source>
-    <source type="rss">https://www.iso.org/contents/data/standard/05/71/57104.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/57104.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:57104:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/05/71/57104.detail.rss</uri>
     <docidentifier>ISO/TS 19139-2</docidentifier>
     <date type="published">
       <on>2012</on>
@@ -397,9 +397,9 @@
   </bibitem>
   <bibitem type="technicalSpecification" id="ISO/TS19157-2">
     <title format="text/plain" language="en" script="Latn">Geographic information  -- Data quality -- Part 2: XML schema implementation</title>
-    <source type="src">https://www.iso.org/standard/66197.html</source>
-    <source type="obp">https://www.iso.org/obp/ui/#!iso:std:66197:en</source>
-    <source type="rss">https://www.iso.org/contents/data/standard/06/61/66197.detail.rss</source>
+    <uri type="src">https://www.iso.org/standard/66197.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:66197:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/06/61/66197.detail.rss</uri>
     <docidentifier>ISO/TS 19157-2</docidentifier>
     <date type="published">
       <on>2016</on>
