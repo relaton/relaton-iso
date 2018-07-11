@@ -10,7 +10,7 @@ module Relaton
       end
 
       def get(code, date, opts)
-        Isobib::IsoBibliography.get(code, date, opts)
+        ::Isobib::IsoBibliography.get(code, date, opts)
       end
     end
   end

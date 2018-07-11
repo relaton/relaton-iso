@@ -35,9 +35,9 @@ RSpec.describe Isobib::IsoBibliography do
     mock_algolia 1
     hit_pages = Isobib::IsoBibliography.search('19115')
     expect(hit_pages.first[0].to_s).to eq '<Isobib::Hit:'\
-    "#{format('%#.14x', hit_pages.first[0].object_id << 1)} "\
-    '@text="19115" @fullIdentifier="" @matchedWords=["19115"] '\
-    '@category="standard" @title="ISO 19115-1:2014/Amd 1:2018 ">'
+      "#{format('%#.14x', hit_pages.first[0].object_id << 1)} "\
+      '@text="19115" @fullIdentifier="" @matchedWords=["19115"] '\
+      '@category="standard" @title="ISO 19115-1:2014/Amd 1:2018 ">'
   end
 
   it 'return xml of hit' do
@@ -112,8 +112,8 @@ RSpec.describe Isobib::IsoBibliography do
     it 'return shortref' do
       pubdate = isobib_item.dates.select { |d| d.type == "published" }
       shortref = "ISO #{isobib_item.docidentifier.project_number}-"\
-      "#{isobib_item.docidentifier.part_number}:"\
-      "#{pubdate&.first&.on&.year}"
+        "#{isobib_item.docidentifier.part_number}:"\
+        "#{pubdate&.first&.on&.year}"
       expect(isobib_item.shortref).to eq shortref
     end
 
@@ -124,9 +124,9 @@ RSpec.describe Isobib::IsoBibliography do
       rss_regex = %r{https:\/\/www\.iso\.org\/contents\/data\/standard\/\d{2}
       \/\d{2}\/\d+\.detail\.rss}x
       expect(isobib_item.url(:rss)).to match(rss_regex)
-    end
+      end
 
-    it 'return dates' do
+      it 'return dates' do
       expect(isobib_item.dates.length).to eq 1
       expect(isobib_item.dates.first.type).to eq 'published'
       expect(isobib_item.dates.first.on).to be_instance_of Time
@@ -207,7 +207,7 @@ RSpec.describe Isobib::IsoBibliography do
       expect(results).to be nil
     end
 
-      it "warns when a code matches a resource but the year does not" do
+    it "warns when a code matches a resource but the year does not" do
       mock_algolia 2
       mock_http_net 2
       expect { Isobib::IsoBibliography.get('ISO 19115', "2014", {}) }.to output(/There was no match for 2014, though there were matches found for 2003/).to_stderr 
