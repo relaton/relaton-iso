@@ -22,7 +22,10 @@
   <script>Latn</script>
   <abstract format="plain" language="en" script="Latn">ISO 19115-2:2009 extends the existing geographic metadata standard by defining the schema required for describing imagery and gridded data. It provides information about the properties of the measuring equipment used to acquire the data, the geometry of the measuring process employed by the equipment, and the production process used to digitize the raw data. This extension deals with metadata needed to describe the derivation of geographic information from raw data, including the properties of the measuring system, and the numerical methods and computational procedures used in the derivation. The metadata required to address coverage data in general is addressed sufficiently in the general part of ISO 19115.</abstract>
   <abstract format="plain" language="fr" script="Latn">L'ISO 19115-2:2009 étend la norme existante sur les métadonnées géographiques en définissant le schéma requis de description des images et des matrices. Elle donne des informations relatives aux propriétés des équipements de mesure utilisés pour obtenir les données, la géométrie du processus de mesure utilisée par ces équipements, et le processus de production utilisé pour numériser les données brutes. Cette extension porte sur les métadonnées nécessaires pour décrire la déduction des informations géographiques à partir de données brutes, y compris les propriétés du système de mesure, et les méthodes numériques et procédures informatiques utilisées pour la déduction. Les métadonnées requises pour aborder les données de couverture en général sont suffisamment abordées dans la partie générale de l'ISO 19115.</abstract>
-  <status>Published</status>
+  <status>
+    <stage>90</stage>
+    <substage>92</substage>
+  </status>
   <copyright>
     <from>2009</from>
     <owner>
@@ -35,9 +38,11 @@
   <relation type="updates">
     <bibitem>
       <formattedref>ISO 19115-2</formattedref>
-      <docidentifier>ISO 19115-2</docidentifier>
     </bibitem>
   </relation>
+  <editorialgroup>
+    <technical_committee number="211" type="technicalCommittee">ISO/TC 211Geographic information/Geomatics</technical_committee>
+  </editorialgroup>
   <ics>
     <code>35.240.70</code>
     <text>IT applications in science</text>

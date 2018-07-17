@@ -172,10 +172,10 @@ RSpec.describe Isobib::IsoBibliography do
   describe 'get' do
     let(:hit_pages) { Isobib::IsoBibliography.search('19115') }
 
-    it "gets a code" do
+    it 'gets a code' do
       mock_algolia 1
       mock_http_net 2
-      results = Isobib::IsoBibliography.get('ISO 19115-1', nil, {})
+      results = Isobib::IsoBibliography.get('ISO 19115-1', nil, {}).to_xml
       expect(results).to include %(<bibitem type="international-standard" id="ISO19115-1">)
       expect(results).to include %(<on>2014</on>)
       expect(results).to include %(<docidentifier>ISO 19115-1</docidentifier>)
@@ -185,7 +185,7 @@ RSpec.describe Isobib::IsoBibliography do
     it "gets an all-parts code" do
       mock_algolia 1
       mock_http_net 2
-      results = Isobib::IsoBibliography.get('ISO 19115', nil, {all_parts: true})
+      results = Isobib::IsoBibliography.get('ISO 19115', nil, {all_parts: true}).to_xml
       expect(results).to include %(<bibitem type="international-standard" id="ISO19115">)
       expect(results).to include %(<docidentifier>ISO 19115-1</docidentifier>)
       expect(results).to include %(<docidentifier>ISO 19115: All Parts</docidentifier>)
@@ -194,7 +194,7 @@ RSpec.describe Isobib::IsoBibliography do
     it "gets a code and year successfully" do
       mock_algolia 2
       mock_http_net 2
-      results = Isobib::IsoBibliography.get('ISO 19115', "2003", {})
+      results = Isobib::IsoBibliography.get('ISO 19115', "2003", {}).to_xml
       expect(results).to include %(<on>2003</on>)
       expect(results).not_to include %(<docidentifier>ISO 19115-1</docidentifier>)
       expect(results).to include %(<docidentifier>ISO 19115</docidentifier>)
