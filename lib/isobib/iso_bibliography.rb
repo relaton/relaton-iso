@@ -25,13 +25,13 @@ module Isobib
       # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required
       # @return [String] Relaton XML serialisation of reference
       def get(code, year, opts)
-        return iev.to_xml if code.casecmp("IEV") == 0
-        code += "-1" if opts[:all_parts]
+        return iev.to_xml if code.casecmp('IEV') == 0
+        code += '-1' if opts[:all_parts]
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
-        ret.to_most_recent_reference if !year
+        ret.to_most_recent_reference unless year
         ret.to_all_parts if opts[:all_parts]
-        ret.to_xml
+        ret # .to_xml
       end
 
       private
