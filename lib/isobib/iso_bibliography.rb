@@ -25,7 +25,7 @@ module Isobib
       # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required
       # @return [String] Relaton XML serialisation of reference
       def get(code, year, opts)
-        return iev.to_xml if code.casecmp('IEV') == 0
+        return iev if code.casecmp('IEV') == 0
         code += '-1' if opts[:all_parts]
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
@@ -79,7 +79,7 @@ module Isobib
 
 
       def iev
-        Nokogiri::XML.fragment(<<~"END")
+        IsoBibItem.from_xml(<<~"END")
           <bibitem type="international-standard" id="IEV">
   <title format="text/plain" language="en" script="Latn">Electropedia: 
   The World's Online Electrotechnical Vocabulary</title>
@@ -96,6 +96,7 @@ module Isobib
   </contributor>
   <language>en</language> <language>fr</language>
   <script>Latn</script>
+  <status> <stage>60</stage> </status>
   <copyright>
     <from>#{Date.today.year}</from>
     <owner>
