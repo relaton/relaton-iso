@@ -271,7 +271,7 @@ module Isobib
       # @param lang [String]
       # @return [Hash]
       def fetch_title(doc, lang)
-        titles = doc.css("h3[itemprop='description']")
+        titles = doc.at("//h3[@itemprop='description'] | //h2[@itemprop='description']")
                                .text.split ' -- '
         case titles.size
         when 0
