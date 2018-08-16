@@ -85,7 +85,6 @@ module Isobib
   The World's Online Electrotechnical Vocabulary</title>
   <link type="src">http://www.electropedia.org</link>
   <docidentifier>IEV</docidentifier>
-  <date type="published"> <on>#{Date.today.year}</on> </date>
   <contributor>
     <role type="publisher"/>
     <organization>
@@ -98,7 +97,7 @@ module Isobib
   <script>Latn</script>
   <status> <stage>60</stage> </status>
   <copyright>
-    <from>#{Date.today.year}</from>
+    <from>2018</from>
     <owner>
       <organization>
       <name>International Electrotechnical Commission</name>
