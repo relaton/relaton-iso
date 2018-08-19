@@ -26,7 +26,7 @@ module Isobib
       'TS'    => 'technicalSpecification',
       'TR'    => 'technicalReport',
       'PAS'   => 'publiclyAvailableSpecification',
-      'AWI'   => 'appruvedWorkItem',
+      'AWI'   => 'approvedWorkItem',
       'CD'    => 'committeeDraft',
       'FDIS'  => 'finalDraftInternationalStandard',
       'NP'    => 'newProposal',
@@ -219,7 +219,7 @@ module Isobib
           url:                 'www.iso.org',
           technical_committee: {
             name:   wg_link.text + doc.css('div.entry-title')[0].text,
-            type:   'technicalCommittee',
+            type:   'TC',
             number: workgroup[1]&.match(/\d+/)&.to_s&.to_i
           } }
       end

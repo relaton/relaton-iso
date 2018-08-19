@@ -40,7 +40,7 @@
     </bibitem>
   </relation>
   <editorialgroup>
-    <technical_committee number="211" type="technicalCommittee">ISO/TC 211Geographic information/Geomatics</technical_committee>
+    <technical_committee number="211" type="TC">ISO/TC 211Geographic information/Geomatics</technical_committee>
   </editorialgroup>
   <ics>
     <code>35.240.70</code>
