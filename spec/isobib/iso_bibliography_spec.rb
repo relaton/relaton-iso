@@ -225,7 +225,7 @@ RSpec.describe Isobib::IsoBibliography do
 
     it "gets a frozen reference for IEV" do
       results = Isobib::IsoBibliography.get('IEV', nil, {})
-      expect(results.to_xml).to include %(<bibitem type="international-standard" id="IEV">)
+      expect(results.to_xml).to include %(<bibitem type="international-standard" id="IEC60050">)
     end
 
   end
