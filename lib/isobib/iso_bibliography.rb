@@ -81,10 +81,9 @@ module Isobib
       def iev
         IsoBibItem.from_xml(<<~"END")
           <bibitem type="international-standard" id="IEV">
-  <title format="text/plain" language="en" script="Latn">Electropedia: 
-  The World's Online Electrotechnical Vocabulary</title>
+  <title format="text/plain" language="en" script="Latn">International Electrotechnical Vocabulary</title>
   <link type="src">http://www.electropedia.org</link>
-  <docidentifier>IEV</docidentifier>
+  <docidentifier>IEC 60050</docidentifier>
   <contributor>
     <role type="publisher"/>
     <organization>
@@ -106,11 +105,6 @@ module Isobib
       </organization>
     </owner>
   </copyright>
-  <relation type="updates">
-    <bibitem>
-      <formattedref>IEC 60050</formattedref>
-    </bibitem>
-  </relation>
 </bibitem>
         END
       end
