@@ -84,6 +84,7 @@ module Isobib
   <title format="text/plain" language="en" script="Latn">International Electrotechnical Vocabulary</title>
   <link type="src">http://www.electropedia.org</link>
   <docidentifier>#{code}</docidentifier>
+  <date type="published"><on>2011</on></date>
   <contributor>
     <role type="publisher"/>
     <organization>
