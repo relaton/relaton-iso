@@ -178,6 +178,7 @@ RSpec.describe Isobib::IsoBibliography do
       results = Isobib::IsoBibliography.get('ISO 19115-1', nil, {}).to_xml
       expect(results).to include %(<bibitem type="international-standard" id="ISO19115-1">)
       expect(results).to include %(<on>2014</on>)
+      expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include %(<on>2014</on>)
       expect(results).to include %(<docidentifier>ISO 19115-1</docidentifier>)
       expect(results).not_to include %(<docidentifier>ISO 19115</docidentifier>)
     end
@@ -189,6 +190,15 @@ RSpec.describe Isobib::IsoBibliography do
       expect(results).to include %(<bibitem type="international-standard" id="ISO19115">)
       expect(results).to include %(<docidentifier>ISO 19115-1</docidentifier>)
       expect(results).to include %(<docidentifier>ISO 19115: All Parts</docidentifier>)
+    end
+
+    it "gets a keep-year code" do
+      mock_algolia 1
+      mock_http_net 2
+      results = Isobib::IsoBibliography.get('ISO 19115-1', nil, {keep_year: true}).to_xml
+      expect(results).to include %(<bibitem type="international-standard" id="ISO19115-1">)
+      expect(results.gsub(/<relation.*<\/relation>/m, "")).to include %(<on>2014</on>)
+      expect(results).to include %(<docidentifier>ISO 19115-1</docidentifier>)
     end
 
     it "gets a code and year successfully" do

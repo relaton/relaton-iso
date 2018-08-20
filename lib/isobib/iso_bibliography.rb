@@ -22,14 +22,15 @@ module Isobib
 
       # @param code [String] the ISO standard Code to look up (e..g "ISO 9000")
       # @param year [String] the year the standard was published (optional)
-      # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required
+      # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required,
+      #   :keep_year if undated reference should return actual reference with year
       # @return [String] Relaton XML serialisation of reference
       def get(code, year, opts)
         return iev if code.casecmp('IEV') == 0
         code += '-1' if opts[:all_parts]
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
-        ret.to_most_recent_reference unless year
+        ret.to_most_recent_reference unless year || opts[:keep_year]
         ret.to_all_parts if opts[:all_parts]
         ret # .to_xml
       end
