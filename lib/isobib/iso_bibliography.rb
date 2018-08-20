@@ -78,13 +78,12 @@ module Isobib
         []
       end
 
-
-      def iev
+      def iev(code = "IEC 60050")
         IsoBibItem.from_xml(<<~"END")
           <bibitem type="international-standard" id="IEV">
   <title format="text/plain" language="en" script="Latn">International Electrotechnical Vocabulary</title>
   <link type="src">http://www.electropedia.org</link>
-  <docidentifier>IEC 60050</docidentifier>
+  <docidentifier>#{code}</docidentifier>
   <contributor>
     <role type="publisher"/>
     <organization>
@@ -134,6 +133,7 @@ module Isobib
 
       def isobib_get1(code, year, opts)
         return iev if code.casecmp("IEV") == 0
+        return iev(code) if /^IEC 60050-/.match code
         result = isobib_search_filter(code) or return nil
         ret = isobib_results_filter(result, year)
         return ret[:ret] if ret[:ret]
