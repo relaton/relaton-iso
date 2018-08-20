@@ -54,11 +54,12 @@ module Isobib
       # @return [Hash]
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def parse_page(hit_data)
+        return unless hit_data['path'].match(/\d+$/)
         doc, url = get_page "/standard/#{hit_data['path'].match(/\d+$/)}.html"
 
         # Fetch edition.
-        edition = doc.xpath("//strong[contains(text(), 'Edition')]/..")
-                     .children.last.text.match(/\d+/).to_s
+        edition = doc&.xpath("//strong[contains(text(), 'Edition')]/..")
+                     &.children&.last&.text&.match(/\d+/)&.to_s
 
         titles, abstract = fetch_titles_abstract(doc)
 

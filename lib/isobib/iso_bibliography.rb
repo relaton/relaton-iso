@@ -121,6 +121,7 @@ module Isobib
         missed_years = []
         result.each_slice(3) do |s| # ISO website only allows 3 connections
           fetch_pages(s, 3).each_with_index do |r, i|
+            next if r.nil?
             return { ret: r } if !year
             r.dates.select { |d| d.type == "published" }.each do |d|
               return { ret: r } if year.to_i == d.on.year
