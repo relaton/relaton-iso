@@ -194,7 +194,7 @@ module Isobib
       # @return [Hash]
       def fetch_docid(doc)
         item_ref = doc.xpath("//strong[@id='itemReference']").text
-                      .match(/(?<=\s)(\d+)-?((?<=-)\d+|)/)
+          .match(/^(.*?\d+)-?((?<=-)\d+|)/)
         { project_number: item_ref[1], part_number: item_ref[2], prefix: nil }
       end
 
