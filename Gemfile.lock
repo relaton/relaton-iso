@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    isobib (0.2.4)
+    isobib (0.2.5)
       algoliasearch
       iso-bib-item (~> 0.2.4)
 
@@ -18,7 +18,7 @@ GEM
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     httpclient (2.8.3)
-    iso-bib-item (0.2.4)
+    iso-bib-item (0.2.5)
       isoics (~> 0.1.6)
       nokogiri (~> 1.8.4)
       ruby_deep_clone (~> 0.8.0)
