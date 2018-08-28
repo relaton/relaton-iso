@@ -111,10 +111,10 @@ RSpec.describe Isobib::IsoBibliography do
 
     it 'return shortref' do
       pubdate = isobib_item.dates.select { |d| d.type == "published" }
-      shortref = "ISO #{isobib_item.docidentifier.project_number}-"\
-        "#{isobib_item.docidentifier.part_number}:"\
+      shortref = "#{isobib_item.docidentifier.first.project_number}-"\
+        "#{isobib_item.docidentifier.first.part_number}:"\
         "#{pubdate&.first&.on&.year}"
-      expect(isobib_item.shortref).to eq shortref
+      expect(isobib_item.shortref(isobib_item.docidentifier.first)).to eq shortref
     end
 
     it 'return item urls' do
