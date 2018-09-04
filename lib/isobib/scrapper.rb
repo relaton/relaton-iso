@@ -193,9 +193,11 @@ module Isobib
       # @param doc [Nokogiri::HTML::Document]
       # @return [Hash]
       def fetch_docid(doc)
-        item_ref = doc.xpath("//strong[@id='itemReference']").text
-          .match(/^(.*?\d+)-?((?<=-)\d+|)/)
-        { project_number: item_ref[1], part_number: item_ref[2], prefix: nil }
+        item_ref = doc.xpath("//strong[@id='itemReference']") or 
+          return { project_number: "?", part_number: "", prefix: nil, id: "?"}
+        m = item_ref.text.match(/^(.*?\d+)-?((?<=-)\d+|)/)
+        { project_number: m[1], part_number: m[2], prefix: nil, 
+          id: item_ref.text, type: "ISO" }
       end
 
       # Fetch status.

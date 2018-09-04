@@ -6,7 +6,8 @@ module Relaton
 
       def initialize
         @short = :isobib
-        @prefix = %r{^(ISO|IEC)[ /]|^IEV($| )}
+        @prefix = "ISO"
+        @defaultprefix = %r{^(ISO)[ /]|^IEV($| )|^IEC 60050}
       end
 
       def get(code, date, opts)

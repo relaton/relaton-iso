@@ -163,6 +163,13 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
+
+== Exceptional Citations
+
+This gem retrieves bibliographic descriptions of ISO documents by doing searches on the ISO website, http://www.iso.org, and screenscraping the document that matches the queried document identifier. The following documents are not returned as search results from the ISO website, and the gem returns manually generated references to them.
+
+* `IEV`: used in the metanorma-iso gem to reference Electropedia entries generically. Is resolved to an "all parts" reference to IEC 60050, which in turn is resolved into the specific documents cited by their top-level clause.
+
 == Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/iso-bib-item.

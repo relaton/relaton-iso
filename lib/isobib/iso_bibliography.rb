@@ -83,7 +83,7 @@ module Isobib
           <bibitem type="international-standard" id="IEV">
   <title format="text/plain" language="en" script="Latn">International Electrotechnical Vocabulary</title>
   <link type="src">http://www.electropedia.org</link>
-  <docidentifier>#{code}</docidentifier>
+  <docidentifier>#{code}:2011</docidentifier>
   <date type="published"><on>2011</on></date>
   <contributor>
     <role type="publisher"/>
