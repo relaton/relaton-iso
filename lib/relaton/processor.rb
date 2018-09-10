@@ -8,6 +8,7 @@ module Relaton
         @short = :isobib
         @prefix = "ISO"
         @defaultprefix = %r{^(ISO)[ /]|^IEV($| )|^IEC 60050}
+        @idtype = "ISO"
       end
 
       def get(code, date, opts)
