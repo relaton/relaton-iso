@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    isobib (0.3.0)
+    isobib (0.3.1)
       algoliasearch
       iso-bib-item (~> 0.3.0)
 
