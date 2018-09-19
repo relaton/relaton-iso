@@ -26,7 +26,6 @@ module Isobib
       #   :keep_year if undated reference should return actual reference with year
       # @return [String] Relaton XML serialisation of reference
       def get(code, year, opts)
-        return iev if code.casecmp('IEV') == 0
         code += '-1' if opts[:all_parts]
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
@@ -78,39 +77,6 @@ module Isobib
         []
       end
 
-      def iev(code = "IEC 60050")
-        IsoBibItem.from_xml(<<~"END")
-          <bibitem type="international-standard" id="IEV">
-  <title format="text/plain" language="en" script="Latn">International Electrotechnical Vocabulary</title>
-  <link type="src">http://www.electropedia.org</link>
-  <docidentifier>#{code}:2011</docidentifier>
-  <date type="published"><on>2011</on></date>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>International Electrotechnical Commission</name>
-      <abbreviation>IEC</abbreviation>
-      <uri>www.iec.ch</uri>
-    </organization>
-  </contributor>
-  <language>en</language> <language>fr</language>
-  <script>Latn</script>
-  <status> <stage>60</stage> </status>
-  <copyright>
-    <from>2018</from>
-    <owner>
-      <organization>
-      <name>International Electrotechnical Commission</name>
-      <abbreviation>IEC</abbreviation>
-      <uri>www.iec.ch</uri>
-      </organization>
-    </owner>
-  </copyright>
-</bibitem>
-        END
-      end
-
-
       # Sort through the results from Isobib, fetching them three at a time,
       # and return the first result that matches the code,
       # matches the year (if provided), and which # has a title (amendments do not).
@@ -133,8 +99,7 @@ module Isobib
       end
 
       def isobib_get1(code, year, opts)
-        return iev if code.casecmp("IEV") == 0
-        return iev(code) if /^IEC 60050-/.match code
+        # return iev(code) if /^IEC 60050-/.match code
         result = isobib_search_filter(code) or return nil
         ret = isobib_results_filter(result, year)
         return ret[:ret] if ret[:ret]
