@@ -14,6 +14,10 @@ module Relaton
       def get(code, date, opts)
         ::Isobib::IsoBibliography.get(code, date, opts)
       end
+
+      def from_xml(xml)
+        IsoBibItem::XMLParser.from_xml xml
+      end
     end
   end
 end
