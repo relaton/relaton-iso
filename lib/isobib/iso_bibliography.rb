@@ -3,6 +3,7 @@
 # require 'isobib/iso_bibliographic_item'
 require 'isobib/scrapper'
 require 'isobib/hit_pages'
+require 'iecbib'
 
 module Isobib
   # Class methods for search ISO standards.
@@ -27,11 +28,12 @@ module Isobib
       # @return [String] Relaton XML serialisation of reference
       def get(code, year, opts)
         code += '-1' if opts[:all_parts]
+        return Iecbib::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR].match code
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
         ret.to_most_recent_reference unless year || opts[:keep_year]
         ret.to_all_parts if opts[:all_parts]
-        ret # .to_xml
+        ret
       end
 
       private
