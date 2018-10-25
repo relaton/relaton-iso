@@ -24,7 +24,7 @@ GEM
     iecbib (0.2.0)
       addressable
       iso-bib-item (~> 0.4.0)
-    iso-bib-item (0.4.0)
+    iso-bib-item (0.4.1)
       isoics (~> 0.1.6)
       nokogiri (~> 1.8.4)
       ruby_deep_clone (~> 0.8.0)
