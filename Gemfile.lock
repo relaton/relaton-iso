@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    isobib (0.4.0)
+    isobib (0.4.1)
       algoliasearch
-      iecbib (~> 0.2.0)
-      iso-bib-item (~> 0.4.0)
+      iecbib (~> 0.2.1)
+      iso-bib-item (~> 0.4.2)
 
 GEM
   remote: https://rubygems.org/
@@ -21,10 +21,10 @@ GEM
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     httpclient (2.8.3)
-    iecbib (0.2.0)
+    iecbib (0.2.1)
       addressable
-      iso-bib-item (~> 0.4.0)
-    iso-bib-item (0.4.1)
+      iso-bib-item (~> 0.4.2)
+    iso-bib-item (0.4.2)
       isoics (~> 0.1.6)
       nokogiri (~> 1.8.4)
       ruby_deep_clone (~> 0.8.0)

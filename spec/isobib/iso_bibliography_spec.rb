@@ -46,7 +46,7 @@ RSpec.describe Isobib::IsoBibliography do
     hit_pages = Isobib::IsoBibliography.search('19115')
     file_path = 'spec/support/hit.xml'
     File.write file_path, hit_pages.first[2].to_xml unless File.exist? file_path
-    expect(hit_pages.first[2].to_xml).to be_equivalent_to File.read file_path
+    expect(hit_pages.first[2].to_xml).to be_equivalent_to File.read(file_path).sub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>")
   end
 
   it 'return last page of hits' do

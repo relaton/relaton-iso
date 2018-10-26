@@ -34,6 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "equivalent-xml", "~> 0.6"
 
   spec.add_dependency 'algoliasearch'
-  spec.add_dependency 'iso-bib-item', '~> 0.4.0'
-  spec.add_dependency 'iecbib', '~> 0.2.0'
+  spec.add_dependency 'iso-bib-item', '~> 0.4.2'
+  spec.add_dependency 'iecbib', '~> 0.2.1'
 end
