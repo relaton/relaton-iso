@@ -40,13 +40,18 @@ module Isobib
       # @param text [String]
       # @return [Array<Hash>]
       def get(text)
-        iso_workers = WorkersPool.new 4
-        iso_workers.worker { |hit| iso_worker(hit, iso_workers) }
-        algolia_workers = start_algolia_search(text, iso_workers)
-        iso_docs = iso_workers.result
-        algolia_workers.end
-        algolia_workers.result
-        iso_docs
+        begin
+          iso_workers = WorkersPool.new 4
+          iso_workers.worker { |hit| iso_worker(hit, iso_workers) }
+          algolia_workers = start_algolia_search(text, iso_workers)
+          iso_docs = iso_workers.result
+          algolia_workers.end
+          algolia_workers.result
+          iso_docs
+        rescue
+          warn "Could not connect to http://www.iso.org"
+          []
+        end
       end
 
       # Parse page.
@@ -59,7 +64,7 @@ module Isobib
 
         # Fetch edition.
         edition = doc&.xpath("//strong[contains(text(), 'Edition')]/..")
-                     &.children&.last&.text&.match(/\d+/)&.to_s
+        &.children&.last&.text&.match(/\d+/)&.to_s
 
         titles, abstract = fetch_titles_abstract(doc)
 
@@ -206,7 +211,7 @@ module Isobib
       # @return [Hash]
       def fetch_status(doc, status)
         stage, substage = doc.css('li.dropdown.active span.stage-code > strong')
-                             .text.split '.'
+          .text.split '.'
         { status: status, stage: stage, substage: substage }
       end
 
@@ -256,7 +261,7 @@ module Isobib
       # @return [String]
       def fetch_type(title)
         type_match = title.match(%r{^(ISO|IWA|IEC)(?:(/IEC|/IEEE|/PRF|
-          /NP)*\s|/)(TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))}x)
+                                                      /NP)*\s|/)(TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))}x)
         #return "international-standard" if type_match.nil?
         if TYPES[type_match[2]]
           TYPES[type_match[2]]
@@ -275,7 +280,7 @@ module Isobib
       # @return [Hash]
       def fetch_title(doc, lang)
         titles = doc.at("//h3[@itemprop='description'] | //h2[@itemprop='description']")
-                               .text.split ' -- '
+          .text.split ' -- '
         case titles.size
         when 0
           intro, main, part = nil, "", nil

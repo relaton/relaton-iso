@@ -12,7 +12,12 @@ module Isobib
       # @param text [String]
       # @return [Isobib::HitPages]
       def search(text)
-        HitPages.new text
+        begin
+          HitPages.new text
+        rescue
+          warn "Could not access http://www.iso.ch"
+          []
+        end
       end
 
       # @param text [String]

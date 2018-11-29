@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    isobib (0.4.1)
+    isobib (0.4.2)
       algoliasearch
       iecbib (~> 0.2.1)
       iso-bib-item (~> 0.4.2)
@@ -11,7 +11,7 @@ GEM
   specs:
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    algoliasearch (1.23.2)
+    algoliasearch (1.24.0)
       httpclient (~> 2.8, >= 2.8.3)
       json (>= 1.5.1)
     byebug (10.0.2)
@@ -24,7 +24,7 @@ GEM
     iecbib (0.2.1)
       addressable
       iso-bib-item (~> 0.4.2)
-    iso-bib-item (0.4.2)
+    iso-bib-item (0.4.4)
       isoics (~> 0.1.6)
       nokogiri (~> 1.8.4)
       ruby_deep_clone (~> 0.8.0)
@@ -76,4 +76,4 @@ DEPENDENCIES
   simplecov
 
 BUNDLED WITH
-   1.16.6
+   1.17.1
