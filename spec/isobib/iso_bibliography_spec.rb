@@ -203,26 +203,33 @@ RSpec.describe Isobib::IsoBibliography do
     end
 
     it "gets a code and year unsuccessfully" do
-      mock_algolia 2
+      mock_algolia 4
       mock_http_net 2
       results = Isobib::IsoBibliography.get('ISO 19115', "2014", {})
       expect(results).to be nil
     end
 
     it "warns when a code matches a resource but the year does not" do
-      mock_algolia 2
+      mock_algolia 4
       mock_http_net 2
       expect { Isobib::IsoBibliography.get('ISO 19115', "2014", {}) }.to output(/There was no match for 2014, though there were matches found for 2003/).to_stderr 
     end
 
     it "warns when resource with part number not found on ISO website" do
-      mock_algolia 2
+      mock_algolia 4
       expect { results = Isobib::IsoBibliography.get('ISO 19115-30', "2014", {}) }.to output(/The provided document part may not exist, or the document may no longer be published in parts/).to_stderr 
     end
 
     it "warns when resource without part number not found on ISO website" do
-      mock_algolia 2
+      mock_algolia 4
       expect { results = Isobib::IsoBibliography.get('ISO 00000', "2014", {}) }.to output(/If you wanted to cite all document parts for the reference/).to_stderr
+    end
+
+    it "search ISO/IEC if search ISO failed" do
+      VCR.use_cassette("iso_2382") do
+        result = Isobib::IsoBibliography.get("ISO 2382", "2015", {})
+        expect(result).not_to be nil
+      end
     end
   end
 
@@ -238,7 +245,7 @@ RSpec.describe Isobib::IsoBibliography do
       expect(facetFilters[0]).to eq 'category:standard'
       JSON.parse File.read "spec/support/algolia_resp_page_#{page}.json"
     end.exactly(num).times
-    expect(Algolia::Index).to receive(:new).with('all_en').and_return index
+    expect(Algolia::Index).to receive(:new).with('all_en').at_least(:once).and_return index
   end
   # rubocop:enable Naming/UncommunicativeBlockParamName, Naming/VariableName
   # rubocop:enable Metrics/AbcSize

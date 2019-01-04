@@ -35,7 +35,12 @@ module Isobib
         code += '-1' if opts[:all_parts]
         return Iecbib::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR].match code
         ret = isobib_get1(code, year, opts)
+        if ret.nil? && code =~ %r[^ISO\s]
+          c = code.gsub "ISO", "ISO/IEC"
+          ret = isobib_get1(c, year, opts)
+        end
         return nil if ret.nil?
+
         ret.to_most_recent_reference unless year || opts[:keep_year]
         ret.to_all_parts if opts[:all_parts]
         ret

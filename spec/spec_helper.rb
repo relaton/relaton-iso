@@ -9,6 +9,12 @@ require 'bundler/setup'
 require 'isobib'
 require "rspec/matchers"
 require "equivalent-xml"
+require "vcr"
+
+VCR.configure do |conf|
+  conf.cassette_library_dir = "spec/vcr_cassettes"
+  conf.hook_into :webmock
+end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

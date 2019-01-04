@@ -32,6 +32,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'simplecov'
   spec.add_development_dependency "equivalent-xml", "~> 0.6"
+  spec.add_development_dependency 'vcr'
+  spec.add_development_dependency 'webmock'
 
   spec.add_dependency 'algoliasearch'
   spec.add_dependency 'iso-bib-item', '~> 0.4.2'
