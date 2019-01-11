@@ -15,7 +15,7 @@ module Isobib
         begin
           HitPages.new text
         rescue
-          warn "Could not access http://www.iso.ch"
+          warn "Could not access http://www.iso.org"
           []
         end
       end
@@ -37,6 +37,7 @@ module Isobib
         ret = isobib_get1(code, year, opts)
         if ret.nil? && code =~ %r[^ISO\s]
           c = code.gsub "ISO", "ISO/IEC"
+          warn "Attempting ISO/IEC retrieval"
           ret = isobib_get1(c, year, opts)
         end
         return nil if ret.nil?
