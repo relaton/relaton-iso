@@ -172,7 +172,7 @@ This gem retrieves bibliographic descriptions of ISO documents by doing searches
 
 == Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/riboseinc/isobib
+Bug reports and pull requests are welcome on GitHub at https://github.com/metanorma/isobib
 
 == License
 
