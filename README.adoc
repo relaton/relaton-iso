@@ -2,6 +2,7 @@
 
 image:https://img.shields.io/gem/v/isobib.svg["Gem Version", link="https://rubygems.org/gems/isobib"]
 image:https://img.shields.io/travis/metanorma/isobib/master.svg["Build Status", link="https://travis-ci.com/metanorma/isobib"]
+image:https://ci.appveyor.com/api/projects/status/nb2hvqycupqrkqjt?svg=true["Appveyor Build Status", link="https://ci.appveyor.com/projects/ribose/isobib"]
 image:https://codeclimate.com/github/metanorma/isobib/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/isobib"]
 
 IsoBib is a Ruby gem that implements the https://github.com/metanorma/metanorma-model-iso#iso-bibliographic-item[IsoBibliographicItem model].
