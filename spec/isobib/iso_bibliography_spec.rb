@@ -202,6 +202,13 @@ RSpec.describe Isobib::IsoBibliography do
       expect(results).to include %(<docidentifier type="ISO">ISO 19115:2003</docidentifier>)
     end
 
+    it "gets reference with an year in a code" do
+      mock_algolia 1
+      mock_http_net 2
+      results = Isobib::IsoBibliography.get("ISO 19115-1:2014", nil, {}).to_xml
+      expect(results).to include %(<on>2014</on>)
+    end
+
     it "gets a code and year unsuccessfully" do
       mock_algolia 4
       mock_http_net 2

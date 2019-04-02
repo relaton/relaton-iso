@@ -75,7 +75,11 @@ module Isobib
       end
 
       def isobib_search_filter(code)
-        docidrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+}
+        docidrx = if code =~ /:/
+          %r{^(ISO|IEC)[^0-9]*\s[0-9-]+:[0-9]+}
+        else
+          %r{^(ISO|IEC)[^0-9]*\s[0-9-]+}
+        end
         corrigrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+:[0-9]+/}
         warn "fetching #{code}..."
         result = search(code)
