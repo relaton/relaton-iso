@@ -32,6 +32,13 @@ module Isobib
       #   :keep_year if undated reference should return actual reference with year
       # @return [String] Relaton XML serialisation of reference
       def get(code, year, opts)
+        if year.nil?
+          /^(?<code1>[^:]+):(?<year1>[^:]+)$/ =~ code
+          unless code1.nil?
+            code = code1
+            year = year1
+          end
+        end
         code += '-1' if opts[:all_parts]
         return Iecbib::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR].match code
         ret = isobib_get1(code, year, opts)
@@ -75,11 +82,7 @@ module Isobib
       end
 
       def isobib_search_filter(code)
-        docidrx = if code =~ /:/
-          %r{^(ISO|IEC)[^0-9]*\s[0-9-]+:[0-9]+}
-        else
-          %r{^(ISO|IEC)[^0-9]*\s[0-9-]+}
-        end
+        docidrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+}
         corrigrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+:[0-9]+/}
         warn "fetching #{code}..."
         result = search(code)
