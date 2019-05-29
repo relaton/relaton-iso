@@ -1,30 +1,28 @@
 # frozen_string_literal: true
 
-# require 'isobib/iso_bibliographic_item'
-require 'isobib/scrapper'
-require 'isobib/hit_pages'
-require 'iecbib'
+# require 'relaton_iso/iso_bibliographic_item'
+require "relaton_iso/scrapper"
+require "relaton_iso/hit_pages"
+require "relaton_iec"
 
-module Isobib
+module RelatonIso
   # Class methods for search ISO standards.
   class IsoBibliography
     class << self
       # @param text [String]
-      # @return [Isobib::HitPages]
+      # @return [RelatonIso::HitPages]
       def search(text)
-        begin
-          HitPages.new text
-        rescue
-          warn "Could not access http://www.iso.org"
-          []
-        end
+        HitPages.new text
+      rescue Algolia::AlgoliaProtocolError
+        warn "Could not access http://www.iso.org"
+        []
       end
 
       # @param text [String]
-      # @return [Array<IsoBibliographicItem>]
-      def search_and_fetch(text)
-        Scrapper.get(text)
-      end
+      # @return [Array<RelatonIso::IsoBibliographicItem>]
+      # def search_and_fetch(text)
+      #   Scrapper.get(text)
+      # end
 
       # @param code [String] the ISO standard Code to look up (e..g "ISO 9000")
       # @param year [String] the year the standard was published (optional)
@@ -39,8 +37,9 @@ module Isobib
             year = year1
           end
         end
-        code += '-1' if opts[:all_parts]
+        code += "-1" if opts[:all_parts]
         return Iecbib::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR].match code
+
         ret = isobib_get1(code, year, opts)
         if ret.nil? && code =~ %r[^ISO\s]
           c = code.gsub "ISO", "ISO/IEC"
@@ -74,7 +73,7 @@ module Isobib
       end
 
       def fetch_pages(s, n)
-        workers = WorkersPool.new n
+        workers = RelatonBib::WorkersPool.new n
         workers.worker { |w| { i: w[:i], hit: w[:hit].fetch } }
         s.each_with_index { |hit, i| workers << { i: i, hit: hit } }
         workers.end
@@ -90,14 +89,14 @@ module Isobib
           ret = page.select do |i|
             i.hit["title"] &&
               i.hit["title"].match(docidrx).to_s == code &&
-              !(corrigrx =~ i.hit["title"])
+              corrigrx !~ i.hit["title"]
           end
           return ret unless ret.empty?
         end
         []
       end
 
-      # Sort through the results from Isobib, fetching them three at a time,
+      # Sort through the results from RelatonIso, fetching them three at a time,
       # and return the first result that matches the code,
       # matches the year (if provided), and which # has a title (amendments do not).
       # Only expects the first page of results to be populated.
@@ -106,11 +105,13 @@ module Isobib
       def isobib_results_filter(result, year)
         missed_years = []
         result.each_slice(3) do |s| # ISO website only allows 3 connections
-          fetch_pages(s, 3).each_with_index do |r, i|
+          fetch_pages(s, 3).each_with_index do |r, _i|
             next if r.nil?
             return { ret: r } if !year
+
             r.dates.select { |d| d.type == "published" }.each do |d|
               return { ret: r } if year.to_i == d.on.year
+
               missed_years << d.on.year
             end
           end
@@ -118,11 +119,12 @@ module Isobib
         { years: missed_years }
       end
 
-      def isobib_get1(code, year, opts)
+      def isobib_get1(code, year, _opts)
         # return iev(code) if /^IEC 60050-/.match code
-        result = isobib_search_filter(code) or return nil
+        result = isobib_search_filter(code) || return
         ret = isobib_results_filter(result, year)
         return ret[:ret] if ret[:ret]
+
         fetch_ref_err(code, year, ret[:years])
       end
     end

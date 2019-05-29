@@ -1,18 +1,18 @@
 require "relaton/processor"
 
 module Relaton
-  module Isobib
+  module RelatonIso
     class Processor < Relaton::Processor
 
       def initialize
-        @short = :isobib
+        @short = :relaton_iso
         @prefix = "ISO"
         @defaultprefix = %r{^(ISO)[ /]}
         @idtype = "ISO"
       end
 
       def get(code, date, opts)
-        ::Isobib::IsoBibliography.get(code, date, opts)
+        ::RelatonIso::IsoBibliography.get(code, date, opts)
       end
 
       def from_xml(xml)

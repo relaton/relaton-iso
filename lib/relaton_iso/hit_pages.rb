@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'algoliasearch'
-require 'isobib/hit_collection'
+require "algoliasearch"
+require "relaton_iso/hit_collection"
 
-module Isobib
+module RelatonIso
   # Pages of hits.
   class HitPages < Array
-    Algolia.init application_id: 'JCL49WV5AR',
-                 api_key: 'dd1b9e1ab383f4d4817d29cd5e96d3f0'
+    Algolia.init application_id: "JCL49WV5AR",
+                 api_key: "dd1b9e1ab383f4d4817d29cd5e96d3f0"
 
     # @return [String]
     attr_reader :text
@@ -15,22 +15,23 @@ module Isobib
     # @param text [String]
     def initialize(text)
       @text = text
-      @index = Algolia::Index.new 'all_en'
-      resp = @index.search(text, facetFilters: ['category:standard'])
-      @nb_pages = resp['nbPages']
-      self << HitCollection.new(resp['hits'], self)
+      @index = Algolia::Index.new "all_en"
+      resp = @index.search(text, facetFilters: ["category:standard"])
+      @nb_pages = resp["nbPages"]
+      self << HitCollection.new(resp["hits"], self)
     end
 
-    # @return [Isobib::HitCollection]
+    # @return [RelatonIso::HitCollection]
     def last
       collection(@nb_pages - 1)
     end
 
     # @param i [Integer]
-    # @return [Isobib::HitCollection]
+    # @return [RelatonIso::HitCollection]
     def [](idx)
       # collection i
       return if idx + 1 > @nb_pages
+
       collection idx
       super
     end
@@ -64,12 +65,12 @@ module Isobib
       @nb_pages
     end
 
-    def to_xml
-      builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
+    def to_xml(**opts)
+      builder = Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
         xml.documents do
           each do |page|
             page.fetch
-            page.each { |hit| hit.to_xml xml }
+            page.each { |hit| hit.to_xml xml, **opts }
           end
         end
       end
@@ -79,14 +80,15 @@ module Isobib
     private
 
     # @param i [Integer]
-    # @return [Isobib::HitCollection]
+    # @return [RelatonIso::HitCollection]
     def collection(idx)
       return if idx + 1 > @nb_pages
+
       while Array.instance_method(:size).bind(self).call < idx + 1
         resp = @index.search(@text,
-                             facetFilters: ['category:standard'],
-                             page:         idx)
-        self << HitCollection.new(resp['hits'], self)
+                             facetFilters: ["category:standard"],
+                             page: idx)
+        self << HitCollection.new(resp["hits"], self)
       end
       Array.instance_method(:[]).bind(self).call idx
     end
