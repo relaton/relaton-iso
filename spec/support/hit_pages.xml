@@ -80,17 +80,17 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem>
+      <bibitem id="ISO19115-2003">
         <formattedref format="text/plain">ISO 19115:2003</formattedref>
       </bibitem>
     </relation>
     <relation type="obsoletes">
-      <bibitem>
+      <bibitem id="ISO19115-2003/Cor1-2006">
         <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
       </bibitem>
     </relation>
     <relation type="updates">
-      <bibitem>
+      <bibitem id="ISO19115-1-2014/Amd1-2018">
         <formattedref format="text/plain">ISO 19115-1:2014/Amd 1:2018</formattedref>
       </bibitem>
     </relation>
@@ -138,7 +138,7 @@
       </owner>
     </copyright>
     <relation type="updates">
-      <bibitem>
+      <bibitem id="ISO19115-2">
         <formattedref format="text/plain">ISO 19115-2</formattedref>
       </bibitem>
     </relation>
@@ -184,7 +184,7 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem>
+      <bibitem id="ISO19115-2-2009">
         <formattedref format="text/plain">ISO 19115-2:2009</formattedref>
       </bibitem>
     </relation>
@@ -226,12 +226,12 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem>
+      <bibitem id="ISO19115-2003/Cor1-2006">
         <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
       </bibitem>
     </relation>
     <relation type="updates">
-      <bibitem>
+      <bibitem id="ISO19115-1-2014">
         <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
       </bibitem>
     </relation>
@@ -276,17 +276,17 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem>
+      <bibitem id="ISO19115-2003">
         <formattedref format="text/plain">ISO 19115:2003</formattedref>
       </bibitem>
     </relation>
     <relation type="updates">
-      <bibitem>
+      <bibitem id="ISO19115-2003/Cor1-2006">
         <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
       </bibitem>
     </relation>
     <relation type="updates">
-      <bibitem>
+      <bibitem id="ISO19115-1-2014">
         <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
       </bibitem>
     </relation>
@@ -383,7 +383,7 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem>
+      <bibitem id="ISO/DTS19139-1">
         <formattedref format="text/plain">ISO/DTS 19139-1</formattedref>
       </bibitem>
     </relation>
@@ -434,7 +434,7 @@
       </owner>
     </copyright>
     <relation type="updates">
-      <bibitem>
+      <bibitem id="ISO/TS19139-2-2012">
         <formattedref format="text/plain">ISO/TS 19139-2:2012</formattedref>
       </bibitem>
     </relation>

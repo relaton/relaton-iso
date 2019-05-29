@@ -41,7 +41,7 @@
     </owner>
   </copyright>
   <relation type="updates">
-    <bibitem>
+    <bibitem id="ISO19115-2">
       <formattedref format="text/plain">ISO 19115-2</formattedref>
     </bibitem>
   </relation>
