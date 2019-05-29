@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'isobib/hit'
+require "relaton_iso/hit"
 
-module Isobib
+module RelatonIso
   # Page of hit collection.
   class HitCollection < Array
     # @return [TrueClass, FalseClass]
     attr_reader :fetched
 
-    # @return [Isobib::HitPages]
+    # @return [RelatonIso::HitPages]
     attr_reader :hit_pages
 
     # @param hits [Array<Hash>]
@@ -18,9 +18,9 @@ module Isobib
       @hit_pages = hit_pages
     end
 
-    # @return [Isobib::HitCollection]
+    # @return [RelatonIso::HitCollection]
     def fetch
-      workers = WorkersPool.new 4
+      workers = RelatonBib::WorkersPool.new 4
       workers.worker(&:fetch)
       each do |hit|
         workers << hit
