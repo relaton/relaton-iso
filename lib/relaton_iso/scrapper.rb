@@ -61,6 +61,7 @@ module RelatonIso
         titles, abstract = fetch_titles_abstract(doc)
 
         RelatonIsoBib::IsoBibliographicItem.new(
+          fetched: Date.today.to_s,
           docid: fetch_docid(doc),
           edition: edition,
           language: langs(doc).map { |l| l[:lang] },

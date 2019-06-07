@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
   <bibitem id="ISO19115-1-2014/Amd1-2018">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"></title>
     <title type="main" format="text/plain" language="en" script="Latn"></title>
     <title type="title-main" format="text/plain" language="fr" script="Latn"></title>
@@ -38,6 +39,7 @@
     </copyright>
   </bibitem>
   <bibitem id="ISO19115-1-2014">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -96,6 +98,7 @@
     </relation>
   </bibitem>
   <bibitem id="ISO19115-2-2009">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -144,6 +147,7 @@
     </relation>
   </bibitem>
   <bibitem id="ISO19115-2">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -190,6 +194,7 @@
     </relation>
   </bibitem>
   <bibitem id="ISO19115-2003/Cor1-2006">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"></title>
     <title type="main" format="text/plain" language="en" script="Latn"></title>
     <title type="title-main" format="text/plain" language="fr" script="Latn"></title>
@@ -237,6 +242,7 @@
     </relation>
   </bibitem>
   <bibitem id="ISO19115-2003">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="main" format="text/plain" language="en" script="Latn">Metadata - Geographic information</title>
@@ -292,6 +298,7 @@
     </relation>
   </bibitem>
   <bibitem id="ISO/TS19115-3-2016">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -338,6 +345,7 @@
     </copyright>
   </bibitem>
   <bibitem id="ISO/TS19139-2007">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">XML schema implementation</title>
@@ -389,6 +397,7 @@
     </relation>
   </bibitem>
   <bibitem id="ISO/TS19139-2-2012">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">XML schema implementation -- Part 2: Extensions for imagery and gridded data</title>
@@ -440,6 +449,7 @@
     </relation>
   </bibitem>
   <bibitem id="ISO/TS19157-2-2016">
+    <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: XML schema implementation</title>

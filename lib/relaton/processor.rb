@@ -3,7 +3,6 @@ require "relaton/processor"
 module Relaton
   module RelatonIso
     class Processor < Relaton::Processor
-
       def initialize
         @short = :relaton_iso
         @prefix = "ISO"
@@ -16,7 +15,7 @@ module Relaton
       end
 
       def from_xml(xml)
-        IsoBibItem::XMLParser.from_xml xml
+        RelatonIsoBib::XMLParser.from_xml xml
       end
     end
   end
