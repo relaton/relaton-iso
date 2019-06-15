@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    relaton-iso (0.1.0)
+    relaton-iso (0.5.0)
       algoliasearch
-      relaton-iec (~> 0.1.0)
-      relaton-iso-bib (~> 0.1.0)
+      relaton-iec (~> 0.3.0)
+      relaton-iso-bib (~> 0.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -20,9 +20,9 @@ GEM
       safe_yaml (~> 1.0.0)
     debase (0.2.2)
       debase-ruby_core_source (>= 0.10.2)
-    debase-ruby_core_source (0.10.4)
+    debase-ruby_core_source (0.10.5)
     diff-lcs (1.3)
-    docile (1.3.1)
+    docile (1.3.2)
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
     hashdiff (0.4.0)
@@ -41,31 +41,31 @@ GEM
       pry (~> 0.10)
     public_suffix (3.1.0)
     rake (10.5.0)
-    relaton-bib (0.1.6)
+    relaton-bib (0.2.0)
       addressable
       nokogiri (~> 1.8.4)
-    relaton-iec (0.1.0)
+    relaton-iec (0.3.0)
       addressable
-      relaton-iso-bib (~> 0.1.0)
-    relaton-iso-bib (0.1.0)
+      relaton-iso-bib (~> 0.2.0)
+    relaton-iso-bib (0.2.0)
       isoics (~> 0.1.6)
       nokogiri (~> 1.8.4)
-      relaton-bib (~> 0.1.5)
+      relaton-bib (~> 0.2.0)
       ruby_deep_clone (~> 0.8.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
       rspec-mocks (~> 3.8.0)
-    rspec-core (3.8.0)
+    rspec-core (3.8.1)
       rspec-support (~> 3.8.0)
-    rspec-expectations (3.8.3)
+    rspec-expectations (3.8.4)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
-    rspec-mocks (3.8.0)
+    rspec-mocks (3.8.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
-    rspec-support (3.8.0)
-    ruby-debug-ide (0.6.1)
+    rspec-support (3.8.2)
+    ruby-debug-ide (0.7.0)
       rake (>= 0.8.1)
     ruby_deep_clone (0.8.0)
     safe_yaml (1.0.5)
@@ -75,10 +75,10 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
     vcr (5.0.0)
-    webmock (3.5.1)
+    webmock (3.6.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
-      hashdiff
+      hashdiff (>= 0.4.0, < 2.0.0)
 
 PLATFORMS
   ruby

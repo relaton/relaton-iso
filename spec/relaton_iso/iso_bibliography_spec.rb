@@ -74,7 +74,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     file_path = "spec/support/hit_pages.xml"
     File.write file_path, xml unless File.exist? file_path
     expect(xml).to be_equivalent_to(
-      File.read(file_path).sub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
+      File.read(file_path).gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
     )
   end
 
