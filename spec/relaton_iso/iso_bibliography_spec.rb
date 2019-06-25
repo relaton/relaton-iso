@@ -193,7 +193,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       mock_algolia 1
       mock_http_net 2
       results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
-      expect(results).to include %(<bibitem id="ISO19115-1">)
+      expect(results).to include %(<bibitem id="ISO19115-1" type="standard">)
       expect(results).to include %(<on>2014</on>)
       expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include %(<on>2014</on>)
       expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
@@ -212,7 +212,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       mock_algolia 1
       mock_http_net 2
       results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, keep_year: true).to_xml
-      expect(results).to include %(<bibitem id="ISO19115-1-2014">)
+      expect(results).to include %(<bibitem id="ISO19115-1-2014" type="standard">)
       expect(results.gsub(/<relation.*<\/relation>/m, "")).to include %(<on>2014</on>)
       expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
     end

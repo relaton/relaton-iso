@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
-  <bibitem id="ISO19115-1-2014/Amd1-2018">
+  <bibitem id="ISO19115-1-2014/Amd1-2018" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"></title>
     <title type="main" format="text/plain" language="en" script="Latn"></title>
@@ -38,7 +38,7 @@
       </owner>
     </copyright>
   </bibitem>
-  <bibitem id="ISO19115-1-2014">
+  <bibitem id="ISO19115-1-2014" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
@@ -82,22 +82,22 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem id="ISO19115-2003">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115:2003</formattedref>
       </bibitem>
     </relation>
     <relation type="obsoletes">
-      <bibitem id="ISO19115-2003/Cor1-2006">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
       </bibitem>
     </relation>
     <relation type="updates">
-      <bibitem id="ISO19115-1-2014/Amd1-2018">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-1:2014/Amd 1:2018</formattedref>
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem id="ISO19115-2-2009">
+  <bibitem id="ISO19115-2-2009" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
@@ -141,12 +141,12 @@
       </owner>
     </copyright>
     <relation type="updates">
-      <bibitem id="ISO19115-2">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-2</formattedref>
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem id="ISO19115-2">
+  <bibitem id="ISO19115-2" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
@@ -188,12 +188,12 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem id="ISO19115-2-2009">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-2:2009</formattedref>
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem id="ISO19115-2003/Cor1-2006">
+  <bibitem id="ISO19115-2003/Cor1-2006" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"></title>
     <title type="main" format="text/plain" language="en" script="Latn"></title>
@@ -231,17 +231,17 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem id="ISO19115-2003/Cor1-2006">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
       </bibitem>
     </relation>
     <relation type="updates">
-      <bibitem id="ISO19115-1-2014">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem id="ISO19115-2003">
+  <bibitem id="ISO19115-2003" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
@@ -282,22 +282,22 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem id="ISO19115-2003">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115:2003</formattedref>
       </bibitem>
     </relation>
     <relation type="updates">
-      <bibitem id="ISO19115-2003/Cor1-2006">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
       </bibitem>
     </relation>
     <relation type="updates">
-      <bibitem id="ISO19115-1-2014">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem id="ISO/TS19115-3-2016">
+  <bibitem id="ISO/TS19115-3-2016" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
@@ -344,7 +344,7 @@
       </owner>
     </copyright>
   </bibitem>
-  <bibitem id="ISO/TS19139-2007">
+  <bibitem id="ISO/TS19139-2007" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
@@ -391,12 +391,12 @@
       </owner>
     </copyright>
     <relation type="obsoletes">
-      <bibitem id="ISO/DTS19139-1">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO/DTS 19139-1</formattedref>
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem id="ISO/TS19139-2-2012">
+  <bibitem id="ISO/TS19139-2-2012" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
@@ -443,12 +443,12 @@
       </owner>
     </copyright>
     <relation type="updates">
-      <bibitem id="ISO/TS19139-2-2012">
+      <bibitem type="standard">
         <formattedref format="text/plain">ISO/TS 19139-2:2012</formattedref>
       </bibitem>
     </relation>
   </bibitem>
-  <bibitem id="ISO/TS19157-2-2016">
+  <bibitem id="ISO/TS19157-2-2016" type="standard">
     <fetched>2019-06-07</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>

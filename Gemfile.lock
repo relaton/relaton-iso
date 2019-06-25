@@ -41,13 +41,13 @@ GEM
       pry (~> 0.10)
     public_suffix (3.1.0)
     rake (10.5.0)
-    relaton-bib (0.2.0)
+    relaton-bib (0.2.2)
       addressable
       nokogiri (~> 1.8.4)
     relaton-iec (0.3.0)
       addressable
       relaton-iso-bib (~> 0.2.0)
-    relaton-iso-bib (0.2.0)
+    relaton-iso-bib (0.2.2)
       isoics (~> 0.1.6)
       nokogiri (~> 1.8.4)
       relaton-bib (~> 0.2.0)

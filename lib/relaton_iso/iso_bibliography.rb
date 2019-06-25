@@ -38,7 +38,7 @@ module RelatonIso
           end
         end
         code += "-1" if opts[:all_parts]
-        return Iecbib::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR].match code
+        return RelatonIec::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR].match code
 
         ret = isobib_get1(code, year, opts)
         if ret.nil? && code =~ %r[^ISO\s]
