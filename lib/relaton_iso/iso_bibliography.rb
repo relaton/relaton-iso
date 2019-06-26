@@ -13,9 +13,10 @@ module RelatonIso
       # @return [RelatonIso::HitPages]
       def search(text)
         HitPages.new text
-      rescue Algolia::AlgoliaProtocolError
-        warn "Could not access http://www.iso.org"
-        []
+      rescue Algolia::AlgoliaProtocolError, SocketError
+        # warn "Could not access http://www.iso.org"
+        # []
+        raise RelatonBib::RequestError, "Could not access http://www.iso.org"
       end
 
       # @param text [String]

@@ -176,11 +176,14 @@ module RelatonIso
         url = DOMAIN + path
         uri = URI url
         resp = Net::HTTP.get_response(uri) # .encode("UTF-8")
-        if resp.code == "301"
+        case resp.code
+        when "301"
           path = resp["location"]
           url = DOMAIN + path
           uri = URI url
           resp = Net::HTTP.get_response(uri) # .encode("UTF-8")
+        when "404"
+          raise RelatonBib::RequestError, "#{url} not found."
         end
         n = 0
         while resp.body !~ /<strong/ && n < 10
@@ -188,6 +191,9 @@ module RelatonIso
           n += 1
         end
         [Nokogiri::HTML(resp.body), url]
+      rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
+        raise RelatonBib::RequestError, "Could not access #{url}"
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 

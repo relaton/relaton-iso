@@ -10,7 +10,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     expect(algolia).to receive(:search).and_raise Algolia::AlgoliaProtocolError.new("404", "Not found")
     expect(Algolia::Index).to receive(:new).and_return algolia
     expect { RelatonIso::IsoBibliography.search "19155" }.
-      to output(/Could not access/).to_stderr
+      to raise_error RelatonBib::RequestError
   end
 
   it "return HitPages instance" do

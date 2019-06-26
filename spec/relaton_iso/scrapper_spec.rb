@@ -60,4 +60,22 @@ END_HTML
     expect(title[:title_main]).to eq "Main"
     expect(title[:title_part]).to eq "Part 1: Description"
   end
+
+  context "raises an error" do
+    it "could not access" do
+      expect(Net::HTTP).to receive(:get_response).and_raise SocketError
+      expect do
+        RelatonIso::Scrapper.parse_page("path" => "1234")
+      end.to raise_error RelatonBib::RequestError
+    end
+
+    it "not found" do
+      resp = double
+      expect(resp).to receive(:code).and_return "404"
+      expect(Net::HTTP).to receive(:get_response).and_return resp
+      expect do
+        RelatonIso::Scrapper.parse_page("path" => "1234")
+      end.to raise_error RelatonBib::RequestError
+    end
+  end
 end

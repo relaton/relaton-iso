@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    relaton-iso (0.5.0)
+    relaton-iso (0.5.1)
       algoliasearch
       relaton-iec (~> 0.3.0)
       relaton-iso-bib (~> 0.2.0)
@@ -39,15 +39,15 @@ GEM
     pry-byebug (3.7.0)
       byebug (~> 11.0)
       pry (~> 0.10)
-    public_suffix (3.1.0)
+    public_suffix (3.1.1)
     rake (10.5.0)
-    relaton-bib (0.2.2)
+    relaton-bib (0.2.3)
       addressable
       nokogiri (~> 1.8.4)
     relaton-iec (0.3.0)
       addressable
       relaton-iso-bib (~> 0.2.0)
-    relaton-iso-bib (0.2.2)
+    relaton-iso-bib (0.2.3)
       isoics (~> 0.1.6)
       nokogiri (~> 1.8.4)
       relaton-bib (~> 0.2.0)
