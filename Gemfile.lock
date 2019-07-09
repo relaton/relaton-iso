@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    relaton-iso (0.5.1)
+    relaton-iso (0.5.2)
       algoliasearch
       relaton-iec (~> 0.3.0)
       relaton-iso-bib (~> 0.2.0)
@@ -44,7 +44,7 @@ GEM
     relaton-bib (0.2.3)
       addressable
       nokogiri (~> 1.8.4)
-    relaton-iec (0.3.0)
+    relaton-iec (0.3.1)
       addressable
       relaton-iso-bib (~> 0.2.0)
     relaton-iso-bib (0.2.3)
