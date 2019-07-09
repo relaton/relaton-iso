@@ -70,7 +70,7 @@ module RelatonIso
           type: fetch_type(hit_data["title"]),
           docstatus: fetch_status(doc, hit_data["status"]),
           ics: fetch_ics(doc),
-          dates: fetch_dates(doc),
+          dates: fetch_dates(doc, hit_data["title"]),
           contributors: fetch_contributors(hit_data["title"]),
           editorialgroup: fetch_workgroup(doc),
           abstract: abstract,
@@ -341,19 +341,33 @@ module RelatonIso
         end
       end
 
+      # rubocop:disable Metrics/MethodLength
       # Fetch dates
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
-      def fetch_dates(doc)
+      def fetch_dates(doc, title)
         dates = []
-        publish_date = doc.xpath("//span[@itemprop='releaseDate']").text
-        unless publish_date.empty?
-          dates << { type: "published", on: publish_date }
+        %r{^[^\s]+\s[\d-]+:(?<ref_date_str>\d{4})} =~ title
+        pub_date_str = doc.xpath("//span[@itemprop='releaseDate']").text
+        if ref_date_str
+          ref_date = Date.strptime ref_date_str, "%Y"
+          if pub_date_str.empty?
+            dates << { type: "published", on: ref_date_str }
+          else
+            pub_date = Date.strptime pub_date_str, "%Y"
+            if pub_date.year > ref_date.year
+              dates << { type: "published", on: ref_date_str }
+              dates << { type: "updated", on: pub_date_str }
+            else
+              dates << { type: "published", on: pub_date_str }
+            end
+          end
+        elsif !pub_date_str.empty?
+          dates << { type: "published", on: pub_date_str }
         end
         dates
       end
 
-      # rubocop:disable Metrics/MethodLength
       def fetch_contributors(title)
         title.sub(/\s.*/, "").split("/").map do |abbrev|
           case abbrev
@@ -408,20 +422,6 @@ module RelatonIso
         { owner: { name: owner_name }, from: from }
       end
     end
-
-    # private
-    #
-    # def next_hits_page(next_page)
-    #   page = @index.search @text, facetFilters: ['category:standard'],
-    #                               page:         next_page
-    #   page.each do |key, value|
-    #     if key == 'hits'
-    #       @docs[key] += value
-    #     else
-    #       @docs[key] = value
-    #     end
-    #   end
-    # end
   end
   # rubocop:enable Metrics/ModuleLength
 end

@@ -31,8 +31,15 @@ module RelatonIso
       #   :keep_year if undated reference should return actual reference with year
       # @return [String] Relaton XML serialisation of reference
       def get(code, year, opts)
+        %r{
+          ^(?<code1>[^\s]+\s[^/]+) # match code
+          /?
+          (?<corr>(Amd|CD Amd|Cor|CD Cor)\s\d+:?(\d{4})?(/Cor \d+:\d{4})?) # match correction
+        }x =~ code
+        code = code1 if code1
+
         if year.nil?
-          /^(?<code1>[^:]+):(?<year1>[^:]+)$/ =~ code
+          /^(?<code1>[^\s]+\s[\d-]+):?(?<year1>\d{4})?/ =~ code
           unless code1.nil?
             code = code1
             year = year1
@@ -41,11 +48,11 @@ module RelatonIso
         code += "-1" if opts[:all_parts]
         return RelatonIec::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR].match code
 
-        ret = isobib_get1(code, year, opts)
+        ret = isobib_get1(code, year, corr)
         if ret.nil? && code =~ %r[^ISO\s]
           c = code.gsub "ISO", "ISO/IEC"
           warn "Attempting ISO/IEC retrieval"
-          ret = isobib_get1(c, year, opts)
+          ret = isobib_get1(c, year, corr)
         end
         return nil if ret.nil?
 
@@ -81,20 +88,24 @@ module RelatonIso
         workers.result.sort { |x, y| x[:i] <=> y[:i] }.map { |x| x[:hit] }
       end
 
-      def isobib_search_filter(code)
-        docidrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+}
-        corrigrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+:[0-9]+/}
+      def isobib_search_filter(code, corr)
+        # docidrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+}
+        # corrigrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+:[0-9]+/}
         warn "fetching #{code}..."
         result = search(code)
-        result.each do |page|
-          ret = page.select do |i|
+        result.reduce([]) do |ret, page|
+          ret += page.select do |i|
             i.hit["title"] &&
-              i.hit["title"].match(docidrx).to_s == code &&
-              corrigrx !~ i.hit["title"]
+              i.hit["title"] =~ %r{^#{code}} && (
+                corr && %r{^#{code}[d-]*(:\d{4})?/#{corr}} =~ i.hit["title"] ||
+                %r{^#{code}[\d-]*(:\d{4})?/} !~ i.hit["title"] && !corr
+              )
           end
-          return ret unless ret.empty?
+          return ret if ret.size > 9
+
+          ret
         end
-        []
+        # []
       end
 
       # Sort through the results from RelatonIso, fetching them three at a time,
@@ -120,9 +131,9 @@ module RelatonIso
         { years: missed_years }
       end
 
-      def isobib_get1(code, year, _opts)
+      def isobib_get1(code, year, corr)
         # return iev(code) if /^IEC 60050-/.match code
-        result = isobib_search_filter(code) || return
+        result = isobib_search_filter(code, corr) || return
         ret = isobib_results_filter(result, year)
         return ret[:ret] if ret[:ret]
 

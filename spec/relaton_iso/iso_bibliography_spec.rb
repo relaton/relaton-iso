@@ -146,7 +146,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return dates" do
-      expect(isobib_item.dates.length).to eq 1
+      expect(isobib_item.dates.length).to eq 2
       expect(isobib_item.dates.first.type).to eq "published"
       expect(isobib_item.dates.first.on).to be_instance_of Time
     end
@@ -190,79 +190,95 @@ RSpec.describe RelatonIso::IsoBibliography do
     let(:hit_pages) { RelatonIso::IsoBibliography.search("19115") }
 
     it "gets a code" do
-      mock_algolia 1
-      mock_http_net 2
-      results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
-      expect(results).to include %(<bibitem id="ISO19115-1" type="standard">)
-      expect(results).to include %(<on>2014</on>)
-      expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include %(<on>2014</on>)
-      expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
-      expect(results).not_to include %(<docidentifier type="ISO">ISO 19115</docidentifier>)
+      VCR.use_cassette "iso_19119_1" do
+        results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
+        expect(results).to include %(<bibitem id="ISO19115-1" type="standard">)
+        expect(results).to include %(<on>2014</on>)
+        expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include %(<on>2014</on>)
+        expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+        expect(results).not_to include %(<docidentifier type="ISO">ISO 19115</docidentifier>)
+      end
     end
 
     it "gets an all-parts code" do
-      mock_algolia 1
-      mock_http_net 2
-      results = RelatonIso::IsoBibliography.get("ISO 19115", nil, all_parts: true).to_xml bibdata: true
-      expect(results).to include %(<project-number>ISO 19115 (all parts)</project-number>)
-      expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+      VCR.use_cassette "iso_19115" do
+        results = RelatonIso::IsoBibliography.get("ISO 19115", nil, all_parts: true).to_xml bibdata: true
+        expect(results).to include %(<project-number>ISO 19115 (all parts)</project-number>)
+        expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+      end
     end
 
     it "gets a keep-year code" do
-      mock_algolia 1
-      mock_http_net 2
-      results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, keep_year: true).to_xml
-      expect(results).to include %(<bibitem id="ISO19115-1-2014" type="standard">)
-      expect(results.gsub(/<relation.*<\/relation>/m, "")).to include %(<on>2014</on>)
-      expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+      VCR.use_cassette "iso_19115_1" do
+        results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, keep_year: true).to_xml
+        expect(results).to include %(<bibitem id="ISO19115-1-2014" type="standard">)
+        expect(results.gsub(/<relation.*<\/relation>/m, "")).to include %(<on>2014</on>)
+        expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+      end
     end
 
     it "gets a code and year successfully" do
-      mock_algolia 2
-      mock_http_net 2
-      results = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {}).to_xml
-      expect(results).to include %(<on>2003</on>)
-      expect(results).not_to include %(<docidentifier type="ISO">ISO 19115-1:2003</docidentifier>)
-      expect(results).to include %(<docidentifier type="ISO">ISO 19115:2003</docidentifier>)
+      VCR.use_cassette "iso_19115_2003" do
+        results = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {}).to_xml
+        expect(results).to include %(<on>2003</on>)
+        expect(results).not_to include %(<docidentifier type="ISO">ISO 19115-1:2003</docidentifier>)
+        expect(results).to include %(<docidentifier type="ISO">ISO 19115:2003</docidentifier>)
+      end
     end
 
     it "gets reference with an year in a code" do
-      mock_algolia 1
-      mock_http_net 2
-      results = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {}).to_xml
-      expect(results).to include %(<on>2014</on>)
+      VCR.use_cassette "iso_19115_1_2014" do
+        results = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {}).to_xml
+        expect(results).to include %(<on>2014</on>)
+      end
     end
 
     it "gets a code and year unsuccessfully" do
-      mock_algolia 4
-      mock_http_net 2
-      results = RelatonIso::IsoBibliography.get("ISO 19115", "2014", {})
-      expect(results).to be nil
+      VCR.use_cassette "iso_19115_2015" do
+        results = RelatonIso::IsoBibliography.get("ISO 19115", "2015", {})
+        expect(results).to be nil
+      end
     end
 
     it "warns when a code matches a resource but the year does not" do
-      mock_algolia 4
-      mock_http_net 2
-      expect { RelatonIso::IsoBibliography.get("ISO 19115", "2014", {}) }.
-        to output(/There was no match for 2014, though there were matches found for 2003/).to_stderr 
+      VCR.use_cassette "1so_19115_2015" do
+        expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }.
+          to output(/There was no match for 2015, though there were matches found for 2019/).to_stderr 
+      end
     end
 
     it "warns when resource with part number not found on ISO website" do
-      mock_algolia 4
-      expect { RelatonIso::IsoBibliography.get("ISO 19115-30", "2014", {}) }.
-        to output(/The provided document part may not exist, or the document may no longer be published in parts/).to_stderr 
+      VCR.use_cassette "iso_19115_30_2014" do
+        expect { RelatonIso::IsoBibliography.get("ISO 19115-30", "2014", {}) }.
+          to output(/The provided document part may not exist, or the document may no longer be published in parts/).to_stderr 
+      end
     end
 
     it "warns when resource without part number not found on ISO website" do
-      mock_algolia 4
-      expect { RelatonIso::IsoBibliography.get("ISO 00000", "2014", {}) }.
-        to output(/If you wanted to cite all document parts for the reference/).to_stderr
+      VCR.use_cassette "iso_00000_2014" do
+        expect { RelatonIso::IsoBibliography.get("ISO 00000", "2014", {}) }.
+          to output(/If you wanted to cite all document parts for the reference/).to_stderr
+      end
     end
 
     it "search ISO/IEC if search ISO failed" do
-      VCR.use_cassette("iso_2382") do
+      VCR.use_cassette("iso_2382_2015") do
         result = RelatonIso::IsoBibliography.get("ISO 2382", "2015", {})
         expect(result).not_to be nil
+      end
+    end
+
+    it "fetch correction" do
+      VCR.use_cassette "iso_19110_amd_1_2011" do
+        result = RelatonIso::IsoBibliography.get("ISO 19110/Amd 1:2011", nil, {})
+        expect(result.docidentifier.first.id).to eq "ISO 19110/Amd 1:2011"
+      end
+    end
+
+    it "fetch ISO/IEC/IEEE" do
+      VCR.use_cassette "iso_iec_ieee_9945_2009" do
+        result = RelatonIso::IsoBibliography.get("ISO/IEC/IEEE 9945:2009", nil, {})
+        expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945:2009"
       end
     end
   end

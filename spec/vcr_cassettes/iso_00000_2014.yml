@@ -1,0 +1,135 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
+    body:
+      encoding: UTF-8
+      string: '{"params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO+00000"}'
+    headers:
+      User-Agent:
+      - Algolia for Ruby (1.26.0); Ruby (2.4.0)
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip,deflate
+      Date:
+      - Mon, 08 Jul 2019 11:41:20 GMT
+      X-Algolia-Api-Key:
+      - dd1b9e1ab383f4d4817d29cd5e96d3f0
+      X-Algolia-Application-Id:
+      - JCL49WV5AR
+      Content-Type:
+      - application/json; charset=utf-8
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 08 Jul 2019 11:41:20 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Alg-Pt:
+      - '1'
+      Accept-Encoding:
+      - deflate, gzip
+      Access-Control-Allow-Origin:
+      - "*"
+      Timing-Allow-Origin:
+      - "*"
+      Cache-Control:
+      - no-cache
+      X-Content-Type-Options:
+      - nosniff
+      Content-Disposition:
+      - inline; filename=a.txt
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: UTF-8
+      string: '{"hits":[{"category":"standard","path":"/sites/isoorg/contents/data/standard/03/64/36442","uuid":"93929ff9-7de2-4b17-9623-216dc6d0eeaa","title":"ISO
+        10062:2006 Corrosion tests in artificial atmosphere at very low concentrations
+        of polluting gas(es)","status":"Published","year":2014,"order":11,"text":"ISO
+        10062:2006 specifies tests which are intended to determine the influence of
+        one or more flowing polluting gas(es) at volume fractions less than or equal
+        to 0,000001 on test samples and/or articles of metals and alloys with or without
+        corrosion protection under determined conditions of temperature and relative
+        humidity. These tests apply to metals and their alloys, metallic coatings
+        (anodic and cathodic), metals with conversion coatings, metals with anodic
+        oxide coatings, and metals with organic coatings. ","objectID":"36442_0","_highlightResult":{"title":{"value":"<em>ISO</em>
+        10062:2006 Corrosion tests in artificial atmosphere at very low concentrations
+        of polluting gas(es)","matchLevel":"partial","fullyHighlighted":false,"matchedWords":["iso"]},"text":{"value":"<em>ISO</em>
+        10062:2006 specifies tests which are intended to determine the influence of
+        one or more flowing polluting gas(es) at volume fractions less than or equal
+        to 0,<em>00000</em>1 on test samples and/or articles of metals and alloys
+        with or without corrosion protection under determined conditions of temperature
+        and relative humidity. These tests apply to metals and their alloys, metallic
+        coatings (anodic and cathodic), metals with conversion coatings, metals with
+        anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}}],"nbHits":1,"page":0,"nbPages":1,"hitsPerPage":20,"processingTimeMS":1,"exhaustiveNbHits":true,"query":"ISO
+        00000","params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO+00000"}'
+    http_version: 
+  recorded_at: Mon, 08 Jul 2019 11:41:20 GMT
+- request:
+    method: post
+    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
+    body:
+      encoding: UTF-8
+      string: '{"params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO%2FIEC+00000"}'
+    headers:
+      User-Agent:
+      - Algolia for Ruby (1.26.0); Ruby (2.4.0)
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip,deflate
+      Date:
+      - Mon, 08 Jul 2019 11:41:20 GMT
+      X-Algolia-Api-Key:
+      - dd1b9e1ab383f4d4817d29cd5e96d3f0
+      X-Algolia-Application-Id:
+      - JCL49WV5AR
+      Content-Type:
+      - application/json; charset=utf-8
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 08 Jul 2019 11:41:20 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '207'
+      Connection:
+      - keep-alive
+      X-Alg-Pt:
+      - '1'
+      Accept-Encoding:
+      - deflate, gzip
+      Access-Control-Allow-Origin:
+      - "*"
+      Timing-Allow-Origin:
+      - "*"
+      Cache-Control:
+      - no-cache
+      X-Content-Type-Options:
+      - nosniff
+      Content-Disposition:
+      - inline; filename=a.txt
+    body:
+      encoding: UTF-8
+      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":20,"processingTimeMS":1,"exhaustiveNbHits":true,"query":"ISO/IEC
+        00000","params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO%2FIEC+00000"}'
+    http_version: 
+  recorded_at: Mon, 08 Jul 2019 11:41:20 GMT
+recorded_with: VCR 5.0.0
