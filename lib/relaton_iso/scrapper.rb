@@ -400,14 +400,14 @@ module RelatonIso
       # @param url [String]
       # @return [Array<Hash>]
       def fetch_link(doc, url)
-        obp_elms = doc.xpath("//a[contains(@href, '/obp/ui/')]")
-        obp = obp_elms.attr("href").value if obp_elms.any?
-        rss = DOMAIN + doc.xpath("//a[contains(@href, 'rss')]").attr("href").value
-        [
-          { type: "src", content: url },
-          { type: "obp", content: obp },
-          { type: "rss", content: rss },
-        ]
+        links = [{ type: "src", content: url }]
+        obp = doc.at("//a[contains(@href, '/obp/ui/')]")
+        links << { type: "obp", content: obp[:href] } if obp
+        rss = doc.at("//a[contains(@href, 'rss')]")
+        links << { type: "rss", content: DOMAIN + rss[:href] } if rss
+        pub = doc.at "//p[contains(., 'publicly available')]/a"
+        links << { type: "pub", content: pub[:href] } if pub
+        links
       end
 
       # Fetch copyright.

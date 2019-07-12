@@ -281,6 +281,13 @@ RSpec.describe RelatonIso::IsoBibliography do
         expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945:2009"
       end
     end
+
+    it "fetch public guide" do
+      VCR.use_cassette "iso_guide_82_2014" do
+        result = RelatonIso::IsoBibliography.get "ISO Guide 82:2014", nil, {}
+        expect(result.link.detect { |l| l.type == "pub" }.content.to_s).to include "http://isotc.iso.org/livelink/livelink"
+      end
+    end
   end
 
   private
