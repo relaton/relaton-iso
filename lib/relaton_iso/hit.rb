@@ -29,15 +29,12 @@ module RelatonIso
 
     # @return [String]
     def inspect
-      matched_words = @hit["_highlightResult"].
-        reduce([]) { |a, (_k, v)| a + v["matchedWords"] }.uniq
+      # matched_words = @hit["_highlightResult"].
+      #   reduce([]) { |a, (_k, v)| a + v["matchedWords"] }.uniq
 
       "<#{self.class}:#{format('%#.14x', object_id << 1)} "\
-      "@text=\"#{@hit_collection&.hit_pages&.text}\" "\
-      "@fullIdentifier=\"#{@fetch&.shortref}\" "\
-      "@matchedWords=#{matched_words} "\
-      "@category=\"#{@hit['category']}\" "\
-      "@title=\"#{@hit['title']}\">"
+      "@text=\"#{@hit_collection&.ref}\" "\
+      "@reference=\"#{@hit["docRef"]}\""
     end
 
     # @param builder [Nokogiri::XML::Builder]

@@ -35,30 +35,45 @@ RSpec.describe RelatonIso::Scrapper do
   end
 
   it "returns title main only" do
-    doc = Nokogiri::HTML <<END_HTML
+    doc = Nokogiri::HTML <<~END_HTML
       <html>
         <body>
           <h3 itemprop="description">Main</h3>
         </body>
       </html>
-END_HTML
+    END_HTML
 
     title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
     expect(title[:title_main]).to eq "Main"
   end
 
   it "returns title main and part" do
-    doc = Nokogiri::HTML <<END_HTML
+    doc = Nokogiri::HTML <<~END_HTML
       <html>
         <body>
           <h3 itemprop="description">Main -- Part 1: Description</h3>
         </body>
       </html>
-END_HTML
+    END_HTML
 
     title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
     expect(title[:title_main]).to eq "Main"
     expect(title[:title_part]).to eq "Part 1: Description"
+  end
+
+  it "returns 4 parts of title" do
+    doc = Nokogiri::HTML <<~END_HTML
+      <html>
+        <body>
+          <h3 itemprop="description">Main -- Part 1: Description -- Fird -- Fourth</h3>
+        </body>
+      </html>
+    END_HTML
+
+    title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
+    expect(title[:title_intro]).to eq "Main"
+    expect(title[:title_main]).to eq "Part 1: Description"
+    expect(title[:title_part]).to eq "Fird -- Fourth"
   end
 
   context "raises an error" do

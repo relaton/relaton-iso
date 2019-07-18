@@ -1,135 +1,87 @@
 ---
 http_interactions:
 - request:
-    method: post
-    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
+    method: get
+    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=00000&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
     body:
-      encoding: UTF-8
-      string: '{"params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO+00000"}'
+      encoding: US-ASCII
+      string: ''
     headers:
-      User-Agent:
-      - Algolia for Ruby (1.26.0); Ruby (2.4.0)
       Accept:
-      - "*/*"
+      - application/json, text/plain, */*
       Accept-Encoding:
-      - gzip,deflate
-      Date:
-      - Mon, 08 Jul 2019 11:41:20 GMT
-      X-Algolia-Api-Key:
-      - dd1b9e1ab383f4d4817d29cd5e96d3f0
-      X-Algolia-Application-Id:
-      - JCL49WV5AR
-      Content-Type:
-      - application/json; charset=utf-8
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
   response:
     status:
       code: 200
       message: OK
     headers:
       Server:
-      - nginx
-      Date:
-      - Mon, 08 Jul 2019 11:41:20 GMT
-      Content-Type:
-      - application/json; charset=UTF-8
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      X-Alg-Pt:
-      - '1'
-      Accept-Encoding:
-      - deflate, gzip
-      Access-Control-Allow-Origin:
-      - "*"
-      Timing-Allow-Origin:
-      - "*"
+      - Apache-Coyote/1.1
+      Expires:
+      - Wed, 09 May 1979 05:30:00 GMT
       Cache-Control:
+      - no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0
+      Pragma:
       - no-cache
-      X-Content-Type-Options:
-      - nosniff
-      Content-Disposition:
-      - inline; filename=a.txt
-      Content-Encoding:
-      - gzip
-    body:
-      encoding: UTF-8
-      string: '{"hits":[{"category":"standard","path":"/sites/isoorg/contents/data/standard/03/64/36442","uuid":"93929ff9-7de2-4b17-9623-216dc6d0eeaa","title":"ISO
-        10062:2006 Corrosion tests in artificial atmosphere at very low concentrations
-        of polluting gas(es)","status":"Published","year":2014,"order":11,"text":"ISO
-        10062:2006 specifies tests which are intended to determine the influence of
-        one or more flowing polluting gas(es) at volume fractions less than or equal
-        to 0,000001 on test samples and/or articles of metals and alloys with or without
-        corrosion protection under determined conditions of temperature and relative
-        humidity. These tests apply to metals and their alloys, metallic coatings
-        (anodic and cathodic), metals with conversion coatings, metals with anodic
-        oxide coatings, and metals with organic coatings. ","objectID":"36442_0","_highlightResult":{"title":{"value":"<em>ISO</em>
-        10062:2006 Corrosion tests in artificial atmosphere at very low concentrations
-        of polluting gas(es)","matchLevel":"partial","fullyHighlighted":false,"matchedWords":["iso"]},"text":{"value":"<em>ISO</em>
-        10062:2006 specifies tests which are intended to determine the influence of
-        one or more flowing polluting gas(es) at volume fractions less than or equal
-        to 0,<em>00000</em>1 on test samples and/or articles of metals and alloys
-        with or without corrosion protection under determined conditions of temperature
-        and relative humidity. These tests apply to metals and their alloys, metallic
-        coatings (anodic and cathodic), metals with conversion coatings, metals with
-        anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}}],"nbHits":1,"page":0,"nbPages":1,"hitsPerPage":20,"processingTimeMS":1,"exhaustiveNbHits":true,"query":"ISO
-        00000","params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO+00000"}'
-    http_version: 
-  recorded_at: Mon, 08 Jul 2019 11:41:20 GMT
-- request:
-    method: post
-    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
-    body:
-      encoding: UTF-8
-      string: '{"params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO%2FIEC+00000"}'
-    headers:
-      User-Agent:
-      - Algolia for Ruby (1.26.0); Ruby (2.4.0)
-      Accept:
-      - "*/*"
-      Accept-Encoding:
-      - gzip,deflate
-      Date:
-      - Mon, 08 Jul 2019 11:41:20 GMT
-      X-Algolia-Api-Key:
-      - dd1b9e1ab383f4d4817d29cd5e96d3f0
-      X-Algolia-Application-Id:
-      - JCL49WV5AR
+      Set-Cookie:
+      - BIGipServerpool_prod_iso_www-jahia=419647882.36895.0000; path=/
+      - JSESSIONID=480419A13807A128BBAEAA3D7B765543; Path=/; HttpOnly
       Content-Type:
-      - application/json; charset=utf-8
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Mon, 08 Jul 2019 11:41:20 GMT
-      Content-Type:
-      - application/json; charset=UTF-8
+      - application/json;charset=UTF-8
       Content-Length:
-      - '207'
-      Connection:
-      - keep-alive
-      X-Alg-Pt:
-      - '1'
-      Accept-Encoding:
-      - deflate, gzip
-      Access-Control-Allow-Origin:
-      - "*"
-      Timing-Allow-Origin:
-      - "*"
-      Cache-Control:
-      - no-cache
-      X-Content-Type-Options:
-      - nosniff
-      Content-Disposition:
-      - inline; filename=a.txt
+      - '16'
+      Date:
+      - Tue, 16 Jul 2019 12:05:52 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
-      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":20,"processingTimeMS":1,"exhaustiveNbHits":true,"query":"ISO/IEC
-        00000","params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO%2FIEC+00000"}'
+      string: '{"standards":[]}'
     http_version: 
-  recorded_at: Mon, 08 Jul 2019 11:41:20 GMT
+  recorded_at: Tue, 16 Jul 2019 12:05:52 GMT
+- request:
+    method: get
+    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=00000&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Apache-Coyote/1.1
+      Expires:
+      - Wed, 09 May 1979 05:30:00 GMT
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - BIGipServerpool_prod_iso_www-jahia=419647882.36895.0000; path=/
+      - JSESSIONID=582B94E052BF247B0F61B5662A44F52A; Path=/; HttpOnly
+      Content-Type:
+      - application/json;charset=UTF-8
+      Content-Length:
+      - '16'
+      Date:
+      - Tue, 16 Jul 2019 12:05:52 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: '{"standards":[]}'
+    http_version: 
+  recorded_at: Tue, 16 Jul 2019 12:05:53 GMT
 recorded_with: VCR 5.0.0

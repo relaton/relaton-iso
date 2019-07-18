@@ -38,7 +38,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "vcr"
   spec.add_development_dependency "webmock"
 
-  spec.add_dependency "algoliasearch"
   spec.add_dependency "relaton-iec", "~> 0.3.0"
   spec.add_dependency "relaton-iso-bib", "~> 0.2.0"
 end

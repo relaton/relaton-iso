@@ -2,7 +2,7 @@
 
 # require 'relaton_iso/iso_bibliographic_item'
 require "relaton_iso/scrapper"
-require "relaton_iso/hit_pages"
+require "relaton_iso/hit_collection"
 require "relaton_iec"
 
 module RelatonIso
@@ -12,10 +12,9 @@ module RelatonIso
       # @param text [String]
       # @return [RelatonIso::HitPages]
       def search(text)
-        HitPages.new text
-      rescue Algolia::AlgoliaProtocolError, SocketError
-        # warn "Could not access http://www.iso.org"
-        # []
+        HitCollection.new text
+      rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError
         raise RelatonBib::RequestError, "Could not access http://www.iso.org"
       end
 
@@ -34,7 +33,7 @@ module RelatonIso
         %r{
           ^(?<code1>[^\s]+\s[^/]+) # match code
           /?
-          (?<corr>(Amd|CD Amd|Cor|CD Cor)\s\d+:?(\d{4})?(/Cor \d+:\d{4})?) # match correction
+          (?<corr>(Amd|DAmd|CD Amd|Cor|CD Cor)\s\d+:?(\d{4})?(/Cor \d+:\d{4})?) # match correction
         }x =~ code
         code = code1 if code1
 
@@ -46,14 +45,9 @@ module RelatonIso
           end
         end
         code += "-1" if opts[:all_parts]
-        return RelatonIec::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR].match code
+        return RelatonIec::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR] =~ code
 
         ret = isobib_get1(code, year, corr)
-        if ret.nil? && code =~ %r[^ISO\s]
-          c = code.gsub "ISO", "ISO/IEC"
-          warn "Attempting ISO/IEC retrieval"
-          ret = isobib_get1(c, year, corr)
-        end
         return nil if ret.nil?
 
         ret.to_most_recent_reference unless year || opts[:keep_year]
@@ -80,32 +74,63 @@ module RelatonIso
         nil
       end
 
-      def fetch_pages(s, n)
-        workers = RelatonBib::WorkersPool.new n
-        workers.worker { |w| { i: w[:i], hit: w[:hit].fetch } }
-        s.each_with_index { |hit, i| workers << { i: i, hit: hit } }
-        workers.end
-        workers.result.sort { |x, y| x[:i] <=> y[:i] }.map { |x| x[:hit] }
-      end
+      # def fetch_pages(s, n)
+      #   workers = RelatonBib::WorkersPool.new n
+      #   workers.worker { |w| { i: w[:i], hit: w[:hit].fetch } }
+      #   s.each_with_index { |hit, i| workers << { i: i, hit: hit } }
+      #   workers.end
+      #   workers.result.sort { |x, y| x[:i] <=> y[:i] }.map { |x| x[:hit] }
+      # end
 
+      # Search for hits. If no found then trying missed stages and ISO/IEC.
+      #
+      # @param code [String] reference without correction
+      # @param corr [String] correction
+      # @return [Array<RelatonIso::Hit>]
       def isobib_search_filter(code, corr)
-        # docidrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+}
-        # corrigrx = %r{^(ISO|IEC)[^0-9]*\s[0-9-]+:[0-9]+/}
         warn "fetching #{code}..."
         result = search(code)
-        result.reduce([]) do |ret, page|
-          ret += page.select do |i|
-            i.hit["title"] &&
-              i.hit["title"] =~ %r{^#{code}} && (
-                corr && %r{^#{code}[d-]*(:\d{4})?/#{corr}} =~ i.hit["title"] ||
-                %r{^#{code}[\d-]*(:\d{4})?/} !~ i.hit["title"] && !corr
-              )
-          end
-          return ret if ret.size > 9
+        res = search_code result, code, corr
+        return res unless res.empty?
 
-          ret
+        # try stages
+        if %r{^\w+/[^/]+\s\d+} =~ code # code like ISO/IEC 123, ISO/IEC/IEE 123
+          res = try_stages(result, corr) do |st|
+            code.sub(%r{^(?<pref>[^\s]+\s)}) { "#{$~[:pref]}#{st} " }
+          end
+          return res unless res.empty?
+        elsif %r{^\w+\s\d+} =~ code # code like ISO 123
+          res = try_stages(result, corr) do |st|
+            code.sub(%r{^(?<pref>\w+)}) { "#{$~[:pref]}/#{st}" }
+          end
+          return res unless res.empty?
         end
-        # []
+
+        if %r{^ISO\s} =~ code # try ISO/IEC if ISO not found
+          warn "Attempting ISO/IEC retrieval"
+          c = code.sub "ISO", "ISO/IEC"
+          res = search_code result, c, corr
+        end
+        res
+      end
+
+      def try_stages(result, corr)
+        %w[NP WD CD DIS FDIS PRF IS].each do |st| # try stages
+          warn "Attempting #{st} stage retrieval"
+          c = yield st
+          res = search_code result, c, corr
+          return res unless res.empty?
+        end
+        []
+      end
+
+      def search_code(result, code, corr)
+        result.select do |i|
+          i.hit["docRef"] =~ %r{^#{code}(?!-)} && (
+              corr && %r{^#{code}[\w-]*(:\d{4})?/#{corr}} =~ i.hit["docRef"] ||
+              %r{^#{code}[\w-]*(:\d{4})?/} !~ i.hit["docRef"] && !corr
+            )
+        end
       end
 
       # Sort through the results from RelatonIso, fetching them three at a time,
@@ -116,17 +141,13 @@ module RelatonIso
       # If no match, returns any years which caused mismatch, for error reporting
       def isobib_results_filter(result, year)
         missed_years = []
-        result.each_slice(3) do |s| # ISO website only allows 3 connections
-          fetch_pages(s, 3).each_with_index do |r, _i|
-            next if r.nil?
-            return { ret: r } if !year
+        result.each do |s|
+          return { ret: s.fetch } if !year
 
-            r.dates.select { |d| d.type == "published" }.each do |d|
-              return { ret: r } if year.to_i == d.on.year
+          %r{:(?<iyear>\d{4})} =~ s.hit["docRef"]
+          return { ret: s.fetch } if iyear == year
 
-              missed_years << d.on.year
-            end
-          end
+          missed_years << iyear
         end
         { years: missed_years }
       end

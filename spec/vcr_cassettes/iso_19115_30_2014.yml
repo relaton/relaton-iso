@@ -1,115 +1,87 @@
 ---
 http_interactions:
 - request:
-    method: post
-    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
+    method: get
+    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=19115&docPartNo=30&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
     body:
-      encoding: UTF-8
-      string: '{"params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO+19115-30"}'
+      encoding: US-ASCII
+      string: ''
     headers:
-      User-Agent:
-      - Algolia for Ruby (1.26.0); Ruby (2.4.0)
       Accept:
-      - "*/*"
+      - application/json, text/plain, */*
       Accept-Encoding:
-      - gzip,deflate
-      Date:
-      - Mon, 08 Jul 2019 11:39:43 GMT
-      X-Algolia-Api-Key:
-      - dd1b9e1ab383f4d4817d29cd5e96d3f0
-      X-Algolia-Application-Id:
-      - JCL49WV5AR
-      Content-Type:
-      - application/json; charset=utf-8
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
   response:
     status:
       code: 200
       message: OK
     headers:
       Server:
-      - nginx
-      Date:
-      - Mon, 08 Jul 2019 11:39:43 GMT
-      Content-Type:
-      - application/json; charset=UTF-8
-      Content-Length:
-      - '203'
-      Connection:
-      - keep-alive
-      X-Alg-Pt:
-      - '1'
-      Accept-Encoding:
-      - deflate, gzip
-      Access-Control-Allow-Origin:
-      - "*"
-      Timing-Allow-Origin:
-      - "*"
+      - Apache-Coyote/1.1
+      Expires:
+      - Wed, 09 May 1979 05:30:00 GMT
       Cache-Control:
+      - no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0
+      Pragma:
       - no-cache
-      X-Content-Type-Options:
-      - nosniff
-      Content-Disposition:
-      - inline; filename=a.txt
+      Set-Cookie:
+      - BIGipServerpool_prod_iso_www-jahia=402870666.36895.0000; path=/
+      - JSESSIONID=165155614AACB73D2907B3D622B2A2E3; Path=/; HttpOnly
+      Content-Type:
+      - application/json;charset=UTF-8
+      Content-Length:
+      - '16'
+      Date:
+      - Tue, 16 Jul 2019 12:05:17 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
-      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":20,"processingTimeMS":1,"exhaustiveNbHits":true,"query":"ISO
-        19115-30","params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO+19115-30"}'
+      string: '{"standards":[]}'
     http_version: 
-  recorded_at: Mon, 08 Jul 2019 11:39:43 GMT
+  recorded_at: Tue, 16 Jul 2019 12:05:17 GMT
 - request:
-    method: post
-    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
+    method: get
+    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=19115&docPartNo=30&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
     body:
-      encoding: UTF-8
-      string: '{"params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO%2FIEC+19115-30"}'
+      encoding: US-ASCII
+      string: ''
     headers:
-      User-Agent:
-      - Algolia for Ruby (1.26.0); Ruby (2.4.0)
       Accept:
-      - "*/*"
+      - application/json, text/plain, */*
       Accept-Encoding:
-      - gzip,deflate
-      Date:
-      - Mon, 08 Jul 2019 11:39:43 GMT
-      X-Algolia-Api-Key:
-      - dd1b9e1ab383f4d4817d29cd5e96d3f0
-      X-Algolia-Application-Id:
-      - JCL49WV5AR
-      Content-Type:
-      - application/json; charset=utf-8
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      User-Agent:
+      - Ruby
   response:
     status:
       code: 200
       message: OK
     headers:
       Server:
-      - nginx
-      Date:
-      - Mon, 08 Jul 2019 11:39:43 GMT
-      Content-Type:
-      - application/json; charset=UTF-8
-      Content-Length:
-      - '213'
-      Connection:
-      - keep-alive
-      X-Alg-Pt:
-      - '1'
-      Accept-Encoding:
-      - deflate, gzip
-      Access-Control-Allow-Origin:
-      - "*"
-      Timing-Allow-Origin:
-      - "*"
+      - Apache-Coyote/1.1
+      Expires:
+      - Wed, 09 May 1979 05:30:00 GMT
       Cache-Control:
+      - no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0
+      Pragma:
       - no-cache
-      X-Content-Type-Options:
-      - nosniff
-      Content-Disposition:
-      - inline; filename=a.txt
+      Set-Cookie:
+      - BIGipServerpool_prod_iso_www-jahia=402870666.36895.0000; path=/
+      - JSESSIONID=00C530EE0AA87DA81D9A21DAAA59EEC1; Path=/; HttpOnly
+      Content-Type:
+      - application/json;charset=UTF-8
+      Content-Length:
+      - '16'
+      Date:
+      - Tue, 16 Jul 2019 12:05:17 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
-      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":20,"processingTimeMS":1,"exhaustiveNbHits":true,"query":"ISO/IEC
-        19115-30","params":"facetFilters=%5B%22category%3Astandard%22%5D&query=ISO%2FIEC+19115-30"}'
+      string: '{"standards":[]}'
     http_version: 
-  recorded_at: Mon, 08 Jul 2019 11:39:43 GMT
+  recorded_at: Tue, 16 Jul 2019 12:05:18 GMT
 recorded_with: VCR 5.0.0

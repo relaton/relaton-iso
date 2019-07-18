@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-require "algoliasearch"
 require "relaton_iso_bib"
 require "relaton_iso/hit"
 require "nokogiri"
 require "net/http"
-
-Algolia.init application_id: "JCL49WV5AR",
-             api_key: "dd1b9e1ab383f4d4817d29cd5e96d3f0"
 
 module RelatonIso
   # Scrapper.
@@ -50,9 +46,8 @@ module RelatonIso
       # @return [Hash]
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def parse_page(hit_data)
-        return unless hit_data["path"] =~ /\d+$/
-
-        doc, url = get_page "/standard/#{hit_data['path'].match(/\d+$/)}.html"
+        path = "/contents/data/standard#{hit_data["splitPath"]}/#{hit_data["csnumber"]}.html"
+        doc, url = get_page path
 
         # Fetch edition.
         edition = doc&.xpath("//strong[contains(text(), 'Edition')]/..")&.
@@ -67,14 +62,14 @@ module RelatonIso
           language: langs(doc).map { |l| l[:lang] },
           script: langs(doc).map { |l| script(l[:lang]) }.uniq,
           titles: titles,
-          type: fetch_type(hit_data["title"]),
-          docstatus: fetch_status(doc, hit_data["status"]),
+          type: fetch_type(hit_data["docRef"]),
+          docstatus: fetch_status(doc),
           ics: fetch_ics(doc),
-          dates: fetch_dates(doc, hit_data["title"]),
-          contributors: fetch_contributors(hit_data["title"]),
+          dates: fetch_dates(doc, hit_data["docRef"]),
+          contributors: fetch_contributors(hit_data["docRef"]),
           editorialgroup: fetch_workgroup(doc),
           abstract: abstract,
-          copyright: fetch_copyright(hit_data["title"], doc),
+          copyright: fetch_copyright(hit_data["docRef"], doc),
           link: fetch_link(doc, url),
           relations: fetch_relations(doc),
           structuredidentifier: fetch_structuredidentifier(doc),
@@ -227,7 +222,7 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @param status [String]
       # @return [Hash]
-      def fetch_status(doc, _status)
+      def fetch_status(doc)
         stage, substage = doc.css("li.dropdown.active span.stage-code > strong").text.split "."
         RelatonBib::DocumentStatus.new(stage: stage, substage: substage)
       end
@@ -283,18 +278,18 @@ module RelatonIso
       # rubocop:enable Metrics/MethodLength
 
       # Fetch type.
-      # @param title [String]
+      # @param ref [String]
       # @return [String]
-      def fetch_type(title)
-        type_match = title.match(%r{^(ISO|IWA|IEC)(?:(/IEC|/IEEE|/PRF|
-          /NP)*\s|/)(TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))}x)
+      def fetch_type(ref)
+        %r{
+          ^(?<prefix>ISO|IWA|IEC)
+          (?:(/IEC|/IEEE|/PRF|/NP|/DGuide)*\s|/)
+          (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))
+        }x =~ ref
         # return "international-standard" if type_match.nil?
-        if TYPES[type_match[3]]
-          TYPES[type_match[3]]
-        elsif type_match[1] == "ISO"
-          "international-standard"
-        elsif type_match[1] == "IWA"
-          "international-workshop-agreement"
+        if TYPES[type] then TYPES[type]
+        elsif prefix == "ISO" then "international-standard"
+        elsif prefix == "IWA" then "international-workshop-agreement"
         end
         # rescue => _e
         #   puts 'Unknown document type: ' + title
@@ -305,10 +300,11 @@ module RelatonIso
       # @param lang [String]
       # @return [Hash]
       def fetch_title(doc, lang)
-        titles = doc.at("//h3[@itemprop='description'] | //h2[@itemprop='description']").
-          text.split " -- "
-        case titles.size
-        when 0
+        titles = doc.at(
+          "//h3[@itemprop='description'] | //h2[@itemprop='description']",
+        )&.text&.split " -- "
+        case titles&.size
+        when nil, 0
           intro, main, part = nil, "", nil
         when 1
           intro, main, part = nil, titles[0], nil
@@ -344,10 +340,11 @@ module RelatonIso
       # rubocop:disable Metrics/MethodLength
       # Fetch dates
       # @param doc [Nokogiri::HTML::Document]
+      # @param ref [String]
       # @return [Array<Hash>]
-      def fetch_dates(doc, title)
+      def fetch_dates(doc, ref)
         dates = []
-        %r{^[^\s]+\s[\d-]+:(?<ref_date_str>\d{4})} =~ title
+        %r{^[^\s]+\s[\d-]+:(?<ref_date_str>\d{4})} =~ ref
         pub_date_str = doc.xpath("//span[@itemprop='releaseDate']").text
         if ref_date_str
           ref_date = Date.strptime ref_date_str, "%Y"
@@ -368,8 +365,8 @@ module RelatonIso
         dates
       end
 
-      def fetch_contributors(title)
-        title.sub(/\s.*/, "").split("/").map do |abbrev|
+      def fetch_contributors(ref)
+        ref.sub(/\s.*/, "").split("/").map do |abbrev|
           case abbrev
           when "IEC"
             name = "International Electrotechnical Commission"
@@ -411,11 +408,12 @@ module RelatonIso
       end
 
       # Fetch copyright.
-      # @param title [String]
+      # @param ref [String]
+      # @param doc [Nokogiri::HTML::Document]
       # @return [Hash]
-      def fetch_copyright(title, doc)
-        owner_name = title.match(/.*?(?=\s)/).to_s
-        from = title.match(/(?<=:)\d{4}/).to_s
+      def fetch_copyright(ref, doc)
+        owner_name = ref.match(/.*?(?=\s)/).to_s
+        from = ref.match(/(?<=:)\d{4}/).to_s
         if from.empty?
           from = doc.xpath("//span[@itemprop='releaseDate']").text.match(/\d{4}/).to_s
         end
