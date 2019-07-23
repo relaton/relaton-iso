@@ -244,6 +244,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
+    it "fetch undefined stadard" do
+      VCR.use_cassette "not_found" do
+        result = RelatonIso::IsoBibliography.get "ISO ABCDEFGH", nil, {}
+        expect(result).to be_nil
+      end
+    end
+
     context "try to fetch stages" do
       it "ISO" do
         VCR.use_cassette "iso_20674_1" do

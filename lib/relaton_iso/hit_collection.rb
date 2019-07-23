@@ -31,6 +31,8 @@ module RelatonIso
         "/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
         { 'Accept' => 'application/json, text/plain, */*' }
       )
+      return if resp.body.empty?
+
       json = JSON.parse resp.body
       concat(json["standards"].map { |h| Hit.new h, self })
     end
