@@ -97,9 +97,9 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return dates" do
-      expect(subject.dates.length).to eq 2
-      expect(subject.dates.first.type).to eq "published"
-      expect(subject.dates.first.on).to be_instance_of Time
+      expect(subject.date.length).to eq 2
+      expect(subject.date.first.type).to eq "published"
+      expect(subject.date.first.on).to be_instance_of Time
     end
 
     # it 'filter dates by type' do
@@ -124,11 +124,11 @@ RSpec.describe RelatonIso::IsoBibliography do
     # end
 
     it "return relations" do
-      expect(subject.relations).to be_instance_of RelatonBib::DocRelationCollection
+      expect(subject.relation).to be_instance_of RelatonBib::DocRelationCollection
     end
 
     it "return replace realations" do
-      expect(subject.relations.replaces.length).to eq 0
+      expect(subject.relation.replaces.length).to eq 0
     end
 
     it "return ICS" do

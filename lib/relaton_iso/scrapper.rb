@@ -61,17 +61,17 @@ module RelatonIso
           edition: edition,
           language: langs(doc).map { |l| l[:lang] },
           script: langs(doc).map { |l| script(l[:lang]) }.uniq,
-          titles: titles,
+          title: titles,
           type: fetch_type(hit_data["docRef"]),
           docstatus: fetch_status(doc),
           ics: fetch_ics(doc),
-          dates: fetch_dates(doc, hit_data["docRef"]),
-          contributors: fetch_contributors(hit_data["docRef"]),
+          date: fetch_dates(doc, hit_data["docRef"]),
+          contributor: fetch_contributors(hit_data["docRef"]),
           editorialgroup: fetch_workgroup(doc),
           abstract: abstract,
           copyright: fetch_copyright(hit_data["docRef"], doc),
           link: fetch_link(doc, url),
-          relations: fetch_relations(doc),
+          relation: fetch_relations(doc),
           structuredidentifier: fetch_structuredidentifier(doc),
         )
       end
@@ -376,7 +376,7 @@ module RelatonIso
             url = "www.iso.org"
           end
           { entity: { name: name, url: url, abbreviation: abbrev },
-            roles: ["publisher"] }
+            role: ["publisher"] }
         end
       end
       # rubocop:enable Metrics/MethodLength
