@@ -39,7 +39,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       file_path = "spec/support/hit.xml"
       File.write file_path, xml unless File.exist? file_path
       expect(xml).to be_equivalent_to(
-        File.read(file_path).sub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
+        File.read(file_path, encoding: "utf-8").sub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
       )
     end
   end
@@ -51,7 +51,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       file_path = "spec/support/hits.xml"
       File.write file_path, xml unless File.exist? file_path
       expect(xml).to be_equivalent_to(
-        File.read(file_path).gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
+        File.read(file_path, encoding: "utf-8").gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
       )
     end
   end
