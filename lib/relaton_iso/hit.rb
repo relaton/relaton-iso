@@ -48,5 +48,14 @@ module RelatonIso
         builder.doc.root.to_xml
       end
     end
+
+    def sort_weight
+      case hit["publicationStatus"]
+      when "Published"
+        0
+      else
+        1
+      end
+    end
   end
 end

@@ -34,8 +34,14 @@ module RelatonIso
       return if resp.body.empty?
 
       json = JSON.parse resp.body
-      json["standards"].sort! { |a, b| (parse_date(b) - parse_date(a)).to_i }
       concat(json["standards"].map { |h| Hit.new h, self })
+      sort! do |a, b|
+        if a.sort_weight == b.sort_weight
+          (parse_date(b.hit) - parse_date(a.hit)).to_i
+        else
+          b.sort_weight - b.sort_weight
+        end
+      end
     end
 
     # @return [RelatonIso::HitCollection]
