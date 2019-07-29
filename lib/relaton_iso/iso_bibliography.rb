@@ -142,7 +142,8 @@ module RelatonIso
       def isobib_results_filter(result, year)
         missed_years = []
         result.each do |s|
-          return { ret: s.fetch } if !year
+          next if !year && s.hit["publicationStatus"] == "Withdrawn"
+          return { ret: s.fetch } unless year
 
           %r{:(?<iyear>\d{4})} =~ s.hit["docRef"]
           return { ret: s.fetch } if iyear == year

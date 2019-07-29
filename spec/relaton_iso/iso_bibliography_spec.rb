@@ -28,14 +28,14 @@ RSpec.describe RelatonIso::IsoBibliography do
       hits = RelatonIso::IsoBibliography.search("19115")
       expect(hits.first.to_s).to eq "<RelatonIso::Hit:"\
         "#{format('%#.14x', hits.first.object_id << 1)} "\
-        '@text="19115" @reference="ISO 19115-1:2014/Amd 1:2018"'
+        '@text="19115" @reference="ISO 19115-2:2019"'
     end
   end
 
   it "return xml of hit" do
     VCR.use_cassette "hit" do
       hits = RelatonIso::IsoBibliography.search("19115")
-      xml = hits[4].to_xml bibdata: true
+      xml = hits[0].to_xml bibdata: true
       file_path = "spec/support/hit.xml"
       File.write file_path, xml unless File.exist? file_path
       expect(xml).to be_equivalent_to(
@@ -97,7 +97,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return dates" do
-      expect(subject.date.length).to eq 2
+      expect(subject.date.length).to eq 1
       expect(subject.date.first.type).to eq "published"
       expect(subject.date.first.on).to be_instance_of Time
     end
@@ -184,6 +184,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
+    it "undated reference gets a newest and active" do
+      VCR.use_cassette "iso_123" do
+        result = RelatonIso::IsoBibliography.get "ISO 123", nil, keep_year: true
+        expect(result.date.first.on.year).to eq 2001
+      end
+    end
+
     it "gets a code and year unsuccessfully" do
       VCR.use_cassette "iso_19115_2015" do
         results = RelatonIso::IsoBibliography.get("ISO 19115", "2015", {})
@@ -225,8 +232,8 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch correction" do
       VCR.use_cassette "iso_19110_amd_1_2011" do
-        result = RelatonIso::IsoBibliography.get("ISO 19110/Amd 1:2011", nil, {})
-        expect(result.docidentifier.first.id).to eq "ISO 19110/Amd 1:2011"
+        result = RelatonIso::IsoBibliography.get("ISO 19110/Amd 1:2011", "2005", {})
+        expect(result.docidentifier.first.id).to eq "ISO 19110:2005/Amd 1:2011"
       end
     end
 

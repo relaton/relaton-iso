@@ -34,6 +34,7 @@ module RelatonIso
       return if resp.body.empty?
 
       json = JSON.parse resp.body
+      json["standards"].sort! { |a, b| (parse_date(b) - parse_date(a)).to_i }
       concat(json["standards"].map { |h| Hit.new h, self })
     end
 
@@ -68,6 +69,18 @@ module RelatonIso
         end
       end
       builder.to_xml
+    end
+
+    private
+
+    def parse_date(hit)
+      if hit["publicationDate"]
+        Date.strptime(hit["publicationDate"], "%Y-%m")
+      elsif %r{:(?<year>\d{4})} =~ hit["docRef"]
+        Date.strptime(year, "%Y")
+      else
+        Date.new 0
+      end
     end
   end
 end
