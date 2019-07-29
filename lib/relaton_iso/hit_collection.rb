@@ -39,7 +39,7 @@ module RelatonIso
         if a.sort_weight == b.sort_weight
           (parse_date(b.hit) - parse_date(a.hit)).to_i
         else
-          b.sort_weight - b.sort_weight
+          a.sort_weight - b.sort_weight
         end
       end
     end

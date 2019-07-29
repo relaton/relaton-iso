@@ -51,10 +51,11 @@ module RelatonIso
 
     def sort_weight
       case hit["publicationStatus"]
-      when "Published"
-        0
+      when "Published" then 0
+      when "Under development" then 1
+      when "Withdrawn" then 2
       else
-        1
+        3
       end
     end
   end
