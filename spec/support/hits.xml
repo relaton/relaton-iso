@@ -43,12 +43,12 @@
   </bibitem>
   <bibitem id="ISO19115-2003" type="standard">
     <fetched>2019-07-18</fetched>
-    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Metadata - Geographic information</title>
-    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
     <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Métadonnées - Information géographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées</title>
     <uri type="src">https://www.iso.org/standard/26020.html</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/02/60/26020.detail.rss</uri>
     <docidentifier type="ISO">ISO 19115:2003</docidentifier>
@@ -130,14 +130,14 @@
   </bibitem>
   <bibitem id="ISO19115-2-2019" type="standard">
     <fetched>2019-07-18</fetched>
-    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Metadata - Geographic information - Part 2: Extensions for acquisition and processing</title>
-    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing</title>
     <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
     <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Métadonnées - Information géographique - Partie 2: Extensions pour l'acquisition et le traitement</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement</title>
     <uri type="src">https://www.iso.org/standard/67039.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:67039:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
@@ -182,14 +182,14 @@
   </bibitem>
   <bibitem id="ISO19115-2-2009" type="standard">
     <fetched>2019-07-18</fetched>
-    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Metadata - Geographic information - Part 2: Extensions for imagery and gridded data</title>
-    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for imagery and gridded data</title>
     <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
     <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour les images et les matrices</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Métadonnées - Information géographique - Partie 2: Extensions pour les images et les matrices</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour les images et les matrices</title>
     <uri type="src">https://www.iso.org/standard/39229.html</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/03/92/39229.detail.rss</uri>
     <docidentifier type="ISO">ISO 19115-2:2009</docidentifier>
@@ -230,14 +230,14 @@
   </bibitem>
   <bibitem id="ISO19115-1-2014" type="standard">
     <fetched>2019-07-18</fetched>
-    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Metadata - Geographic information - Part 1: Fundamentals</title>
-    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 1: Fundamentals</title>
     <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
     <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 1: Principes de base</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Métadonnées - Information géographique - Partie 1: Principes de base</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 1: Principes de base</title>
     <uri type="src">https://www.iso.org/standard/53798.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:53798:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
@@ -334,10 +334,10 @@
   </bibitem>
   <bibitem id="ISO/TS19115-3-2016" type="standard">
     <fetched>2019-07-18</fetched>
-    <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
-    <title type="main" format="text/plain" language="en" script="Latn"> Metadata - Geographic information - Part 3: XML schema implementation for fundamental concepts</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 3: XML schema implementation for fundamental concepts</title>
     <uri type="src">https://www.iso.org/standard/32579.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</uri>
