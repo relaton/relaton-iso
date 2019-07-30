@@ -84,6 +84,8 @@ module RelatonIso
         Date.strptime(hit["publicationDate"], "%Y-%m")
       elsif %r{:(?<year>\d{4})} =~ hit["docRef"]
         Date.strptime(year, "%Y")
+      elsif hit["newProjectDate"]
+        Date.parse hit["newProjectDate"]
       else
         Date.new 0
       end
