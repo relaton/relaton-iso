@@ -36,13 +36,13 @@ GEM
       pry (~> 0.10)
     public_suffix (3.1.1)
     rake (10.5.0)
-    relaton-bib (0.3.0)
+    relaton-bib (0.3.1)
       addressable
       nokogiri (~> 1.10)
     relaton-iec (0.4.0)
       addressable
       relaton-iso-bib (~> 0.3.0)
-    relaton-iso-bib (0.3.0)
+    relaton-iso-bib (0.3.1)
       isoics (~> 0.1.6)
       relaton-bib (~> 0.3.0)
       ruby_deep_clone (~> 0.8.0)
