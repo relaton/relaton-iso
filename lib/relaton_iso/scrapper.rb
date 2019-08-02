@@ -300,32 +300,10 @@ module RelatonIso
       # @param lang [String]
       # @return [Hash]
       def fetch_title(doc, lang)
-        titles = doc.at(
+        content = doc.at(
           "//h3[@itemprop='description'] | //h2[@itemprop='description']",
-        )&.text&.split " -- "
-        case titles&.size
-        when nil, 0
-          intro, main, part = nil, "", nil
-        when 1
-          intro, main, part = nil, titles[0], nil
-        when 2
-          if /^(Part|Partie) \d+:/ =~ titles[1]
-            intro, main, part = nil, titles[0], titles[1]
-          else
-            intro, main, part = titles[0], titles[1], nil
-          end
-        when 3
-          intro, main, part = titles[0], titles[1], titles[2]
-        else
-          intro, main, part = titles[0], titles[1], titles[2..-1]&.join(" -- ")
-        end
-        {
-          title_intro: intro,
-          title_main: main,
-          title_part: part,
-          language: lang,
-          script: script(lang),
-        }
+        )&.text
+        RelatonIsoBib::HashConverter.split_title content, lang, script(lang)
       end
 
       # Return ISO script code.
@@ -376,7 +354,7 @@ module RelatonIso
             url = "www.iso.org"
           end
           { entity: { name: name, url: url, abbreviation: abbrev },
-            role: ["publisher"] }
+            role: [type: "publisher"] }
         end
       end
       # rubocop:enable Metrics/MethodLength
