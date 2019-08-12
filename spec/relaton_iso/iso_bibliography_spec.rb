@@ -99,7 +99,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "return dates" do
       expect(subject.date.length).to eq 1
       expect(subject.date.first.type).to eq "published"
-      expect(subject.date.first.on).to be_instance_of Time
+      expect(subject.date.first.on).to be_instance_of Date
     end
 
     # it 'filter dates by type' do
