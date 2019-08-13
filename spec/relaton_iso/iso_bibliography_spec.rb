@@ -90,7 +90,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "return item urls" do
       url_regex = %r{https:\/\/www\.iso\.org\/standard\/\d+\.html}
       expect(subject.url).to match(url_regex)
-      expect(subject.url(:obp)).to be_instance_of String
+      expect(subject.url(:src)).to be_instance_of String
       rss_regex = %r{https:\/\/www\.iso\.org\/contents\/data\/standard\/\d{2}
       \/\d{2}\/\d+\.detail\.rss}x
       expect(subject.url(:rss)).to match(rss_regex)
@@ -260,9 +260,9 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     context "try to fetch stages" do
       it "ISO" do
-        VCR.use_cassette "iso_20674_1" do
-          result = RelatonIso::IsoBibliography.get "ISO 20674-1", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO/DIS 20674-1"
+        VCR.use_cassette "iso_20360" do
+          result = RelatonIso::IsoBibliography.get "ISO 20360", nil, {}
+          expect(result.docidentifier.first.id).to eq "ISO/DIS 20360"
         end
       end
 

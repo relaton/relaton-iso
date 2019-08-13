@@ -155,7 +155,7 @@ module RelatonIso
       # @return [Array<Hash>]
       def langs(doc)
         lgs = [{ lang: "en" }]
-        doc.css("ul#lang-switcher ul li a").each do |lang_link|
+        doc.css("li#lang-switcher ul li a").each do |lang_link|
           lang_path = lang_link.attr("href")
           lang = lang_path.match(%r{^\/(fr)\/})
           lgs << { lang: lang[1], path: lang_path } if lang
@@ -197,7 +197,7 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<RelatonBib::DocumentIdentifier>]
       def fetch_docid(doc)
-        item_ref = doc.at("//strong[@id='itemReference']")
+        item_ref = doc.at("//nav[contains(@class, 'heading-condensed')]/h1")
         return [] unless item_ref
 
         [RelatonBib::DocumentIdentifier.new(id: item_ref.text, type: "ISO")]
@@ -205,7 +205,7 @@ module RelatonIso
 
       # @param doc [Nokogiri::HTML::Document]
       def fetch_structuredidentifier(doc)
-        item_ref = doc.at("//strong[@id='itemReference']")
+        item_ref = doc.at("//nav[contains(@class, 'heading-condensed')]/h1")
         unless item_ref
           return RelatonIsoBib::StructuredIdentifier.new(
             project_number: "?", part_number: "", prefix: nil, id: "?",
@@ -302,7 +302,7 @@ module RelatonIso
       # @return [Hash]
       def fetch_title(doc, lang)
         content = doc.at(
-          "//h3[@itemprop='description'] | //h2[@itemprop='description']",
+          "//nav[contains(@class,'eading-condensed')]/h2 | //nav[contains(@class,'eading-condensed')]/h3",
         )&.text
         RelatonIsoBib::HashConverter.split_title content, lang, script(lang)
       end
@@ -377,7 +377,7 @@ module RelatonIso
       # @return [Array<Hash>]
       def fetch_link(doc, url)
         links = [{ type: "src", content: url }]
-        obp = doc.at("//a[contains(@href, '/obp/ui/')]")
+        obp = doc.at_css("a#obp-preview")
         links << { type: "obp", content: obp[:href] } if obp
         rss = doc.at("//a[contains(@href, 'rss')]")
         links << { type: "rss", content: DOMAIN + rss[:href] } if rss

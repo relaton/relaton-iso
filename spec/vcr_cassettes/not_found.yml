@@ -27,12 +27,12 @@ http_interactions:
       Pragma:
       - no-cache
       Set-Cookie:
-      - BIGipServerpool_prod_iso_www-jahia=419647882.36895.0000; path=/
-      - JSESSIONID=BBF4F636F72F9DFBB511A499BC29F4EB; Path=/; HttpOnly
+      - BIGipServerpool_prod_iso_www-jahia=402870666.36895.0000; path=/
+      - JSESSIONID=562545B9114635C85C34608A05D8F746; Path=/; HttpOnly
       Content-Length:
       - '0'
       Date:
-      - Tue, 23 Jul 2019 10:58:42 GMT
+      - Tue, 13 Aug 2019 10:00:53 GMT
       Connection:
       - close
       Strict-Transport-Security:
@@ -41,5 +41,5 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Tue, 23 Jul 2019 10:58:42 GMT
+  recorded_at: Tue, 13 Aug 2019 10:00:54 GMT
 recorded_with: VCR 5.0.0

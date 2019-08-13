@@ -28,60 +28,18 @@ http_interactions:
       - no-cache
       Set-Cookie:
       - BIGipServerpool_prod_iso_www-jahia=402870666.36895.0000; path=/
-      - JSESSIONID=165155614AACB73D2907B3D622B2A2E3; Path=/; HttpOnly
+      - JSESSIONID=AABBD26F55CEDFE955D7E549AFAD23D0; Path=/; HttpOnly
       Content-Type:
       - application/json;charset=UTF-8
       Content-Length:
       - '16'
       Date:
-      - Tue, 16 Jul 2019 12:05:17 GMT
+      - Tue, 13 Aug 2019 10:00:34 GMT
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
       string: '{"standards":[]}'
     http_version: 
-  recorded_at: Tue, 16 Jul 2019 12:05:17 GMT
-- request:
-    method: get
-    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=19115&docPartNo=30&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json, text/plain, */*
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - Apache-Coyote/1.1
-      Expires:
-      - Wed, 09 May 1979 05:30:00 GMT
-      Cache-Control:
-      - no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0
-      Pragma:
-      - no-cache
-      Set-Cookie:
-      - BIGipServerpool_prod_iso_www-jahia=402870666.36895.0000; path=/
-      - JSESSIONID=00C530EE0AA87DA81D9A21DAAA59EEC1; Path=/; HttpOnly
-      Content-Type:
-      - application/json;charset=UTF-8
-      Content-Length:
-      - '16'
-      Date:
-      - Tue, 16 Jul 2019 12:05:17 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-    body:
-      encoding: UTF-8
-      string: '{"standards":[]}'
-    http_version: 
-  recorded_at: Tue, 16 Jul 2019 12:05:18 GMT
+  recorded_at: Tue, 13 Aug 2019 10:00:35 GMT
 recorded_with: VCR 5.0.0

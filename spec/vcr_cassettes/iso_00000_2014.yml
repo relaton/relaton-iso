@@ -27,61 +27,19 @@ http_interactions:
       Pragma:
       - no-cache
       Set-Cookie:
-      - BIGipServerpool_prod_iso_www-jahia=419647882.36895.0000; path=/
-      - JSESSIONID=480419A13807A128BBAEAA3D7B765543; Path=/; HttpOnly
+      - BIGipServerpool_prod_iso_www-jahia=386093450.36895.0000; path=/
+      - JSESSIONID=296D952D5D88FC57360D9AA3C859E8F6; Path=/; HttpOnly
       Content-Type:
       - application/json;charset=UTF-8
       Content-Length:
       - '16'
       Date:
-      - Tue, 16 Jul 2019 12:05:52 GMT
+      - Tue, 13 Aug 2019 10:00:35 GMT
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
       string: '{"standards":[]}'
     http_version: 
-  recorded_at: Tue, 16 Jul 2019 12:05:52 GMT
-- request:
-    method: get
-    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=00000&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json, text/plain, */*
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - Apache-Coyote/1.1
-      Expires:
-      - Wed, 09 May 1979 05:30:00 GMT
-      Cache-Control:
-      - no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0
-      Pragma:
-      - no-cache
-      Set-Cookie:
-      - BIGipServerpool_prod_iso_www-jahia=419647882.36895.0000; path=/
-      - JSESSIONID=582B94E052BF247B0F61B5662A44F52A; Path=/; HttpOnly
-      Content-Type:
-      - application/json;charset=UTF-8
-      Content-Length:
-      - '16'
-      Date:
-      - Tue, 16 Jul 2019 12:05:52 GMT
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-    body:
-      encoding: UTF-8
-      string: '{"standards":[]}'
-    http_version: 
-  recorded_at: Tue, 16 Jul 2019 12:05:53 GMT
+  recorded_at: Tue, 13 Aug 2019 10:00:36 GMT
 recorded_with: VCR 5.0.0

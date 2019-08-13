@@ -38,7 +38,9 @@ RSpec.describe RelatonIso::Scrapper do
     doc = Nokogiri::HTML <<~END_HTML
       <html>
         <body>
-          <h3 itemprop="description">Main</h3>
+          <nav class="heading-condensed nav-relatives">
+            <h2>Main</h2>
+          </nav>
         </body>
       </html>
     END_HTML
@@ -51,7 +53,9 @@ RSpec.describe RelatonIso::Scrapper do
     doc = Nokogiri::HTML <<~END_HTML
       <html>
         <body>
-          <h3 itemprop="description">Main -- Part 1: Description</h3>
+          <nav class="heading-condensed nav-relatives">
+            <h2 itemprop="description">Main -- Part 1: Description</h2>
+          </nav>
         </body>
       </html>
     END_HTML
@@ -65,7 +69,9 @@ RSpec.describe RelatonIso::Scrapper do
     doc = Nokogiri::HTML <<~END_HTML
       <html>
         <body>
-          <h3 itemprop="description">Main -- Part 1: Description -- Fird -- Fourth</h3>
+          <nav class="heading-condensed nav-relatives">
+            <h2 itemprop="description">Main -- Part 1: Description -- Fird -- Fourth</h2>
+          </nav>
         </body>
       </html>
     END_HTML
