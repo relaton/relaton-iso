@@ -116,7 +116,7 @@ module RelatonIso
       end
 
       def try_stages(result, corr)
-        %w[NP WD CD DIS FDIS PRF IS].each do |st| # try stages
+        %w[NP WD CD DIS FDIS PRF IS AWI].each do |st| # try stages
           warn "Attempting #{st} stage retrieval"
           c = yield st
           res = search_code result, c, corr
