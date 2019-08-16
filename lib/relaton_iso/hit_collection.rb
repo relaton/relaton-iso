@@ -27,10 +27,8 @@ module RelatonIso
       search << "docNumber=#{num}"
       search << "docPartNo=#{part}" if part
       q = search.join "&"
-      resp = http.get(
-        "/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
-        { 'Accept' => 'application/json, text/plain, */*' }
-      )
+      resp = http.get("/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
+        "Accept" => "application/json, text/plain, */*")
       return if resp.body.empty?
 
       json = JSON.parse resp.body
@@ -43,19 +41,6 @@ module RelatonIso
         end
       end
     end
-
-    # @return [RelatonIso::HitCollection]
-    # def fetch
-    #   workers = RelatonBib::WorkersPool.new 4
-    #   workers.worker(&:fetch)
-    #   each do |hit|
-    #     workers << hit
-    #   end
-    #   workers.end
-    #   workers.result
-    #   @fetched = true
-    #   self
-    # end
 
     def to_s
       inspect
