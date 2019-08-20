@@ -1,5 +1,5 @@
 RSpec.describe RelatonIso::HitCollection do
-  it "parse date" do
+  it "sort by date" do
     resp = double
     expect(resp).to receive(:body).and_return(
       <<~RESP

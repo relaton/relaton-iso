@@ -26,21 +26,6 @@ module RelatonIso
     }.freeze
 
     class << self
-      # @param text [String]
-      # @return [Array<Hash>]
-      # def get(text)
-      #   iso_workers = RelatonBib::WorkersPool.new 4
-      #   iso_workers.worker { |hit| iso_worker(hit, iso_workers) }
-      #   algolia_workers = start_algolia_search(text, iso_workers)
-      #   iso_docs = iso_workers.result
-      #   algolia_workers.end
-      #   algolia_workers.result
-      #   iso_docs
-      # rescue
-      #   warn "Could not connect to http://www.iso.org"
-      #   []
-      # end
-
       # Parse page.
       # @param hit [Hash]
       # @return [Hash]
@@ -58,6 +43,7 @@ module RelatonIso
         RelatonIsoBib::IsoBibliographicItem.new(
           fetched: Date.today.to_s,
           docid: fetch_docid(doc),
+          docnumber: fetch_docnumber(doc),
           edition: edition,
           language: langs(doc).map { |l| l[:lang] },
           script: langs(doc).map { |l| script(l[:lang]) }.uniq,
@@ -201,6 +187,11 @@ module RelatonIso
         return [] unless item_ref
 
         [RelatonBib::DocumentIdentifier.new(id: item_ref.text, type: "ISO")]
+      end
+
+      def fetch_docnumber(doc)
+        id = doc.at("//nav[contains(@class, 'heading-condensed')]/h1")&.text
+        id&.match(/\d+/)&.to_s
       end
 
       # @param doc [Nokogiri::HTML::Document]
