@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    relaton-iso (0.6.3)
+    relaton-iso (0.6.4)
       relaton-iec (~> 0.4.0)
       relaton-iso-bib (~> 0.3.0)
 
@@ -36,13 +36,13 @@ GEM
       pry (~> 0.10)
     public_suffix (3.1.1)
     rake (10.5.0)
-    relaton-bib (0.3.4)
+    relaton-bib (0.3.5)
       addressable
       nokogiri (~> 1.10)
-    relaton-iec (0.4.2)
+    relaton-iec (0.4.3)
       addressable
       relaton-iso-bib (~> 0.3.0)
-    relaton-iso-bib (0.3.3)
+    relaton-iso-bib (0.3.4)
       isoics (~> 0.1.6)
       relaton-bib (~> 0.3.0)
       ruby_deep_clone (~> 0.8.0)
