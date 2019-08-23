@@ -42,7 +42,7 @@ module RelatonIso
 
         RelatonIsoBib::IsoBibliographicItem.new(
           fetched: Date.today.to_s,
-          docid: fetch_docid(doc),
+          docid: fetch_docid(hit_data["docRef"]),
           docnumber: fetch_docnumber(doc),
           edition: edition,
           language: langs(doc).map { |l| l[:lang] },
@@ -138,11 +138,8 @@ module RelatonIso
       # Fetch docid.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<RelatonBib::DocumentIdentifier>]
-      def fetch_docid(doc)
-        item_ref = doc.at("//nav[contains(@class, 'heading-condensed')]/h1")
-        return [] unless item_ref
-
-        [RelatonBib::DocumentIdentifier.new(id: item_ref.text, type: "ISO")]
+      def fetch_docid(doc_ref)
+        [RelatonBib::DocumentIdentifier.new(id: doc_ref, type: "ISO")]
       end
 
       def fetch_docnumber(doc)
