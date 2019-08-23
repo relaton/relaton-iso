@@ -65,46 +65,6 @@ module RelatonIso
 
       private
 
-      # Start algolia search workers.
-      # @param text[String]
-      # @param iso_workers [RelatonBib::WorkersPool]
-      # @reaturn [RelatonBib::WorkersPool]
-      # def start_algolia_search(text, iso_workers)
-      #   index = Algolia::Index.new "all_en"
-      #   algolia_workers = RelatonBib::WorkersPool.new
-      #   algolia_workers.worker do |page|
-      #     algolia_worker(index, text, page, algolia_workers, iso_workers)
-      #   end
-
-      #   # Add first page so algolia worker will start.
-      #   algolia_workers << 0
-      # end
-
-      # Fetch ISO documents.
-      # @param hit [Hash]
-      # @param isiso_workers [RelatonIso::WorkersPool]
-      # def iso_worker(hit, iso_workers)
-      #   print "Parse #{iso_workers.size} of #{iso_workers.nb_hits}  \r"
-      #   parse_page hit
-      # end
-
-      # Fetch hits from algolia search service.
-      # @param index[Algolia::Index]
-      # @param text [String]
-      # @param page [Integer]
-      # @param algolia_workers [RelatonBib::WorkersPool]
-      # @param isiso_workers [RelatonBib::WorkersPool]
-      # def algolia_worker(index, text, page, algolia_workers, iso_workers)
-      #   res = index.search text, facetFilters: ["category:standard"], page: page
-      #   next_page = res["page"] + 1
-      #   algolia_workers << next_page if next_page < res["nbPages"]
-      #   res["hits"].each do |hit|
-      #     iso_workers.nb_hits = res["nbHits"]
-      #     iso_workers << hit
-      #   end
-      #   iso_workers.end unless next_page < res["nbPages"]
-      # end
-
       # Fetch titles and abstracts.
       # @param doc [Nokigiri::HTML::Document]
       # @return [Array<Array>]
@@ -115,10 +75,6 @@ module RelatonIso
         langs(doc).each do |lang|
           # Don't need to get page for en. We already have it.
           d = lang[:path] ? get_page(lang[:path])[0] : doc
-
-          # Check if unavailable for the lang.
-          next if d.css("h5.help-block").any?
-
           titles << fetch_title(d, lang[:lang])
 
           # Fetch abstracts.
