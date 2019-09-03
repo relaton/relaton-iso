@@ -237,6 +237,48 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
+    it "fetch FDIS Amd" do
+      VCR.use_cassette "iso_11136_2014_fdamd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO 11136:2014/FDAmd 1", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO 11136:2014/FDAmd 1"
+      end
+    end
+
+    it "fetch DIS Amd" do
+      VCR.use_cassette "iso_3839_1996_damd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO 3839:1996/DAmd 1", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO 3839:1996/DAmd 1"
+      end
+    end
+
+    it "fetch CD Amd" do
+      VCR.use_cassette "iso_16063_1_1999_cd_amd_2" do
+        result = RelatonIso::IsoBibliography.get "ISO 16063-1:1998/CD Amd 2", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO 16063-1:1998/CD Amd 2"
+      end
+    end
+
+    it "fetch WD Amd" do
+      VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1/WD Amd 1"
+      end
+    end
+
+    it "fetch AWI Amd" do
+      VCR.use_cassette "iso_10844_2014_awi_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO 10844:2014/AWI Amd 1", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO 10844:2014/AWI Amd 1"
+      end
+    end
+
+    it "fetch NP Amd" do
+      VCR.use_cassette "iso_1862_1_2017_np_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO 18562-1:2017/NP Amd 1", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO 18562-1:2017/NP Amd 1"
+      end
+    end
+
     it "fetch ISO/IEC/IEEE" do
       VCR.use_cassette "iso_iec_ieee_9945_2009" do
         result = RelatonIso::IsoBibliography.get("ISO/IEC/IEEE 9945:2009", nil, {})
