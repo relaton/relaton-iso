@@ -130,7 +130,7 @@ module RelatonIso
         [Nokogiri::HTML(resp.body), url]
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
              Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError,
-             OpenSSL::SSL::SSLError
+             OpenSSL::SSL::SSLError, Errno::ETIMEDOUT
         raise RelatonBib::RequestError, "Could not access #{url}"
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
