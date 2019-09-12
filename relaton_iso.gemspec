@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.description   = "RelatonIso: retrieve ISO Standards for bibliographic use "\
                        "using the IsoBibliographicItem model"
 
-  spec.homepage      = "https://github.com/metanorma/relaton-iso"
+  spec.homepage      = "https://github.com/relaton/relaton-iso"
   spec.license       = "BSD-2-Clause"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
