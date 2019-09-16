@@ -23,21 +23,12 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
   end
 
-  it "return string of hit" do
-    VCR.use_cassette "hits" do
-      hits = RelatonIso::IsoBibliography.search("19115")
-      expect(hits.first.to_s).to eq "<RelatonIso::Hit:"\
-        "#{format('%#.14x', hits.first.object_id << 1)} "\
-        '@text="19115" @reference="ISO 19115-2:2019"'
-    end
-  end
-
   it "return xml of hit" do
     VCR.use_cassette "hit" do
       hits = RelatonIso::IsoBibliography.search("19115")
       xml = hits[0].to_xml bibdata: true
       file_path = "spec/support/hit.xml"
-      File.write file_path, xml unless File.exist? file_path
+      File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
       expect(xml).to be_equivalent_to(
         File.read(file_path, encoding: "utf-8").sub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
       )
@@ -49,7 +40,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       hits = RelatonIso::IsoBibliography.search "19115"
       xml = hits.to_xml
       file_path = "spec/support/hits.xml"
-      File.write file_path, xml unless File.exist? file_path
+      File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
       expect(xml).to be_equivalent_to(
         File.read(file_path, encoding: "utf-8").gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
       )
@@ -153,9 +144,15 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "gets an all-parts code" do
       VCR.use_cassette "iso_19115_all_parts" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115", nil, all_parts: true).to_xml bibdata: true
-        expect(results).to include %(<project-number>ISO 19115 (all parts)</project-number>)
-        expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+        results = RelatonIso::IsoBibliography.get("ISO 19115", nil, all_parts: true)
+        xml = results.to_xml bibdata: true
+        file_path = "spec/support/all_parts.xml"
+        File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
+        expect(xml).to be_equivalent_to(
+          File.read(file_path, encoding: "utf-8").gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
+        )
+        expect(xml).to include %(<project-number>ISO 19115 (all parts)</project-number>)
+        expect(xml).to include %(<docidentifier type="ISO">ISO 19115:2014 (all parts)</docidentifier>)
       end
     end
 
@@ -202,7 +199,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_2015" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }.
           to output(
-            /There was no match for 2015, though there were matches found for 2003/,
+            /There was no match for 2015, though there were matches found for/,
           ).to_stderr
       end
     end

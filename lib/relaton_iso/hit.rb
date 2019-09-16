@@ -2,39 +2,14 @@
 
 module RelatonIso
   # Hit.
-  class Hit
+  class Hit < RelatonBib::Hit
     # @return [RelatonIso::HitCollection]
     attr_reader :hit_collection
-
-    # @return [Array<Hash>]
-    attr_reader :hit
-
-    # @param hit [Hash]
-    # @param hit_collection [RelatonIso:HitCollection]
-    def initialize(hit, hit_collection = nil)
-      @hit            = hit
-      @hit_collection = hit_collection
-    end
 
     # Parse page.
     # @return [RelatonIso::IsoBibliographicItem]
     def fetch
       @fetch ||= Scrapper.parse_page @hit
-    end
-
-    # @return [String]
-    def to_s
-      inspect
-    end
-
-    # @return [String]
-    def inspect
-      # matched_words = @hit["_highlightResult"].
-      #   reduce([]) { |a, (_k, v)| a + v["matchedWords"] }.uniq
-
-      "<#{self.class}:#{format('%#.14x', object_id << 1)} "\
-      "@text=\"#{@hit_collection&.ref}\" "\
-      "@reference=\"#{@hit["docRef"]}\""
     end
 
     # @param builder [Nokogiri::XML::Builder]

@@ -46,14 +46,15 @@ module RelatonIso
             year = year1
           end
         end
-        code += "-1" if opts[:all_parts]
+        opts[:all_parts] ||= code !~ %r{^[^\s]+\s\d+-\d+} && opts[:all_parts].nil?
+        # code += "-1" if all_parts
         return RelatonIec::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR] =~ code
 
-        ret = isobib_get1(code, year, corr)
+        ret = isobib_get1(code, year, corr, opts)
         return nil if ret.nil?
 
-        ret.to_most_recent_reference unless year || opts[:keep_year]
-        ret.to_all_parts if opts[:all_parts]
+        ret.to_most_recent_reference unless year || opts[:keep_year] || opts[:all_parts]
+        # ret.to_all_parts if all_parts
         ret
       end
 
@@ -89,20 +90,20 @@ module RelatonIso
       # @param code [String] reference without correction
       # @param corr [String] correction
       # @return [Array<RelatonIso::Hit>]
-      def isobib_search_filter(code, corr)
+      def isobib_search_filter(code, corr, opts)
         warn "fetching #{code}..."
         result = search(code)
-        res = search_code result, code, corr
+        res = search_code result, code, corr, opts
         return res unless res.empty?
 
         # try stages
         if %r{^\w+/[^/]+\s\d+} =~ code # code like ISO/IEC 123, ISO/IEC/IEE 123
-          res = try_stages(result, corr) do |st|
+          res = try_stages(result, corr, opts) do |st|
             code.sub(%r{^(?<pref>[^\s]+\s)}) { "#{$~[:pref]}#{st} " }
           end
           return res unless res.empty?
         elsif %r{^\w+\s\d+} =~ code # code like ISO 123
-          res = try_stages(result, corr) do |st|
+          res = try_stages(result, corr, opts) do |st|
             code.sub(%r{^(?<pref>\w+)}) { "#{$~[:pref]}/#{st}" }
           end
           return res unless res.empty?
@@ -111,24 +112,24 @@ module RelatonIso
         if %r{^ISO\s} =~ code # try ISO/IEC if ISO not found
           warn "Attempting ISO/IEC retrieval"
           c = code.sub "ISO", "ISO/IEC"
-          res = search_code result, c, corr
+          res = search_code result, c, corr, opts
         end
         res
       end
 
-      def try_stages(result, corr)
+      def try_stages(result, corr, opts)
         %w[NP WD CD DIS FDIS PRF IS AWI].each do |st| # try stages
           warn "Attempting #{st} stage retrieval"
           c = yield st
-          res = search_code result, c, corr
+          res = search_code result, c, corr, opts
           return res unless res.empty?
         end
-        []
+        result
       end
 
-      def search_code(result, code, corr)
+      def search_code(result, code, corr, opts)
         result.select do |i|
-          i.hit["docRef"] =~ %r{^#{code}(?!-)} && (
+          (opts[:all_parts] || i.hit["docRef"] =~ %r{^#{code}(?!-)}) && (
               corr && %r{^#{code}[\w-]*(:\d{4})?/#{corr}} =~ i.hit["docRef"] ||
               %r{^#{code}[\w-]*(:\d{4})?/} !~ i.hit["docRef"] && !corr
             )
@@ -141,24 +142,29 @@ module RelatonIso
       # Only expects the first page of results to be populated.
       # Does not match corrigenda etc (e.g. ISO 3166-1:2006/Cor 1:2007)
       # If no match, returns any years which caused mismatch, for error reporting
-      def isobib_results_filter(result, year)
+      def isobib_results_filter(result, year, opts)
         missed_years = []
-        result.each do |s|
-          next if !year && s.hit["publicationStatus"] == "Withdrawn"
-          return { ret: s.fetch } unless year
-
-          %r{:(?<iyear>\d{4})} =~ s.hit["docRef"]
-          return { ret: s.fetch } if iyear == year
-
-          missed_years << iyear
+        hits = result.reduce!([]) do |hts, h|
+          if !year && h.hit["publicationStatus"] == "Withdrawn"
+            hts
+          elsif !year || %r{:(?<iyear>\d{4})} =~ h.hit["docRef"] && iyear == year
+            hts << h
+          else
+            missed_years << iyear
+            hts
+          end
         end
-        { years: missed_years }
+        return { years: missed_years } unless hits.any?
+
+        return { ret: hits.first.fetch } if !opts[:all_parts] || hits.size == 1
+
+        { ret: hits.to_all_parts }
       end
 
-      def isobib_get1(code, year, corr)
+      def isobib_get1(code, year, corr, opts)
         # return iev(code) if /^IEC 60050-/.match code
-        result = isobib_search_filter(code, corr) || return
-        ret = isobib_results_filter(result, year)
+        result = isobib_search_filter(code, corr, opts) || return
+        ret = isobib_results_filter(result, year, opts)
         return ret[:ret] if ret[:ret]
 
         fetch_ref_err(code, year, ret[:years])
