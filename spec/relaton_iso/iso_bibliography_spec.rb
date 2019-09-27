@@ -152,7 +152,7 @@ RSpec.describe RelatonIso::IsoBibliography do
           File.read(file_path, encoding: "utf-8").gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
         )
         expect(xml).to include %(<project-number>ISO 19115 (all parts)</project-number>)
-        expect(xml).to include %(<docidentifier type="ISO">ISO 19115:2014 (all parts)</docidentifier>)
+        expect(xml).to include %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>)
       end
     end
 

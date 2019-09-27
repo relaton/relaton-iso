@@ -9,7 +9,7 @@
   <uri type="src">https://www.iso.org/standard/53798.html</uri>
   <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:53798:en</uri>
   <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
-  <docidentifier type="ISO">ISO 19115:2014 (all parts)</docidentifier>
+  <docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>
   <docnumber>19115</docnumber>
   <date type="published">
     <on>2014</on>
@@ -53,7 +53,7 @@
       <formattedref format="text/plain">ISO 19115-1:2014/Amd 1:2018</formattedref>
     </bibitem>
   </relation>
-  <relation type="partOf">
+  <relation type="instance">
     <bibitem type="standard">
       <fetched>2019-09-27</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
@@ -115,12 +115,12 @@
       </relation>
     </bibitem>
   </relation>
-  <relation type="partOf">
+  <relation type="instance">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-2:2019</formattedref>
     </bibitem>
   </relation>
-  <relation type="partOf">
+  <relation type="instance">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO/TS 19115-3:2016</formattedref>
     </bibitem>

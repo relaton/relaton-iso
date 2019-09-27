@@ -79,7 +79,7 @@ module RelatonIso
           formattedref: RelatonBib::FormattedRef.new(content: hi.hit["docRef"]),
         )
         bibitem.relation << RelatonBib::DocumentRelation.new(
-          type: "partOf", bibitem: isobib,
+          type: "instance", bibitem: isobib,
         )
       end
       bibitem
