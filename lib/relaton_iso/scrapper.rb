@@ -48,7 +48,7 @@ module RelatonIso
           language: langs(doc).map { |l| l[:lang] },
           script: langs(doc).map { |l| script(l[:lang]) }.uniq,
           title: titles,
-          type: fetch_type(hit_data["docRef"]),
+          doctype: fetch_type(hit_data["docRef"]),
           docstatus: fetch_status(doc),
           ics: fetch_ics(doc),
           date: fetch_dates(doc, hit_data["docRef"]),

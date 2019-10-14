@@ -1,5 +1,5 @@
-<bibdata type="international-standard">
-  <fetched>2019-10-11</fetched>
+<bibdata type="standard">
+  <fetched>2019-10-14</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -54,8 +54,8 @@
     </bibitem>
   </relation>
   <relation type="instance">
-    <bibitem type="international-standard">
-      <fetched>2019-10-11</fetched>
+    <bibitem type="standard">
+      <fetched>2019-10-14</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
