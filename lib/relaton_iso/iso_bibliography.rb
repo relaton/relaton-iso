@@ -40,21 +40,19 @@ module RelatonIso
         code = code1 if code1
 
         if year.nil?
-          /^(?<code1>[^\s]+(\s\w+)?\s[\d-]+):?(?<year1>\d{4})?/ =~ code
+          /^(?<code1>[^\s]+(\s\w+)?\s[\d-]+)(:(?<year1>\d{4})|(?<code2>\s\w+))?/ =~ code
           unless code1.nil?
-            code = code1
+            code = code1 + code2.to_s
             year = year1
           end
         end
-        opts[:all_parts] ||= code !~ %r{^[^\s]+\s\d+-\d+} && opts[:all_parts].nil?
-        # code += "-1" if all_parts
+        opts[:all_parts] ||= code !~ %r{^[^\s]+\s\d+-\d+} && opts[:all_parts].nil? && code2.nil?
         return RelatonIec::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR] =~ code
 
         ret = isobib_get1(code, year, corr, opts)
         return nil if ret.nil?
 
         ret.to_most_recent_reference unless year || opts[:keep_year] || opts[:all_parts]
-        # ret.to_all_parts if all_parts
         ret
       end
 
@@ -118,13 +116,14 @@ module RelatonIso
       end
 
       def try_stages(result, corr, opts)
+        res = nil
         %w[NP WD CD DIS FDIS PRF IS AWI].each do |st| # try stages
           warn "Attempting #{st} stage retrieval"
           c = yield st
           res = search_code result, c, corr, opts
           return res unless res.empty?
         end
-        result
+        res
       end
 
       def search_code(result, code, corr, opts)

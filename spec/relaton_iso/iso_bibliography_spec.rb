@@ -312,5 +312,12 @@ RSpec.describe RelatonIso::IsoBibliography do
         end
       end
     end
+
+    it "return not found{" do
+      VCR.use_cassette "iso_7372_directory" do
+        result = RelatonIso::IsoBibliography.get "ISO 7372 Directory", nil, {}
+        expect(result).to be_nil
+      end
+    end
   end
 end
