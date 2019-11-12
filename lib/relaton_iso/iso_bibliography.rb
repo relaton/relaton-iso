@@ -40,7 +40,7 @@ module RelatonIso
         code = code1 if code1
 
         if year.nil?
-          /^(?<code1>[^\s]+(\s\w+)?\s[\d-]+)(:(?<year1>\d{4})|(?<code2>\s\w+))?/ =~ code
+          /^(?<code1>[^\s]+(\s\w+)?\s[\d-]+)(:(?<year1>\d{4}))?(?<code2>\s\w+)?/ =~ code
           unless code1.nil?
             code = code1 + code2.to_s
             year = year1
