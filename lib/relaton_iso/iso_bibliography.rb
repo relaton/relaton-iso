@@ -144,9 +144,9 @@ module RelatonIso
       def isobib_results_filter(result, year, opts)
         missed_years = []
         hits = result.reduce!([]) do |hts, h|
-          if !year && h.hit["publicationStatus"] == "Withdrawn"
-            hts
-          elsif !year || %r{:(?<iyear>\d{4})} =~ h.hit["docRef"] && iyear == year
+          # if !year && h.hit["publicationStatus"] == "Withdrawn"
+          #   hts
+          if !year || %r{:(?<iyear>\d{4})} =~ h.hit["docRef"] && iyear == year
             hts << h
           else
             missed_years << iyear

@@ -283,6 +283,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
+    it "fetch ISO 8000-102" do
+      VCR.use_cassette "iso_8000_102" do
+        result = RelatonIso::IsoBibliography.get "ISO 8000-102:2009", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO 8000-102:2009"
+      end
+    end
+
     it "fetch public guide" do
       VCR.use_cassette "iso_guide_82_2014" do
         result = RelatonIso::IsoBibliography.get "ISO Guide 82:2014", nil, {}

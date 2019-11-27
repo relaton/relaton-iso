@@ -71,10 +71,13 @@ module RelatonIso
     # end
 
     def to_all_parts
-      hit = @array.min_by { |h| h.hit["docPart"].to_i }
+      parts = @array.select { |h| !h.hit["docPart"].empty? }
+      hit = parts.min_by { |h| h.hit["docPart"].to_i }
+      return @array.first.fetch unless hit
+
       bibitem = hit.fetch
       bibitem.to_all_parts
-      @array.reject { |h| h.hit["docRef"] == hit.hit["docRef"] }.each do |hi|
+      parts.reject { |h| h.hit["docRef"] == hit.hit["docRef"] }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(
           formattedref: RelatonBib::FormattedRef.new(content: hi.hit["docRef"]),
         )
