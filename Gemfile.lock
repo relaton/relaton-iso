@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    relaton-iso (0.6.9)
+    relaton-iso (0.6.10)
       relaton-iec (~> 0.4.0)
       relaton-iso-bib (~> 0.3.0)
 
@@ -39,7 +39,7 @@ GEM
     relaton-bib (0.3.12)
       addressable
       nokogiri
-    relaton-iec (0.4.10)
+    relaton-iec (0.4.11)
       addressable
       relaton-iso-bib (~> 0.3.0)
     relaton-iso-bib (0.3.12)
@@ -92,4 +92,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.0.1
+   2.0.2
