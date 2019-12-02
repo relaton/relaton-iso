@@ -23,7 +23,7 @@ module RelatonIso
     def initialize(text)
       @array = []
       @text = text
-      %r{(?<num>\d+)(-(?<part>\d+))?} =~ text
+      %r{\s(?<num>\d+)(-(?<part>\d+))?} =~ text
       http = Net::HTTP.new "www.iso.org", 443
       http.use_ssl = true
       search = ["status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED"]

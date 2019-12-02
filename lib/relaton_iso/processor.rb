@@ -7,7 +7,7 @@ module RelatonIso
     def initialize
       @short = :relaton_iso
       @prefix = "ISO"
-      @defaultprefix = %r{^(ISO)[ /]}
+      @defaultprefix = %r{^ISO(/IEC)?\s}
       @idtype = "ISO"
     end
 

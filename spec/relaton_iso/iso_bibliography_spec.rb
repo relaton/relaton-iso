@@ -16,7 +16,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   it "fetch hits" do
     VCR.use_cassette "hits" do
-      hits = RelatonIso::IsoBibliography.search("19115")
+      hits = RelatonIso::IsoBibliography.search("ISO 19115")
       expect(hits).to be_instance_of RelatonIso::HitCollection
       expect(hits.first).to be_instance_of RelatonIso::Hit
       expect(hits.first.fetch).to be_instance_of RelatonIsoBib::IsoBibliographicItem
@@ -25,7 +25,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   it "return xml of hit" do
     VCR.use_cassette "hit" do
-      hits = RelatonIso::IsoBibliography.search("19115")
+      hits = RelatonIso::IsoBibliography.search("ISO 19115")
       xml = hits[0].to_xml bibdata: true
       file_path = "spec/support/hit.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
@@ -37,7 +37,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   it "return xml of hits collection" do
     VCR.use_cassette "hit_collection_xml" do
-      hits = RelatonIso::IsoBibliography.search "19115"
+      hits = RelatonIso::IsoBibliography.search "ISO 19115"
       xml = hits.to_xml
       file_path = "spec/support/hits.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
@@ -49,10 +49,10 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   it "return string of hit collection" do
     VCR.use_cassette "hits" do
-      hits = RelatonIso::IsoBibliography.search "19115"
+      hits = RelatonIso::IsoBibliography.search "ISO 19115"
       expect(hits.to_s).to eq(
         "<RelatonIso::HitCollection:#{format('%#.14x', hits.object_id << 1)} "\
-        "@ref=19115>",
+        "@ref=ISO 19115>",
       )
     end
   end
@@ -60,7 +60,7 @@ RSpec.describe RelatonIso::IsoBibliography do
   describe "iso bibliography item" do
     subject do
       VCR.use_cassette "hits" do
-        hits = RelatonIso::IsoBibliography.search("19115")
+        hits = RelatonIso::IsoBibliography.search("ISO 19115")
         hits.first.fetch
       end
     end
