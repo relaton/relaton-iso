@@ -34,7 +34,7 @@ module RelatonIso
 
     # Retturn hash of XML grammar
     def grammar_hash
-      ::RelatonIso.grammar_hash
+      ::RelatonIsoBib.grammar_hash
     end
   end
 end
