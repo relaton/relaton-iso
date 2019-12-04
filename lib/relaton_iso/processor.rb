@@ -31,5 +31,10 @@ module RelatonIso
       item_hash = ::RelatonIsoBib::HashConverter.hash_to_bib(hash)
       ::RelatonIsoBib::IsoBibliographicItem.new item_hash
     end
+
+    # Retturn hash of XML grammar
+    def grammar_hash
+      ::RelatonIso.grammar_hash
+    end
   end
 end

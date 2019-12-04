@@ -3,7 +3,9 @@ RSpec.describe RelatonIso do
     expect(RelatonIso::VERSION).not_to be nil
   end
 
-  # it "does something useful" do
-  #   expect(false).to eq(true)
-  # end
+  it "returs grammar hash" do
+    hash = RelatonIso.grammar_hash
+    expect(hash).to be_instance_of String
+    expect(hash.size).to eq 32
+  end
 end
