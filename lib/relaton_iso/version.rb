@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module RelatonIso
-  VERSION = "0.6.10"
+  VERSION = "0.7.0"
 end

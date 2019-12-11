@@ -32,9 +32,10 @@ module RelatonIso
       ::RelatonIsoBib::IsoBibliographicItem.new item_hash
     end
 
-    # Retturn hash of XML grammar
+    # Returns hash of XML grammar
+    # @return [String]
     def grammar_hash
-      ::RelatonIsoBib.grammar_hash
+      @grammar_hash ||= ::RelatonIsoBib.grammar_hash
     end
   end
 end
