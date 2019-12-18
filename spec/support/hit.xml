@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2019-10-14</fetched>
+  <fetched>2019-12-18</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -49,6 +49,7 @@
       <formattedref format="text/plain">ISO 19115-2:2019/CD Amd 1</formattedref>
     </bibitem>
   </relation>
+  <place>Geneva</place>
   <ext>
     <doctype>international-standard</doctype>
     <editorialgroup>

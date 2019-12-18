@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2019-11-27</fetched>
+  <fetched>2019-12-18</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -55,7 +55,7 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <fetched>2019-11-27</fetched>
+      <fetched>2019-12-18</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -113,6 +113,7 @@
           <formattedref format="text/plain">ISO 19115-1:2014/Amd 1:2018</formattedref>
         </bibitem>
       </relation>
+      <place>Geneva</place>
     </bibitem>
   </relation>
   <relation type="instance">
@@ -130,6 +131,7 @@
       <formattedref format="text/plain">ISO 19115-2:2009</formattedref>
     </bibitem>
   </relation>
+  <place>Geneva</place>
   <ext>
     <doctype>international-standard</doctype>
     <editorialgroup>

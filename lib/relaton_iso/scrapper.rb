@@ -58,6 +58,7 @@ module RelatonIso
           copyright: fetch_copyright(hit_data["docRef"], doc),
           link: fetch_link(doc, url),
           relation: fetch_relations(doc),
+          place: ["Geneva"],
           structuredidentifier: fetch_structuredidentifier(doc),
         )
       end
