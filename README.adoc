@@ -1,9 +1,12 @@
 = RelatonIso: retrieve ISO Standards for bibliographic use using the BibliographicItem model
 
 image:https://img.shields.io/gem/v/relaton-iso.svg["Gem Version", link="https://rubygems.org/gems/relaton-iso"]
-image:https://img.shields.io/travis/metanorma/relaton-iso/master.svg["Build Status", link="https://travis-ci.com/metanorma/relaton-iso"]
-image:https://ci.appveyor.com/api/projects/status/nb2hvqycupqrkqjt?svg=true["Appveyor Build Status", link="https://ci.appveyor.com/project/ribose/relaton-iso"]
-image:https://codeclimate.com/github/metanorma/relaton-iso/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/relaton-iso"]
+image:https://github.com/relaton/relaton-iso/workflows/macos/badge.svg["Build Status (macOS)", link="https://github.com/relaton/relaton-iso/actions?workflow=macos"]
+image:https://github.com/relaton/relaton-iso/workflows/windows/badge.svg["Build Status (Windows)", link="https://github.com/relaton/relaton-iso/actions?workflow=windows"]
+image:https://github.com/relaton/relaton-iso/workflows/ubuntu/badge.svg["Build Status (Ubuntu)", link="https://github.com/relaton/relaton-iso/actions?workflow=ubuntu"]
+image:https://codeclimate.com/github/relaton/relaton-iso/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/metanorma/relaton-iso"]
+image:https://img.shields.io/github/issues-pr-raw/relaton/relaton-iso.svg["Pull Requests", link="https://github.com/relaton/relaton-iso/pulls"]
+image:https://img.shields.io/github/commits-since/relaton/relaton/latest.svg["Commits since latest",link="https://github.com/relaton/relaton/releases"]
 
 RelatonIso is a Ruby gem that implements the https://github.com/metanorma/metanorma-model-iso#iso-bibliographic-item[IsoBibliographicItem model].
 
