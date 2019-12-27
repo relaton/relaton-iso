@@ -10,7 +10,7 @@ module RelatonIso
   class IsoBibliography
     class << self
       # @param text [String]
-      # @return [RelatonIso::HitPages]
+      # @return [RelatonIso::HitCollection]
       def search(text)
         HitCollection.new text
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
@@ -25,19 +25,21 @@ module RelatonIso
       #   Scrapper.get(text)
       # end
 
-      # @param code [String] the ISO standard Code to look up (e..g "ISO 9000")
+      # @param ref [String] the ISO standard Code to look up (e..g "ISO 9000")
       # @param year [String] the year the standard was published (optional)
       # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required,
       #   :keep_year if undated reference should return actual reference with year
       # @return [String] Relaton XML serialisation of reference
-      def get(code, year, opts)
+      def get(ref, year, opts)
+        opts[:ref] = ref
+
         %r{
           ^(?<code1>[^\s]+\s[^/]+) # match code
           /?
           (?<corr>(Amd|DAmd|(CD|WD|AWI|NP)\sAmd|Cor|CD\sCor|FDAmd)\s\d+ # correction name
           :?(\d{4})?(/Cor\s\d+:\d{4})?) # match correction year
-        }x =~ code
-        code = code1 if code1
+        }x =~ ref
+        code = code1 || ref
 
         if year.nil?
           /^(?<code1>[^\s]+(\s\w+)?\s[\d-]+)(:(?<year1>\d{4}))?(?<code2>\s\w+)?/ =~ code
@@ -89,7 +91,7 @@ module RelatonIso
       # @param corr [String] correction
       # @return [Array<RelatonIso::Hit>]
       def isobib_search_filter(code, corr, opts)
-        warn "fetching #{code}..."
+        warn "[relaton-iso] (\"#{opts[:ref]}\") fetching..."
         result = search(code)
         res = search_code result, code, corr, opts
         return res unless res.empty?
@@ -108,17 +110,19 @@ module RelatonIso
         end
 
         if %r{^ISO\s} =~ code # try ISO/IEC if ISO not found
-          warn "Attempting ISO/IEC retrieval"
+          warn "[relaton-iso] Attempting ISO/IEC retrieval"
           c = code.sub "ISO", "ISO/IEC"
           res = search_code result, c, corr, opts
         end
         res
       end
 
+      # @param result [RelatonIso::HitCollection]
+      # @param corr [String] correction
+      # @param opts [Hash]
       def try_stages(result, corr, opts)
         res = nil
         %w[NP WD CD DIS FDIS PRF IS AWI].each do |st| # try stages
-          warn "Attempting #{st} stage retrieval"
           c = yield st
           res = search_code result, c, corr, opts
           return res unless res.empty?
@@ -164,9 +168,12 @@ module RelatonIso
         # return iev(code) if /^IEC 60050-/.match code
         result = isobib_search_filter(code, corr, opts) || return
         ret = isobib_results_filter(result, year, opts)
-        return ret[:ret] if ret[:ret]
-
-        fetch_ref_err(code, year, ret[:years])
+        if ret[:ret]
+          warn "[relaton-iso] (\"#{opts[:ref]}\") found #{ret[:ret].docidentifier.first.id}"
+          ret[:ret]
+        else
+          fetch_ref_err(code, year, ret[:years])
+        end
       end
     end
   end

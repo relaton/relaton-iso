@@ -132,7 +132,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     # let(:hit_pages) { RelatonIso::IsoBibliography.search("19115") }
 
     it "gets a code" do
-      VCR.use_cassette "iso_19119_1" do
+      VCR.use_cassette "iso_19115_1" do
         results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
         expect(results).to include %(<bibitem id="ISO19115-1" type="standard">)
         expect(results).to include %(<on>2014</on>)
@@ -320,7 +320,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "return not found{" do
+    it "return not found" do
       VCR.use_cassette "iso_7372_directory" do
         result = RelatonIso::IsoBibliography.get "ISO 7372 Directory", nil, {}
         expect(result).to be_nil

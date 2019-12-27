@@ -206,8 +206,7 @@ module RelatonIso
                    "updates"
                  else r_type
                  end
-          if ["Now", "Now under review"].include? type
-            a
+          if ["Now", "Now under review"].include?(type) then a
           else
             a + r.css("a").map do |id|
               fref = RelatonBib::FormattedRef.new(
