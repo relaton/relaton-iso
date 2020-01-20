@@ -204,10 +204,8 @@ module RelatonIso
           type = case r_type
                  when "Previously", "Will be replaced by" then "obsoletes"
                  when "Corrigenda/Amendments", "Revised by", "Now confirmed"
-                  date << {
-                    type: "circulated",
-                    on: doc.xpath('//span[@class="stage-date"]').last.text
-                  }
+                   date << { type: "circulated",
+                     on: doc.xpath('//span[@class="stage-date"]').last.text }
                    "updates"
                  else r_type
                  end

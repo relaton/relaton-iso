@@ -19,16 +19,11 @@ module RelatonIso
         raise RelatonBib::RequestError, "Could not access http://www.iso.org"
       end
 
-      # @param text [String]
-      # @return [Array<RelatonIso::IsoBibliographicItem>]
-      # def search_and_fetch(text)
-      #   Scrapper.get(text)
-      # end
-
       # @param ref [String] the ISO standard Code to look up (e..g "ISO 9000")
-      # @param year [String, NilClass] the year the standard was published (optional)
-      # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required,
-      #   :keep_year if undated reference should return actual reference with year
+      # @param year [String, NilClass] the year the standard was published
+      # @param opts [Hash] options; restricted to :all_parts if all-parts
+      #   reference is required, :keep_year if undated reference should
+      #   return actual reference with year
       # @return [String] Relaton XML serialisation of reference
       def get(ref, year = nil, opts = {})
         opts[:ref] = ref
