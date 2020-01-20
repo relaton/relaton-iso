@@ -26,11 +26,11 @@ module RelatonIso
       # end
 
       # @param ref [String] the ISO standard Code to look up (e..g "ISO 9000")
-      # @param year [String] the year the standard was published (optional)
+      # @param year [String, NilClass] the year the standard was published (optional)
       # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required,
       #   :keep_year if undated reference should return actual reference with year
       # @return [String] Relaton XML serialisation of reference
-      def get(ref, year, opts)
+      def get(ref, year = nil, opts = {})
         opts[:ref] = ref
 
         %r{

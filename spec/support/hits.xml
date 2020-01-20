@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
   <bibitem id="ISO19115-2-2019" type="standard">
-    <fetched>2019-12-18</fetched>
+    <fetched>2020-01-20</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -49,12 +49,15 @@
     <relation type="updates">
       <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-2:2019/CD Amd 1</formattedref>
+        <date type="circulated">
+          <on>2019</on>
+        </date>
       </bibitem>
     </relation>
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-1-2014/Amd1-2018" type="standard">
-    <fetched>2019-12-18</fetched>
+    <fetched>2020-01-20</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"></title>
     <title type="main" format="text/plain" language="en" script="Latn"></title>
     <title type="title-main" format="text/plain" language="fr" script="Latn"></title>
@@ -96,7 +99,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19115-3-2016" type="standard">
-    <fetched>2019-12-18</fetched>
+    <fetched>2020-01-20</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -149,7 +152,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-1-2014" type="standard">
-    <fetched>2019-12-18</fetched>
+    <fetched>2020-01-20</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -205,12 +208,15 @@
     <relation type="updates">
       <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-1:2014/Amd 1:2018</formattedref>
+        <date type="circulated">
+          <on>2019</on>
+        </date>
       </bibitem>
     </relation>
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2-2019/CDAmd1" type="standard">
-    <fetched>2019-12-18</fetched>
+    <fetched>2020-01-20</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"></title>
     <title type="main" format="text/plain" language="en" script="Latn"></title>
     <title type="title-main" format="text/plain" language="fr" script="Latn"></title>
@@ -249,7 +255,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2-2009" type="standard">
-    <fetched>2019-12-18</fetched>
+    <fetched>2020-01-20</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -294,12 +300,15 @@
     <relation type="updates">
       <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-2:2019</formattedref>
+        <date type="circulated">
+          <on>2019</on>
+        </date>
       </bibitem>
     </relation>
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2003/Cor1-2006" type="standard">
-    <fetched>2019-12-18</fetched>
+    <fetched>2020-01-20</fetched>
     <title type="title-main" format="text/plain" language="en" script="Latn"></title>
     <title type="main" format="text/plain" language="en" script="Latn"></title>
     <title type="title-main" format="text/plain" language="fr" script="Latn"></title>
@@ -341,12 +350,15 @@
     <relation type="updates">
       <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
+        <date type="circulated">
+          <on>2014</on>
+        </date>
       </bibitem>
     </relation>
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2003" type="standard">
-    <fetched>2019-12-18</fetched>
+    <fetched>2020-01-20</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -388,11 +400,17 @@
     <relation type="updates">
       <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
+        <date type="circulated">
+          <on>2014</on>
+        </date>
       </bibitem>
     </relation>
     <relation type="updates">
       <bibitem type="standard">
         <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
+        <date type="circulated">
+          <on>2014</on>
+        </date>
       </bibitem>
     </relation>
     <place>Geneva</place>

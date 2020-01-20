@@ -200,9 +200,14 @@ module RelatonIso
       def fetch_relations(doc)
         doc.css("ul.steps li").reduce([]) do |a, r|
           r_type = r.css("strong").text
+          date = []
           type = case r_type
                  when "Previously", "Will be replaced by" then "obsoletes"
                  when "Corrigenda/Amendments", "Revised by", "Now confirmed"
+                  date << {
+                    type: "circulated",
+                    on: doc.xpath('//span[@class="stage-date"]').last.text
+                  }
                    "updates"
                  else r_type
                  end
@@ -213,7 +218,7 @@ module RelatonIso
                 content: id.text, format: "text/plain",
               )
               bibitem = RelatonIsoBib::IsoBibliographicItem.new(
-                formattedref: fref,
+                formattedref: fref, date: date
               )
               { type: type, bibitem: bibitem }
             end
