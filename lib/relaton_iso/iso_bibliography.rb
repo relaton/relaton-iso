@@ -19,24 +19,19 @@ module RelatonIso
         raise RelatonBib::RequestError, "Could not access http://www.iso.org"
       end
 
-      # @param text [String]
-      # @return [Array<RelatonIso::IsoBibliographicItem>]
-      # def search_and_fetch(text)
-      #   Scrapper.get(text)
-      # end
-
       # @param ref [String] the ISO standard Code to look up (e..g "ISO 9000")
-      # @param year [String] the year the standard was published (optional)
-      # @param opts [Hash] options; restricted to :all_parts if all-parts reference is required,
-      #   :keep_year if undated reference should return actual reference with year
+      # @param year [String, NilClass] the year the standard was published
+      # @param opts [Hash] options; restricted to :all_parts if all-parts
+      #   reference is required, :keep_year if undated reference should
+      #   return actual reference with year
       # @return [String] Relaton XML serialisation of reference
-      def get(ref, year, opts)
+      def get(ref, year = nil, opts = {})
         opts[:ref] = ref
 
         %r{
           ^(?<code1>[^\s]+\s[^/]+) # match code
           /?
-          (?<corr>(Amd|DAmd|(CD|WD|AWI|NP)\sAmd|Cor|CD\sCor|FDAmd)\s\d+ # correction name
+          (?<corr>(Amd|DAmd|(CD|WD|AWI|NP)\sAmd|Cor|CD\sCor|FDAmd|PRF\sAmd)\s\d+ # correction name
           :?(\d{4})?(/Cor\s\d+:\d{4})?) # match correction year
         }x =~ ref
         code = code1 || ref
@@ -122,7 +117,7 @@ module RelatonIso
       # @param opts [Hash]
       def try_stages(result, corr, opts)
         res = nil
-        %w[NP WD CD DIS FDIS PRF IS AWI].each do |st| # try stages
+        %w[NP WD CD DIS FDIS PRF IS AWI TR].each do |st| # try stages
           c = yield st
           res = search_code result, c, corr, opts
           return res unless res.empty?
@@ -134,8 +129,8 @@ module RelatonIso
         result.select do |i|
           (opts[:all_parts] || i.hit["docRef"] =~ %r{^#{code}(?!-)}) && (
               corr && %r{^#{code}[\w-]*(:\d{4})?/#{corr}} =~ i.hit["docRef"] ||
-              %r{^#{code}[\w-]*(:\d{4})?/} !~ i.hit["docRef"] && !corr
-            )
+              !corr && %r{^#{code}[\w-]*(:\d{4})?/} !~ i.hit["docRef"]
+        ) # && %r{^#{code}} =~ i.hit["docRef"]
         end
       end
 
@@ -159,11 +154,15 @@ module RelatonIso
         end
         return { years: missed_years } unless hits.any?
 
-        return { ret: hits.first.fetch } if !opts[:all_parts] || hits.size == 1
+        return { ret: hits.first.fetch(opts[:lang]) } if !opts[:all_parts] || hits.size == 1
 
-        { ret: hits.to_all_parts }
+        { ret: hits.to_all_parts(opts[:lang]) }
       end
 
+      # @param code [String]
+      # @param year [String, NilClass]
+      # @param corr [String, NilClass]
+      # @param opts [Hash]
       def isobib_get1(code, year, corr, opts)
         # return iev(code) if /^IEC 60050-/.match code
         result = isobib_search_filter(code, corr, opts) || return

@@ -10,25 +10,23 @@ module RelatonIso
 
     def_delegators :@array, :<<, :[], :first, :empty?, :any?, :size
 
-    # @return [TrueClass, FalseClass]
-    # attr_reader :fetched
-
-    # @return [RelatonIso::HitPages]
-    # attr_reader :hit_pages
-
-    # @return [String]
+    # @return [String, NilClass]
     attr_reader :text
 
-    # @param hits [Array<Hash>]
+    # @param text [String] reference to search
     def initialize(text)
       @array = []
       @text = text
-      %r{\s(?<num>\d+)(-(?<part>\d+))?} =~ text
+      %r{\s(?<num>\d+)(-(?<part>[\d-]+))?} =~ text
       http = Net::HTTP.new "www.iso.org", 443
       http.use_ssl = true
       search = ["status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED"]
       search << "docNumber=#{num}"
       search << "docPartNo=#{part}" if part
+      # if year
+      #   search << "stageDateStart=#{Date.new(year.to_i).strftime("%Y-%m-%d")}"
+      #   search << "stageDateEnd=#{Date.new(year.to_i, 12, 31).strftime("%Y-%m-%d")}"
+      # end
       q = search.join "&"
       resp = http.get("/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
                       "Accept" => "application/json, text/plain, */*")
@@ -55,27 +53,14 @@ module RelatonIso
       self
     end
 
-    # @return [RelatonIso::HitCollection]
-    # def fetch
-    #   return self if @fetched
-
-    #   workers = RelatonBib::WorkersPool.new 4
-    #   workers.worker(&:fetch)
-    #   @array.each do |hit|
-    #     workers << hit
-    #   end
-    #   workers.end
-    #   workers.result
-    #   @fetched = true
-    #   self
-    # end
-
-    def to_all_parts
+    # @param lang [String, NilClass]
+    # @return [RelatonIsoBib::IsoBibliographicItem]
+    def to_all_parts(lang = nil)
       parts = @array.select { |h| !h.hit["docPart"].empty? }
       hit = parts.min_by { |h| h.hit["docPart"].to_i }
-      return @array.first.fetch unless hit
+      return @array.first.fetch lang unless hit
 
-      bibitem = hit.fetch
+      bibitem = hit.fetch lang
       bibitem.to_all_parts
       parts.reject { |h| h.hit["docRef"] == hit.hit["docRef"] }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(

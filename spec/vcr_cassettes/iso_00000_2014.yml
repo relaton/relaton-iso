@@ -16,10 +16,8 @@ http_interactions:
   response:
     status:
       code: 200
-      message: OK
+      message: ''
     headers:
-      Server:
-      - Apache-Coyote/1.1
       Expires:
       - Wed, 09 May 1979 05:30:00 GMT
       Cache-Control:
@@ -27,19 +25,20 @@ http_interactions:
       Pragma:
       - no-cache
       Set-Cookie:
-      - BIGipServerpool_prod_iso_www-jahia=386093450.36895.0000; path=/
-      - JSESSIONID=296D952D5D88FC57360D9AA3C859E8F6; Path=/; HttpOnly
+      - BIGipServerpool_prod_iso_www-jahia=730354058.36895.0000; path=/; Httponly;
+        Secure
+      - JSESSIONID=D47B02ABCC41EC67C2E5C0A877F8C522; Path=/; HttpOnly
       Content-Type:
       - application/json;charset=UTF-8
       Content-Length:
       - '16'
       Date:
-      - Tue, 13 Aug 2019 10:00:35 GMT
+      - Tue, 21 Jan 2020 16:01:39 GMT
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
       string: '{"standards":[]}'
     http_version: 
-  recorded_at: Tue, 13 Aug 2019 10:00:36 GMT
+  recorded_at: Tue, 21 Jan 2020 16:01:40 GMT
 recorded_with: VCR 5.0.0

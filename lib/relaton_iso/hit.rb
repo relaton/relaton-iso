@@ -7,9 +7,10 @@ module RelatonIso
     attr_reader :hit_collection
 
     # Parse page.
+    # @param lang [String, NilClass]
     # @return [RelatonIso::IsoBibliographicItem]
-    def fetch
-      @fetch ||= Scrapper.parse_page @hit
+    def fetch(lang = nil)
+      @fetch ||= Scrapper.parse_page @hit, lang
     end
 
     # @param builder [Nokogiri::XML::Builder]

@@ -234,17 +234,17 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "fetch FDIS Amd" do
-      VCR.use_cassette "iso_11136_2014_fdamd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO 11136:2014/FDAmd 1", nil, {}
-        expect(result.docidentifier.first.id).to eq "ISO 11136:2014/FDAmd 1"
-      end
-    end
+    # it "fetch FDIS Amd" do
+    #   VCR.use_cassette "iso_11136_2014_fdamd_1" do
+    #     result = RelatonIso::IsoBibliography.get "ISO 11136:2014/FDAmd 1", nil, {}
+    #     expect(result.docidentifier.first.id).to eq "ISO 11136:2014/FDAmd 1"
+    #   end
+    # end
 
-    it "fetch DIS Amd" do
-      VCR.use_cassette "iso_3839_1996_damd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO 3839:1996/DAmd 1", nil, {}
-        expect(result.docidentifier.first.id).to eq "ISO 3839:1996/DAmd 1"
+    it "fetch PRF Amd" do
+      VCR.use_cassette "iso_3839_1996_prf_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO 3839:1996/PRF Amd 1", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO 3839:1996/PRF Amd 1"
       end
     end
 
@@ -313,9 +313,29 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
 
       it "ISO/IEC" do
-        VCR.use_cassette "iso_iec_dis_11179_7" do
-          result = RelatonIso::IsoBibliography.get "ISO/IEC 11179-7", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO/IEC DIS 11179-7"
+        VCR.use_cassette "iso_iec_29110_5_1_3_2017" do
+          result = RelatonIso::IsoBibliography.get "ISO/IEC 29110-5-1-3:2017", nil, {}
+          expect(result.docidentifier.first.id).to eq "ISO/IEC TR 29110-5-1-3:2017"
+        end
+      end
+    end
+
+    context "fetch specific language" do
+      it "en" do
+        VCR.use_cassette "iso_19115_en" do
+          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, { lang: "en" }).to_xml
+          file = "spec/support/iso_19115_en.xml"
+          File.write file, result, encoding: "UTF-8" unless File.exist? file
+          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
+        end
+      end
+
+      it "fr" do
+        VCR.use_cassette "iso_19115_fr" do
+          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, { lang: "fr" }).to_xml
+          file = "spec/support/iso_19115_fr.xml"
+          File.write file, result, encoding: "UTF-8" unless File.exist? file
+          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
         end
       end
     end

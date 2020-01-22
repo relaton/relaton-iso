@@ -27,10 +27,11 @@ module RelatonIso
 
     class << self
       # Parse page.
-      # @param hit [Hash]
+      # @param hit_data [Hash]
+      # @param lang [String, NilClass]
       # @return [Hash]
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      def parse_page(hit_data)
+      def parse_page(hit_data, lang = nil)
         path = "/contents/data/standard#{hit_data["splitPath"]}/#{hit_data["csnumber"]}.html"
         doc, url = get_page path
 
@@ -38,15 +39,15 @@ module RelatonIso
         edition = doc&.xpath("//strong[contains(text(), 'Edition')]/..")&.
           children&.last&.text&.match(/\d+/)&.to_s
 
-        titles, abstract = fetch_titles_abstract(doc)
+        titles, abstract, langs = fetch_titles_abstract(doc, lang)
 
         RelatonIsoBib::IsoBibliographicItem.new(
           fetched: Date.today.to_s,
           docid: fetch_docid(hit_data["docRef"]),
           docnumber: fetch_docnumber(doc),
           edition: edition,
-          language: langs(doc).map { |l| l[:lang] },
-          script: langs(doc).map { |l| script(l[:lang]) }.uniq,
+          language: langs.map { |l| l[:lang] },
+          script: langs.map { |l| script(l[:lang]) }.uniq,
           title: titles,
           doctype: fetch_type(hit_data["docRef"]),
           docstatus: fetch_status(doc),
@@ -68,40 +69,46 @@ module RelatonIso
 
       # Fetch titles and abstracts.
       # @param doc [Nokigiri::HTML::Document]
+      # @param lang [String, NilClass]
       # @return [Array<Array>]
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      def fetch_titles_abstract(doc)
+      def fetch_titles_abstract(doc, lang)
         titles   = []
         abstract = []
-        langs(doc).each do |lang|
+        langs = languages(doc, lang).reduce([]) do |s, l|
           # Don't need to get page for en. We already have it.
-          d = lang[:path] ? get_page(lang[:path])[0] : doc
-          titles << fetch_title(d, lang[:lang])
+          d = l[:path] ? get_page(l[:path])[0] : doc
+          unless d.at("//h5[@class='help-block'][.='недоступно на русском языке']")
+            s << l
+            titles << fetch_title(d, l[:lang])
 
-          # Fetch abstracts.
-          abstract_content = d.css("div[itemprop='description'] p").text
-          next if abstract_content.empty?
-
-          abstract << {
-            content: abstract_content,
-            language: lang[:lang],
-            script: script(lang[:lang]),
-            format: "text/plain",
-          }
+            # Fetch abstracts.
+            abstract_content = d.css("div[itemprop='description'] p").text
+            unless abstract_content.empty?
+              abstract << {
+                content: abstract_content,
+                language: l[:lang],
+                script: script(l[:lang]),
+                format: "text/plain",
+              }
+            end
+          end
+          s
         end
-        [titles, abstract]
+        [titles, abstract, langs]
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      # Get langs.
+      # Returns available languages.
       # @param doc [Nokogiri::HTML::Document]
+      # @pqrqm lang [String, NilClass]
       # @return [Array<Hash>]
-      def langs(doc)
+      def languages(doc, lang)
         lgs = [{ lang: "en" }]
         doc.css("li#lang-switcher ul li a").each do |lang_link|
           lang_path = lang_link.attr("href")
-          lang = lang_path.match(%r{^\/(fr)\/})
-          lgs << { lang: lang[1], path: lang_path } if lang
+          l = lang_path.match(%r{^\/(fr)\/})
+          lgs << { lang: l[1], path: lang_path } if l && (!lang || l[1] == lang)
         end
         lgs
       end
@@ -200,9 +207,12 @@ module RelatonIso
       def fetch_relations(doc)
         doc.css("ul.steps li").reduce([]) do |a, r|
           r_type = r.css("strong").text
+          date = []
           type = case r_type
                  when "Previously", "Will be replaced by" then "obsoletes"
                  when "Corrigenda/Amendments", "Revised by", "Now confirmed"
+                   date << { type: "circulated",
+                     on: doc.xpath('//span[@class="stage-date"]').last.text }
                    "updates"
                  else r_type
                  end
@@ -213,7 +223,7 @@ module RelatonIso
                 content: id.text, format: "text/plain",
               )
               bibitem = RelatonIsoBib::IsoBibliographicItem.new(
-                formattedref: fref,
+                formattedref: fref, date: date
               )
               { type: type, bibitem: bibitem }
             end
@@ -257,6 +267,7 @@ module RelatonIso
       def script(lang)
         case lang
         when "en", "fr" then "Latn"
+        # when "ru" then "Cyrl"
         end
       end
 
