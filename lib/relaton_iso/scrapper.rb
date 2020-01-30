@@ -211,9 +211,12 @@ module RelatonIso
           type = case r_type
                  when "Previously", "Will be replaced by" then "obsoletes"
                  when "Corrigenda/Amendments", "Revised by", "Now confirmed"
-                   date << { type: "circulated",
-                     on: doc.xpath('//span[@class="stage-date"]').last.text }
-                   "updates"
+                   on = doc.xpath('//span[@class="stage-date"][contains(., "-")]').last
+                   if on
+                     date << { type: "circulated",
+                       on: on.text }
+                     "updates"
+                   end
                  else r_type
                  end
           if ["Now", "Now under review"].include?(type) then a

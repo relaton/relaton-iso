@@ -327,6 +327,7 @@ RSpec.describe RelatonIso::IsoBibliography do
           file = "spec/support/iso_19115_en.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
           expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
+            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
         end
       end
 
@@ -336,6 +337,7 @@ RSpec.describe RelatonIso::IsoBibliography do
           file = "spec/support/iso_19115_fr.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
           expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
+            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
         end
       end
     end
