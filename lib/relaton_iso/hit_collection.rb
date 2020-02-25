@@ -1,32 +1,19 @@
 # frozen_string_literal: true
 
-require "forwardable"
 require "relaton_iso/hit"
 
 module RelatonIso
   # Page of hit collection.
-  class HitCollection
-    extend Forwardable
-
-    def_delegators :@array, :<<, :[], :first, :empty?, :any?, :size
-
-    # @return [String, NilClass]
-    attr_reader :text
-
+  class HitCollection < RelatonBib::HitCollection
     # @param text [String] reference to search
     def initialize(text)
-      @array = []
-      @text = text
+      super
       %r{\s(?<num>\d+)(-(?<part>[\d-]+))?} =~ text
       http = Net::HTTP.new "www.iso.org", 443
       http.use_ssl = true
       search = ["status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED"]
       search << "docNumber=#{num}"
       search << "docPartNo=#{part}" if part
-      # if year
-      #   search << "stageDateStart=#{Date.new(year.to_i).strftime("%Y-%m-%d")}"
-      #   search << "stageDateEnd=#{Date.new(year.to_i, 12, 31).strftime("%Y-%m-%d")}"
-      # end
       q = search.join "&"
       resp = http.get("/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
                       "Accept" => "application/json, text/plain, */*")
@@ -40,17 +27,6 @@ module RelatonIso
           a.sort_weight - b.sort_weight
         end
       end
-    end
-
-    def select(&block)
-      me = DeepClone.clone self
-      me.instance_variable_get(:@array).select!(&block)
-      me
-    end
-
-    def reduce!(sum, &block)
-      @array = @array.reduce sum, &block
-      self
     end
 
     # @param lang [String, NilClass]
@@ -71,26 +47,6 @@ module RelatonIso
         )
       end
       bibitem
-    end
-
-    def to_s
-      inspect
-    end
-
-    def inspect
-      "<#{self.class}:#{format('%#.14x', object_id << 1)} @ref=#{@text}>"
-    end
-
-    def to_xml(**opts)
-      builder = Nokogiri::XML::Builder.new(encoding: "UTF-8") do |xml|
-        xml.documents do
-          @array.each do |hit|
-            hit.fetch
-            hit.to_xml xml, **opts
-          end
-        end
-      end
-      builder.to_xml
     end
 
     private

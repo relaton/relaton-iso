@@ -52,7 +52,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       hits = RelatonIso::IsoBibliography.search "ISO 19115"
       expect(hits.to_s).to eq(
         "<RelatonIso::HitCollection:#{format('%#.14x', hits.object_id << 1)} "\
-        "@ref=ISO 19115>",
+        "@ref=ISO 19115 @fetched=false>",
       )
     end
   end
