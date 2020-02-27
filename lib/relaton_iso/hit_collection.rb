@@ -37,16 +37,16 @@ module RelatonIso
       return @array.first.fetch lang unless hit
 
       bibitem = hit.fetch lang
-      bibitem.to_all_parts
+      all_parts_item = bibitem.to_all_parts
       parts.reject { |h| h.hit["docRef"] == hit.hit["docRef"] }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(
           formattedref: RelatonBib::FormattedRef.new(content: hi.hit["docRef"]),
         )
-        bibitem.relation << RelatonBib::DocumentRelation.new(
+        all_parts_item.relation << RelatonBib::DocumentRelation.new(
           type: "instance", bibitem: isobib,
         )
       end
-      bibitem
+      all_parts_item
     end
 
     private

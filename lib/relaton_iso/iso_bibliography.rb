@@ -49,8 +49,11 @@ module RelatonIso
         ret = isobib_get1(code, year, corr, opts)
         return nil if ret.nil?
 
-        ret.to_most_recent_reference unless year || opts[:keep_year] || opts[:all_parts]
-        ret
+        if year || opts[:keep_year] || opts[:all_parts]
+          ret
+        else
+          ret.to_most_recent_reference
+        end
       end
 
       private
