@@ -60,15 +60,15 @@ module RelatonIso
 
       def fetch_ref_err(code, year, missed_years)
         id = year ? "#{code}:#{year}" : code
-        warn "WARNING: no match found online for #{id}. "\
+        warn "[relaton-iso] WARNING: no match found online for #{id}. "\
           "The code must be exactly like it is on the standards website."
-        warn "(There was no match for #{year}, though there were matches "\
+        warn "[relaton-iso] (There was no match for #{year}, though there were matches "\
           "found for #{missed_years.join(', ')}.)" unless missed_years.empty?
         if /\d-\d/ =~ code
-          warn "The provided document part may not exist, or the document "\
+          warn "[relaton-iso] The provided document part may not exist, or the document "\
             "may no longer be published in parts."
         else
-          warn "If you wanted to cite all document parts for the reference, "\
+          warn "[relaton-iso] If you wanted to cite all document parts for the reference, "\
             "use \"#{code} (all parts)\".\nIf the document is not a standard, "\
             "use its document type abbreviation (TS, TR, PAS, Guide)."
         end
@@ -133,7 +133,7 @@ module RelatonIso
           (opts[:all_parts] || i.hit["docRef"] =~ %r{^#{code}(?!-)}) && (
               corr && %r{^#{code}[\w-]*(:\d{4})?/#{corr}} =~ i.hit["docRef"] ||
               !corr && %r{^#{code}[\w-]*(:\d{4})?/} !~ i.hit["docRef"]
-        ) # && %r{^#{code}} =~ i.hit["docRef"]
+            ) # && %r{^#{code}} =~ i.hit["docRef"]
         end
       end
 
