@@ -32,7 +32,7 @@ module RelatonIso
     # @param lang [String, NilClass]
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def to_all_parts(lang = nil)
-      parts = @array.select { |h| !h.hit["docPart"].empty? }
+      parts = @array.reject { |h| h.hit["docPart"]&.empty? }
       hit = parts.min_by { |h| h.hit["docPart"].to_i }
       return @array.first.fetch lang unless hit
 
