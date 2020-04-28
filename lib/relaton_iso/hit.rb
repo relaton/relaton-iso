@@ -10,11 +10,12 @@ module RelatonIso
       @fetch ||= Scrapper.parse_page @hit, lang
     end
 
+    # @return [Integer]
     def sort_weight
-      case hit["publicationStatus"]
-      when "Published" then 0
-      when "Under development" then 1
-      when "Withdrawn" then 2
+      case hit["publicationStatus"] && hit["publicationStatus"]["key"]
+      when "ENT_ACTIVE" then 0
+      when "ENT_PROGRESS" then 1
+      when "ENT_INACTIVE" then 2
       else 3
       end
     end

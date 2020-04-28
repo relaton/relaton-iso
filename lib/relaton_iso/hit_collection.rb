@@ -5,6 +5,8 @@ require "relaton_iso/hit"
 module RelatonIso
   # Page of hit collection.
   class HitCollection < RelatonBib::HitCollection
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+
     # @param text [String] reference to search
     def initialize(text)
       super
@@ -48,9 +50,12 @@ module RelatonIso
       end
       all_parts_item
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     private
 
+    # @param hit [Hash]
+    # @return [Date]
     def parse_date(hit)
       if hit["publicationDate"]
         Date.strptime(hit["publicationDate"], "%Y-%m")

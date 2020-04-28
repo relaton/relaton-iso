@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2020-01-21</fetched>
+  <fetched>2020-04-28</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -47,7 +47,7 @@
   </relation>
   <relation type="updates">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO 19115-2:2019/CD Amd 1</formattedref>
+      <formattedref format="text/plain">ISO 19115-2:2019/DAmd 1</formattedref>
       <date type="circulated">
         <on>2019</on>
       </date>

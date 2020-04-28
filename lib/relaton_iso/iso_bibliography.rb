@@ -13,9 +13,9 @@ module RelatonIso
       # @return [RelatonIso::HitCollection]
       def search(text)
         HitCollection.new text
-      rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError,
-             OpenSSL::SSL::SSLError, Errno::ETIMEDOUT
+      rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
+             EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+             Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT
         raise RelatonBib::RequestError, "Could not access http://www.iso.org"
       end
 
@@ -58,6 +58,8 @@ module RelatonIso
 
       private
 
+      # rubocop:disable Metrics/MethodLength
+
       def fetch_ref_err(code, year, missed_years)
         id = year ? "#{code}:#{year}" : code
         warn "[relaton-iso] WARNING: no match found online for #{id}. "\
@@ -75,13 +77,7 @@ module RelatonIso
         nil
       end
 
-      # def fetch_pages(s, n)
-      #   workers = RelatonBib::WorkersPool.new n
-      #   workers.worker { |w| { i: w[:i], hit: w[:hit].fetch } }
-      #   s.each_with_index { |hit, i| workers << { i: i, hit: hit } }
-      #   workers.end
-      #   workers.result.sort { |x, y| x[:i] <=> y[:i] }.map { |x| x[:hit] }
-      # end
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       # Search for hits. If no found then trying missed stages and ISO/IEC.
       #
@@ -114,6 +110,7 @@ module RelatonIso
         end
         res
       end
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
       # @param result [RelatonIso::HitCollection]
       # @param corr [String] correction
@@ -137,6 +134,8 @@ module RelatonIso
         end
       end
 
+      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+
       # Sort through the results from RelatonIso, fetching them three at a time,
       # and return the first result that matches the code,
       # matches the year (if provided), and which # has a title (amendments do not).
@@ -146,8 +145,6 @@ module RelatonIso
       def isobib_results_filter(result, year, opts)
         missed_years = []
         hits = result.reduce!([]) do |hts, h|
-          # if !year && h.hit["publicationStatus"] == "Withdrawn"
-          #   hts
           if !year || %r{:(?<iyear>\d{4})} =~ h.hit["docRef"] && iyear == year
             hts << h
           else
@@ -161,6 +158,7 @@ module RelatonIso
 
         { ret: hits.to_all_parts(opts[:lang]) }
       end
+      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
       # @param code [String]
       # @param year [String, NilClass]

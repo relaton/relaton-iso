@@ -30,7 +30,9 @@ RSpec.describe RelatonIso::IsoBibliography do
       file_path = "spec/support/hit.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
       expect(xml).to be_equivalent_to(
-        File.read(file_path, encoding: "utf-8").sub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
+        File.read(file_path, encoding: "utf-8").sub(
+          %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
+        ),
       )
     end
   end
@@ -42,7 +44,9 @@ RSpec.describe RelatonIso::IsoBibliography do
       file_path = "spec/support/hits.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
       expect(xml).to be_equivalent_to(
-        File.read(file_path, encoding: "utf-8").gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
+        File.read(file_path, encoding: "utf-8").gsub(
+          %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
+        ),
       )
     end
   end
@@ -234,13 +238,6 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    # it "fetch FDIS Amd" do
-    #   VCR.use_cassette "iso_11136_2014_fdamd_1" do
-    #     result = RelatonIso::IsoBibliography.get "ISO 11136:2014/FDAmd 1", nil, {}
-    #     expect(result.docidentifier.first.id).to eq "ISO 11136:2014/FDAmd 1"
-    #   end
-    # end
-
     it "fetch PRF Amd" do
       VCR.use_cassette "iso_3839_1996_prf_amd_1" do
         result = RelatonIso::IsoBibliography.get "ISO 3839:1996/PRF Amd 1", nil, {}
@@ -323,6 +320,13 @@ RSpec.describe RelatonIso::IsoBibliography do
         VCR.use_cassette "iso_iec_29110_5_1_3_2017" do
           result = RelatonIso::IsoBibliography.get "ISO/IEC 29110-5-1-3:2017", nil, {}
           expect(result.docidentifier.first.id).to eq "ISO/IEC TR 29110-5-1-3:2017"
+        end
+      end
+
+      it "fetch ISO 4" do
+        VCR.use_cassette "iso_4" do
+          result = RelatonIso::IsoBibliography.get "ISO 4"
+          expect(result.docidentifier.first.id).to eq "ISO 4 (all parts)"
         end
       end
     end
