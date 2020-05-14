@@ -12,7 +12,7 @@ module RelatonIso
       # @param text [String]
       # @return [RelatonIso::HitCollection]
       def search(text)
-        HitCollection.new text
+        HitCollection.new text.gsub(/\u2013/, "-")
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
              Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT
@@ -26,15 +26,15 @@ module RelatonIso
       #   return actual reference with year
       # @return [String] Relaton XML serialisation of reference
       def get(ref, year = nil, opts = {})
-        opts[:ref] = ref
+        opts[:ref] = ref.gsub(/\u2013/, "-")
 
         %r{
           ^(?<code1>[^\s]+\s[^/]+) # match code
           /?
           (?<corr>(Amd|DAmd|(CD|WD|AWI|NP)\sAmd|Cor|CD\sCor|FDAmd|PRF\sAmd)\s\d+ # correction name
           :?(\d{4})?(/Cor\s\d+:\d{4})?) # match correction year
-        }x =~ ref
-        code = code1 || ref
+        }x =~ opts[:ref]
+        code = code1 || opts[:ref]
 
         if year.nil?
           /^(?<code1>[^\s]+(\s\w+)?\s[\d-]+)(:(?<year1>\d{4}))?(?<code2>\s\w+)?/ =~ code
