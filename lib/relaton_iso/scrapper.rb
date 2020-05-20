@@ -25,6 +25,16 @@ module RelatonIso
       "Guide" => "guide",
     }.freeze
 
+    STGABBR = {
+      "00" => "NWIP",
+      "10" => "AWI",
+      "20" => "WD",
+      "30" => "CD",
+      "40" => "DIS",
+      "50" => "FDIS",
+      "60" => { "00" => "PRF", "60" => "FINAL" },
+    }
+
     class << self
       # Parse page.
       # @param hit_data [Hash]
@@ -176,9 +186,16 @@ module RelatonIso
       # @param status [String]
       # @return [Hash]
       def fetch_status(doc)
-        stage, substage = doc.css("li.dropdown.active span.stage-code > strong").text.split "."
-        RelatonBib::DocumentStatus.new(stage: stage, substage: substage)
+        stg, substg = doc.css(
+          "li.dropdown.active span.stage-code > strong",
+        ).text.split "."
+        RelatonBib::DocumentStatus.new(stage: stg, substage: substg)
       end
+
+      # def stage(stg, substg)
+      #   abbr = STGABBR[stg].is_a?(Hash) ? STGABBR[stg][substg] : STGABBR[stg]
+      #   RelatonBib::DocumentStatus::Stage.new value: stg, abbreviation: abbr
+      # end
 
       # Fetch workgroup.
       # @param doc [Nokogiri::HTML::Document]
