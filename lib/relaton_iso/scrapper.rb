@@ -320,17 +320,18 @@ module RelatonIso
       end
 
       def fetch_contributors(ref)
-        ref.sub(/\s.*/, "").split("/").map do |abbrev|
+        ref.sub(/\s.*/, "").split("/").reduce([]) do |mem, abbrev|
           case abbrev
           when "IEC"
             name = "International Electrotechnical Commission"
             url  = "www.iec.ch"
-          else
+          when "ISO"
             name = "International Organization for Standardization"
             url = "www.iso.org"
+          else next mem
           end
-          { entity: { name: name, url: url, abbreviation: abbrev },
-            role: [type: "publisher"] }
+          mem << { entity: { name: name, url: url, abbreviation: abbrev },
+                   role: [type: "publisher"] }
         end
       end
       # rubocop:enable Metrics/MethodLength
