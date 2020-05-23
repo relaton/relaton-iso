@@ -33,7 +33,21 @@ module RelatonIso
       "40" => "DIS",
       "50" => "FDIS",
       "60" => { "00" => "PRF", "60" => "FINAL" },
-    }
+    }.freeze
+
+    PUBLISHERS = {
+      "ISO" => { name: "International Electrotechnical Commission",
+                 url: "www.iec.ch" },
+      "ISO" => { name: "International Organization for Standardization",
+                 url: "www.iso.org" },
+      "IEEE" => { name: "Institute of Electrical and Electronics Engineers",
+                  url: "www.ieee.org" },
+      "SAE" => { name: "SAE International", url: "www.sae.org" },
+      "CIE" => { name: " International Commission on Illumination",
+                 url: "cie.co.at" },
+      "ASME" => { name: "American Society of Mechanical Engineers",
+                  url: "www.asme.org" },
+    }.freeze
 
     class << self
       # Parse page.
@@ -321,17 +335,11 @@ module RelatonIso
 
       def fetch_contributors(ref)
         ref.sub(/\s.*/, "").split("/").reduce([]) do |mem, abbrev|
-          case abbrev
-          when "IEC"
-            name = "International Electrotechnical Commission"
-            url  = "www.iec.ch"
-          when "ISO"
-            name = "International Organization for Standardization"
-            url = "www.iso.org"
-          else next mem
-          end
-          mem << { entity: { name: name, url: url, abbreviation: abbrev },
-                   role: [type: "publisher"] }
+          publisher = PUBLISHERS[abbrev]
+          next mem unless publisher
+
+          publisher[:abbreviation] = abbrev
+          mem << { entity: publisher, role: [type: "publisher"] }
         end
       end
       # rubocop:enable Metrics/MethodLength
