@@ -275,8 +275,17 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch ISO/IEC/IEEE" do
       VCR.use_cassette "iso_iec_ieee_9945_2009" do
-        result = RelatonIso::IsoBibliography.get("ISO/IEC/IEEE 9945:2009", nil, {})
+        result = RelatonIso::IsoBibliography.get("ISO/IEC/IEEE 9945:2009")
         expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945:2009"
+        expect(result.contributor[0].entity.name[0].content).to eq(
+          "International Organization for Standardization",
+        )
+        expect(result.contributor[1].entity.name[0].content).to eq(
+          "International Electrotechnical Commission",
+        )
+        expect(result.contributor[2].entity.name[0].content).to eq(
+          "Institute of Electrical and Electronics Engineers",
+        )
       end
     end
 

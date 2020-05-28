@@ -36,7 +36,7 @@ module RelatonIso
     }.freeze
 
     PUBLISHERS = {
-      "ISO" => { name: "International Electrotechnical Commission",
+      "IEC" => { name: "International Electrotechnical Commission",
                  url: "www.iec.ch" },
       "ISO" => { name: "International Organization for Standardization",
                  url: "www.iso.org" },
