@@ -373,14 +373,14 @@ module RelatonIso
       # Fetch copyright.
       # @param ref [String]
       # @param doc [Nokogiri::HTML::Document]
-      # @return [Hash]
+      # @return [Array<Hash>]
       def fetch_copyright(ref, doc)
         owner_name = ref.match(/.*?(?=\s)/).to_s
         from = ref.match(/(?<=:)\d{4}/).to_s
         if from.empty?
           from = doc.xpath("//span[@itemprop='releaseDate']").text.match(/\d{4}/).to_s
         end
-        { owner: { name: owner_name }, from: from }
+        [{ owner: [{ name: owner_name }], from: from }]
       end
     end
   end
