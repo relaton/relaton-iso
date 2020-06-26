@@ -34,53 +34,53 @@ RSpec.describe RelatonIso::Scrapper do
     expect(type).to eq "international-workshop-agreement"
   end
 
-  it "returns title main only" do
-    doc = Nokogiri::HTML <<~END_HTML
-      <html>
-        <body>
-          <nav class="heading-condensed nav-relatives">
-            <h2>Main</h2>
-          </nav>
-        </body>
-      </html>
-    END_HTML
+  # it "returns title main only" do
+  #   doc = Nokogiri::HTML <<~END_HTML
+  #     <html>
+  #       <body>
+  #         <nav class="heading-condensed nav-relatives">
+  #           <h2>Main</h2>
+  #         </nav>
+  #       </body>
+  #     </html>
+  #   END_HTML
 
-    title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
-    expect(title[:title_main]).to eq "Main"
-  end
+  #   title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
+  #   expect(title[:title_main]).to eq "Main"
+  # end
 
-  it "returns title main and part" do
-    doc = Nokogiri::HTML <<~END_HTML
-      <html>
-        <body>
-          <nav class="heading-condensed nav-relatives">
-            <h2 itemprop="description">Main -- Part 1: Description</h2>
-          </nav>
-        </body>
-      </html>
-    END_HTML
+  # it "returns title main and part" do
+  #   doc = Nokogiri::HTML <<~END_HTML
+  #     <html>
+  #       <body>
+  #         <nav class="heading-condensed nav-relatives">
+  #           <h2 itemprop="description">Main -- Part 1: Description</h2>
+  #         </nav>
+  #       </body>
+  #     </html>
+  #   END_HTML
 
-    title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
-    expect(title[:title_main]).to eq "Main"
-    expect(title[:title_part]).to eq "Part 1: Description"
-  end
+  #   title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
+  #   expect(title[:title_main]).to eq "Main"
+  #   expect(title[:title_part]).to eq "Part 1: Description"
+  # end
 
-  it "returns 4 parts of title" do
-    doc = Nokogiri::HTML <<~END_HTML
-      <html>
-        <body>
-          <nav class="heading-condensed nav-relatives">
-            <h2 itemprop="description">Main -- Part 1: Description -- Fird -- Fourth</h2>
-          </nav>
-        </body>
-      </html>
-    END_HTML
+  # it "returns 4 parts of title" do
+  #   doc = Nokogiri::HTML <<~END_HTML
+  #     <html>
+  #       <body>
+  #         <nav class="heading-condensed nav-relatives">
+  #           <h2 itemprop="description">Main -- Part 1: Description -- Fird -- Fourth</h2>
+  #         </nav>
+  #       </body>
+  #     </html>
+  #   END_HTML
 
-    title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
-    expect(title[:title_intro]).to eq "Main"
-    expect(title[:title_main]).to eq "Part 1: Description"
-    expect(title[:title_part]).to eq "Fird -- Fourth"
-  end
+  #   title = RelatonIso::Scrapper.send :fetch_title, doc, "en"
+  #   expect(title[:title_intro]).to eq "Main"
+  #   expect(title[:title_main]).to eq "Part 1: Description"
+  #   expect(title[:title_part]).to eq "Fird -- Fourth"
+  # end
 
   context "raises an error" do
     it "could not access" do

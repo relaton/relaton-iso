@@ -74,7 +74,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return en title" do
-      expect(subject.title(lang: "en").first).to be_instance_of RelatonIsoBib::TypedTitleString
+      expect(subject.title(lang: "en").first).to be_instance_of RelatonBib::TypedTitleString
     end
 
     it "return string of abstract" do
@@ -343,21 +343,21 @@ RSpec.describe RelatonIso::IsoBibliography do
     context "fetch specific language" do
       it "en" do
         VCR.use_cassette "iso_19115_en" do
-          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, { lang: "en" }).to_xml
+          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en").to_xml
           file = "spec/support/iso_19115_en.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
-          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
-            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
+          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8").
+            gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
         end
       end
 
       it "fr" do
         VCR.use_cassette "iso_19115_fr" do
-          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, { lang: "fr" }).to_xml
+          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "fr").to_xml
           file = "spec/support/iso_19115_fr.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
-          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
-            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
+          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8").
+            gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
         end
       end
     end

@@ -104,7 +104,7 @@ module RelatonIso
           d = l[:path] ? get_page(l[:path])[0] : doc
           unless d.at("//h5[@class='help-block'][.='недоступно на русском языке']")
             s << l
-            titles << fetch_title(d, l[:lang])
+            titles += fetch_title(d, l[:lang])
 
             # Fetch abstracts.
             abstract_content = d.css("div[itemprop='description'] p").text
@@ -287,12 +287,14 @@ module RelatonIso
       # Fetch titles.
       # @param doc [Nokogiri::HTML::Document]
       # @param lang [String]
-      # @return [Hash]
+      # @return [Array<RelatonBib::TypedTitleString>]
       def fetch_title(doc, lang)
         content = doc.at(
-          "//nav[contains(@class,'eading-condensed')]/h2 | //nav[contains(@class,'eading-condensed')]/h3",
-        )&.text
-        RelatonIsoBib::HashConverter.split_title content, lang, script(lang)
+          "//nav[contains(@class,'heading-condensed')]/h2 | //nav[contains(@class,'heading-condensed')]/h3",
+        )&.text&.gsub(/\u2014/, "-")
+        return [] unless content
+
+        RelatonBib::TypedTitleString.from_string content, lang, script(lang)
       end
 
       # Return ISO script code.
