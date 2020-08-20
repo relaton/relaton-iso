@@ -38,9 +38,10 @@ module RelatonIso
 
         if year.nil?
           /^(?<code1>[^\s]+(\s\w+)?\s[\d-]+)(:(?<year1>\d{4}))?(?<code2>\s\w+)?/ =~ code
+          /:(?<year2>\d{4})/ =~ corr
           unless code1.nil?
             code = code1 + code2.to_s
-            year = year1
+            year = year2 || year1
           end
         end
         opts[:all_parts] ||= code !~ %r{^[^\s]+\s\d+-\d+} && opts[:all_parts].nil? && code2.nil?
@@ -145,7 +146,7 @@ module RelatonIso
       def isobib_results_filter(result, year, opts)
         missed_years = []
         hits = result.reduce!([]) do |hts, h|
-          if !year || %r{:(?<iyear>\d{4})} =~ h.hit["docRef"] && iyear == year
+          if !year || %r{:(?<iyear>\d{4})(?!.*:\d{4})} =~ h.hit["docRef"] && iyear == year
             hts << h
           else
             missed_years << iyear

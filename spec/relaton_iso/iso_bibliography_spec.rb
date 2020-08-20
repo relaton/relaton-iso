@@ -171,16 +171,24 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "gets a code and year successfully" do
       VCR.use_cassette "iso_19115_2003" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {}).to_xml
-        expect(results).to include %(<on>2003</on>)
-        expect(results).not_to include %(<docidentifier type="ISO">ISO 19115-1:2003</docidentifier>)
-        expect(results).to include %(<docidentifier type="ISO">ISO 19115:2003</docidentifier>)
+        results = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {})
+          .to_xml
+        expect(results).to include(
+          %(<on>2003</on>)
+        )
+        expect(results).not_to include(
+          %(<docidentifier type="ISO">ISO 19115-1:2003</docidentifier>)
+        )
+        expect(results).to include(
+          %(<docidentifier type="ISO">ISO 19115:2003</docidentifier>)
+        )
       end
     end
 
     it "gets reference with an year in a code" do
       VCR.use_cassette "iso_19115_1_2014" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {}).to_xml
+        results = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {})
+          .to_xml
         expect(results).to include %(<on>2014</on>)
       end
     end
@@ -201,26 +209,28 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "warns when a code matches a resource but the year does not" do
       VCR.use_cassette "iso_19115_2015" do
-        expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }.
-          to output(
-            /There was no match for 2015, though there were matches found for/,
+        expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
+          .to output(
+            /There was no match for 2015, though there were matches found for/
           ).to_stderr
       end
     end
 
     it "warns when resource with part number not found on ISO website" do
       VCR.use_cassette "iso_19115_30_2014" do
-        expect { RelatonIso::IsoBibliography.get("ISO 19115-30", "2014", {}) }.
-          to output(
-            /The provided document part may not exist, or the document may no longer be published in parts/,
+        expect { RelatonIso::IsoBibliography.get("ISO 19115-30", "2014", {}) }
+          .to output(
+            /The provided document part may not exist, or the document may no /
           ).to_stderr
       end
     end
 
     it "warns when resource without part number not found on ISO website" do
       VCR.use_cassette "iso_00000_2014" do
-        expect { RelatonIso::IsoBibliography.get("ISO 00000", "2014", {}) }.
-          to output(/If you wanted to cite all document parts for the reference/).to_stderr
+        expect { RelatonIso::IsoBibliography.get("ISO 00000", "2014", {}) }
+          .to output(
+            /If you wanted to cite all document parts for the reference/
+          ).to_stderr
       end
     end
 
@@ -233,21 +243,21 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch correction" do
       VCR.use_cassette "iso_19110_amd_1_2011" do
-        result = RelatonIso::IsoBibliography.get("ISO 19110/Amd 1:2011", "2005", {})
+        result = RelatonIso::IsoBibliography.get("ISO 19110/Amd 1:2011", "2011")
         expect(result.docidentifier.first.id).to eq "ISO 19110:2005/Amd 1:2011"
       end
     end
 
     it "fetch PRF Amd" do
       VCR.use_cassette "iso_3839_1996_prf_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO 3839:1996/PRF Amd 1", nil, {}
+        result = RelatonIso::IsoBibliography.get "ISO 3839:1996/PRF Amd 1"
         expect(result.docidentifier.first.id).to eq "ISO 3839:1996/PRF Amd 1"
       end
     end
 
     it "fetch CD Amd" do
       VCR.use_cassette "iso_16063_1_1999_cd_amd_2" do
-        result = RelatonIso::IsoBibliography.get "ISO 16063-1:1998/CD Amd 2", nil, {}
+        result = RelatonIso::IsoBibliography.get "ISO 16063-1:1998/CD Amd 2"
         expect(result.docidentifier.first.id).to eq "ISO 16063-1:1998/CD Amd 2"
       end
     end
