@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2020-06-22</fetched>
+  <fetched>2020-09-04</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -12,6 +12,7 @@
   <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:67039:en</uri>
   <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
   <docidentifier type="ISO">ISO 19115-2:2019</docidentifier>
+  <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-60.60:ed-2:en,fr</docidentifier>
   <docnumber>19115</docnumber>
   <date type="published">
     <on>2019</on>

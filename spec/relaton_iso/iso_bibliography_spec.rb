@@ -32,7 +32,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(xml).to be_equivalent_to(
         File.read(file_path, encoding: "utf-8").sub(
           %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
-        ),
+        )
       )
     end
   end
@@ -46,7 +46,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(xml).to be_equivalent_to(
         File.read(file_path, encoding: "utf-8").gsub(
           %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
-        ),
+        )
       )
     end
   end
@@ -54,9 +54,9 @@ RSpec.describe RelatonIso::IsoBibliography do
   it "return string of hit collection" do
     VCR.use_cassette "hits" do
       hits = RelatonIso::IsoBibliography.search "ISO 19115"
+      objid = format("%<id>#.14x", id: hits.object_id << 1)
       expect(hits.to_s).to eq(
-        "<RelatonIso::HitCollection:#{format('%#.14x', hits.object_id << 1)} "\
-        "@ref=ISO 19115 @fetched=false>",
+        "<RelatonIso::HitCollection:#{objid} @ref=ISO 19115 @fetched=false>"
       )
     end
   end
@@ -153,7 +153,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         file_path = "spec/support/all_parts.xml"
         File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
         expect(xml).to be_equivalent_to(
-          File.read(file_path, encoding: "utf-8").gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"),
+          File.read(file_path, encoding: "utf-8").gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>")
         )
         expect(xml).to include %(<project-number>ISO 19115 (all parts)</project-number>)
         expect(xml).to include %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>)
@@ -366,8 +366,8 @@ RSpec.describe RelatonIso::IsoBibliography do
           result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "fr").to_xml
           file = "spec/support/iso_19115_fr.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
-          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8").
-            gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
+          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
+            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
         end
       end
     end

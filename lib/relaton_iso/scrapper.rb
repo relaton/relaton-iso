@@ -54,20 +54,20 @@ module RelatonIso
       # @param hit_data [Hash]
       # @param lang [String, NilClass]
       # @return [Hash]
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      def parse_page(hit_data, lang = nil)
-        path = "/contents/data/standard#{hit_data["splitPath"]}/#{hit_data["csnumber"]}.html"
+      def parse_page(hit_data, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        path = "/contents/data/standard#{hit_data['splitPath']}/"\
+        "#{hit_data['csnumber']}.html"
         doc, url = get_page path
 
         # Fetch edition.
-        edition = doc&.xpath("//strong[contains(text(), 'Edition')]/..")&.
-          children&.last&.text&.match(/\d+/)&.to_s
+        edition = doc&.xpath("//strong[contains(text(), 'Edition')]/..")
+          &.children&.last&.text&.match(/\d+/)&.to_s
 
         titles, abstract, langs = fetch_titles_abstract(doc, lang)
 
         RelatonIsoBib::IsoBibliographicItem.new(
           fetched: Date.today.to_s,
-          docid: fetch_docid(hit_data["docRef"]),
+          docid: fetch_docid(hit_data, langs),
           docnumber: fetch_docnumber(doc),
           edition: edition,
           language: langs.map { |l| l[:lang] },
@@ -84,10 +84,9 @@ module RelatonIso
           link: fetch_link(doc, url),
           relation: fetch_relations(doc),
           place: ["Geneva"],
-          structuredidentifier: fetch_structuredidentifier(doc),
+          structuredidentifier: fetch_structuredidentifier(doc)
         )
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
       private
 
@@ -102,7 +101,8 @@ module RelatonIso
         langs = languages(doc, lang).reduce([]) do |s, l|
           # Don't need to get page for en. We already have it.
           d = l[:path] ? get_page(l[:path])[0] : doc
-          unless d.at("//h5[@class='help-block'][.='недоступно на русском языке']")
+          unless d.at("//h5[@class='help-block']"\
+                      "[.='недоступно на русском языке']")
             s << l
             titles += fetch_title(d, l[:lang])
 
@@ -160,18 +160,42 @@ module RelatonIso
           n += 1
         end
         [Nokogiri::HTML(resp.body), url]
-      rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-             Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError,
-             OpenSSL::SSL::SSLError, Errno::ETIMEDOUT
+      rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
+             EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+             Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT
         raise RelatonBib::RequestError, "Could not access #{url}"
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
       # Fetch docid.
-      # @param doc [Nokogiri::HTML::Document]
+      # @param hit [Hash]
+      # @param langs [Array<Hash>]
       # @return [Array<RelatonBib::DocumentIdentifier>]
-      def fetch_docid(doc_ref)
-        [RelatonBib::DocumentIdentifier.new(id: doc_ref, type: "ISO")]
+      def fetch_docid(hit, langs)
+        [
+          RelatonBib::DocumentIdentifier.new(id: hit["docRef"], type: "ISO"),
+          RelatonBib::DocumentIdentifier.new(id: fetch_urn(hit, langs),
+                                             type: "URN"),
+        ]
+      end
+
+      # @param hit [Hash]
+      # @param langs [Array<Hash>]
+      # @returnt [String]
+      def fetch_urn(hit, langs) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
+        orig = hit["docRef"].split(" ").first.downcase.split("/").join "-"
+        %r{(?<=)(?<type>DATA|GUIDE|ISP|IWA|PAS|R|TR|TS|TTA)} =~ hit["docRef"]
+        urn = "urn:iso:std:#{orig}"
+        urn += ":#{type.downcase}" if type
+        urn += ":#{hit['docNumber']}"
+        urn += ":-#{hit['docPart']}" if hit["docPart"] && !hit["docPart"].empty?
+        urn += ":stage-#{hit['stageId']}"
+        urn += ":ed-#{hit['docEdition']}" if hit["docEdition"]
+        if hit["docElem"] && !hit["docElem"].empty? && hit["docElem"] != "0"
+          urn += ":#{hit['docElem'].downcase}:#{hit['docElemSeq']}"
+        end
+        urn += ":" + langs.map { |l| l[:lang] }.join(",")
+        urn
       end
 
       def fetch_docnumber(doc)
@@ -180,11 +204,11 @@ module RelatonIso
       end
 
       # @param doc [Nokogiri::HTML::Document]
-      def fetch_structuredidentifier(doc)
+      def fetch_structuredidentifier(doc) # rubocop:disable Metrics/MethodLength
         item_ref = doc.at("//nav[contains(@class, 'heading-condensed')]/h1")
         unless item_ref
           return RelatonIsoBib::StructuredIdentifier.new(
-            project_number: "?", part_number: "", prefix: nil, id: "?",
+            project_number: "?", part_number: "", prefix: nil, id: "?"
           )
         end
 
@@ -201,7 +225,7 @@ module RelatonIso
       # @return [Hash]
       def fetch_status(doc)
         stg, substg = doc.css(
-          "li.dropdown.active span.stage-code > strong",
+          "li.dropdown.active span.stage-code > strong"
         ).text.split "."
         RelatonBib::DocumentStatus.new(stage: stg, substage: substg)
       end
@@ -214,7 +238,7 @@ module RelatonIso
       # Fetch workgroup.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Hash]
-      def fetch_workgroup(doc)
+      def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength
         wg_link = doc.css("div.entry-name.entry-block a")[0]
         # wg_url = DOMAIN + wg_link['href']
         workgroup = wg_link.text.split "/"
@@ -235,17 +259,19 @@ module RelatonIso
       # Fetch relations.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
-      def fetch_relations(doc)
-        doc.css("ul.steps li").reduce([]) do |a, r|
+      def fetch_relations(doc) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+        doc.css("ul.steps li").reduce([]) do |a, r| # rubocop:disable Metrics/BlockLength
           r_type = r.css("strong").text
           date = []
           type = case r_type
                  when "Previously", "Will be replaced by" then "obsoletes"
                  when "Corrigenda/Amendments", "Revised by", "Now confirmed"
-                   on = doc.xpath('//span[@class="stage-date"][contains(., "-")]').last
+                   on = doc.xpath(
+                     '//span[@class="stage-date"][contains(., "-")]'
+                   ).last
                    if on
                      date << { type: "circulated",
-                       on: on.text }
+                               on: on.text }
                      "updates"
                    end
                  else r_type
@@ -254,7 +280,7 @@ module RelatonIso
           else
             a + r.css("a").map do |id|
               fref = RelatonBib::FormattedRef.new(
-                content: id.text, format: "text/plain",
+                content: id.text, format: "text/plain"
               )
               bibitem = RelatonIsoBib::IsoBibliographicItem.new(
                 formattedref: fref, date: date
@@ -290,7 +316,8 @@ module RelatonIso
       # @return [Array<RelatonBib::TypedTitleString>]
       def fetch_title(doc, lang)
         content = doc.at(
-          "//nav[contains(@class,'heading-condensed')]/h2 | //nav[contains(@class,'heading-condensed')]/h3",
+          "//nav[contains(@class,'heading-condensed')]/h2 | "\
+          "//nav[contains(@class,'heading-condensed')]/h3"
         )&.text&.gsub(/\u2014/, "-")
         return [] unless content
 
@@ -303,7 +330,7 @@ module RelatonIso
       def script(lang)
         case lang
         when "en", "fr" then "Latn"
-        # when "ru" then "Cyrl"
+          # when "ru" then "Cyrl"
         end
       end
 
@@ -312,7 +339,7 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @param ref [String]
       # @return [Array<Hash>]
-      def fetch_dates(doc, ref)
+      def fetch_dates(doc, ref) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
         dates = []
         %r{^[^\s]+\s[\d-]+:(?<ref_date_str>\d{4})} =~ ref
         pub_date_str = doc.xpath("//span[@itemprop='releaseDate']").text
@@ -380,7 +407,8 @@ module RelatonIso
         owner_name = ref.match(/.*?(?=\s)/).to_s
         from = ref.match(/(?<=:)\d{4}/).to_s
         if from.empty?
-          from = doc.xpath("//span[@itemprop='releaseDate']").text.match(/\d{4}/).to_s
+          from = doc.xpath("//span[@itemprop='releaseDate']").text
+            .match(/\d{4}/).to_s
         end
         [{ owner: [{ name: owner_name }], from: from }]
       end
