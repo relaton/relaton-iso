@@ -10,8 +10,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     expect(http).to receive(:get).and_raise SocketError
     expect(http).to receive(:use_ssl=).with(true)
     expect(Net::HTTP).to receive(:new).and_return http
-    expect { RelatonIso::IsoBibliography.search "19155" }.
-      to raise_error RelatonBib::RequestError
+    expect { RelatonIso::IsoBibliography.search "19155" }
+      .to raise_error RelatonBib::RequestError
   end
 
   it "fetch hits" do
@@ -19,7 +19,9 @@ RSpec.describe RelatonIso::IsoBibliography do
       hits = RelatonIso::IsoBibliography.search("ISO 19115")
       expect(hits).to be_instance_of RelatonIso::HitCollection
       expect(hits.first).to be_instance_of RelatonIso::Hit
-      expect(hits.first.fetch).to be_instance_of RelatonIsoBib::IsoBibliographicItem
+      expect(hits.first.fetch).to be_instance_of(
+        RelatonIsoBib::IsoBibliographicItem
+      )
     end
   end
 
@@ -70,16 +72,22 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return list of titles" do
-      expect(subject.title).to be_instance_of Array
+      expect(subject.title).to be_instance_of(
+        RelatonBib::TypedTitleStringCollection
+      )
     end
 
     it "return en title" do
-      expect(subject.title(lang: "en").first).to be_instance_of RelatonBib::TypedTitleString
+      expect(subject.title(lang: "en").first).to be_instance_of(
+        RelatonBib::TypedTitleString
+      )
     end
 
     it "return string of abstract" do
       formatted_string = subject.abstract(lang: "en")
-      expect(subject.abstract(lang: "en").to_s).to eq formatted_string&.content.to_s
+      expect(subject.abstract(lang: "en").to_s).to eq(
+        formatted_string&.content.to_s
+      )
     end
 
     it "return item urls" do
@@ -107,19 +115,15 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return workgroup" do
-      expect(subject.editorialgroup).to be_instance_of RelatonIsoBib::EditorialGroup
+      expect(subject.editorialgroup).to be_instance_of(
+        RelatonIsoBib::EditorialGroup
+      )
     end
 
-    # it 'workgroup equal first contributor entity' do
-    #   expect(isobib_item.workgroup).to eq isobib_item.contributors.first.entity
-    # end
-
-    # it 'return worgroup\'s url' do
-    #   expect(isobib_item.workgroup.url).to eq 'www.iso.org'
-    # end
-
     it "return relations" do
-      expect(subject.relation).to be_instance_of RelatonBib::DocRelationCollection
+      expect(subject.relation).to be_instance_of(
+        RelatonBib::DocRelationCollection
+      )
     end
 
     it "return replace realations" do
@@ -133,39 +137,55 @@ RSpec.describe RelatonIso::IsoBibliography do
   end
 
   describe "get" do
-    # let(:hit_pages) { RelatonIso::IsoBibliography.search("19115") }
-
     it "gets a code" do
       VCR.use_cassette "iso_19115_1" do
         results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
         expect(results).to include %(<bibitem id="ISO19115-1" type="standard">)
         expect(results).to include %(<on>2014</on>)
-        expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include %(<on>2014</on>)
-        expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
-        expect(results).not_to include %(<docidentifier type="ISO">ISO 19115</docidentifier>)
+        expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include(
+          %(<on>2014</on>)
+        )
+        expect(results).to include(
+          %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+        )
+        expect(results).not_to include(
+          %(<docidentifier type="ISO">ISO 19115</docidentifier>)
+        )
       end
     end
 
     it "gets an all-parts code" do
       VCR.use_cassette "iso_19115_all_parts" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115", nil, all_parts: true)
+        results = RelatonIso::IsoBibliography.get("ISO 19115", nil,
+                                                  all_parts: true)
         xml = results.to_xml bibdata: true
-        file_path = "spec/support/all_parts.xml"
-        File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
-        expect(xml).to be_equivalent_to(
-          File.read(file_path, encoding: "utf-8").gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>")
+        file = "spec/support/all_parts.xml"
+        File.write file, xml, encoding: "UTF-8" unless File.exist? file
+        expect(xml).to be_equivalent_to File.read(file, encoding: "utf-8")
+          .gsub %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
+        expect(xml).to include(
+          %(<project-number>ISO 19115 (all parts)</project-number>)
         )
-        expect(xml).to include %(<project-number>ISO 19115 (all parts)</project-number>)
-        expect(xml).to include %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>)
+        expect(xml).to include(
+          %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>)
+        )
       end
     end
 
     it "gets a keep-year code" do
       VCR.use_cassette "iso_19115_1_keep_year" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, keep_year: true).to_xml
-        expect(results).to include %(<bibitem id="ISO19115-1-2014" type="standard">)
-        expect(results.gsub(/<relation.*<\/relation>/m, "")).to include %(<on>2014</on>)
-        expect(results).to include %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+        results = RelatonIso::IsoBibliography.get(
+          "ISO 19115-1", nil, keep_year: true
+        ).to_xml
+        expect(results).to include(
+          %(<bibitem id="ISO19115-1-2014" type="standard">)
+        )
+        expect(results.gsub(/<relation.*<\/relation>/m, "")).to include(
+          %(<on>2014</on>)
+        )
+        expect(results).to include(
+          %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+        )
       end
     end
 
@@ -264,21 +284,21 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch WD Amd" do
       VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1", nil, {}
+        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
         expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1/WD Amd 1"
       end
     end
 
     it "fetch AWI Amd" do
       VCR.use_cassette "iso_10844_2014_awi_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO 10844:2014/AWI Amd 1", nil, {}
+        result = RelatonIso::IsoBibliography.get "ISO 10844:2014/AWI Amd 1"
         expect(result.docidentifier.first.id).to eq "ISO 10844:2014/AWI Amd 1"
       end
     end
 
     it "fetch NP Amd" do
       VCR.use_cassette "iso_1862_1_2017_np_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO 18562-1:2017/NP Amd 1", nil, {}
+        result = RelatonIso::IsoBibliography.get "ISO 18562-1:2017/NP Amd 1"
         expect(result.docidentifier.first.id).to eq "ISO 18562-1:2017/NP Amd 1"
       end
     end
@@ -288,13 +308,13 @@ RSpec.describe RelatonIso::IsoBibliography do
         result = RelatonIso::IsoBibliography.get("ISO/IEC/IEEE 9945:2009")
         expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945:2009"
         expect(result.contributor[0].entity.name[0].content).to eq(
-          "International Organization for Standardization",
+          "International Organization for Standardization"
         )
         expect(result.contributor[1].entity.name[0].content).to eq(
-          "International Electrotechnical Commission",
+          "International Electrotechnical Commission"
         )
         expect(result.contributor[2].entity.name[0].content).to eq(
-          "Institute of Electrical and Electronics Engineers",
+          "Institute of Electrical and Electronics Engineers"
         )
       end
     end
@@ -309,7 +329,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch public guide" do
       VCR.use_cassette "iso_guide_82_2014" do
         result = RelatonIso::IsoBibliography.get "ISO Guide 82:2014", nil, {}
-        expect(result.link.detect { |l| l.type == "pub" }.content.to_s).to include "http://isotc.iso.org/livelink/livelink"
+        expect(result.link.detect { |l| l.type == "pub" }.content.to_s)
+          .to include "http://isotc.iso.org/livelink/livelink"
       end
     end
 
@@ -337,8 +358,9 @@ RSpec.describe RelatonIso::IsoBibliography do
 
       it "ISO/IEC" do
         VCR.use_cassette "iso_iec_29110_5_1_3_2017" do
-          result = RelatonIso::IsoBibliography.get "ISO/IEC 29110-5-1-3:2017", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO/IEC TR 29110-5-1-3:2017"
+          result = RelatonIso::IsoBibliography.get "ISO/IEC 29110-5-1-3:2017"
+          expect(result.docidentifier.first.id).to eq "ISO/IEC TR "\
+          "29110-5-1-3:2017"
         end
       end
 
@@ -353,17 +375,19 @@ RSpec.describe RelatonIso::IsoBibliography do
     context "fetch specific language" do
       it "en" do
         VCR.use_cassette "iso_19115_en" do
-          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en").to_xml
+          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en")
+            .to_xml
           file = "spec/support/iso_19115_en.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
-          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8").
-            gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
+          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
+            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
         end
       end
 
       it "fr" do
         VCR.use_cassette "iso_19115_fr" do
-          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "fr").to_xml
+          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "fr")
+            .to_xml
           file = "spec/support/iso_19115_fr.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
           expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
