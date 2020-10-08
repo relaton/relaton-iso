@@ -96,7 +96,7 @@ module RelatonIso
       # @return [Array<Array>]
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def fetch_titles_abstract(doc, lang)
-        titles   = []
+        titles   = RelatonBib::TypedTitleStringCollection.new
         abstract = []
         langs = languages(doc, lang).reduce([]) do |s, l|
           # Don't need to get page for en. We already have it.
@@ -319,7 +319,7 @@ module RelatonIso
           "//nav[contains(@class,'heading-condensed')]/h2 | "\
           "//nav[contains(@class,'heading-condensed')]/h3"
         )&.text&.gsub(/\u2014/, "-")
-        return [] unless content
+        return RelatonBib::TypedTitleStringCollection.new unless content
 
         RelatonBib::TypedTitleString.from_string content, lang, script(lang)
       end
