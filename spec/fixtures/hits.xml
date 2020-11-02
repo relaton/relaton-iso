@@ -1,51 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
-  <bibitem id="ISO19115-2-2019/CDAmd1" type="standard">
-    <fetched>2020-09-04</fetched>
-    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
-    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
-    <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing -- Amendment 1</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing -- Amendment 1</title>
-    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
-    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
-    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
-    <uri type="src">https://www.iso.org/standard/78888.html</uri>
-    <uri type="rss">https://www.iso.org/contents/data/standard/07/88/78888.detail.rss</uri>
-    <docidentifier type="ISO">ISO 19115-2:2019/CD Amd 1</docidentifier>
-    <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-30.99:ed-2:amd:1:en,fr</docidentifier>
-    <docnumber>19115</docnumber>
-    <date type="published">
-      <on>2019</on>
-    </date>
-    <contributor>
-      <role type="publisher"/>
-      <organization>
-        <name>International Organization for Standardization</name>
-        <abbreviation>ISO</abbreviation>
-        <uri>www.iso.org</uri>
-      </organization>
-    </contributor>
-    <edition>2</edition>
-    <language>en</language>
-    <language>fr</language>
-    <script>Latn</script>
-    <status>
-      <stage>30</stage>
-      <substage>99</substage>
-    </status>
-    <copyright>
-      <from>2019</from>
-      <owner>
-        <organization>
-          <name>ISO</name>
-        </organization>
-      </owner>
-    </copyright>
-    <place>Geneva</place>
-  </bibitem>
   <bibitem id="ISO19115-2-2019" type="standard">
-    <fetched>2020-09-04</fetched>
+    <fetched>2020-11-02</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -94,7 +50,7 @@
     </relation>
     <relation type="updates">
       <bibitem type="standard">
-        <formattedref format="text/plain">ISO 19115-2:2019/CD Amd 1</formattedref>
+        <formattedref format="text/plain">ISO 19115-2:2019/PRF Amd 1</formattedref>
         <date type="circulated">
           <on>2019</on>
         </date>
@@ -103,7 +59,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-1-2014/Amd1-2018" type="standard">
-    <fetched>2020-09-04</fetched>
+    <fetched>2020-11-02</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals -- Amendment 1</title>
@@ -151,7 +107,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19115-3-2016" type="standard">
-    <fetched>2020-09-04</fetched>
+    <fetched>2020-11-02</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -164,7 +120,7 @@
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</uri>
     <docidentifier type="ISO">ISO/TS 19115-3:2016</docidentifier>
-    <docidentifier type="URN">urn:iso:std:iso-ts:ts:19115:-3:stage-90.93:ed-1:en,fr</docidentifier>
+    <docidentifier type="URN">urn:iso:std:iso-ts:ts:19115:-3:stage-90.92:ed-1:en,fr</docidentifier>
     <docnumber>19115</docnumber>
     <date type="published">
       <on>2016</on>
@@ -182,9 +138,10 @@
     <language>fr</language>
     <script>Latn</script>
     <abstract format="text/plain" language="en" script="Latn">ISO/TS 19115-3:2016 defines an integrated XML implementation of ISO 19115‑1, ISO 19115‑2, and concepts from ISO/TS 19139 by defining the following artefacts:a)    a set of XML schema required to validate metadata instance documents conforming to conceptual model elements defined in ISO 19115‑1, ISO 19115‑2, and ISO/TS 19139;b)    a set of ISO/IEC 19757‑3 (Schematron) rules that implement validation constraints in the ISO 19115‑1 and ISO 19115‑2 UML models that are not validated by the XML schema;c)    an Extensible Stylesheet Language Transformation (XSLT) for transforming ISO 19115-1 metadata encoded using the ISO/TS 19139 XML schema and ISO 19115‑2 metadata encoded using the ISO/TS 19139‑2 XML schema into an equivalent document that is valid against the XML schema defined in this document.ISO/TS 19115-3:2016 describes the procedure used to generate XML schema from ISO geographic information conceptual models related to metadata. The procedure includes creation of an UML model for XML implementation derived from the conceptual UML model.This implementation model does not alter the semantics of the target conceptual model, but adds abstract classes that remove dependencies between model packages, tagged values and stereotypes required by the UML to XML transformation software, and refactors the packaging of a few elements into XML namespaces. The XML schema has been generated systematically from the UML model for XML implementation according to the rules defined in ISO/TS 19139 or ISO 19118.</abstract>
+    <abstract format="text/plain" language="fr" script="Latn">ISO/TS 19115-3:2016 defines an integrated XML implementation of ISO 19115‑1, ISO 19115‑2, and concepts from ISO/TS 19139 by defining the following artefacts:a)    a set of XML schema required to validate metadata instance documents conforming to conceptual model elements defined in ISO 19115‑1, ISO 19115‑2, and ISO/TS 19139;b)    a set of ISO/IEC 19757‑3 (Schematron) rules that implement validation constraints in the ISO 19115‑1 and ISO 19115‑2 UML models that are not validated by the XML schema;c)    an Extensible Stylesheet Language Transformation (XSLT) for transforming ISO 19115-1 metadata encoded using the ISO/TS 19139 XML schema and ISO 19115‑2 metadata encoded using the ISO/TS 19139‑2 XML schema into an equivalent document that is valid against the XML schema defined in this document.ISO/TS 19115-3:2016 describes the procedure used to generate XML schema from ISO geographic information conceptual models related to metadata. The procedure includes creation of an UML model for XML implementation derived from the conceptual UML model.This implementation model does not alter the semantics of the target conceptual model, but adds abstract classes that remove dependencies between model packages, tagged values and stereotypes required by the UML to XML transformation software, and refactors the packaging of a few elements into XML namespaces. The XML schema has been generated systematically from the UML model for XML implementation according to the rules defined in ISO/TS 19139 or ISO 19118.</abstract>
     <status>
       <stage>90</stage>
-      <substage>93</substage>
+      <substage>92</substage>
     </status>
     <copyright>
       <from>2016</from>
@@ -194,10 +151,15 @@
         </organization>
       </owner>
     </copyright>
+    <relation type="obsoletes">
+      <bibitem type="standard">
+        <formattedref format="text/plain">ISO/WD 19115-3</formattedref>
+      </bibitem>
+    </relation>
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-1-2014" type="standard">
-    <fetched>2020-09-04</fetched>
+    <fetched>2020-11-02</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -261,7 +223,7 @@
     </relation>
     <relation type="updates">
       <bibitem type="standard">
-        <formattedref format="text/plain">ISO 19115-1:2014/DAmd 2</formattedref>
+        <formattedref format="text/plain">ISO 19115-1:2014/Amd 2</formattedref>
         <date type="circulated">
           <on>2019</on>
         </date>
@@ -269,8 +231,8 @@
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO19115-1-2014/DAmd2" type="standard">
-    <fetched>2020-09-04</fetched>
+  <bibitem id="ISO19115-1-2014/Amd2" type="standard">
+    <fetched>2020-11-02</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals -- Amendment 2</title>
@@ -280,13 +242,15 @@
     <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 1: Principes de base -- Amendement 2</title>
     <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 1: Principes de base -- Amendement 2</title>
     <uri type="src">https://www.iso.org/standard/80275.html</uri>
-    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:80275:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/08/02/80275.detail.rss</uri>
-    <docidentifier type="ISO">ISO 19115-1:2014/DAmd 2</docidentifier>
-    <docidentifier type="URN">urn:iso:std:iso:19115:-1:stage-40.99:ed-1:amd:2:en,fr</docidentifier>
+    <docidentifier type="ISO">ISO 19115-1:2014/Amd 2</docidentifier>
+    <docidentifier type="URN">urn:iso:std:iso:19115:-1:stage-60.00:ed-1:amd:2:en,fr</docidentifier>
     <docnumber>19115</docnumber>
     <date type="published">
       <on>2014</on>
+    </date>
+    <date type="updated">
+      <on>2020</on>
     </date>
     <contributor>
       <role type="publisher"/>
@@ -301,8 +265,8 @@
     <language>fr</language>
     <script>Latn</script>
     <status>
-      <stage>40</stage>
-      <substage>99</substage>
+      <stage>60</stage>
+      <substage>00</substage>
     </status>
     <copyright>
       <from>2014</from>
@@ -314,8 +278,98 @@
     </copyright>
     <place>Geneva</place>
   </bibitem>
+  <bibitem id="ISO/WD19115-3" type="standard">
+    <fetched>2020-11-02</fetched>
+    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
+    <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 3: XML schema implementation for fundamental concepts</title>
+    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 3: Mise en oeuvre par des schémas XML</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 3: Mise en oeuvre par des schémas XML</title>
+    <uri type="src">https://www.iso.org/standard/80874.html</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/08/08/80874.detail.rss</uri>
+    <docidentifier type="ISO">ISO/WD 19115-3</docidentifier>
+    <docidentifier type="URN">urn:iso:std:iso-wd:19115:-3:stage-20.00:ed-1:en,fr</docidentifier>
+    <docnumber>19115</docnumber>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name>International Organization for Standardization</name>
+        <abbreviation>ISO</abbreviation>
+        <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <edition>1</edition>
+    <language>en</language>
+    <language>fr</language>
+    <script>Latn</script>
+    <status>
+      <stage>20</stage>
+      <substage>00</substage>
+    </status>
+    <copyright>
+      <from>unknown</from>
+      <owner>
+        <organization>
+          <name>ISO/WD</name>
+        </organization>
+      </owner>
+    </copyright>
+    <relation type="obsoletes">
+      <bibitem type="standard">
+        <formattedref format="text/plain">ISO/TS 19115-3:2016</formattedref>
+      </bibitem>
+    </relation>
+    <place>Geneva</place>
+  </bibitem>
+  <bibitem id="ISO19115-2-2019/PRFAmd1" type="standard">
+    <fetched>2020-11-02</fetched>
+    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
+    <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing -- Amendment 1</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing -- Amendment 1</title>
+    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
+    <uri type="src">https://www.iso.org/standard/78888.html</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/07/88/78888.detail.rss</uri>
+    <docidentifier type="ISO">ISO 19115-2:2019/PRF Amd 1</docidentifier>
+    <docidentifier type="URN">urn:iso:std:iso:r:19115:-2:stage-50.00:ed-2:amd:1:en,fr</docidentifier>
+    <docnumber>19115</docnumber>
+    <date type="published">
+      <on>2019</on>
+    </date>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name>International Organization for Standardization</name>
+        <abbreviation>ISO</abbreviation>
+        <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <edition>2</edition>
+    <language>en</language>
+    <language>fr</language>
+    <script>Latn</script>
+    <status>
+      <stage>50</stage>
+      <substage>00</substage>
+    </status>
+    <copyright>
+      <from>2019</from>
+      <owner>
+        <organization>
+          <name>ISO</name>
+        </organization>
+      </owner>
+    </copyright>
+    <place>Geneva</place>
+  </bibitem>
   <bibitem id="ISO19115-2-2009" type="standard">
-    <fetched>2020-09-04</fetched>
+    <fetched>2020-11-02</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -369,7 +423,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2003/Cor1-2006" type="standard">
-    <fetched>2020-09-04</fetched>
+    <fetched>2020-11-02</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Technical Corrigendum 1</title>
@@ -424,7 +478,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2003" type="standard">
-    <fetched>2020-09-04</fetched>
+    <fetched>2020-11-02</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
@@ -452,6 +506,7 @@
     <language>fr</language>
     <script>Latn</script>
     <abstract format="text/plain" language="en" script="Latn">ISO 19115:2003 defines the schema required for describing geographic information and services. It provides information about the identification, the extent, the quality, the spatial and temporal schema, spatial reference, and distribution of digital geographic data.ISO 19115:2003 is applicable to:ISO 19115:2003 defines:Though ISO 19115:2003 is applicable to digital data, its principles can be extended to many other forms of geographic data such as maps, charts, and textual documents as well as non-geographic data.NOTE Certain mandatory metadata elements may not apply to these other forms of data.</abstract>
+    <abstract format="text/plain" language="fr" script="Latn">ISO 19115:2003 defines the schema required for describing geographic information and services. It provides information about the identification, the extent, the quality, the spatial and temporal schema, spatial reference, and distribution of digital geographic data.ISO 19115:2003 is applicable to:ISO 19115:2003 defines:Though ISO 19115:2003 is applicable to digital data, its principles can be extended to many other forms of geographic data such as maps, charts, and textual documents as well as non-geographic data.NOTE Certain mandatory metadata elements may not apply to these other forms of data.</abstract>
     <status>
       <stage>95</stage>
       <substage>99</substage>

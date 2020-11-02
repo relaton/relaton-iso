@@ -44,10 +44,16 @@ module RelatonIso
             year = year2 || year1
           end
         end
-        opts[:all_parts] ||= code !~ %r{^[^\s]+\s\d+-\d+} && opts[:all_parts].nil? && code2.nil?
-        return RelatonIec::IecBibliography.get(code, year, opts) if %r[^ISO/IEC DIR] =~ code
+        %r{\s(?<num>\d+)(-(?<part>[\d-]+))?} =~ code
+        opts[:part] = part
+        opts[:num] = num
+        opts[:corr] = corr
+        opts[:all_parts] ||= !part && opts[:all_parts].nil? && code2.nil?
+        if %r[^ISO/IEC DIR].match? code
+          return RelatonIec::IecBibliography.get(code, year, opts)
+        end
 
-        ret = isobib_get1(code, year, corr, opts)
+        ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
 
         if year || opts[:keep_year] || opts[:all_parts]
@@ -65,15 +71,18 @@ module RelatonIso
         id = year ? "#{code}:#{year}" : code
         warn "[relaton-iso] WARNING: no match found online for #{id}. "\
           "The code must be exactly like it is on the standards website."
-        warn "[relaton-iso] (There was no match for #{year}, though there were matches "\
-          "found for #{missed_years.join(', ')}.)" unless missed_years.empty?
-        if /\d-\d/ =~ code
-          warn "[relaton-iso] The provided document part may not exist, or the document "\
-            "may no longer be published in parts."
+        unless missed_years.empty?
+          warn "[relaton-iso] (There was no match for #{year}, though there "\
+            "were matches found for #{missed_years.join(', ')}.)"
+        end
+        if /\d-\d/.match? code
+          warn "[relaton-iso] The provided document part may not exist, "\
+            "or the document may no longer be published in parts."
         else
-          warn "[relaton-iso] If you wanted to cite all document parts for the reference, "\
-            "use \"#{code} (all parts)\".\nIf the document is not a standard, "\
-            "use its document type abbreviation (TS, TR, PAS, Guide)."
+          warn "[relaton-iso] If you wanted to cite all document parts for "\
+            "the reference, use \"#{code} (all parts)\".\nIf the document is "\
+            "not a standard, use its document type abbreviation (TS, TR, PAS, "\
+            "Guide)."
         end
         nil
       end
@@ -83,66 +92,74 @@ module RelatonIso
       # Search for hits. If no found then trying missed stages and ISO/IEC.
       #
       # @param code [String] reference without correction
-      # @param corr [String] correction
+      # @param opts [Hash]
       # @return [Array<RelatonIso::Hit>]
-      def isobib_search_filter(code, corr, opts)
+      def isobib_search_filter(code, opts)
         warn "[relaton-iso] (\"#{opts[:ref]}\") fetching..."
         result = search(code)
-        res = search_code result, code, corr, opts
+        res = search_code result, code, opts
         return res unless res.empty?
 
         # try stages
         if %r{^\w+/[^/]+\s\d+} =~ code # code like ISO/IEC 123, ISO/IEC/IEE 123
-          res = try_stages(result, corr, opts) do |st|
+          res = try_stages(result, opts) do |st|
             code.sub(%r{^(?<pref>[^\s]+\s)}) { "#{$~[:pref]}#{st} " }
           end
           return res unless res.empty?
         elsif %r{^\w+\s\d+} =~ code # code like ISO 123
-          res = try_stages(result, corr, opts) do |st|
+          res = try_stages(result, opts) do |st|
             code.sub(%r{^(?<pref>\w+)}) { "#{$~[:pref]}/#{st}" }
           end
           return res unless res.empty?
         end
 
-        if %r{^ISO\s} =~ code # try ISO/IEC if ISO not found
+        if %r{^ISO\s}.match? code # try ISO/IEC if ISO not found
           warn "[relaton-iso] Attempting ISO/IEC retrieval"
           c = code.sub "ISO", "ISO/IEC"
-          res = search_code result, c, corr, opts
+          res = search_code result, c, opts
         end
         res
       end
       # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
       # @param result [RelatonIso::HitCollection]
-      # @param corr [String] correction
       # @param opts [Hash]
-      def try_stages(result, corr, opts)
+      # @return [RelatonIso::HitCollection]
+      def try_stages(result, opts)
         res = nil
         %w[NP WD CD DIS FDIS PRF IS AWI TR].each do |st| # try stages
           c = yield st
-          res = search_code result, c, corr, opts
+          res = search_code result, c, opts
           return res unless res.empty?
         end
         res
       end
 
-      def search_code(result, code, corr, opts)
+      # @param result [RelatonIso::HitCollection]
+      # @param code [String]
+      # @param opts [Hash]
+      # @return [RelatonIso::HitCollection]
+      def search_code(result, code, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+        ref_regex = %r{^#{code}(?!-)}
+        corr_regex = %r{^#{code}[\w-]*(:\d{4})?/#{opts[:corr]}}
+        no_corr_regex = %r{^#{code}[\w-]*(:\d{4})?/}
         result.select do |i|
-          (opts[:all_parts] || i.hit["docRef"] =~ %r{^#{code}(?!-)}) && (
-              corr && %r{^#{code}[\w-]*(:\d{4})?/#{corr}} =~ i.hit["docRef"] ||
-              !corr && %r{^#{code}[\w-]*(:\d{4})?/} !~ i.hit["docRef"]
-            ) # && %r{^#{code}} =~ i.hit["docRef"]
+          (opts[:all_parts] || i.hit["docRef"] =~ ref_regex) && (
+              opts[:corr] && corr_regex =~ i.hit["docRef"] ||
+              !opts[:corr] && no_corr_regex !~ i.hit["docRef"]
+            )
         end
       end
 
       # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
       # Sort through the results from RelatonIso, fetching them three at a time,
-      # and return the first result that matches the code,
-      # matches the year (if provided), and which # has a title (amendments do not).
+      # and return the first result that matches the code, matches the year
+      # (if provided), and which # has a title (amendments do not).
       # Only expects the first page of results to be populated.
       # Does not match corrigenda etc (e.g. ISO 3166-1:2006/Cor 1:2007)
-      # If no match, returns any years which caused mismatch, for error reporting
+      # If no match, returns any years which caused mismatch, for error
+      # reporting
       def isobib_results_filter(result, year, opts)
         missed_years = []
         hits = result.reduce!([]) do |hts, h|
@@ -155,7 +172,9 @@ module RelatonIso
         end
         return { years: missed_years } unless hits.any?
 
-        return { ret: hits.first.fetch(opts[:lang]) } if !opts[:all_parts] || hits.size == 1
+        if !opts[:all_parts] || hits.size == 1
+          return { ret: hits.first.fetch(opts[:lang]) }
+        end
 
         { ret: hits.to_all_parts(opts[:lang]) }
       end
@@ -163,11 +182,10 @@ module RelatonIso
 
       # @param code [String]
       # @param year [String, NilClass]
-      # @param corr [String, NilClass]
       # @param opts [Hash]
-      def isobib_get1(code, year, corr, opts)
+      def isobib_get1(code, year, opts)
         # return iev(code) if /^IEC 60050-/.match code
-        result = isobib_search_filter(code, corr, opts) || return
+        result = isobib_search_filter(code, opts) || return
         ret = isobib_results_filter(result, year, opts)
         if ret[:ret]
           warn "[relaton-iso] (\"#{opts[:ref]}\") found #{ret[:ret].docidentifier.first.id}"

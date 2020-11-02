@@ -162,7 +162,7 @@ module RelatonIso
         [Nokogiri::HTML(resp.body), url]
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-             Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT
+             Net::ProtocolError, Errno::ETIMEDOUT
         raise RelatonBib::RequestError, "Could not access #{url}"
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
@@ -394,7 +394,8 @@ module RelatonIso
         links << { type: "obp", content: obp[:href] } if obp
         rss = doc.at("//a[contains(@href, 'rss')]")
         links << { type: "rss", content: DOMAIN + rss[:href] } if rss
-        pub = doc.at "//p[contains(., 'publicly available')]/a"
+        pub = doc.at "//p[contains(., 'publicly available')]/a",
+                     "//p[contains(., 'can be downloaded from the')]/a"
         links << { type: "pub", content: pub[:href] } if pub
         links
       end

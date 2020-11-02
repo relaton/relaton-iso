@@ -29,7 +29,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     VCR.use_cassette "hit" do
       hits = RelatonIso::IsoBibliography.search("ISO 19115")
       xml = hits[0].to_xml bibdata: true
-      file_path = "spec/support/hit.xml"
+      file_path = "spec/fixtures/hit.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
       expect(xml).to be_equivalent_to(
         File.read(file_path, encoding: "utf-8").sub(
@@ -43,7 +43,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     VCR.use_cassette "hit_collection_xml" do
       hits = RelatonIso::IsoBibliography.search "ISO 19115"
       xml = hits.to_xml
-      file_path = "spec/support/hits.xml"
+      file_path = "spec/fixtures/hits.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
       expect(xml).to be_equivalent_to(
         File.read(file_path, encoding: "utf-8").gsub(
@@ -159,7 +159,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         results = RelatonIso::IsoBibliography.get("ISO 19115", nil,
                                                   all_parts: true)
         xml = results.to_xml bibdata: true
-        file = "spec/support/all_parts.xml"
+        file = "spec/fixtures/all_parts.xml"
         File.write file, xml, encoding: "UTF-8" unless File.exist? file
         expect(xml).to be_equivalent_to File.read(file, encoding: "utf-8")
           .gsub %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
@@ -268,12 +268,12 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "fetch PRF Amd" do
-      VCR.use_cassette "iso_3839_1996_prf_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO 3839:1996/PRF Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO 3839:1996/PRF Amd 1"
-      end
-    end
+    # it "fetch PRF Amd" do
+    #   VCR.use_cassette "iso_3839_1996_prf_amd_1" do
+    #     result = RelatonIso::IsoBibliography.get "ISO 3839:1996/PRF Amd 1"
+    #     expect(result.docidentifier.first.id).to eq "ISO 3839:1996/PRF Amd 1"
+    #   end
+    # end
 
     it "fetch CD Amd" do
       VCR.use_cassette "iso_16063_1_1999_cd_amd_2" do
@@ -282,12 +282,12 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "fetch WD Amd" do
-      VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1/WD Amd 1"
-      end
-    end
+    # it "fetch WD Amd" do
+    #   VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
+    #     result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
+    #     expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1/WD Amd 1"
+    #   end
+    # end
 
     it "fetch AWI Amd" do
       VCR.use_cassette "iso_10844_2014_awi_amd_1" do
@@ -296,12 +296,12 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "fetch NP Amd" do
-      VCR.use_cassette "iso_1862_1_2017_np_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO 18562-1:2017/NP Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO 18562-1:2017/NP Amd 1"
-      end
-    end
+    # it "fetch NP Amd" do
+    #   VCR.use_cassette "iso_1862_1_2017_np_amd_1" do
+    #     result = RelatonIso::IsoBibliography.get "ISO 18562-1:2017/NP Amd 1"
+    #     expect(result.docidentifier.first.id).to eq "ISO 18562-1:2017/NP Amd 1"
+    #   end
+    # end
 
     it "fetch ISO/IEC/IEEE" do
       VCR.use_cassette "iso_iec_ieee_9945_2009" do
@@ -327,10 +327,10 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "fetch public guide" do
-      VCR.use_cassette "iso_guide_82_2014" do
-        result = RelatonIso::IsoBibliography.get "ISO Guide 82:2014", nil, {}
+      VCR.use_cassette "iso_guide_82_2019" do
+        result = RelatonIso::IsoBibliography.get "ISO Guide 82:2019", nil, {}
         expect(result.link.detect { |l| l.type == "pub" }.content.to_s)
-          .to include "http://isotc.iso.org/livelink/livelink"
+          .to include "https://isotc.iso.org/livelink/livelink"
       end
     end
 
@@ -344,15 +344,15 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch circulated date" do
       VCR.use_cassette "iso_iec_8824_1_2015" do
         bib = RelatonIso::IsoBibliography.get("ISO/IEC 8824-1:2015")
-        expect(bib.relation[3].bibitem.date.first.on.to_s).to eq "2015-11-12"
+        expect(bib.relation[3].bibitem.date.first.on.to_s).to eq "2020-07-02"
       end
     end
 
     context "try to fetch stages" do
       it "ISO" do
-        VCR.use_cassette "iso_20360" do
-          result = RelatonIso::IsoBibliography.get "ISO 20360", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO/DIS 20360"
+        VCR.use_cassette "iso_22934" do
+          result = RelatonIso::IsoBibliography.get "ISO 22934", nil, {}
+          expect(result.docidentifier.first.id).to eq "ISO/DIS 22934"
         end
       end
 
@@ -377,7 +377,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         VCR.use_cassette "iso_19115_en" do
           result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en")
             .to_xml
-          file = "spec/support/iso_19115_en.xml"
+          file = "spec/fixtures/iso_19115_en.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
           expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
             .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
@@ -388,7 +388,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         VCR.use_cassette "iso_19115_fr" do
           result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "fr")
             .to_xml
-          file = "spec/support/iso_19115_fr.xml"
+          file = "spec/fixtures/iso_19115_fr.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
           expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
             .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
