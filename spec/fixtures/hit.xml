@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2020-11-02</fetched>
+  <fetched>2020-11-10</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -15,7 +15,7 @@
   <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-60.60:ed-2:en,fr</docidentifier>
   <docnumber>19115</docnumber>
   <date type="published">
-    <on>2019</on>
+    <on>2019-01</on>
   </date>
   <contributor>
     <role type="publisher"/>
@@ -50,7 +50,7 @@
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-2:2019/PRF Amd 1</formattedref>
       <date type="circulated">
-        <on>2019</on>
+        <on>2019-01-10</on>
       </date>
     </bibitem>
   </relation>

@@ -1,5 +1,5 @@
 <bibitem id="ISO19115-2003" type="standard">
-  <fetched>2020-11-02</fetched>
+  <fetched>2020-11-10</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -12,7 +12,7 @@
   <docidentifier type="URN">urn:iso:std:iso:19115</docidentifier>
   <docnumber>19115</docnumber>
   <date type="published">
-    <on>2003</on>
+    <on>2003-05</on>
   </date>
   <contributor>
     <role type="publisher"/>
@@ -42,7 +42,7 @@
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
       <date type="circulated">
-        <on>2014</on>
+        <on>2014-03-19</on>
       </date>
     </bibitem>
   </relation>
@@ -50,13 +50,13 @@
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
       <date type="circulated">
-        <on>2014</on>
+        <on>2014-03-19</on>
       </date>
     </bibitem>
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <fetched>2020-11-02</fetched>
+      <fetched>2020-11-10</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
@@ -69,7 +69,7 @@
       <docidentifier type="URN">urn:iso:std:iso:19115:stage-95.99:ed-1:en,fr</docidentifier>
       <docnumber>19115</docnumber>
       <date type="published">
-        <on>2003</on>
+        <on>2003-05</on>
       </date>
       <contributor>
         <role type="publisher"/>
@@ -101,7 +101,7 @@
         <bibitem type="standard">
           <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
           <date type="circulated">
-            <on>2014</on>
+            <on>2014-03-19</on>
           </date>
         </bibitem>
       </relation>
@@ -109,7 +109,7 @@
         <bibitem type="standard">
           <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
           <date type="circulated">
-            <on>2014</on>
+            <on>2014-03-19</on>
           </date>
         </bibitem>
       </relation>

@@ -102,7 +102,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "return dates" do
       expect(subject.date.length).to eq 1
       expect(subject.date.first.type).to eq "published"
-      expect(subject.date.first.on).to be_instance_of Date
+      expect(subject.date.first.on).to be_instance_of String
     end
 
     # it 'filter dates by type' do
@@ -141,7 +141,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_1" do
         results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
         expect(results).to include %(<bibitem id="ISO19115-1" type="standard">)
-        expect(results).to include %(<on>2014</on>)
+        expect(results).to include %(<on>2014-04</on>)
         expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include(
           %(<on>2014</on>)
         )
@@ -181,7 +181,7 @@ RSpec.describe RelatonIso::IsoBibliography do
           %(<bibitem id="ISO19115-1-2014" type="standard">)
         )
         expect(results.gsub(/<relation.*<\/relation>/m, "")).to include(
-          %(<on>2014</on>)
+          %(<on>2014-04</on>)
         )
         expect(results).to include(
           %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
@@ -193,9 +193,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_2003" do
         results = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {})
           .to_xml
-        expect(results).to include(
-          %(<on>2003</on>)
-        )
+        expect(results).to include(%(<on>2003-05</on>))
         expect(results).not_to include(
           %(<docidentifier type="ISO">ISO 19115-1:2003</docidentifier>)
         )
@@ -209,14 +207,14 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_1_2014" do
         results = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {})
           .to_xml
-        expect(results).to include %(<on>2014</on>)
+        expect(results).to include %(<on>2014-04</on>)
       end
     end
 
     it "undated reference gets a newest and active" do
       VCR.use_cassette "iso_123" do
         result = RelatonIso::IsoBibliography.get "ISO 123", nil, keep_year: true
-        expect(result.date.first.on.year).to eq 2001
+        expect(result.date.first.on(:year)).to eq 2001
       end
     end
 
