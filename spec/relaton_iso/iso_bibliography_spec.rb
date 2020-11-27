@@ -27,7 +27,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   it "return xml of hit" do
     VCR.use_cassette "hit" do
-      hits = RelatonIso::IsoBibliography.search("ISO 19115")
+      hits = RelatonIso::IsoBibliography.search("ISO 19115-2:2019")
       xml = hits[0].to_xml bibdata: true
       file_path = "spec/fixtures/hit.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
@@ -41,7 +41,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   it "return xml of hits collection" do
     VCR.use_cassette "hit_collection_xml" do
-      hits = RelatonIso::IsoBibliography.search "ISO 19115"
+      hits = RelatonIso::IsoBibliography.search "ISO 19115-2"
       xml = hits.to_xml
       file_path = "spec/fixtures/hits.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
@@ -100,7 +100,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return dates" do
-      expect(subject.date.length).to eq 1
+      expect(subject.date.length).to eq 2
       expect(subject.date.first.type).to eq "published"
       expect(subject.date.first.on).to be_instance_of String
     end
