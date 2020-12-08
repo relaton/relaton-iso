@@ -29,7 +29,7 @@ module RelatonIso
         opts[:ref] = ref.gsub(/\u2013/, "-")
 
         %r{
-          ^(?<code1>[^\s]+\s[^/]+) # match code
+          ^(?<code1>[^\s]+\s[^\/]+) # match code
           /?
           (?<corr>(Amd|DAmd|(CD|WD|AWI|NP)\sAmd|Cor|CD\sCor|FDAmd|PRF\sAmd)\s\d+ # correction name
           :?(\d{4})?(/Cor\s\d+:\d{4})?) # match correction year

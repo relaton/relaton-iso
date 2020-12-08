@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2020-11-10</fetched>
+  <fetched>2020-12-04</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -56,7 +56,7 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <fetched>2020-11-10</fetched>
+      <fetched>2020-12-04</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
@@ -133,7 +133,7 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO/WD 19115-3</formattedref>
+      <formattedref format="text/plain">ISO/AWI 19115-3</formattedref>
     </bibitem>
   </relation>
   <relation type="instance">
