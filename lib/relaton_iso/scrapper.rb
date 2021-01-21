@@ -224,9 +224,8 @@ module RelatonIso
       # @param status [String]
       # @return [Hash]
       def fetch_status(doc)
-        stg, substg = doc.css(
-          "li.dropdown.active span.stage-code > strong"
-        ).text.split "."
+        stg, substg = doc.at("//ul[@class='dropdown-menu']/li[@class='active']/a/span[@class='stage-code']")
+          .text.split "."
         RelatonBib::DocumentStatus.new(stage: stg, substage: substg)
       end
 
@@ -260,20 +259,15 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
       def fetch_relations(doc) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
-        doc.css("ul.steps li").reduce([]) do |a, r| # rubocop:disable Metrics/BlockLength
-          r_type = r.css("strong").text
+        doc.xpath("//ul[@class='steps']/li", "//div[@class='sub-step']").reduce([]) do |a, r|
+          r_type = r.at("h4", "h5").text
           date = []
           type = case r_type
                  when "Previously", "Will be replaced by" then "obsoletes"
-                 when "Corrigenda/Amendments", "Revised by", "Now confirmed"
-                   on = doc.xpath(
-                     '//span[@class="stage-date"][contains(., "-")]'
-                   ).last
-                   if on
-                     date << { type: "circulated",
-                               on: on.text }
-                     "updates"
-                   end
+                 when "Corrigenda / Amendments", "Revised by", "Now confirmed"
+                   on = doc.xpath('//span[@class="stage-date"][contains(., "-")]').last
+                   date << { type: "circulated", on: on.text } if on
+                   "updates"
                  else r_type
                  end
           if ["Now", "Now under review"].include?(type) then a

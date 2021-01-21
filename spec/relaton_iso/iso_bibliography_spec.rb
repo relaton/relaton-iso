@@ -342,7 +342,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch circulated date" do
       VCR.use_cassette "iso_iec_8824_1_2015" do
         bib = RelatonIso::IsoBibliography.get("ISO/IEC 8824-1:2015")
-        expect(bib.relation[3].bibitem.date.first.on.to_s).to eq "2020-07-02"
+        expect(bib.relation[4].bibitem.date.first.on.to_s).to eq "2020-07-02"
       end
     end
 
