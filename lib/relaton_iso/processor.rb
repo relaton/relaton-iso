@@ -37,5 +37,11 @@ module RelatonIso
     def grammar_hash
       @grammar_hash ||= ::RelatonIsoBib.grammar_hash
     end
+
+    # Returns number of workers
+    # @return [Integer]
+    def threads
+      3
+    end
   end
 end

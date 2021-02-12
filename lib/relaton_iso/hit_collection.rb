@@ -33,7 +33,7 @@ module RelatonIso
 
     # @param lang [String, NilClass]
     # @return [RelatonIsoBib::IsoBibliographicItem]
-    def to_all_parts(lang = nil)
+    def to_all_parts(lang = nil) # rubocop:disable Metrics/CyclomaticComplexity
       parts = @array.reject { |h| h.hit["docPart"]&.empty? }
       hit = parts.min_by { |h| h.hit["docPart"].to_i }
       return @array.first.fetch lang unless hit
@@ -42,10 +42,10 @@ module RelatonIso
       all_parts_item = bibitem.to_all_parts
       parts.reject { |h| h.hit["docRef"] == hit.hit["docRef"] }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(
-          formattedref: RelatonBib::FormattedRef.new(content: hi.hit["docRef"]),
+          formattedref: RelatonBib::FormattedRef.new(content: hi.hit["docRef"])
         )
         all_parts_item.relation << RelatonBib::DocumentRelation.new(
-          type: "instance", bibitem: isobib,
+          type: "instance", bibitem: isobib
         )
       end
       all_parts_item

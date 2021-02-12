@@ -350,7 +350,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "ISO" do
         VCR.use_cassette "iso_22934" do
           result = RelatonIso::IsoBibliography.get "ISO 22934", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO/DIS 22934"
+          expect(result.docidentifier.first.id).to eq "ISO/FDIS 22934"
         end
       end
 
