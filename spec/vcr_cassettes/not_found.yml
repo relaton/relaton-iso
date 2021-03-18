@@ -27,11 +27,11 @@ http_interactions:
       Set-Cookie:
       - BIGipServerpool_prod_iso_www-jahia=713576842.36895.0000; path=/; Httponly;
         Secure;SameSite=none
-      - JSESSIONID=672E94CEA4BE786AB0AA0A9C3EDA23CB; Path=/; HttpOnly
+      - JSESSIONID=46CDACE3F36C28E74D7E24EB8AEB6172; Path=/; HttpOnly
       Content-Length:
       - '0'
       Date:
-      - Thu, 11 Feb 2021 18:49:57 GMT
+      - Thu, 18 Mar 2021 20:18:55 GMT
       Connection:
       - close
       Strict-Transport-Security:
@@ -39,5 +39,5 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-  recorded_at: Thu, 11 Feb 2021 18:49:56 GMT
+  recorded_at: Thu, 18 Mar 2021 20:18:55 GMT
 recorded_with: VCR 6.0.0

@@ -373,8 +373,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     context "fetch specific language" do
       it "en" do
         VCR.use_cassette "iso_19115_en" do
-          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en")
-            .to_xml
+          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en").to_xml
           file = "spec/fixtures/iso_19115_en.xml"
           File.write file, result, encoding: "UTF-8" unless File.exist? file
           expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")

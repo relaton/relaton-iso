@@ -27,17 +27,17 @@ http_interactions:
       Set-Cookie:
       - BIGipServerpool_prod_iso_www-jahia=713576842.36895.0000; path=/; Httponly;
         Secure;SameSite=none
-      - JSESSIONID=6BF8CC5065AB6E04F3714EBAED79867E; Path=/; HttpOnly
+      - JSESSIONID=B3EAA54B6DB76C65E29380F5E73859F4; Path=/; HttpOnly
       Content-Type:
       - application/json;charset=UTF-8
       Content-Length:
       - '16'
       Date:
-      - Thu, 11 Feb 2021 18:49:31 GMT
+      - Thu, 18 Mar 2021 20:18:11 GMT
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
       string: '{"standards":[]}'
-  recorded_at: Thu, 11 Feb 2021 18:49:31 GMT
+  recorded_at: Thu, 18 Mar 2021 20:18:11 GMT
 recorded_with: VCR 6.0.0
