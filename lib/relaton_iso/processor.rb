@@ -29,7 +29,7 @@ module RelatonIso
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def hash_to_bib(hash)
       item_hash = ::RelatonIsoBib::HashConverter.hash_to_bib(hash)
-      ::RelatonIsoBib::IsoBibliographicItem.new item_hash
+      ::RelatonIsoBib::IsoBibliographicItem.new **item_hash
     end
 
     # Returns hash of XML grammar
