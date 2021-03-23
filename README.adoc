@@ -59,6 +59,18 @@ item.docidentifier
 => "urn:iso:std:iso-ts:ts:19115:-3:stage-90.92:ed-1:en,fr"
 ----
 
+=== Search for ISO/IEC Directives
+
+The ISO/IEC Derectives are stored in a static cache in a relaton gem. It needs to use the relaton gem to fetch the ISO/IEC Directives. Folloving reaferences are allowed to fetch:
+
+- ISO/IEC DIR 1 - Procedures for the technical work
+- ISO/IEC DIR 1 IEC SUP - Procedures for the technical work – Procedures specific to IEC
+- ISO/IEC DIR 1 ISO SUP - Consolidated ISO Supplement -- Procedures specific to ISO
+- ISO/IEC DIR 2 IEC - Principles and rules for the structure and drafting of ISO and IEC documents
+- ISO/IEC DIR 2 ISO - Principles and rules for the structure and drafting of ISO and IEC documents
+- ISO/IEC DIR IEC SUP - Procedures specific to IEC
+- ISO/IEC DIR JTC 1 SUP - Procedures specific to JTC 1
+
 === XML serialization
 
 Possible options:
