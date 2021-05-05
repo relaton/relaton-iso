@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2021-02-11</fetched>
+  <fetched>2021-04-29</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -56,7 +56,7 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <fetched>2021-02-11</fetched>
+      <fetched>2021-04-29</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
@@ -123,17 +123,7 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO/TS 19115-3:2016</formattedref>
-    </bibitem>
-  </relation>
-  <relation type="instance">
-    <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
-    </bibitem>
-  </relation>
-  <relation type="instance">
-    <bibitem type="standard">
-      <formattedref format="text/plain">ISO/CD 19115-3</formattedref>
     </bibitem>
   </relation>
   <relation type="instance">

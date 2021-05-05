@@ -3,6 +3,9 @@
 module RelatonIso
   # Hit.
   class Hit < RelatonBib::Hit
+    # @return [RelatonIsoBib::IsoBibliographicItem]
+    attr_accessor :fetch
+
     # Parse page.
     # @param lang [String, NilClass]
     # @return [RelatonIso::IsoBibliographicItem]

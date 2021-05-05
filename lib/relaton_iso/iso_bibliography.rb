@@ -26,32 +26,13 @@ module RelatonIso
       #   return actual reference with year
       # @return [String] Relaton XML serialisation of reference
       def get(ref, year = nil, opts = {})
-        opts[:ref] = ref.gsub(/\u2013/, "-")
-
-        %r{
-          ^(?<code1>[^\s]+\s[^\/]+) # match code
-          /?
-          (?<corr>(Amd|DAmd|(CD|WD|AWI|NP)\sAmd|Cor|CD\sCor|FDAmd|PRF\sAmd)\s\d+ # correction name
-          :?(\d{4})?(/Cor\s\d+:\d{4})?) # match correction year
-        }x =~ opts[:ref]
-        code = code1 || opts[:ref]
-
-        if year.nil?
-          /^(?<code1>[^\s]+(\s\w+)?\s[\d-]+)(:(?<year1>\d{4}))?(?<code2>\s\w+)?/ =~ code
-          /:(?<year2>\d{4})/ =~ corr
-          unless code1.nil?
-            code = code1 + code2.to_s
-            year = year2 || year1
-          end
-        end
-        %r{\s(?<num>\d+)(-(?<part>[\d-]+))?} =~ code
-        opts[:part] = part
-        opts[:num] = num
-        opts[:corr] = corr
-        opts[:all_parts] ||= !part && opts[:all_parts].nil? && code2.nil?
-        if %r[^ISO/IEC DIR].match? code
-          return RelatonIec::IecBibliography.get(code, year, opts)
-        end
+        code = ref.gsub(/\u2013/, "-")
+        %r{\s(?<num>\d+)(-(?<part>[\d-]+))?(:(?<year1>\d{4}))?} =~ code
+        year ||= year1
+        opts[:all_parts] ||= !part && opts[:all_parts].nil? # && code2.nil?
+        # if %r[^ISO/IEC DIR].match? code
+        #   return RelatonIec::IecBibliography.get(code, year, opts)
+        # end
 
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
@@ -95,7 +76,7 @@ module RelatonIso
       # @param opts [Hash]
       # @return [Array<RelatonIso::Hit>]
       def isobib_search_filter(code, opts)
-        warn "[relaton-iso] (\"#{opts[:ref]}\") fetching..."
+        warn "[relaton-iso] (\"#{code}\") fetching..."
         result = search(code)
         res = search_code result, code, opts
         return res unless res.empty?
@@ -140,15 +121,22 @@ module RelatonIso
       # @param opts [Hash]
       # @return [RelatonIso::HitCollection]
       def search_code(result, code, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
-        ref_regex = %r{^#{code}(?!-)}
-        corr_regex = %r{^#{code}[\w-]*(:\d{4})?/#{opts[:corr]}}
-        no_corr_regex = %r{^#{code}[\w-]*(:\d{4})?/}
+        code1, part1, corr1, coryear1 = ref_components code
         result.select do |i|
-          (opts[:all_parts] || i.hit["docRef"] =~ ref_regex) && (
-              opts[:corr] && corr_regex =~ i.hit["docRef"] ||
-              !opts[:corr] && no_corr_regex !~ i.hit["docRef"]
-            )
+          code2, part2, corr2, coryear2 = ref_components i.hit["docRef"]
+          code1 == code2 && (!part1 || part1 == part2) &&
+            corr1 == corr2 && (!coryear1 || coryear1 == coryear2)
         end
+      end
+
+      def ref_components(ref)
+        %r{
+          ^(?<code>ISO(?:\s|\/)[^-\/:]+)
+          (?:-(?<part>[^:\/]+))?
+          (?::\d{4})?
+          (?:\/(?<corr>\w+(?:\s\w+)?\s\d+)(?:(?<coryear>\d{4}))?)?
+        }x =~ ref
+        [code, part, corr, coryear]
       end
 
       # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
@@ -188,7 +176,7 @@ module RelatonIso
         result = isobib_search_filter(code, opts) || return
         ret = isobib_results_filter(result, year, opts)
         if ret[:ret]
-          warn "[relaton-iso] (\"#{opts[:ref]}\") found #{ret[:ret].docidentifier.first.id}"
+          warn "[relaton-iso] (\"#{code}\") found #{ret[:ret].docidentifier.first.id}"
           ret[:ret]
         else
           fetch_ref_err(code, year, ret[:years])

@@ -10,25 +10,7 @@ module RelatonIso
     # @param text [String] reference to search
     def initialize(text)
       super
-      %r{\s(?<num>\d+)(-(?<part>[\d-]+))?} =~ text
-      http = Net::HTTP.new "www.iso.org", 443
-      http.use_ssl = true
-      search = ["status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED"]
-      search << "docNumber=#{num}"
-      search << "docPartNo=#{part}" if part
-      q = search.join "&"
-      resp = http.get("/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
-                      "Accept" => "application/json, text/plain, */*")
-      return if resp.body.empty?
-
-      json = JSON.parse resp.body
-      @array = json["standards"].map { |h| Hit.new h, self }.sort! do |a, b|
-        if a.sort_weight == b.sort_weight
-          (parse_date(b.hit) - parse_date(a.hit)).to_i
-        else
-          a.sort_weight - b.sort_weight
-        end
-      end
+      @array = text.match?(/^ISO\sTC\s184\/SC\s?4/) ? fetch_tc184 : fetch_iso
     end
 
     # @param lang [String, NilClass]
@@ -53,6 +35,50 @@ module RelatonIso
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     private
+
+    #
+    # Fetch document from GitHub repository
+    #
+    # @return [Array<RelatonIso::Hit]
+    #
+    def fetch_tc184
+      ref = text.gsub(/[\s\/]/, "_").upcase
+      url = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/#{ref}.yaml"
+      resp = Net::HTTP.get_response URI(url)
+      hash = YAML.safe_load resp.body
+      bib_hash = RelatonIsoBib::HashConverter.hash_to_bib hash
+      bib = RelatonIsoBib::IsoBibliographicItem.new **bib_hash
+      hit = Hit.new({ "docRef" => text }, self)
+      hit.fetch = bib
+      [hit]
+    end
+
+    #
+    # Fetch hits from iso.org
+    #
+    # @return [Array<RelatonIso::Hit>]
+    #
+    def fetch_iso
+      %r{\s(?<num>\d+)(-(?<part>[\d-]+))?} =~ text
+      http = Net::HTTP.new "www.iso.org", 443
+      http.use_ssl = true
+      search = ["status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED"]
+      search << "docNumber=#{num}"
+      search << "docPartNo=#{part}" if part
+      q = search.join "&"
+      resp = http.get("/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
+                      "Accept" => "application/json, text/plain, */*")
+      return if resp.body.empty?
+
+      json = JSON.parse resp.body
+      json["standards"].map { |h| Hit.new h, self }.sort! do |a, b|
+        if a.sort_weight == b.sort_weight
+          (parse_date(b.hit) - parse_date(a.hit)).to_i
+        else
+          a.sort_weight - b.sort_weight
+        end
+      end
+    end
 
     # @param hit [Hash]
     # @return [Date]

@@ -253,8 +253,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "search ISO/IEC if search ISO failed" do
-      VCR.use_cassette("iso_2382_2015") do
-        result = RelatonIso::IsoBibliography.get("ISO 2382", "2015", {})
+      VCR.use_cassette("iso_iec_2382_2015") do
+        result = RelatonIso::IsoBibliography.get("ISO/IEC 2382", "2015", {})
         expect(result.docidentifier.first.id).to eq "ISO/IEC 2382:2015"
       end
     end
@@ -280,12 +280,12 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    # it "fetch WD Amd" do
-    #   VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
-    #     result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
-    #     expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1/WD Amd 1"
-    #   end
-    # end
+    it "fetch WD Amd" do
+      VCR.use_cassette "iso_iec_23008_1_wd_amd_3" do
+        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 3"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC DIS 23008-1/WD Amd 3"
+      end
+    end
 
     it "fetch AWI Amd" do
       VCR.use_cassette "iso_10844_2014_awi_amd_1" do
@@ -332,13 +332,6 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "fetch undefined stadard" do
-      VCR.use_cassette "not_found" do
-        result = RelatonIso::IsoBibliography.get "ISO ABCDEFGH", nil, {}
-        expect(result).to be_nil
-      end
-    end
-
     it "fetch circulated date" do
       VCR.use_cassette "iso_iec_8824_1_2015" do
         bib = RelatonIso::IsoBibliography.get("ISO/IEC 8824-1:2015")
@@ -346,17 +339,24 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
+    it "fetch ISO TC 184/SC 4" do
+      VCR.use_cassette "iso_tc_184_sc_4" do
+        result = RelatonIso::IsoBibliography.get "ISO TC 184/SC 4 N1110"
+        expect(result.docidentifier[0].id).to eq "ISO/TC 184/SC 4 N1110"
+      end
+    end
+
     context "try to fetch stages" do
       it "ISO" do
         VCR.use_cassette "iso_22934" do
           result = RelatonIso::IsoBibliography.get "ISO 22934", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO/FDIS 22934"
+          expect(result.docidentifier.first.id).to eq "ISO 22934"
         end
       end
 
       it "ISO/IEC" do
-        VCR.use_cassette "iso_iec_29110_5_1_3_2017" do
-          result = RelatonIso::IsoBibliography.get "ISO/IEC 29110-5-1-3:2017"
+        VCR.use_cassette "iso_iec_tr_29110_5_1_3_2017" do
+          result = RelatonIso::IsoBibliography.get "ISO/IEC TR 29110-5-1-3:2017"
           expect(result.docidentifier.first.id).to eq "ISO/IEC TR "\
           "29110-5-1-3:2017"
         end
@@ -394,8 +394,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return not found" do
-      VCR.use_cassette "iso_7372_directory" do
-        result = RelatonIso::IsoBibliography.get "ISO 7372 Directory", nil, {}
+      VCR.use_cassette "not_found" do
+        result = RelatonIso::IsoBibliography.get "ISO 111111"
         expect(result).to be_nil
       end
     end

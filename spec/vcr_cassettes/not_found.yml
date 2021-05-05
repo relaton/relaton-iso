@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
+    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=111111&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
     body:
       encoding: US-ASCII
       string: ''
@@ -15,7 +15,7 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 500
+      code: 200
       message: ''
     headers:
       Expires:
@@ -25,19 +25,19 @@ http_interactions:
       Pragma:
       - no-cache
       Set-Cookie:
-      - BIGipServerpool_prod_iso_www-jahia=713576842.36895.0000; path=/; Httponly;
-        Secure;SameSite=none
-      - JSESSIONID=46CDACE3F36C28E74D7E24EB8AEB6172; Path=/; HttpOnly
+      - BIGipServerpool_prod_iso_www-jahia=730354058.36895.0000; path=/; Httponly;
+        Secure
+      - JSESSIONID=1B84116F9AE3995D2946586DCE898E36; Path=/; HttpOnly
+      Content-Type:
+      - application/json;charset=UTF-8
       Content-Length:
-      - '0'
+      - '16'
       Date:
-      - Thu, 18 Mar 2021 20:18:55 GMT
-      Connection:
-      - close
+      - Wed, 05 May 2021 15:20:42 GMT
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains
     body:
       encoding: UTF-8
-      string: ''
-  recorded_at: Thu, 18 Mar 2021 20:18:55 GMT
+      string: '{"standards":[]}'
+  recorded_at: Wed, 05 May 2021 15:20:41 GMT
 recorded_with: VCR 6.0.0

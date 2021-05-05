@@ -1,0 +1,130 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/ISO_TC_184_SC_4_N1110.yaml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - raw.githubusercontent.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '588'
+      Cache-Control:
+      - max-age=300
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Etag:
+      - W/"af2a1fc1c5238722fd8a89a2aa96a0fe68cbf7b4e604d0a8c18ccc113d4d16ff"
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - CEDA:48E9:2B55F6:2F3A0F:6092D60F
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Wed, 05 May 2021 17:29:51 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-hhn4066-HHN
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1620235792.832226,VS0,VE150
+      Vary:
+      - Authorization,Accept-Encoding
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - ceac2bf5ffdb304d2e99dfca1182d6e3e99d3954
+      Expires:
+      - Wed, 05 May 2021 17:34:51 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: |
+        ---
+        id: ISO/TC184/SC4N1110
+        title:
+        - content: SC4 Quality Manual
+          type: title-main
+          language: en
+          script: Latn
+          format: text/plain
+        - content: SC4 Quality Manual
+          type: main
+          language: en
+          script: Latn
+          format: text/plain
+        link:
+          content: https://isotc.iso.org/livelink/livelink/fetch/-8837444/8838484/8838495/11568437/%28SC4N1110%29_SC4_Quality_Manual.pdf?nodeid=11571501&vernum=-2
+          type: doi
+        type: standard
+        docid:
+          id: ISO/TC 184/SC 4 N1110
+          type: ISO
+        date:
+          type: published
+          value: '2000-11-08'
+        contributor:
+          organization:
+            name: International Organization for Standardization
+            abbreviation: ISO
+            url: www.iso.org
+          role: publisher
+        revdate: '2000-11-08'
+        language: en
+        script: Latn
+        copyright:
+          owner:
+            name: International Organization for Standardization
+            abbreviation: ISO
+            url: www.iso.org
+          from: '2000'
+        relation:
+          type: obsoletes
+          bibitem:
+            formattedref:
+              content: ISO/TC 184/SC 4/QC N146
+              language: en
+              script: Latn
+              format: text/plain
+        doctype: international-standard
+        editorialgroup:
+          technical_committee:
+            name: Technical Committee 184 for Industrial Automation Systems
+            number: '184'
+          subcommittee:
+            name: Integration Subcommittee 4 for Industrial Data
+            number: '4'
+        structuredidentifier:
+          project_number: ISO/TC 184/SC 4 N1110
+          tc_document_number: '1110'
+  recorded_at: Wed, 05 May 2021 17:29:51 GMT
+recorded_with: VCR 6.0.0
