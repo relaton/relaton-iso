@@ -10,7 +10,7 @@ module RelatonIso
     # @param text [String] reference to search
     def initialize(text)
       super
-      @array = text.match?(/^ISO\sTC\s184\/SC\s?4/) ? fetch_tc184 : fetch_iso
+      @array = text.match?(/^ISO\sTC\s184\/SC\s?4/) ? fetch_github : fetch_iso
     end
 
     # @param lang [String, NilClass]
@@ -41,10 +41,12 @@ module RelatonIso
     #
     # @return [Array<RelatonIso::Hit]
     #
-    def fetch_tc184
+    def fetch_github
       ref = text.gsub(/[\s\/]/, "_").upcase
       url = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/#{ref}.yaml"
       resp = Net::HTTP.get_response URI(url)
+      return [] unless resp.code == "200"
+
       hash = YAML.safe_load resp.body
       bib_hash = RelatonIsoBib::HashConverter.hash_to_bib hash
       bib = RelatonIsoBib::IsoBibliographicItem.new **bib_hash

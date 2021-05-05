@@ -356,7 +356,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
       it "ISO/IEC" do
         VCR.use_cassette "iso_iec_tr_29110_5_1_3_2017" do
-          result = RelatonIso::IsoBibliography.get "ISO/IEC TR 29110-5-1-3:2017"
+          result = RelatonIso::IsoBibliography.get "ISO/IEC 29110-5-1-3:2017"
           expect(result.docidentifier.first.id).to eq "ISO/IEC TR "\
           "29110-5-1-3:2017"
         end
@@ -393,10 +393,19 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "return not found" do
-      VCR.use_cassette "not_found" do
-        result = RelatonIso::IsoBibliography.get "ISO 111111"
-        expect(result).to be_nil
+    context "return not found" do
+      it do
+        VCR.use_cassette "not_found" do
+          result = RelatonIso::IsoBibliography.get "ISO 111111"
+          expect(result).to be_nil
+        end
+      end
+
+      it do
+        VCR.use_cassette "git_hub_not_found" do
+          result = RelatonIso::IsoBibliography.get "ISO TC 184/SC 4 N111"
+          expect(result).to be_nil
+        end
       end
     end
   end
