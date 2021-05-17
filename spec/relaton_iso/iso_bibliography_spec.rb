@@ -20,7 +20,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(hits).to be_instance_of RelatonIso::HitCollection
       expect(hits.first).to be_instance_of RelatonIso::Hit
       expect(hits.first.fetch).to be_instance_of(
-        RelatonIsoBib::IsoBibliographicItem
+        RelatonIsoBib::IsoBibliographicItem,
       )
     end
   end
@@ -58,7 +58,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       hits = RelatonIso::IsoBibliography.search "ISO 19115"
       objid = format("%<id>#.14x", id: hits.object_id << 1)
       expect(hits.to_s).to eq(
-        "<RelatonIso::HitCollection:#{objid} @ref=ISO 19115 @fetched=false>"
+        "<RelatonIso::HitCollection:#{objid} @ref=ISO 19115 @fetched=false>",
       )
     end
   end
@@ -73,29 +73,29 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "return list of titles" do
       expect(subject.title).to be_instance_of(
-        RelatonBib::TypedTitleStringCollection
+        RelatonBib::TypedTitleStringCollection,
       )
     end
 
     it "return en title" do
       expect(subject.title(lang: "en").first).to be_instance_of(
-        RelatonBib::TypedTitleString
+        RelatonBib::TypedTitleString,
       )
     end
 
     it "return string of abstract" do
       formatted_string = subject.abstract(lang: "en")
       expect(subject.abstract(lang: "en").to_s).to eq(
-        formatted_string&.content.to_s
+        formatted_string&.content.to_s,
       )
     end
 
     it "return item urls" do
-      url_regex = %r{https:\/\/www\.iso\.org\/standard\/\d+\.html}
+      url_regex = %r{https://www\.iso\.org/standard/\d+\.html}
       expect(subject.url).to match(url_regex)
       expect(subject.url(:src)).to be_instance_of String
-      rss_regex = %r{https:\/\/www\.iso\.org\/contents\/data\/standard\/\d{2}
-      \/\d{2}\/\d+\.detail\.rss}x
+      rss_regex = %r{https://www\.iso\.org/contents/data/standard/\d{2}
+      /\d{2}/\d+\.detail\.rss}x
       expect(subject.url(:rss)).to match(rss_regex)
     end
 
@@ -116,13 +116,13 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "return workgroup" do
       expect(subject.editorialgroup).to be_instance_of(
-        RelatonIsoBib::EditorialGroup
+        RelatonIsoBib::EditorialGroup,
       )
     end
 
     it "return relations" do
       expect(subject.relation).to be_instance_of(
-        RelatonBib::DocRelationCollection
+        RelatonBib::DocRelationCollection,
       )
     end
 
@@ -143,32 +143,47 @@ RSpec.describe RelatonIso::IsoBibliography do
         expect(results).to include %(<bibitem id="ISO19115-1" type="standard">)
         expect(results).to include %(<on>2014-04</on>)
         expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include(
-          %(<on>2014</on>)
+          %(<on>2014</on>),
         )
         expect(results).to include(
-          %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+          %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>),
         )
         expect(results).not_to include(
-          %(<docidentifier type="ISO">ISO 19115</docidentifier>)
+          %(<docidentifier type="ISO">ISO 19115</docidentifier>),
         )
       end
     end
 
-    it "gets an all-parts code" do
-      VCR.use_cassette "iso_19115_all_parts" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115", nil,
-                                                  all_parts: true)
-        xml = results.to_xml bibdata: true
-        file = "spec/fixtures/all_parts.xml"
-        File.write file, xml, encoding: "UTF-8" unless File.exist? file
-        expect(xml).to be_equivalent_to File.read(file, encoding: "utf-8")
-          .gsub %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
-        expect(xml).to include(
-          %(<project-number>ISO 19115 (all parts)</project-number>)
-        )
-        expect(xml).to include(
-          %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>)
-        )
+    context "gets all parts document" do
+      it "using option" do
+        VCR.use_cassette "iso_19115_all_parts" do
+          results = RelatonIso::IsoBibliography.get("ISO 19115", nil,
+                                                    all_parts: true)
+          xml = results.to_xml bibdata: true
+          file = "spec/fixtures/all_parts.xml"
+          File.write file, xml, encoding: "UTF-8" unless File.exist? file
+          expect(xml).to be_equivalent_to File.read(file, encoding: "utf-8")
+            .gsub %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
+          expect(xml).to include(
+            %(<project-number>ISO 19115 (all parts)</project-number>),
+          )
+          expect(xml).to include(
+            %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>),
+          )
+        end
+      end
+
+      it "using reference" do
+        VCR.use_cassette "iso_19115_all_parts" do
+          results = RelatonIso::IsoBibliography.get "ISO 19115 (all parts)"
+          xml = results.to_xml bibdata: true
+          expect(xml).to include(
+            %(<project-number>ISO 19115 (all parts)</project-number>),
+          )
+          expect(xml).to include(
+            %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>),
+          )
+        end
       end
     end
 
@@ -178,13 +193,13 @@ RSpec.describe RelatonIso::IsoBibliography do
           "ISO 19115-1", nil, keep_year: true
         ).to_xml
         expect(results).to include(
-          %(<bibitem id="ISO19115-1-2014" type="standard">)
+          %(<bibitem id="ISO19115-1-2014" type="standard">),
         )
         expect(results.gsub(/<relation.*<\/relation>/m, "")).to include(
-          %(<on>2014-04</on>)
+          %(<on>2014-04</on>),
         )
         expect(results).to include(
-          %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>)
+          %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>),
         )
       end
     end
@@ -195,10 +210,10 @@ RSpec.describe RelatonIso::IsoBibliography do
           .to_xml
         expect(results).to include(%(<on>2003-05</on>))
         expect(results).not_to include(
-          %(<docidentifier type="ISO">ISO 19115-1:2003</docidentifier>)
+          %(<docidentifier type="ISO">ISO 19115-1:2003</docidentifier>),
         )
         expect(results).to include(
-          %(<docidentifier type="ISO">ISO 19115:2003</docidentifier>)
+          %(<docidentifier type="ISO">ISO 19115:2003</docidentifier>),
         )
       end
     end
@@ -229,7 +244,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_2015" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
           .to output(
-            /There was no match for 2015, though there were matches found for/
+            /There was no match for 2015, though there were matches found for/,
           ).to_stderr
       end
     end
@@ -238,7 +253,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_30_2014" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115-30", "2014", {}) }
           .to output(
-            /The provided document part may not exist, or the document may no /
+            /The provided document part may not exist, or the document may no /,
           ).to_stderr
       end
     end
@@ -247,7 +262,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_00000_2014" do
         expect { RelatonIso::IsoBibliography.get("ISO 00000", "2014", {}) }
           .to output(
-            /If you wanted to cite all document parts for the reference/
+            /If you wanted to cite all document parts for the reference/,
           ).to_stderr
       end
     end
@@ -306,13 +321,13 @@ RSpec.describe RelatonIso::IsoBibliography do
         result = RelatonIso::IsoBibliography.get("ISO/IEC/IEEE 9945:2009")
         expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945:2009"
         expect(result.contributor[0].entity.name[0].content).to eq(
-          "International Organization for Standardization"
+          "International Organization for Standardization",
         )
         expect(result.contributor[1].entity.name[0].content).to eq(
-          "International Electrotechnical Commission"
+          "International Electrotechnical Commission",
         )
         expect(result.contributor[2].entity.name[0].content).to eq(
-          "Institute of Electrical and Electronics Engineers"
+          "Institute of Electrical and Electronics Engineers",
         )
       end
     end

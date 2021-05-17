@@ -41,7 +41,7 @@ module RelatonIso
     #
     # @return [Array<RelatonIso::Hit]
     #
-    def fetch_github
+    def fetch_github # rubocop:disable Metrics/AbcSize
       ref = text.gsub(/[\s\/]/, "_").upcase
       url = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/#{ref}.yaml"
       resp = Net::HTTP.get_response URI(url)
@@ -60,8 +60,8 @@ module RelatonIso
     #
     # @return [Array<RelatonIso::Hit>]
     #
-    def fetch_iso
-      %r{\s(?<num>\d+)(-(?<part>[\d-]+))?} =~ text
+    def fetch_iso # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?} =~ text
       http = Net::HTTP.new "www.iso.org", 443
       http.use_ssl = true
       search = ["status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED"]
@@ -70,7 +70,7 @@ module RelatonIso
       q = search.join "&"
       resp = http.get("/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
                       "Accept" => "application/json, text/plain, */*")
-      return if resp.body.empty?
+      return [] if resp.body.empty?
 
       json = JSON.parse resp.body
       json["standards"].map { |h| Hit.new h, self }.sort! do |a, b|

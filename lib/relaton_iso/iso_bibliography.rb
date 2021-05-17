@@ -3,7 +3,7 @@
 # require 'relaton_iso/iso_bibliographic_item'
 require "relaton_iso/scrapper"
 require "relaton_iso/hit_collection"
-require "relaton_iec"
+# require "relaton_iec"
 
 module RelatonIso
   # Class methods for search ISO standards.
@@ -120,7 +120,7 @@ module RelatonIso
       # @param code [String]
       # @param opts [Hash]
       # @return [RelatonIso::HitCollection]
-      def search_code(result, code, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+      def search_code(result, code, _opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
         code1, part1, corr1, coryear1 = ref_components code
         result.select do |i|
           code2, part2, corr2, coryear2 = ref_components i.hit["docRef"]
@@ -131,12 +131,12 @@ module RelatonIso
 
       def ref_components(ref)
         %r{
-          ^(?<code>ISO(?:\s|\/)[^-\/:]+)
-          (?:-(?<part>[^:\/]+))?
+          ^(?<code>ISO(?:\s|/)[^-/:()]+)
+          (?:-(?<part>[^:/]+))?
           (?::\d{4})?
-          (?:\/(?<corr>\w+(?:\s\w+)?\s\d+)(?:(?<coryear>\d{4}))?)?
+          (?:/(?<corr>\w+(?:\s\w+)?\s\d+)(?:(?<coryear>\d{4}))?)?
         }x =~ ref
-        [code, part, corr, coryear]
+        [code&.strip, part, corr, coryear]
       end
 
       # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
