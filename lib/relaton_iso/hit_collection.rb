@@ -24,10 +24,10 @@ module RelatonIso
       all_parts_item = bibitem.to_all_parts
       parts.reject { |h| h.hit["docRef"] == hit.hit["docRef"] }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(
-          formattedref: RelatonBib::FormattedRef.new(content: hi.hit["docRef"])
+          formattedref: RelatonBib::FormattedRef.new(content: hi.hit["docRef"]),
         )
         all_parts_item.relation << RelatonBib::DocumentRelation.new(
-          type: "instance", bibitem: isobib
+          type: "instance", bibitem: isobib,
         )
       end
       all_parts_item
@@ -49,7 +49,7 @@ module RelatonIso
 
       hash = YAML.safe_load resp.body
       bib_hash = RelatonIsoBib::HashConverter.hash_to_bib hash
-      bib = RelatonIsoBib::IsoBibliographicItem.new **bib_hash
+      bib = RelatonIsoBib::IsoBibliographicItem.new(**bib_hash)
       hit = Hit.new({ "docRef" => text }, self)
       hit.fetch = bib
       [hit]

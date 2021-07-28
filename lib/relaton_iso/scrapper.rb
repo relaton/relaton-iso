@@ -84,7 +84,7 @@ module RelatonIso
           link: fetch_link(doc, url),
           relation: fetch_relations(doc),
           place: ["Geneva"],
-          structuredidentifier: fetch_structuredidentifier(doc)
+          structuredidentifier: fetch_structuredidentifier(doc),
         )
       end
 
@@ -107,7 +107,11 @@ module RelatonIso
             titles += fetch_title(d, l[:lang])
 
             # Fetch abstracts.
-            abstract_content = d.css("div[itemprop='description'] p").text
+            abstract_content = d.xpath(
+              "//div[@itemprop='description']/p|//div[@itemprop='description']/ul/li",
+            ).map do |a|
+              a.name == "li" ? "- #{a.text}" : a.text
+            end.reject(&:empty?).join("\n")
             unless abstract_content.empty?
               abstract << {
                 content: abstract_content,

@@ -296,9 +296,9 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "fetch WD Amd" do
-      VCR.use_cassette "iso_iec_23008_1_wd_amd_3" do
-        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 3"
-        expect(result.docidentifier.first.id).to eq "ISO/IEC DIS 23008-1/WD Amd 3"
+      VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC DIS 23008-1/WD Amd 1"
       end
     end
 
@@ -350,7 +350,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch circulated date" do
       VCR.use_cassette "iso_iec_8824_1_2015" do
         bib = RelatonIso::IsoBibliography.get("ISO/IEC 8824-1:2015")
-        expect(bib.relation[4].bibitem.date.first.on.to_s).to eq "2020-07-02"
+        expect(bib.relation[4].bibitem.date.first.on.to_s).to eq "2021-06-30"
       end
     end
 
@@ -365,7 +365,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "ISO" do
         VCR.use_cassette "iso_22934" do
           result = RelatonIso::IsoBibliography.get "ISO 22934", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO 22934"
+          expect(result.docidentifier.first.id).to eq "ISO 22934:2021"
         end
       end
 
