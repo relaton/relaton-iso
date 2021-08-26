@@ -1,43 +1,62 @@
 ---
 http_interactions:
 - request:
-    method: get
-    uri: https://www.iso.org/cms/render/live/en/sites/isoorg.advancedSearch.do?docNumber=111111&status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED
+    method: post
+    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
     body:
-      encoding: US-ASCII
-      string: ''
+      encoding: UTF-8
+      string: '{"query":"ISO 111111","hitsPerPage":100,"filters":"category:standard"}'
     headers:
-      Accept:
-      - application/json, text/plain, */*
+      User-Agent:
+      - Algolia for Ruby (2.1.1), Ruby (3.0.0)
+      X-Algolia-Api-Key:
+      - dd1b9e1ab383f4d4817d29cd5e96d3f0
+      X-Algolia-Application-Id:
+      - JCL49WV5AR
+      Content-Type:
+      - application/json; charset=utf-8
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      User-Agent:
-      - Ruby
+      Accept:
+      - "*/*"
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '30'
   response:
     status:
       code: 200
-      message: ''
+      message: OK
     headers:
-      Expires:
-      - Wed, 09 May 1979 05:30:00 GMT
-      Cache-Control:
-      - no-cache, no-store, must-revalidate, proxy-revalidate, max-age=0
-      Pragma:
-      - no-cache
-      Set-Cookie:
-      - BIGipServerpool_prod_iso_www-jahia=713576842.36895.0000; path=/; Httponly;
-        Secure
-      - JSESSIONID=A4FB656AD19860726E6D6AAA834E841A; Path=/; Secure; HttpOnly
-      Content-Type:
-      - application/json;charset=UTF-8
-      Content-Length:
-      - '16'
+      Server:
+      - nginx
       Date:
-      - Wed, 28 Jul 2021 16:25:46 GMT
+      - Mon, 23 Aug 2021 09:48:40 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '199'
+      Connection:
+      - keep-alive
+      X-Alg-Pt:
+      - '1'
+      Accept-Encoding:
+      - deflate, gzip
+      Cache-Control:
+      - no-store
+      Access-Control-Allow-Origin:
+      - "*"
+      Timing-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
       Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
+      - max-age=31536000; includeSubDomains; preload
+      Content-Disposition:
+      - inline; filename=a.txt
     body:
       encoding: UTF-8
-      string: '{"standards":[]}'
-  recorded_at: Wed, 28 Jul 2021 16:25:46 GMT
+      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"query":"ISO
+        111111","params":"query=ISO+111111&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1}'
+  recorded_at: Mon, 23 Aug 2021 09:48:40 GMT
 recorded_with: VCR 6.0.0

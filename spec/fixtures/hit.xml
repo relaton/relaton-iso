@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2020-11-10</fetched>
+  <fetched>2021-08-23</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -58,14 +58,14 @@
   <ext>
     <doctype>international-standard</doctype>
     <editorialgroup>
-      <technical-committee number="211" type="TC">ISO/TC 211Geographic information/Geomatics</technical-committee>
+      <technical-committee number="211" type="TC" identifier="ISO/TC 211">Geographic information/Geomatics</technical-committee>
     </editorialgroup>
     <ics>
       <code>35.240.70</code>
       <text>IT applications in science</text>
     </ics>
     <structuredidentifier type="ISO">
-      <project-number>ISO 19115</project-number>
+      <project-number part="2">ISO 19115</project-number>
     </structuredidentifier>
   </ext>
 </bibdata>

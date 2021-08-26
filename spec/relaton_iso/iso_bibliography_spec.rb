@@ -6,11 +6,11 @@ RSpec.describe RelatonIso::IsoBibliography do
   let(:hit_pages) { RelatonIso::IsoBibliography.search("19115") }
 
   it "raise access error" do
-    http = double
-    expect(http).to receive(:get).and_raise SocketError
-    expect(http).to receive(:use_ssl=).with(true)
-    expect(Net::HTTP).to receive(:new).and_return http
-    expect { RelatonIso::IsoBibliography.search "19155" }
+    # http = double "http"
+    # expect(http).to receive(:get).and_raise SocketError
+    # expect(http).to receive(:use_ssl=).with(true)
+    expect(Net::HTTP).to receive(:get_response).and_raise SocketError
+    expect { RelatonIso::IsoBibliography.search "ISO TC 184/SC 4" }
       .to raise_error RelatonBib::RequestError
   end
 
@@ -34,7 +34,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(xml).to be_equivalent_to(
         File.read(file_path, encoding: "utf-8").sub(
           %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
-        )
+        ),
       )
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(xml).to be_equivalent_to(
         File.read(file_path, encoding: "utf-8").gsub(
           %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
-        )
+        ),
       )
     end
   end
@@ -65,9 +65,8 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   describe "iso bibliography item" do
     subject do
-      VCR.use_cassette "hits" do
-        hits = RelatonIso::IsoBibliography.search("ISO 19115")
-        hits.first.fetch
+      VCR.use_cassette "iso_19115_2003" do
+        RelatonIso::IsoBibliography.get("ISO 19115:2003")
       end
     end
 
@@ -100,15 +99,10 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return dates" do
-      expect(subject.date.length).to eq 2
+      expect(subject.date.length).to eq 1
       expect(subject.date.first.type).to eq "published"
       expect(subject.date.first.on).to be_instance_of String
     end
-
-    # it 'filter dates by type' do
-    #   expect(isobib_item.dates.filter(type: 'published').first.from)
-    #     .to be_instance_of(Time)
-    # end
 
     it "return document status" do
       expect(subject.status).to be_instance_of RelatonBib::DocumentStatus
@@ -140,7 +134,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "gets a code" do
       VCR.use_cassette "iso_19115_1" do
         results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
-        expect(results).to include %(<bibitem id="ISO19115-1" type="standard">)
+        expect(results).to include %(<bibitem id="ISO19115-1-2014" type="standard">)
         expect(results).to include %(<on>2014-04</on>)
         expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include(
           %(<on>2014</on>),
@@ -187,16 +181,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "gets a keep-year code" do
+    it "gets the most recent reference" do
       VCR.use_cassette "iso_19115_1_keep_year" do
         results = RelatonIso::IsoBibliography.get(
-          "ISO 19115-1", nil, keep_year: true
+          "ISO 19115-1", nil, keep_year: false
         ).to_xml
         expect(results).to include(
-          %(<bibitem id="ISO19115-1-2014" type="standard">),
-        )
-        expect(results.gsub(/<relation.*<\/relation>/m, "")).to include(
-          %(<on>2014-04</on>),
+          %(<bibitem id="ISO19115-1" type="standard">),
         )
         expect(results).to include(
           %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>),
@@ -361,6 +352,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
+    it "fetch ISO/AWI 14093" do
+      VCR.use_cassette "iso_awi_14093" do
+        result = RelatonIso::IsoBibliography.get "ISO/AWI 14093"
+        expect(result.docidentifier[0].id).to eq "ISO/AWI 14093"
+      end
+    end
+
     context "try to fetch stages" do
       it "ISO" do
         VCR.use_cassette "iso_22934" do
@@ -373,14 +371,14 @@ RSpec.describe RelatonIso::IsoBibliography do
         VCR.use_cassette "iso_iec_tr_29110_5_1_3_2017" do
           result = RelatonIso::IsoBibliography.get "ISO/IEC 29110-5-1-3:2017"
           expect(result.docidentifier.first.id).to eq "ISO/IEC TR "\
-          "29110-5-1-3:2017"
+                                                      "29110-5-1-3:2017"
         end
       end
 
       it "fetch ISO 4" do
         VCR.use_cassette "iso_4" do
           result = RelatonIso::IsoBibliography.get "ISO 4"
-          expect(result.docidentifier.first.id).to eq "ISO 4 (all parts)"
+          expect(result.docidentifier.first.id).to eq "ISO 4:1997"
         end
       end
     end
@@ -388,10 +386,11 @@ RSpec.describe RelatonIso::IsoBibliography do
     context "fetch specific language" do
       it "en" do
         VCR.use_cassette "iso_19115_en" do
-          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en").to_xml
+          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en")
+          xml = result.to_xml
           file = "spec/fixtures/iso_19115_en.xml"
-          File.write file, result, encoding: "UTF-8" unless File.exist? file
-          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
+          File.write file, xml, encoding: "UTF-8" unless File.exist? file
+          expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
             .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
         end
       end

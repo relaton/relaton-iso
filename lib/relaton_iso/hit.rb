@@ -4,7 +4,7 @@ module RelatonIso
   # Hit.
   class Hit < RelatonBib::Hit
     # @return [RelatonIsoBib::IsoBibliographicItem]
-    attr_accessor :fetch
+    attr_writer :fetch
 
     # Parse page.
     # @param lang [String, NilClass]
@@ -15,11 +15,12 @@ module RelatonIso
 
     # @return [Integer]
     def sort_weight
-      case hit["publicationStatus"] && hit["publicationStatus"]["key"]
-      when "ENT_ACTIVE" then 0
-      when "ENT_PROGRESS" then 1
-      when "ENT_INACTIVE" then 2
-      else 3
+      case hit[:status] # && hit["publicationStatus"]["key"]
+      when "Published" then 0
+      when "Under development" then 1
+      when "Withdrawn" then 2
+      when "Deleted" then 3
+      else 4
       end
     end
   end

@@ -3,7 +3,7 @@ RSpec.describe RelatonIso::Scrapper do
     resp1 = double "response"
     expect(resp1).to receive(:code).and_return "301"
     expect(resp1).to receive(:[]).with("location").and_return "/new_path"
-    uri1 = URI RelatonIso::Scrapper::DOMAIN + "/path"
+    uri1 = URI "#{RelatonIso::Scrapper::DOMAIN}/path"
     expect(Net::HTTP).to receive(:get_response).with(uri1).and_return resp1
 
     resp2 = double "response"
@@ -12,7 +12,7 @@ RSpec.describe RelatonIso::Scrapper do
       "<html><body><strong>text</strong></body></html>",
       "<html><body><strong>text</strong></body></html>",
     )
-    uri2 = URI RelatonIso::Scrapper::DOMAIN + "/new_path"
+    uri2 = URI "#{RelatonIso::Scrapper::DOMAIN}/new_path"
     expect(Net::HTTP).to receive(:get_response).with(uri2).and_return(resp2).twice
 
     RelatonIso::Scrapper.send(:get_page, "/path")
@@ -38,7 +38,7 @@ RSpec.describe RelatonIso::Scrapper do
     it "could not access" do
       expect(Net::HTTP).to receive(:get_response).and_raise SocketError
       expect do
-        RelatonIso::Scrapper.parse_page("path" => "1234")
+        RelatonIso::Scrapper.parse_page(path: "1234")
       end.to raise_error RelatonBib::RequestError
     end
 
@@ -47,7 +47,7 @@ RSpec.describe RelatonIso::Scrapper do
       expect(resp).to receive(:code).and_return "404"
       expect(Net::HTTP).to receive(:get_response).and_return resp
       expect do
-        RelatonIso::Scrapper.parse_page("path" => "1234")
+        RelatonIso::Scrapper.parse_page(path: "1234")
       end.to raise_error RelatonBib::RequestError
     end
   end

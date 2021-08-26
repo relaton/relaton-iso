@@ -32,11 +32,15 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "rubocop-performance"
+  spec.add_development_dependency "rubocop-rails"
   # spec.add_development_dependency "ruby-debug-ide"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "vcr"
   spec.add_development_dependency "webmock"
 
   # spec.add_dependency "relaton-iec", "~> 1.8.0"
-  spec.add_dependency "relaton-iso-bib", "~> 1.8.0"
+  spec.add_dependency "algolia"
+  spec.add_dependency "relaton-iso-bib", "~> 1.9.0"
 end
