@@ -84,8 +84,9 @@ module RelatonIso
       # json = JSON.parse resp.body
       # json["standards"]
       resp[:hits].map { |h| Hit.new h, self }.sort! do |a, b|
-        if a.sort_weight == b.sort_weight
-          # (parse_date(b.hit) - parse_date(a.hit)).to_i
+        if a.sort_weight == b.sort_weight && b.hit[:year] = a.hit[:year]
+          a.hit[:title] <=> b.hit[:title]
+        elsif a.sort_weight == b.sort_weight
           b.hit[:year] - a.hit[:year]
         else
           a.sort_weight - b.sort_weight
