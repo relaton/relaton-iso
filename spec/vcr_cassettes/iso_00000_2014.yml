@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 23 Aug 2021 15:36:50 GMT
+      - Wed, 06 Oct 2021 16:13:36 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Transfer-Encoding:
@@ -74,7 +74,7 @@ http_interactions:
         with or without corrosion protection under determined conditions of temperature
         and relative humidity. These tests apply to metals and their alloys, metallic
         coatings (anodic and cathodic), metals with conversion coatings, metals with
-        anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}},{"category":"standard","path":"/sites/isoorg/contents/data/standard/08/32/83213","uuid":"5afedc2c-bb6d-4850-b2e7-54617adcb808","title":"ISO/AWI
+        anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}},{"category":"standard","path":"/sites/isoorg/contents/data/standard/08/32/83213","uuid":"5afedc2c-bb6d-4850-b2e7-54617adcb808","title":"ISO/CD
         10062 Corrosion tests in artificial atmosphere at very low concentrations
         of polluting gas(es)","status":"Under development","year":2021,"order":12,"text":"ISO
         10062:2006 specifies tests which are intended to determine the influence of
@@ -83,7 +83,7 @@ http_interactions:
         corrosion protection under determined conditions of temperature and relative
         humidity. These tests apply to metals and their alloys, metallic coatings
         (anodic and cathodic), metals with conversion coatings, metals with anodic
-        oxide coatings, and metals with organic coatings. ","objectID":"83213_0","_highlightResult":{"title":{"value":"<em>ISO</em>/AWI
+        oxide coatings, and metals with organic coatings. ","objectID":"83213_0","_highlightResult":{"title":{"value":"<em>ISO</em>/CD
         10062 Corrosion tests in artificial atmosphere at very low concentrations
         of polluting gas(es)","matchLevel":"partial","fullyHighlighted":false,"matchedWords":["iso"]},"text":{"value":"<em>ISO</em>
         10062:2006 specifies tests which are intended to determine the influence of
@@ -92,7 +92,7 @@ http_interactions:
         with or without corrosion protection under determined conditions of temperature
         and relative humidity. These tests apply to metals and their alloys, metallic
         coatings (anodic and cathodic), metals with conversion coatings, metals with
-        anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}}],"nbHits":2,"page":0,"nbPages":1,"hitsPerPage":100,"exhaustiveNbHits":true,"query":"ISO
+        anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}}],"nbHits":2,"page":0,"nbPages":1,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"query":"ISO
         00000","params":"query=ISO+00000&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1}'
-  recorded_at: Mon, 23 Aug 2021 15:36:50 GMT
+  recorded_at: Wed, 06 Oct 2021 16:13:36 GMT
 recorded_with: VCR 6.0.0

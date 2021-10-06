@@ -259,6 +259,18 @@ item.title lang: 'fr'
  @script=["Latn"]>
 ----
 
+=== Typed links
+
+Each ISO document has `src` type link and optional `obp`, `rss`, and `pub` link types.
+
+[source,ruby]
+----
+item.link
+=> [#<RelatonBib::TypedUri:0x00007ffdf001eb90 @content=#<Addressable::URI:0xaa0 URI:https://www.iso.org/standard/53798.html>, @type="src">,
+ #<RelatonBib::TypedUri:0x00007ffdf001e960 @content=#<Addressable::URI:0xab4 URI:https://www.iso.org/obp/ui/#!iso:std:53798:en>, @type="obp">,
+ #<RelatonBib::TypedUri:0x00007ffdf001e7a8 @content=#<Addressable::URI:0xac8 URI:https://www.iso.org/contents/data/standard/05/37/53798.detail.rss>, @type="rss">]
+----
+
 == Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
