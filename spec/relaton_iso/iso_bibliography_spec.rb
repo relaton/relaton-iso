@@ -133,18 +133,10 @@ RSpec.describe RelatonIso::IsoBibliography do
   describe "get" do
     it "gets a code" do
       VCR.use_cassette "iso_19115_1" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
-        expect(results).to include %(<bibitem id="ISO19115-1-2014" type="standard">)
-        expect(results).to include %(<on>2014-04</on>)
-        expect(results.gsub(/<relation.*<\/relation>/m, "")).not_to include(
-          %(<on>2014</on>),
-        )
-        expect(results).to include(
-          %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>),
-        )
-        expect(results).not_to include(
-          %(<docidentifier type="ISO">ISO 19115</docidentifier>),
-        )
+        file = "spec/fixtures/iso_19115_keep_year.xml"
+        xml = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
+        File.write file, xml, encoding: "UTF-8" unless File.exist? file
+        expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
       end
     end
 
@@ -181,17 +173,25 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "gets the most recent reference" do
-      VCR.use_cassette "iso_19115_1_keep_year" do
-        results = RelatonIso::IsoBibliography.get(
-          "ISO 19115-1", nil, keep_year: false
-        ).to_xml
-        expect(results).to include(
-          %(<bibitem id="ISO19115-1" type="standard">),
-        )
-        expect(results).to include(
-          %(<docidentifier type="ISO">ISO 19115-1:2014</docidentifier>),
-        )
+    context "gets the most recent reference" do
+      it "by default" do
+        VCR.use_cassette "iso_19115_1_keep_year" do
+          file = "spec/fixtures/iso_19115_keep_year.xml"
+          xml = RelatonIso::IsoBibliography.get("ISO 19115-1").to_xml
+          File.write file, xml, encoding: "UTF-8" unless File.exist? file
+          expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
+        end
+      end
+
+      it "explicitily" do
+        VCR.use_cassette "iso_19115_1_keep_year" do
+          file = "spec/fixtures/iso_19115_keep_year.xml"
+          xml = RelatonIso::IsoBibliography.get(
+            "ISO 19115-1:2014", nil, keep_year: false
+          ).to_xml
+          File.write file, xml, encoding: "UTF-8" unless File.exist? file
+          expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
+        end
       end
     end
 
@@ -310,7 +310,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch ISO/IEC/IEEE" do
       VCR.use_cassette "iso_iec_ieee_9945_2009" do
         result = RelatonIso::IsoBibliography.get("ISO/IEC/IEEE 9945:2009")
-        expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945:2009"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945"
         expect(result.contributor[0].entity.name[0].content).to eq(
           "International Organization for Standardization",
         )
@@ -363,7 +363,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "ISO" do
         VCR.use_cassette "iso_22934" do
           result = RelatonIso::IsoBibliography.get "ISO 22934", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO 22934:2021"
+          expect(result.docidentifier.first.id).to eq "ISO 22934"
         end
       end
 
@@ -378,7 +378,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "fetch ISO 4" do
         VCR.use_cassette "iso_4" do
           result = RelatonIso::IsoBibliography.get "ISO 4"
-          expect(result.docidentifier.first.id).to eq "ISO 4:1997"
+          expect(result.docidentifier.first.id).to eq "ISO 4"
         end
       end
     end

@@ -26,14 +26,14 @@ module RelatonIso
       #   reference is required, :keep_year if undated reference should
       #   return actual reference with year
       # @return [String] Relaton XML serialisation of reference
-      def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+      def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity,Metrics/AbcSize
         code = ref.gsub(/\u2013/, "-")
         # %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?(?::(?<year1>\d{4}))?} =~ code
         _, _part, year1, = ref_components ref
         year ||= year1
         code.sub! " (all parts)", ""
         opts[:all_parts] ||= $~ && opts[:all_parts].nil?
-        opts[:keep_year] ||= opts[:keep_year].nil?
+        # opts[:keep_year] ||= opts[:keep_year].nil?
         # code.sub!("#{num}-#{part}", num) if opts[:all_parts] && part
         # if %r[^ISO/IEC DIR].match? code
         #   return RelatonIec::IecBibliography.get(code, year, opts)
@@ -42,7 +42,7 @@ module RelatonIso
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
 
-        if year || opts[:keep_year] || opts[:all_parts]
+        if year && opts[:keep_year].nil? || opts[:keep_year] || opts[:all_parts]
           ret
         else
           ret.to_most_recent_reference
@@ -143,11 +143,11 @@ module RelatonIso
       # @param code [String]
       # @param opts [Hash]
       # @return [RelatonIso::HitCollection]
-      def search_code(result, code, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+      def search_code(result, code, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,PerceivedComplexity
         code1, part1, _, corr1, coryear1 = ref_components code
         result.select do |i|
           code2, part2, _, corr2, coryear2 = ref_components i.hit[:title]
-          code1 == code2 && (opts[:all_parts] && part2 || !opts[:all_parts] && part1 == part2) &&
+          code1 == code2 && ((opts[:all_parts] && part2) || (!opts[:all_parts] && part1 == part2)) &&
             corr1 == corr2 && (!coryear1 || coryear1 == coryear2)
         end
       end
@@ -164,7 +164,7 @@ module RelatonIso
       def isobib_results_filter(result, year, opts)
         missed_years = []
         hits = result.reduce!([]) do |hts, h|
-          if !year || %r{:(?<iyear>\d{4})(?!.*:\d{4})} =~ h.hit[:title] && iyear == year
+          if !year || (%r{:(?<iyear>\d{4})(?!.*:\d{4})} =~ h.hit[:title] && iyear == year)
             hts << h
           else
             missed_years << iyear
