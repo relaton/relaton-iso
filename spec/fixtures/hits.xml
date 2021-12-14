@@ -1,160 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
-  <bibitem id="ISO19115-2-2019/PRFAmd1" type="standard">
-    <fetched>2021-08-23</fetched>
-    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
-    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
-    <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing -- Amendment 1</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing -- Amendment 1</title>
-    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
-    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
-    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
-    <uri type="src">https://www.iso.org/standard/78888.html</uri>
-    <uri type="rss">https://www.iso.org/contents/data/standard/07/88/78888.detail.rss</uri>
-    <docidentifier type="ISO">ISO 19115-2:2019/PRF Amd 1</docidentifier>
-    <docidentifier type="URN">urn:iso:std:iso:r:19115:-2:stage-50.00:ed-2:prf:1:en,fr</docidentifier>
-    <docnumber>19115</docnumber>
-    <date type="published">
-      <on>2019</on>
-    </date>
-    <contributor>
-      <role type="publisher"/>
-      <organization>
-        <name>International Organization for Standardization</name>
-        <abbreviation>ISO</abbreviation>
-        <uri>www.iso.org</uri>
-      </organization>
-    </contributor>
-    <edition>2</edition>
-    <language>en</language>
-    <language>fr</language>
-    <script>Latn</script>
-    <status>
-      <stage>50</stage>
-      <substage>00</substage>
-    </status>
-    <copyright>
-      <from>2019</from>
-      <owner>
-        <organization>
-          <name>ISO</name>
-        </organization>
-      </owner>
-    </copyright>
-    <place>Geneva</place>
-  </bibitem>
-  <bibitem id="ISO/TS19115-3-2016" type="standard">
-    <fetched>2021-08-23</fetched>
-    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
-    <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
-    <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Geographic information -  Metadata - Part 3: XML schema implementation for fundamental concepts</title>
-    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
-    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
-    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 3: Mise en oeuvre par des schémas XML</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 3: Mise en oeuvre par des schémas XML</title>
-    <uri type="src">https://www.iso.org/standard/32579.html</uri>
-    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</uri>
-    <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</uri>
-    <docidentifier type="ISO">ISO/TS 19115-3:2016</docidentifier>
-    <docidentifier type="URN">urn:iso:std:iso-ts:ts:19115:-3:stage-90.92:ed-1:en,fr</docidentifier>
-    <docnumber>19115</docnumber>
-    <date type="published">
-      <on>2016-08</on>
-    </date>
-    <contributor>
-      <role type="publisher"/>
-      <organization>
-        <name>International Organization for Standardization</name>
-        <abbreviation>ISO</abbreviation>
-        <uri>www.iso.org</uri>
-      </organization>
-    </contributor>
-    <edition>1</edition>
-    <language>en</language>
-    <language>fr</language>
-    <script>Latn</script>
-    <abstract format="text/plain" language="en" script="Latn">ISO/TS 19115-3:2016 defines an integrated XML implementation of ISO 19115‑1, ISO 19115‑2, and concepts from ISO/TS 19139 by defining the following artefacts:
-a)    a set of XML schema required to validate metadata instance documents conforming to conceptual model elements defined in ISO 19115‑1, ISO 19115‑2, and ISO/TS 19139;
-b)    a set of ISO/IEC 19757‑3 (Schematron) rules that implement validation constraints in the ISO 19115‑1 and ISO 19115‑2 UML models that are not validated by the XML schema;
-c)    an Extensible Stylesheet Language Transformation (XSLT) for transforming ISO 19115-1 metadata encoded using the ISO/TS 19139 XML schema and ISO 19115‑2 metadata encoded using the ISO/TS 19139‑2 XML schema into an equivalent document that is valid against the XML schema defined in this document.
-ISO/TS 19115-3:2016 describes the procedure used to generate XML schema from ISO geographic information conceptual models related to metadata. The procedure includes creation of an UML model for XML implementation derived from the conceptual UML model.
-This implementation model does not alter the semantics of the target conceptual model, but adds abstract classes that remove dependencies between model packages, tagged values and stereotypes required by the UML to XML transformation software, and refactors the packaging of a few elements into XML namespaces. The XML schema has been generated systematically from the UML model for XML implementation according to the rules defined in ISO/TS 19139 or ISO 19118.</abstract>
-    <abstract format="text/plain" language="fr" script="Latn">ISO/TS 19115-3:2016 defines an integrated XML implementation of ISO 19115‑1, ISO 19115‑2, and concepts from ISO/TS 19139 by defining the following artefacts:
-a)    a set of XML schema required to validate metadata instance documents conforming to conceptual model elements defined in ISO 19115‑1, ISO 19115‑2, and ISO/TS 19139;
-b)    a set of ISO/IEC 19757‑3 (Schematron) rules that implement validation constraints in the ISO 19115‑1 and ISO 19115‑2 UML models that are not validated by the XML schema;
-c)    an Extensible Stylesheet Language Transformation (XSLT) for transforming ISO 19115-1 metadata encoded using the ISO/TS 19139 XML schema and ISO 19115‑2 metadata encoded using the ISO/TS 19139‑2 XML schema into an equivalent document that is valid against the XML schema defined in this document.
-ISO/TS 19115-3:2016 describes the procedure used to generate XML schema from ISO geographic information conceptual models related to metadata. The procedure includes creation of an UML model for XML implementation derived from the conceptual UML model.
-This implementation model does not alter the semantics of the target conceptual model, but adds abstract classes that remove dependencies between model packages, tagged values and stereotypes required by the UML to XML transformation software, and refactors the packaging of a few elements into XML namespaces. The XML schema has been generated systematically from the UML model for XML implementation according to the rules defined in ISO/TS 19139 or ISO 19118.</abstract>
-    <status>
-      <stage>90</stage>
-      <substage>92</substage>
-    </status>
-    <copyright>
-      <from>2016</from>
-      <owner>
-        <organization>
-          <name>ISO/TS</name>
-        </organization>
-      </owner>
-    </copyright>
-    <relation type="obsoletes">
-      <bibitem type="standard">
-        <formattedref format="text/plain">ISO/CD 19115-3</formattedref>
-      </bibitem>
-    </relation>
-    <place>Geneva</place>
-  </bibitem>
-  <bibitem id="ISO/TS19157-2-2016" type="standard">
-    <fetched>2021-08-23</fetched>
-    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
-    <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
-    <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: XML schema implementation</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Geographic information  - Data quality - Part 2: XML schema implementation</title>
-    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information geographique</title>
-    <title type="title-main" format="text/plain" language="fr" script="Latn">Qualite des donnees</title>
-    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Implémentation de schémas XML</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Information geographique - Qualite des donnees - Partie 2: Implémentation de schémas XML</title>
-    <uri type="src">https://www.iso.org/standard/66197.html</uri>
-    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:66197:en</uri>
-    <uri type="rss">https://www.iso.org/contents/data/standard/06/61/66197.detail.rss</uri>
-    <docidentifier type="ISO">ISO/TS 19157-2:2016</docidentifier>
-    <docidentifier type="URN">urn:iso:std:iso-ts:ts:19157:-2:stage-90.93:ed-1:en,fr</docidentifier>
-    <docnumber>19157</docnumber>
-    <date type="published">
-      <on>2016-12</on>
-    </date>
-    <contributor>
-      <role type="publisher"/>
-      <organization>
-        <name>International Organization for Standardization</name>
-        <abbreviation>ISO</abbreviation>
-        <uri>www.iso.org</uri>
-      </organization>
-    </contributor>
-    <edition>1</edition>
-    <language>en</language>
-    <language>fr</language>
-    <script>Latn</script>
-    <abstract format="text/plain" language="en" script="Latn">ISO/TS 19157-2:2016 defines data quality encoding in XML. It is an XML schema implementation derived from ISO 19157:2013 and the data quality related concepts from ISO 19115‑2.</abstract>
-    <abstract format="text/plain" language="fr" script="Latn">ISO/TS 19157-2:2016 defines data quality encoding in XML. It is an XML schema implementation derived from ISO 19157:2013 and the data quality related concepts from ISO 19115‑2.</abstract>
-    <status>
-      <stage>90</stage>
-      <substage>93</substage>
-    </status>
-    <copyright>
-      <from>2016</from>
-      <owner>
-        <organization>
-          <name>ISO/TS</name>
-        </organization>
-      </owner>
-    </copyright>
-    <place>Geneva</place>
-  </bibitem>
   <bibitem id="ISO19115-2-2019" type="standard">
-    <fetched>2021-08-23</fetched>
+    <fetched>2021-12-14</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -211,8 +58,164 @@ This implementation model does not alter the semantics of the target conceptual 
     </relation>
     <place>Geneva</place>
   </bibitem>
+  <bibitem id="ISO/TS19115-3-2016" type="standard">
+    <fetched>2021-12-14</fetched>
+    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
+    <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information -  Metadata - Part 3: XML schema implementation for fundamental concepts</title>
+    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 3: Mise en oeuvre par des schémas XML</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 3: Mise en oeuvre par des schémas XML</title>
+    <uri type="src">https://www.iso.org/standard/32579.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</uri>
+    <docidentifier type="ISO">ISO/TS 19115-3:2016</docidentifier>
+    <docidentifier type="URN">urn:iso:std:iso-ts:ts:19115:-3:stage-90.92:ed-1:en,fr</docidentifier>
+    <docnumber>19115</docnumber>
+    <date type="published">
+      <on>2016-08</on>
+    </date>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name>International Organization for Standardization</name>
+        <abbreviation>ISO</abbreviation>
+        <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <edition>1</edition>
+    <language>en</language>
+    <language>fr</language>
+    <script>Latn</script>
+    <abstract format="text/plain" language="en" script="Latn">ISO/TS 19115-3:2016 defines an integrated XML implementation of ISO 19115‑1, ISO 19115‑2, and concepts from ISO/TS 19139 by defining the following artefacts:
+a)    a set of XML schema required to validate metadata instance documents conforming to conceptual model elements defined in ISO 19115‑1, ISO 19115‑2, and ISO/TS 19139;
+b)    a set of ISO/IEC 19757‑3 (Schematron) rules that implement validation constraints in the ISO 19115‑1 and ISO 19115‑2 UML models that are not validated by the XML schema;
+c)    an Extensible Stylesheet Language Transformation (XSLT) for transforming ISO 19115-1 metadata encoded using the ISO/TS 19139 XML schema and ISO 19115‑2 metadata encoded using the ISO/TS 19139‑2 XML schema into an equivalent document that is valid against the XML schema defined in this document.
+ISO/TS 19115-3:2016 describes the procedure used to generate XML schema from ISO geographic information conceptual models related to metadata. The procedure includes creation of an UML model for XML implementation derived from the conceptual UML model.
+This implementation model does not alter the semantics of the target conceptual model, but adds abstract classes that remove dependencies between model packages, tagged values and stereotypes required by the UML to XML transformation software, and refactors the packaging of a few elements into XML namespaces. The XML schema has been generated systematically from the UML model for XML implementation according to the rules defined in ISO/TS 19139 or ISO 19118.</abstract>
+    <abstract format="text/plain" language="fr" script="Latn">ISO/TS 19115-3:2016 defines an integrated XML implementation of ISO 19115‑1, ISO 19115‑2, and concepts from ISO/TS 19139 by defining the following artefacts:
+a)    a set of XML schema required to validate metadata instance documents conforming to conceptual model elements defined in ISO 19115‑1, ISO 19115‑2, and ISO/TS 19139;
+b)    a set of ISO/IEC 19757‑3 (Schematron) rules that implement validation constraints in the ISO 19115‑1 and ISO 19115‑2 UML models that are not validated by the XML schema;
+c)    an Extensible Stylesheet Language Transformation (XSLT) for transforming ISO 19115-1 metadata encoded using the ISO/TS 19139 XML schema and ISO 19115‑2 metadata encoded using the ISO/TS 19139‑2 XML schema into an equivalent document that is valid against the XML schema defined in this document.
+ISO/TS 19115-3:2016 describes the procedure used to generate XML schema from ISO geographic information conceptual models related to metadata. The procedure includes creation of an UML model for XML implementation derived from the conceptual UML model.
+This implementation model does not alter the semantics of the target conceptual model, but adds abstract classes that remove dependencies between model packages, tagged values and stereotypes required by the UML to XML transformation software, and refactors the packaging of a few elements into XML namespaces. The XML schema has been generated systematically from the UML model for XML implementation according to the rules defined in ISO/TS 19139 or ISO 19118.</abstract>
+    <status>
+      <stage>90</stage>
+      <substage>92</substage>
+    </status>
+    <copyright>
+      <from>2016</from>
+      <owner>
+        <organization>
+          <name>ISO/TS</name>
+        </organization>
+      </owner>
+    </copyright>
+    <relation type="obsoletes">
+      <bibitem type="standard">
+        <formattedref format="text/plain">ISO/DIS 19115-3</formattedref>
+      </bibitem>
+    </relation>
+    <place>Geneva</place>
+  </bibitem>
+  <bibitem id="ISO/TS19157-2-2016" type="standard">
+    <fetched>2021-12-14</fetched>
+    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
+    <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
+    <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: XML schema implementation</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information  - Data quality - Part 2: XML schema implementation</title>
+    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information geographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Qualite des donnees</title>
+    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Implémentation de schémas XML</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information geographique - Qualite des donnees - Partie 2: Implémentation de schémas XML</title>
+    <uri type="src">https://www.iso.org/standard/66197.html</uri>
+    <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:66197:en</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/06/61/66197.detail.rss</uri>
+    <docidentifier type="ISO">ISO/TS 19157-2:2016</docidentifier>
+    <docidentifier type="URN">urn:iso:std:iso-ts:ts:19157:-2:stage-90.93:ed-1:en,fr</docidentifier>
+    <docnumber>19157</docnumber>
+    <date type="published">
+      <on>2016-12</on>
+    </date>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name>International Organization for Standardization</name>
+        <abbreviation>ISO</abbreviation>
+        <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <edition>1</edition>
+    <language>en</language>
+    <language>fr</language>
+    <script>Latn</script>
+    <abstract format="text/plain" language="en" script="Latn">ISO/TS 19157-2:2016 defines data quality encoding in XML. It is an XML schema implementation derived from ISO 19157:2013 and the data quality related concepts from ISO 19115‑2.</abstract>
+    <abstract format="text/plain" language="fr" script="Latn">ISO/TS 19157-2:2016 defines data quality encoding in XML. It is an XML schema implementation derived from ISO 19157:2013 and the data quality related concepts from ISO 19115‑2.</abstract>
+    <status>
+      <stage>90</stage>
+      <substage>93</substage>
+    </status>
+    <copyright>
+      <from>2016</from>
+      <owner>
+        <organization>
+          <name>ISO/TS</name>
+        </organization>
+      </owner>
+    </copyright>
+    <place>Geneva</place>
+  </bibitem>
+  <bibitem id="ISO19115-2-2019/PRFAmd1" type="standard">
+    <fetched>2021-12-14</fetched>
+    <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+    <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
+    <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing -- Amendment 1</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing -- Amendment 1</title>
+    <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
+    <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
+    <uri type="src">https://www.iso.org/standard/78888.html</uri>
+    <uri type="rss">https://www.iso.org/contents/data/standard/07/88/78888.detail.rss</uri>
+    <docidentifier type="ISO">ISO 19115-2:2019/PRF Amd 1</docidentifier>
+    <docidentifier type="URN">urn:iso:std:iso:r:19115:-2:stage-50.20:ed-2:prf:1:en,fr</docidentifier>
+    <docnumber>19115</docnumber>
+    <date type="published">
+      <on>2019</on>
+    </date>
+    <date type="updated">
+      <on>2022-01</on>
+    </date>
+    <contributor>
+      <role type="publisher"/>
+      <organization>
+        <name>International Organization for Standardization</name>
+        <abbreviation>ISO</abbreviation>
+        <uri>www.iso.org</uri>
+      </organization>
+    </contributor>
+    <edition>2</edition>
+    <language>en</language>
+    <language>fr</language>
+    <script>Latn</script>
+    <status>
+      <stage>50</stage>
+      <substage>20</substage>
+    </status>
+    <copyright>
+      <from>2019</from>
+      <owner>
+        <organization>
+          <name>ISO</name>
+        </organization>
+      </owner>
+    </copyright>
+    <place>Geneva</place>
+  </bibitem>
   <bibitem id="ISO19115-2-2009" type="standard">
-    <fetched>2021-08-23</fetched>
+    <fetched>2021-12-14</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -266,7 +269,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19139-2-2012" type="standard">
-    <fetched>2021-08-23</fetched>
+    <fetched>2021-12-14</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">XML schema implementation -- Part 2: Extensions for imagery and gridded data</title>

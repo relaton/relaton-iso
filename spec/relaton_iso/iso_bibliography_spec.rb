@@ -45,11 +45,8 @@ RSpec.describe RelatonIso::IsoBibliography do
       xml = hits.to_xml
       file_path = "spec/fixtures/hits.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
-      expect(xml).to be_equivalent_to(
-        File.read(file_path, encoding: "utf-8").gsub(
-          %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
-        ),
-      )
+      expect(xml).to be_equivalent_to File.read(file_path, encoding: "utf-8")
+        .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
     end
   end
 
@@ -137,6 +134,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         xml = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
         File.write file, xml, encoding: "UTF-8" unless File.exist? file
         expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
+          .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
       end
     end
 
@@ -180,6 +178,7 @@ RSpec.describe RelatonIso::IsoBibliography do
           xml = RelatonIso::IsoBibliography.get("ISO 19115-1").to_xml
           File.write file, xml, encoding: "UTF-8" unless File.exist? file
           expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
+            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
         end
       end
 
@@ -191,6 +190,7 @@ RSpec.describe RelatonIso::IsoBibliography do
           ).to_xml
           File.write file, xml, encoding: "UTF-8" unless File.exist? file
           expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
+            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
         end
       end
     end
