@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 14 Dec 2021 12:59:56 GMT
+      - Thu, 27 Jan 2022 16:02:55 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Transfer-Encoding:
@@ -74,16 +74,16 @@ http_interactions:
         with or without corrosion protection under determined conditions of temperature
         and relative humidity. These tests apply to metals and their alloys, metallic
         coatings (anodic and cathodic), metals with conversion coatings, metals with
-        anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}},{"category":"standard","path":"/sites/isoorg/contents/data/standard/08/32/83213","uuid":"5afedc2c-bb6d-4850-b2e7-54617adcb808","title":"ISO/CD
+        anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}},{"category":"standard","path":"/sites/isoorg/contents/data/standard/08/32/83213","uuid":"5afedc2c-bb6d-4850-b2e7-54617adcb808","title":"ISO/DIS
         10062 Corrosion tests in artificial atmosphere at very low concentrations
-        of polluting gas(es)","status":"Under development","year":2021,"order":12,"text":"ISO
+        of polluting gas(es)","status":"Under development","year":2022,"order":12,"text":"ISO
         10062:2006 specifies tests which are intended to determine the influence of
         one or more flowing polluting gas(es) at volume fractions less than or equal
         to 0,000001 on test samples and/or articles of metals and alloys with or without
         corrosion protection under determined conditions of temperature and relative
         humidity. These tests apply to metals and their alloys, metallic coatings
         (anodic and cathodic), metals with conversion coatings, metals with anodic
-        oxide coatings, and metals with organic coatings. ","objectID":"83213_0","_highlightResult":{"title":{"value":"<em>ISO</em>/CD
+        oxide coatings, and metals with organic coatings. ","objectID":"83213_0","_highlightResult":{"title":{"value":"<em>ISO</em>/DIS
         10062 Corrosion tests in artificial atmosphere at very low concentrations
         of polluting gas(es)","matchLevel":"partial","fullyHighlighted":false,"matchedWords":["iso"]},"text":{"value":"<em>ISO</em>
         10062:2006 specifies tests which are intended to determine the influence of
@@ -94,5 +94,5 @@ http_interactions:
         coatings (anodic and cathodic), metals with conversion coatings, metals with
         anodic oxide coatings, and metals with organic coatings. ","matchLevel":"full","fullyHighlighted":false,"matchedWords":["iso","00000"]}}}],"nbHits":2,"page":0,"nbPages":1,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"query":"ISO
         00000","params":"query=ISO+00000&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1}'
-  recorded_at: Tue, 14 Dec 2021 12:59:56 GMT
+  recorded_at: Thu, 27 Jan 2022 16:02:55 GMT
 recorded_with: VCR 6.0.0

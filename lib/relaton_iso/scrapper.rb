@@ -152,7 +152,7 @@ module RelatonIso
           url = DOMAIN + path
           uri = URI url
           resp = Net::HTTP.get_response(uri) # .encode("UTF-8")
-        when "404"
+        when "404", "302"
           raise RelatonBib::RequestError, "#{url} not found."
         end
         n = 0

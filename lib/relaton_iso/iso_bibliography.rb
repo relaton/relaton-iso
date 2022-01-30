@@ -23,8 +23,10 @@ module RelatonIso
       # @param ref [String] the ISO standard Code to look up (e..g "ISO 9000")
       # @param year [String, NilClass] the year the standard was published
       # @param opts [Hash] options; restricted to :all_parts if all-parts
-      #   reference is required, :keep_year if undated reference should
-      #   return actual reference with year
+      # @option opts [Boolean] :all_parts if all-parts reference is required
+      # @option opts [Boolean] :keep_year if undated reference should return
+      #   actual reference with year
+      #
       # @return [String] Relaton XML serialisation of reference
       def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity,Metrics/AbcSize
         code = ref.gsub(/\u2013/, "-")
@@ -42,7 +44,7 @@ module RelatonIso
         ret = isobib_get1(code, year, opts)
         return nil if ret.nil?
 
-        if year && opts[:keep_year].nil? || opts[:keep_year] || opts[:all_parts]
+        if (year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
           ret
         else
           ret.to_most_recent_reference
@@ -143,7 +145,7 @@ module RelatonIso
       # @param code [String]
       # @param opts [Hash]
       # @return [RelatonIso::HitCollection]
-      def search_code(result, code, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,PerceivedComplexity
+      def search_code(result, code, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         code1, part1, _, corr1, coryear1 = ref_components code
         result.select do |i|
           code2, part2, _, corr2, coryear2 = ref_components i.hit[:title]

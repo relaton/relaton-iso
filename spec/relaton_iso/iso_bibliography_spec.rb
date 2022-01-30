@@ -352,10 +352,10 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "fetch ISO/CD 14093" do
-      VCR.use_cassette "iso_cd_14093" do
-        result = RelatonIso::IsoBibliography.get "ISO/CD 14093"
-        expect(result.docidentifier[0].id).to eq "ISO/CD 14093"
+    it "fetch ISO 19156" do
+      VCR.use_cassette "iso_19156" do
+        result = RelatonIso::IsoBibliography.get "ISO 19156"
+        expect(result.docidentifier[0].id).to eq "ISO 19156"
       end
     end
 
