@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 27 Jan 2022 16:04:34 GMT
+      - Sun, 06 Feb 2022 20:12:05 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Content-Length:
@@ -58,5 +58,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"query":"ISO
         111111","params":"query=ISO+111111&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1}'
-  recorded_at: Thu, 27 Jan 2022 16:04:33 GMT
+  recorded_at: Sun, 06 Feb 2022 20:12:05 GMT
 recorded_with: VCR 6.0.0

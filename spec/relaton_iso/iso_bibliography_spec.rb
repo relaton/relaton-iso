@@ -152,7 +152,7 @@ RSpec.describe RelatonIso::IsoBibliography do
             %(<project-number>ISO 19115 (all parts)</project-number>),
           )
           expect(xml).to include(
-            %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>),
+            %(<docidentifier type="ISO" primary="true">ISO 19115 (all parts)</docidentifier>),
           )
         end
       end
@@ -165,7 +165,7 @@ RSpec.describe RelatonIso::IsoBibliography do
             %(<project-number>ISO 19115 (all parts)</project-number>),
           )
           expect(xml).to include(
-            %(<docidentifier type="ISO">ISO 19115 (all parts)</docidentifier>),
+            %(<docidentifier type="ISO" primary="true">ISO 19115 (all parts)</docidentifier>),
           )
         end
       end
@@ -201,10 +201,10 @@ RSpec.describe RelatonIso::IsoBibliography do
           .to_xml
         expect(results).to include(%(<on>2003-05</on>))
         expect(results).not_to include(
-          %(<docidentifier type="ISO">ISO 19115-1:2003</docidentifier>),
+          %(<docidentifier type="ISO" primary="true">ISO 19115-1:2003</docidentifier>),
         )
         expect(results).to include(
-          %(<docidentifier type="ISO">ISO 19115:2003</docidentifier>),
+          %(<docidentifier type="ISO" primary="true">ISO 19115:2003</docidentifier>),
         )
       end
     end

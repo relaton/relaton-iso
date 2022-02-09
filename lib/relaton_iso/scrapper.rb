@@ -176,7 +176,7 @@ module RelatonIso
       def fetch_docid(doc, edition, langs)
         pubid = item_ref doc
         [
-          RelatonBib::DocumentIdentifier.new(id: pubid, type: "ISO"),
+          RelatonBib::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
           RelatonBib::DocumentIdentifier.new(
             id: fetch_urn(doc, pubid, edition, langs), type: "URN",
           ),

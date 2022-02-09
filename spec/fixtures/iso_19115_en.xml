@@ -1,11 +1,11 @@
 <bibitem id="ISO19115" type="standard">
-  <fetched>2021-10-28</fetched>
+  <fetched>2022-02-06</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
   <uri type="src">https://www.iso.org/standard/26020.html</uri>
   <uri type="rss">https://www.iso.org/contents/data/standard/02/60/26020.detail.rss</uri>
-  <docidentifier type="ISO">ISO 19115</docidentifier>
+  <docidentifier type="ISO" primary="true">ISO 19115</docidentifier>
   <docidentifier type="URN">urn:iso:std:iso:19115:stage-95.99:ed-1:en</docidentifier>
   <docnumber>19115</docnumber>
   <contributor>
@@ -49,13 +49,13 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <fetched>2021-10-28</fetched>
+      <fetched>2022-02-06</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
       <uri type="src">https://www.iso.org/standard/26020.html</uri>
       <uri type="rss">https://www.iso.org/contents/data/standard/02/60/26020.detail.rss</uri>
-      <docidentifier type="ISO">ISO 19115:2003</docidentifier>
+      <docidentifier type="ISO" primary="true">ISO 19115:2003</docidentifier>
       <docidentifier type="URN">urn:iso:std:iso:19115:stage-95.99:ed-1:en</docidentifier>
       <docnumber>19115</docnumber>
       <date type="published">

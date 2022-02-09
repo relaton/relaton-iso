@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
   <bibitem id="ISO19115-2-2019" type="standard">
-    <fetched>2022-01-27</fetched>
+    <fetched>2022-02-06</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -13,7 +13,7 @@
     <uri type="src">https://www.iso.org/standard/67039.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:67039:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
-    <docidentifier type="ISO">ISO 19115-2:2019</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO 19115-2:2019</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-60.60:ed-2:en,fr</docidentifier>
     <docnumber>19115</docnumber>
     <date type="published">
@@ -59,7 +59,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19115-3-2016" type="standard">
-    <fetched>2022-01-27</fetched>
+    <fetched>2022-02-06</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -71,7 +71,7 @@
     <uri type="src">https://www.iso.org/standard/32579.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</uri>
-    <docidentifier type="ISO">ISO/TS 19115-3:2016</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO/TS 19115-3:2016</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso-ts:ts:19115:-3:stage-90.92:ed-1:en,fr</docidentifier>
     <docnumber>19115</docnumber>
     <date type="published">
@@ -121,7 +121,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19157-2-2016" type="standard">
-    <fetched>2022-01-27</fetched>
+    <fetched>2022-02-06</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: XML schema implementation</title>
@@ -133,7 +133,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <uri type="src">https://www.iso.org/standard/66197.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:66197:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/06/61/66197.detail.rss</uri>
-    <docidentifier type="ISO">ISO/TS 19157-2:2016</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO/TS 19157-2:2016</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso-ts:ts:19157:-2:stage-90.93:ed-1:en,fr</docidentifier>
     <docnumber>19157</docnumber>
     <date type="published">
@@ -168,7 +168,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2-2019/Amd1" type="standard">
-    <fetched>2022-01-27</fetched>
+    <fetched>2022-02-06</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing -- Amendment 1</title>
@@ -179,7 +179,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
     <uri type="src">https://www.iso.org/standard/78888.html</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/07/88/78888.detail.rss</uri>
-    <docidentifier type="ISO">ISO 19115-2:2019/Amd 1</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO 19115-2:2019/Amd 1</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-60.00:ed-2:amd:1:en,fr</docidentifier>
     <docnumber>19115</docnumber>
     <date type="published">
@@ -215,7 +215,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2-2009" type="standard">
-    <fetched>2022-01-27</fetched>
+    <fetched>2022-02-06</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -226,7 +226,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour les images et les matrices</title>
     <uri type="src">https://www.iso.org/standard/39229.html</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/03/92/39229.detail.rss</uri>
-    <docidentifier type="ISO">ISO 19115-2:2009</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO 19115-2:2009</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-95.99:ed-1:en,fr</docidentifier>
     <docnumber>19115</docnumber>
     <date type="published">
@@ -269,7 +269,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19139-2-2012" type="standard">
-    <fetched>2022-01-27</fetched>
+    <fetched>2022-02-06</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">XML schema implementation -- Part 2: Extensions for imagery and gridded data</title>
@@ -280,7 +280,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Mise en oeuvre par des schémas XML -- Partie 2: Extension pour l'imagerie et les données maillées</title>
     <uri type="src">https://www.iso.org/standard/57104.html</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/05/71/57104.detail.rss</uri>
-    <docidentifier type="ISO">ISO/TS 19139-2:2012</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO/TS 19139-2:2012</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso-ts:ts:19139:-2:stage-95.99:ed-1:en,fr</docidentifier>
     <docnumber>19139</docnumber>
     <date type="published">
