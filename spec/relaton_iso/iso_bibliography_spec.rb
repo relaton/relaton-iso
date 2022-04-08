@@ -349,6 +349,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_tc_184_sc_4" do
         result = RelatonIso::IsoBibliography.get "ISO TC 184/SC 4 N1110"
         expect(result.docidentifier[0].id).to eq "ISO/TC 184/SC 4 N1110"
+        expect(result.docidentifier[0].primary).to be true
       end
     end
 

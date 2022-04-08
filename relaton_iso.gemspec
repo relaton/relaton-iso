@@ -42,5 +42,5 @@ Gem::Specification.new do |spec|
 
   # spec.add_dependency "relaton-iec", "~> 1.8.0"
   spec.add_dependency "algolia"
-  spec.add_dependency "relaton-iso-bib", "~> 1.10.1"
+  spec.add_dependency "relaton-iso-bib", "~> 1.11.0"
 end
