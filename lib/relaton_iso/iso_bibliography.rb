@@ -31,8 +31,7 @@ module RelatonIso
       def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity,Metrics/AbcSize
         code = ref.gsub(/\u2013/, "-")
         # %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?(?::(?<year1>\d{4}))?} =~ code
-        _, _part, year1, = ref_components ref
-        year ||= year1
+        year ||= publish_year ref
         code.sub! " (all parts)", ""
         opts[:all_parts] ||= $~ && opts[:all_parts].nil?
         # opts[:keep_year] ||= opts[:keep_year].nil?
@@ -41,7 +40,7 @@ module RelatonIso
         #   return RelatonIec::IecBibliography.get(code, year, opts)
         # end
 
-        ret = isobib_get1(code, year, opts)
+        ret = isobib_get(code, year, opts)
         return nil if ret.nil?
 
         if (year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
@@ -166,7 +165,8 @@ module RelatonIso
       def isobib_results_filter(result, year, opts)
         missed_years = []
         hits = result.reduce!([]) do |hts, h|
-          if !year || (%r{:(?<iyear>\d{4})(?!.*:\d{4})} =~ h.hit[:title] && iyear == year)
+          iyear = publish_year h.hit[:title]
+          if !year || iyear == year
             hts << h
           else
             missed_years << iyear
@@ -183,10 +183,15 @@ module RelatonIso
       end
       # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
+      def publish_year(ref)
+        %r{:(?<year>\d{4})(?!.*:\d{4})} =~ ref
+        year
+      end
+
       # @param code [String]
       # @param year [String, NilClass]
       # @param opts [Hash]
-      def isobib_get1(code, year, opts)
+      def isobib_get(code, year, opts)
         # return iev(code) if /^IEC 60050-/.match code
         result = isobib_search_filter(code, opts) || return
         ret = isobib_results_filter(result, year, opts)

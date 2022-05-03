@@ -3,12 +3,7 @@
 require "relaton_iso/iso_bibliography"
 
 RSpec.describe RelatonIso::IsoBibliography do
-  let(:hit_pages) { RelatonIso::IsoBibliography.search("19115") }
-
   it "raise access error" do
-    # http = double "http"
-    # expect(http).to receive(:get).and_raise SocketError
-    # expect(http).to receive(:use_ssl=).with(true)
     expect(Net::HTTP).to receive(:get_response).and_raise SocketError
     expect { RelatonIso::IsoBibliography.search "ISO TC 184/SC 4" }
       .to raise_error RelatonBib::RequestError
@@ -310,7 +305,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch ISO/IEC/IEEE" do
       VCR.use_cassette "iso_iec_ieee_9945_2009" do
         result = RelatonIso::IsoBibliography.get("ISO/IEC/IEEE 9945:2009")
-        expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC/IEEE 9945:2009"
         expect(result.contributor[0].entity.name[0].content).to eq(
           "International Organization for Standardization",
         )
@@ -357,6 +352,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19156" do
         result = RelatonIso::IsoBibliography.get "ISO 19156"
         expect(result.docidentifier[0].id).to eq "ISO 19156"
+      end
+    end
+
+    it "fetch ISO 6709:2008/Cor 1:2009" do
+      VCR.use_cassette "iso_6709_2008_cor_1_2009" do
+        result = RelatonIso::IsoBibliography.get "ISO 6709:2008/Cor 1:2009"
+        expect(result.docidentifier[0].id).to eq "ISO 6709:2008/Cor 1:2009"
       end
     end
 
