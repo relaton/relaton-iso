@@ -8,4 +8,5 @@ VCR.configure do |config|
     record: :once,
   }
   config.hook_into :webmock
+  config.configure_rspec_metadata!
 end

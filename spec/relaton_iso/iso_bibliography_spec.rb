@@ -133,36 +133,51 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    context "gets all parts document" do
-      it "using option" do
-        VCR.use_cassette "iso_19115_all_parts" do
-          results = RelatonIso::IsoBibliography.get("ISO 19115", nil,
-                                                    all_parts: true)
-          xml = results.to_xml bibdata: true
-          file = "spec/fixtures/all_parts.xml"
-          File.write file, xml, encoding: "UTF-8" unless File.exist? file
-          expect(xml).to be_equivalent_to File.read(file, encoding: "utf-8")
-            .gsub %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
+    context "gets all parts document",
+            vcr: { cassette_name: "iso_19115_all_parts" } do
+      let(:xml) { subject.to_xml bibdata: true }
+
+      shared_examples "all_parts" do
+        it "returns (all parts) as identifier part" do
           expect(xml).to include(
             %(<project-number>ISO 19115 (all parts)</project-number>),
           )
           expect(xml).to include(
             %(<docidentifier type="ISO" primary="true">ISO 19115 (all parts)</docidentifier>),
           )
+        end
+
+        it "include all matched documents without part" do
+          expect(subject.relation.map { |r| r.bibitem.formattedref&.content })
+            .to include(
+              "ISO 19115-1:2014/Amd 1:2018",
+              "ISO 19115-2:2019",
+              "ISO 19115-2:2009",
+            )
         end
       end
 
-      it "using reference" do
-        VCR.use_cassette "iso_19115_all_parts" do
-          results = RelatonIso::IsoBibliography.get "ISO 19115 (all parts)"
-          xml = results.to_xml bibdata: true
-          expect(xml).to include(
-            %(<project-number>ISO 19115 (all parts)</project-number>),
-          )
-          expect(xml).to include(
-            %(<docidentifier type="ISO" primary="true">ISO 19115 (all parts)</docidentifier>),
-          )
+      context "when using all_parts parameter" do
+        subject do
+          described_class.get("ISO 19115", nil, all_parts: true)
         end
+
+        it "generates correct xml data" do
+          # xml = subject.to_xml bibdata: true
+          file = "spec/fixtures/all_parts.xml"
+          File.write file, xml, encoding: "UTF-8" unless File.exist? file
+          expect(xml).to be_equivalent_to(
+            File.read(file, encoding: "utf-8")
+                .gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"))
+        end
+
+        it_behaves_like "all_parts"
+      end
+
+      context "when using reference" do
+        subject { described_class.get "ISO 19115 (all parts)" }
+
+        it_behaves_like "all_parts"
       end
     end
 
