@@ -122,14 +122,17 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
   end
 
-  describe "get" do
-    it "gets a code" do
-      VCR.use_cassette "iso_19115_1" do
+  describe "#get" do
+    context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
+      subject(:xml) { described_class.get("ISO 19115-1", nil, {}).to_xml }
+
+      it "generates correct output" do
         file = "spec/fixtures/iso_19115_keep_year.xml"
-        xml = RelatonIso::IsoBibliography.get("ISO 19115-1", nil, {}).to_xml
         File.write file, xml, encoding: "UTF-8" unless File.exist? file
-        expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
-          .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
+        expect(xml).to be_equivalent_to(
+          File.read(file, encoding: "UTF-8")
+              .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
+        )
       end
     end
 
@@ -245,7 +248,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_2015" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
           .to output(
-            /There was no match for 2015, though there were matches found for/,
+            /There was no match for 2015, though there were matches found for 2003/,
           ).to_stderr
       end
     end
@@ -438,6 +441,232 @@ RSpec.describe RelatonIso::IsoBibliography do
           result = RelatonIso::IsoBibliography.get "ISO TC 184/SC 4 N111"
           expect(result).to be_nil
         end
+      end
+    end
+  end
+
+  describe "#isobib_results_filter" do
+    context "when data's years matches" do
+      it "returns first hit"
+    end
+
+    context "when data's years is not matched" do
+      it "returns missed years"
+    end
+
+    context "when all parts true" do
+      "returns hits.to_all_parts"
+    end
+  end
+
+  describe "#matches_parts?" do
+    subject do
+      described_class.matches_parts?(
+        Pubid::Iso::Identifier.parse(query_pubid), Pubid::Iso::Identifier.parse(pubid),
+        all_parts: all_parts
+      )
+    end
+
+    let(:query_pubid) { "ISO 1234-5" }
+    let(:pubid) { "ISO 1234-6" }
+
+    context "when all_parts: true" do
+      let(:all_parts) { true }
+
+      it "matches with identifier with different part" do
+        expect(subject).to be_truthy
+      end
+
+      context "when matching identifier don't have a part" do
+        let(:pubid) { "ISO 1234" }
+
+        it "don't match" do
+          expect(subject).to be_falsey
+        end
+      end
+    end
+
+    context "when all_parts: false" do
+      let(:all_parts) { false }
+
+      it "don't match with idenfifier with different part" do
+        expect(subject).to be_falsey
+      end
+    end
+  end
+
+  describe "#extract_pubid_from" do
+    subject { described_class.extract_pubid_from(title) }
+
+    let(:title) { "#{pubid} Geographic information — Metadata — Part 1: Fundamentals" }
+    let(:pubid) { "ISO 19115-1:2014" }
+
+    it "extracts pubid from title" do
+      expect(subject.to_s).to eq(pubid)
+    end
+  end
+
+  describe "#matches_base?" do
+    subject do
+      described_class.matches_base?(Pubid::Iso::Identifier.parse(query_pubid),
+                                    Pubid::Iso::Identifier.parse(pubid))
+    end
+
+    context "when have equal publisher and number but different parts" do
+      let(:query_pubid) { "ISO 6709-1" }
+      let(:pubid) { "ISO 6709-2" }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context "when have different number" do
+      let(:query_pubid) { "ISO 6708" }
+      let(:pubid) { "ISO 6709" }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context "when have different publisher" do
+      let(:query_pubid) { "ISO 6709" }
+      let(:pubid) { "IEC 6709" }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context "when have different copublisher" do
+      let(:query_pubid) { "ISO/IEC 6709" }
+      let(:pubid) { "ISO 6709" }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context "when have different type" do
+      let(:query_pubid) { "ISO/TS 6709" }
+      let(:pubid) { "ISO 6709" }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context "when have different stage" do
+      let(:query_pubid) { "ISO/DIS 6709" }
+      let(:pubid) { "ISO 6709" }
+
+      it { is_expected.to be_falsey }
+    end
+  end
+
+  describe "#matches_amendment?" do
+    subject do
+      described_class.matches_amendment?(Pubid::Iso::Identifier.parse(query_pubid),
+                                         Pubid::Iso::Identifier.parse(pubid))
+    end
+
+    context "when have equal amendment version and year" do
+      let(:query_pubid) { "ISO 6709:2008/Amd 1:2009" }
+      let(:pubid) { "ISO 6709:2008/Amd 1:2009" }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context "when query don't have a year" do
+      let(:query_pubid) { "ISO 6709:2008/Amd 1" }
+      let(:pubid) { "ISO 6709:2008/Amd 1:2009" }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context "when years is different" do
+      let(:query_pubid) { "ISO 6709:2008/Amd 1:2001" }
+      let(:pubid) { "ISO 6709:2008/Amd 1:2009" }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context "when years is different" do
+      let(:query_pubid) { "ISO 6709:2008/Amd 1:2001" }
+      let(:pubid) { "ISO 6709:2008/Amd 1:2009" }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context "when query without stage but stage in results" do
+      let(:query_pubid) { "ISO/IEC 23009-5:2017/Amd 1" }
+      let(:pubid) { "ISO/IEC 23009-5:2017/CD Amd 1" }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context "when query with stage" do
+      let(:query_pubid) { "ISO/IEC 23009-5:2017/CD Amd 1" }
+
+      context "different stage in results" do
+        let(:pubid) { "ISO/IEC 23009-5:2017/PWI Amd 1" }
+
+        it { is_expected.to be_falsey }
+      end
+
+      context "no stage in results" do
+        let(:pubid) { "ISO/IEC 23009-5:2017/Amd 1" }
+
+        it { is_expected.to be_falsey }
+      end
+    end
+  end
+
+  describe "#matches_corrigendum?" do
+    subject do
+      described_class.matches_corrigendum?(Pubid::Iso::Identifier.parse(query_pubid),
+                                           Pubid::Iso::Identifier.parse(pubid))
+    end
+
+    context "when have equal corrigendum version and year" do
+      let(:query_pubid) { "ISO 6709:2008/Cor 1:2009" }
+      let(:pubid) { "ISO 6709:2008/Cor 1:2009" }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context "when query don't have a year" do
+      let(:query_pubid) { "ISO 6709:2008/Cor 1" }
+      let(:pubid) { "ISO 6709:2008/Cor 1:2009" }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context "when years is different" do
+      let(:query_pubid) { "ISO 6709:2008/Cor 1:2001" }
+      let(:pubid) { "ISO 6709:2008/Cor 1:2009" }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context "when years is different" do
+      let(:query_pubid) { "ISO 6709:2008/Cor 1:2001" }
+      let(:pubid) { "ISO 6709:2008/Cor 1:2009" }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context "when query without stage but stage in results" do
+      let(:query_pubid) { "ISO/IEC 23009-5:2017/Cor 1" }
+      let(:pubid) { "ISO/IEC 23009-5:2017/CD Cor 1" }
+
+      it { is_expected.to be_truthy }
+    end
+
+    context "when query with stage" do
+      let(:query_pubid) { "ISO/IEC 23009-5:2017/CD Cor 1" }
+
+      context "different stage in results" do
+        let(:pubid) { "ISO/IEC 23009-5:2017/PWI Cor 1" }
+
+        it { is_expected.to be_falsey }
+      end
+
+      context "no stage in results" do
+        let(:pubid) { "ISO/IEC 23009-5:2017/Cor 1" }
+
+        it { is_expected.to be_falsey }
       end
     end
   end

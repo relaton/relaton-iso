@@ -2,3 +2,4 @@
 
 require "relaton_iso/version"
 require "relaton_iso/iso_bibliography"
+require "pubid-iso"
