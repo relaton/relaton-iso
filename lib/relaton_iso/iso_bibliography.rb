@@ -31,7 +31,10 @@ module RelatonIso
       def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity,Metrics/AbcSize
         code = ref.gsub(/\u2013/, "-")
         # %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?(?::(?<year1>\d{4}))?} =~ code
-        year ||= publish_year ref
+        # TODO: extract with pubid-iso
+        query_pubid = Pubid::Iso::Identifier.parse(ref)
+        # year ||= publish_year ref
+        year ||= query_pubid.year
         code.sub! " (all parts)", ""
         opts[:all_parts] ||= $~ && opts[:all_parts].nil?
         # opts[:keep_year] ||= opts[:keep_year].nil?
@@ -40,13 +43,22 @@ module RelatonIso
         #   return RelatonIec::IecBibliography.get(code, year, opts)
         # end
 
-        ret = isobib_get(code, year, opts)
+        ret = isobib_get(query_pubid, year, opts)
         return nil if ret.nil?
 
         if (year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
           ret
         else
           ret.to_most_recent_reference
+        end
+      end
+
+      def extract_pubid_from(title)
+        title.split.reverse.inject(title) do |acc, part|
+          return Pubid::Iso::Identifier.parse(acc)
+        rescue Pubid::Iso::Errors::ParseError
+          # delete parts from the title until it's parseable
+          acc.reverse.sub(part.reverse, "").reverse.strip
         end
       end
 
@@ -60,24 +72,70 @@ module RelatonIso
         [code&.strip, part, year, corr, coryear]
       end
 
+      def matches_amendment?(query_pubid, pubid)
+        if query_pubid.amendment == pubid.amendment &&
+          query_pubid.amendment_stage == pubid.amendment_stage
+          return true
+        end
+
+        # when missing corrigendum year/number in query
+        !query_pubid.amendment_number && query_pubid.amendment_version == pubid.amendment_version &&
+          # corrigendum stage
+          (!query_pubid.amendment_stage || query_pubid.amendment_stage == pubid.amendment_stage)
+      end
+
+      def matches_corrigendum?(query_pubid, pubid)
+        # when matches full corrigendum part
+        if query_pubid.corrigendum == pubid.corrigendum &&
+          query_pubid.corrigendum_stage == pubid.corrigendum_stage
+          return true
+        end
+
+        # when missing corrigendum year/number in query
+        !query_pubid.corrigendum_number && query_pubid.corrigendum_version == pubid.corrigendum_version &&
+          # corrigendum stage
+          (!query_pubid.corrigendum_stage || query_pubid.corrigendum_stage == pubid.corrigendum_stage)
+      end
+
+      # @param query_pubid [Pubid::Iso::Identifier]
+      # @param pubid [Pubid::Iso::Identifier]
+      # @param all_parts [Boolean] match with any parts when true
+      # @return [Boolean]
+      def matches_parts?(query_pubid, pubid, all_parts: false)
+        if all_parts
+          # match only with documents with part number
+          !pubid.part.nil?
+        else
+          query_pubid.part == pubid.part
+        end
+      end
+
+      def matches_base?(query_pubid, pubid)
+        query_pubid.publisher == pubid.publisher &&
+          query_pubid.number == pubid.number &&
+          query_pubid.copublisher == pubid.copublisher &&
+          query_pubid.type == pubid.type &&
+          query_pubid.stage == pubid.stage
+      end
+
       private
 
       # rubocop:disable Metrics/MethodLength
 
-      def fetch_ref_err(code, year, missed_years)
-        id = year ? "#{code}:#{year}" : code
+      def fetch_ref_err(query_pubid, year, missed_years)
+        id = year ? "#{query_pubid}:#{year}" : query_pubid
         warn "[relaton-iso] WARNING: no match found online for #{id}. "\
              "The code must be exactly like it is on the standards website."
         unless missed_years.empty?
           warn "[relaton-iso] (There was no match for #{year}, though there "\
                "were matches found for #{missed_years.join(', ')}.)"
         end
-        if /\d-\d/.match? code
+        if /\d-\d/.match? query_pubid.to_s
           warn "[relaton-iso] The provided document part may not exist, "\
                "or the document may no longer be published in parts."
         else
           warn "[relaton-iso] If you wanted to cite all document parts for "\
-               "the reference, use \"#{code} (all parts)\".\nIf the document "\
+               "the reference, use \"#{query_pubid} (all parts)\".\nIf the document "\
                "is not a standard, use its document type abbreviation "\
                "(TS, TR, PAS, Guide)."
         end
@@ -88,17 +146,19 @@ module RelatonIso
 
       # Search for hits. If no found then trying missed stages and ISO/IEC.
       #
-      # @param code [String] reference without correction
+      # @param query_pubid [Pubid::Iso::Identifier] reference without correction
       # @param opts [Hash]
       # @return [Array<RelatonIso::Hit>]
-      def isobib_search_filter(code, opts)
-        ref = remove_part code, opts[:all_parts]
-        warn "[relaton-iso] (\"#{code}\") fetching..."
+      def isobib_search_filter(query_pubid, opts)
+        ref = remove_part query_pubid.to_s, opts[:all_parts]
+        warn "[relaton-iso] (\"#{query_pubid}\") fetching..."
+        # fetch hits collection
         result = search(ref)
-        res = search_code result, code, opts
+        # filter only matching hits
+        res = search_code result, query_pubid, opts
         return res unless res.empty?
 
-        # try stages
+        # try to match with any stage if no stage
         case code
         when %r{^\w+/[^/]+\s\d+} # code like ISO/IEC 123, ISO/IEC/IEE 123
           res = try_stages(result, opts) do |st|
@@ -141,15 +201,17 @@ module RelatonIso
       end
 
       # @param result [RelatonIso::HitCollection]
-      # @param code [String]
+      # @param query_pubid [Pubid::Iso::Identifier]
       # @param opts [Hash]
       # @return [RelatonIso::HitCollection]
-      def search_code(result, code, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-        code1, part1, _, corr1, coryear1 = ref_components code
+      def search_code(result, query_pubid, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+        # filter out
         result.select do |i|
-          code2, part2, _, corr2, coryear2 = ref_components i.hit[:title]
-          code1 == code2 && ((opts[:all_parts] && part2) || (!opts[:all_parts] && part1 == part2)) &&
-            corr1 == corr2 && (!coryear1 || coryear1 == coryear2)
+          hit_pubid = extract_pubid_from(i.hit[:title])
+          matches_base?(query_pubid, hit_pubid) &&
+            matches_parts?(query_pubid, hit_pubid, all_parts: opts[:all_parts]) &&
+            matches_corrigendum?(query_pubid, hit_pubid) &&
+            matches_amendment?(query_pubid, hit_pubid)
         end
       end
 
@@ -163,13 +225,20 @@ module RelatonIso
       # If no match, returns any years which caused mismatch, for error
       # reporting
       def isobib_results_filter(result, year, opts)
+        # only match with year in the query
+        # or any year when year missing in query
         missed_years = []
+
+        # filtering by year?
         hits = result.reduce!([]) do |hts, h|
-          iyear = publish_year h.hit[:title]
-          if !year || iyear == year
+          # TODO: extract with pubid-iso
+          # TODO: extract pubid at Hit class?
+          pubid = extract_pubid_from(h.hit[:title])
+          # iyear = publish_year h.hit[:title]
+          if !year || pubid.year == year
             hts << h
           else
-            missed_years << iyear
+            missed_years << pubid.year
             hts
           end
         end
@@ -183,23 +252,18 @@ module RelatonIso
       end
       # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
-      def publish_year(ref)
-        %r{:(?<year>\d{4})(?!.*:\d{4})} =~ ref
-        year
-      end
-
-      # @param code [String]
+      # @param query_pubid [Pubid::Iso::Identifier]
       # @param year [String, NilClass]
       # @param opts [Hash]
-      def isobib_get(code, year, opts)
+      def isobib_get(query_pubid, year, opts)
         # return iev(code) if /^IEC 60050-/.match code
-        result = isobib_search_filter(code, opts) || return
+        result = isobib_search_filter(query_pubid, opts) || return
         ret = isobib_results_filter(result, year, opts)
         if ret[:ret]
-          warn "[relaton-iso] (\"#{code}\") found #{ret[:ret].docidentifier.first.id}"
+          warn "[relaton-iso] (\"#{query_pubid}\") found #{ret[:ret].docidentifier.first.id}"
           ret[:ret]
         else
-          fetch_ref_err(code, year, ret[:years])
+          fetch_ref_err(query_pubid, year, ret[:years])
         end
       end
     end
