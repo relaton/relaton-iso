@@ -280,7 +280,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch correction" do
       VCR.use_cassette "iso_19110_amd_1_2011" do
-        result = RelatonIso::IsoBibliography.get("ISO 19110/Amd 1:2011", "2011")
+        result = RelatonIso::IsoBibliography.get("ISO 19110/Amd 1:2011", "2005")
         expect(result.docidentifier.first.id).to eq "ISO 19110:2005/Amd 1:2011"
       end
     end
@@ -445,6 +445,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
   end
 
+  describe "#remove_part"
+
   describe "#isobib_results_filter" do
     context "when data's years matches" do
       it "returns first hit"
@@ -509,8 +511,11 @@ RSpec.describe RelatonIso::IsoBibliography do
   describe "#matches_base?" do
     subject do
       described_class.matches_base?(Pubid::Iso::Identifier.parse(query_pubid),
-                                    Pubid::Iso::Identifier.parse(pubid))
+                                    Pubid::Iso::Identifier.parse(pubid),
+                                    any_stages: any_stages)
     end
+
+    let(:any_stages) { false }
 
     context "when have equal publisher and number but different parts" do
       let(:query_pubid) { "ISO 6709-1" }
@@ -552,6 +557,17 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:pubid) { "ISO 6709" }
 
       it { is_expected.to be_falsey }
+    end
+
+    context "when requested to match with any stages" do
+      let(:any_stages) { true }
+
+      context "when have different stage" do
+        let(:query_pubid) { "ISO/DIS 6709" }
+        let(:pubid) { "ISO 6709" }
+
+        it { is_expected.to be_truthy }
+      end
     end
   end
 

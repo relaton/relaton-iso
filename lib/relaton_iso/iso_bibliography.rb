@@ -110,12 +110,12 @@ module RelatonIso
         end
       end
 
-      def matches_base?(query_pubid, pubid)
+      def matches_base?(query_pubid, pubid, any_stages: false)
         query_pubid.publisher == pubid.publisher &&
           query_pubid.number == pubid.number &&
           query_pubid.copublisher == pubid.copublisher &&
           query_pubid.type == pubid.type &&
-          query_pubid.stage == pubid.stage
+          (any_stages || query_pubid.stage == pubid.stage)
       end
 
       private
@@ -153,29 +153,21 @@ module RelatonIso
         ref = remove_part query_pubid.to_s, opts[:all_parts]
         warn "[relaton-iso] (\"#{query_pubid}\") fetching..."
         # fetch hits collection
-        result = search(ref)
+        hit_collection = search(ref)
         # filter only matching hits
-        res = search_code result, query_pubid, opts
+        res = filter_hits hit_collection, query_pubid,
+                          all_parts: opts[:all_parts]
         return res unless res.empty?
 
-        # try to match with any stage if no stage
-        case code
-        when %r{^\w+/[^/]+\s\d+} # code like ISO/IEC 123, ISO/IEC/IEE 123
-          res = try_stages(result, opts) do |st|
-            code.sub(%r{^(?<pref>[^\s]+\s)}) { "#{$~[:pref]}#{st} " }
-          end
-          return res unless res.empty?
-        when %r{^\w+\s\d+} # code like ISO 123
-          res = try_stages(result, opts) do |st|
-            code.sub(%r{^(?<pref>\w+)}) { "#{$~[:pref]}/#{st}" }
-          end
-          return res unless res.empty?
-        end
+        res = filter_hits hit_collection, query_pubid,
+                          all_parts: opts[:all_parts], any_stages: true
+        return res unless res.empty?
 
-        if %r{^ISO\s}.match? code # try ISO/IEC if ISO not found
+        # TODO: do this at pubid-iso
+        if query_pubid.publisher == "ISO" && query_pubid.copublisher.nil? # try ISO/IEC if ISO not found
           warn "[relaton-iso] Attempting ISO/IEC retrieval"
-          c = code.sub "ISO", "ISO/IEC"
-          res = search_code result, c, opts
+          query_pubid.copublisher = "IEC"
+          res = filter_hits hit_collection, query_pubid, all_parts: opts[:all_parts]
         end
         res
       end
@@ -187,29 +179,17 @@ module RelatonIso
         ref.sub %r{(\S+\s\d+)[\d-]+}, '\1'
       end
 
-      # @param result [RelatonIso::HitCollection]
-      # @param opts [Hash]
-      # @return [RelatonIso::HitCollection]
-      def try_stages(result, opts)
-        res = nil
-        %w[NP WD CD DIS FDIS PRF IS AWI TR].each do |st| # try stages
-          c = yield st
-          res = search_code result, c, opts
-          return res unless res.empty?
-        end
-        res
-      end
-
-      # @param result [RelatonIso::HitCollection]
+      # @param hits [RelatonIso::HitCollection]
       # @param query_pubid [Pubid::Iso::Identifier]
-      # @param opts [Hash]
+      # @param all_parts [Boolean]
+      # @param any_stages [Boolean]
       # @return [RelatonIso::HitCollection]
-      def search_code(result, query_pubid, opts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      def filter_hits(hit_collection, query_pubid, all_parts: false, any_stages: false) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         # filter out
-        result.select do |i|
+        hit_collection.select do |i|
           hit_pubid = extract_pubid_from(i.hit[:title])
-          matches_base?(query_pubid, hit_pubid) &&
-            matches_parts?(query_pubid, hit_pubid, all_parts: opts[:all_parts]) &&
+          matches_base?(query_pubid, hit_pubid, any_stages: any_stages) &&
+            matches_parts?(query_pubid, hit_pubid, all_parts: all_parts) &&
             matches_corrigendum?(query_pubid, hit_pubid) &&
             matches_amendment?(query_pubid, hit_pubid)
         end
