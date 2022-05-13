@@ -32,11 +32,11 @@ module RelatonIso
         code = ref.gsub(/\u2013/, "-")
         # %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?(?::(?<year1>\d{4}))?} =~ code
         # TODO: extract with pubid-iso
-        query_pubid = Pubid::Iso::Identifier.parse(ref)
         # year ||= publish_year ref
-        year ||= query_pubid.year
         code.sub! " (all parts)", ""
         opts[:all_parts] ||= $~ && opts[:all_parts].nil?
+        query_pubid = Pubid::Iso::Identifier.parse(code)
+        year ||= query_pubid.year
         # opts[:keep_year] ||= opts[:keep_year].nil?
         # code.sub!("#{num}-#{part}", num) if opts[:all_parts] && part
         # if %r[^ISO/IEC DIR].match? code
@@ -110,12 +110,12 @@ module RelatonIso
         end
       end
 
-      def matches_base?(query_pubid, pubid, any_stages: false)
+      def matches_base?(query_pubid, pubid, any_types_stages: false)
         query_pubid.publisher == pubid.publisher &&
           query_pubid.number == pubid.number &&
           query_pubid.copublisher == pubid.copublisher &&
-          query_pubid.type == pubid.type &&
-          (any_stages || query_pubid.stage == pubid.stage)
+          (any_types_stages && query_pubid.stage.nil? || query_pubid.stage == pubid.stage) &&
+          (any_types_stages && query_pubid.type.nil? || query_pubid.type == pubid.type)
       end
 
       private
@@ -160,7 +160,7 @@ module RelatonIso
         return res unless res.empty?
 
         res = filter_hits hit_collection, query_pubid,
-                          all_parts: opts[:all_parts], any_stages: true
+                          all_parts: opts[:all_parts], any_types_stages: true
         return res unless res.empty?
 
         # TODO: do this at pubid-iso
@@ -184,11 +184,11 @@ module RelatonIso
       # @param all_parts [Boolean]
       # @param any_stages [Boolean]
       # @return [RelatonIso::HitCollection]
-      def filter_hits(hit_collection, query_pubid, all_parts: false, any_stages: false) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      def filter_hits(hit_collection, query_pubid, all_parts: false, any_types_stages: false) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         # filter out
         hit_collection.select do |i|
           hit_pubid = extract_pubid_from(i.hit[:title])
-          matches_base?(query_pubid, hit_pubid, any_stages: any_stages) &&
+          matches_base?(query_pubid, hit_pubid, any_types_stages: any_types_stages) &&
             matches_parts?(query_pubid, hit_pubid, all_parts: all_parts) &&
             matches_corrigendum?(query_pubid, hit_pubid) &&
             matches_amendment?(query_pubid, hit_pubid)

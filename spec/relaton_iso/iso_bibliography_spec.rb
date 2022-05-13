@@ -512,10 +512,10 @@ RSpec.describe RelatonIso::IsoBibliography do
     subject do
       described_class.matches_base?(Pubid::Iso::Identifier.parse(query_pubid),
                                     Pubid::Iso::Identifier.parse(pubid),
-                                    any_stages: any_stages)
+                                    any_types_stages: any_types_stages)
     end
 
-    let(:any_stages) { false }
+    let(:any_types_stages) { false }
 
     context "when have equal publisher and number but different parts" do
       let(:query_pubid) { "ISO 6709-1" }
@@ -559,14 +559,39 @@ RSpec.describe RelatonIso::IsoBibliography do
       it { is_expected.to be_falsey }
     end
 
-    context "when requested to match with any stages" do
-      let(:any_stages) { true }
+    context "when requested to match with any types and stages" do
+      let(:any_types_stages) { true }
 
       context "when have different stage" do
+        let(:query_pubid) { "ISO 6709" }
+        let(:pubid) { "ISO/DIS 6709" }
+
+        it { is_expected.to be_truthy }
+      end
+
+      context "when have different type" do
+        let(:query_pubid) { "ISO 6709" }
+        let(:pubid) { "ISO TR 6709" }
+
+        it { is_expected.to be_truthy }
+      end
+
+      context "when query already have stage" do
         let(:query_pubid) { "ISO/DIS 6709" }
         let(:pubid) { "ISO 6709" }
 
-        it { is_expected.to be_truthy }
+        it "do not matches with different stage" do
+          expect(subject).to be_falsey
+        end
+      end
+
+      context "when query already have type" do
+        let(:query_pubid) { "ISO TR 6709" }
+        let(:pubid) { "ISO 6709" }
+
+        it "do not matches with different type" do
+          expect(subject).to be_falsey
+        end
       end
     end
   end
