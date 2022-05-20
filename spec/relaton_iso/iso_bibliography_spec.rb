@@ -497,17 +497,6 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
   end
 
-  describe "#extract_pubid_from" do
-    subject { described_class.extract_pubid_from(title) }
-
-    let(:title) { "#{pubid} Geographic information — Metadata — Part 1: Fundamentals" }
-    let(:pubid) { "ISO 19115-1:2014" }
-
-    it "extracts pubid from title" do
-      expect(subject.to_s).to eq(pubid)
-    end
-  end
-
   describe "#matches_base?" do
     subject do
       described_class.matches_base?(Pubid::Iso::Identifier.parse(query_pubid),
@@ -711,4 +700,49 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
   end
+
+
+  # VCR.use_cassette "iso_19115_2015" do
+  #   expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
+  #     .to output(
+  #           /There was no match for 2015, though there were matches found for 2003/,
+  #           ).to_stderr
+  # end
+  #
+  #
+  describe "#filter_hits_by_year", vcr: { cassette_name: "iso_19115_2015" } do
+    subject { described_class.filter_hits_by_year(hits_collection, year) }
+
+    let(:hits_collection) { RelatonIso::HitCollection.new("ISO 19115") }
+
+    context "when year is missing" do
+      let(:year) { "2015" }
+
+      it "returns nothing" do
+        expect(subject).to be_empty
+      end
+
+      it "output warning" do
+        expect { subject }.to output(
+          /There was no match for #{year}, though there were matches found for/,
+        ).to_stderr
+      end
+    end
+
+    context "when year is found" do
+      # hits collection contains another years
+      let(:year) { "2003" }
+      let(:pubid) { Pubid::Iso::Identifier.parse("ISO 19115:2003") }
+
+      it "returns found document" do
+        expect(subject.first.pubid.to_s).to eq(pubid.to_s)
+      end
+
+      it "don't output warning" do
+        expect { subject }.not_to output.to_stderr
+      end
+    end
+  end
+  #
+  # Do not return missed years if any year matched
 end

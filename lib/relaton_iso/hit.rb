@@ -4,7 +4,7 @@ module RelatonIso
   # Hit.
   class Hit < RelatonBib::Hit
     # @return [RelatonIsoBib::IsoBibliographicItem]
-    attr_writer :fetch
+    attr_writer :fetch, :pubid
 
     # Parse page.
     # @param lang [String, NilClass]
@@ -21,6 +21,16 @@ module RelatonIso
       when "Withdrawn" then 2
       when "Deleted" then 3
       else 4
+      end
+    end
+
+    # @return [Pubid::Iso::Identifier]
+    def pubid
+      hit[:title].split.reverse.inject(hit[:title]) do |acc, part|
+        return Pubid::Iso::Identifier.parse(acc)
+      rescue Pubid::Iso::Errors::ParseError
+        # delete parts from the title until it's parseable
+        acc.reverse.sub(part.reverse, "").reverse.strip
       end
     end
   end
