@@ -51,4 +51,22 @@ RSpec.describe RelatonIso::Scrapper do
       end.to raise_error RelatonBib::RequestError
     end
   end
+
+  describe "#fetch_docid" do
+    subject do
+      described_class.fetch_relaton_docids(Pubid::Iso::Identifier.parse(pubid),
+                                           edition, langs, stage)
+    end
+
+    let(:source_pubid) { "ISO 19115:2003" }
+    let(:pubid) { "ISO 19115:2003 ED3(en,fr)" }
+    let(:urn) { "urn:iso:std:iso:19115:stage-90.93:ed-3:en,fr" }
+    let(:edition) { "3" }
+    let(:langs) { [{ lang: "en" }, { lang: "fr", path: "/fr/standard/3569.html" }] }
+    let(:stage) { 90.93 }
+
+    it "returns PubID and URN RelatonBib document identifiers" do
+      expect(subject.map(&:id)).to eq([pubid, urn])
+    end
+  end
 end

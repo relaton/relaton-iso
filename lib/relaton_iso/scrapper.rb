@@ -66,7 +66,9 @@ module RelatonIso
 
         RelatonIsoBib::IsoBibliographicItem.new(
           fetched: Date.today.to_s,
-          docid: fetch_docid(doc, edition, langs),
+          docid: fetch_relaton_docids(
+            Pubid::Iso::Identifier.parse(item_ref(doc)), edition, langs, stage_code(doc).to_f
+          ),
           docnumber: fetch_docnumber(doc),
           edition: edition,
           language: langs.map { |l| l[:lang] },
@@ -85,6 +87,23 @@ module RelatonIso
           place: ["Geneva"],
           structuredidentifier: fetch_structuredidentifier(doc),
         )
+      end
+
+      # Fetch relaton docids.
+      # @param pubid [Pubid::Iso::Identifier]
+      # @param edition [String]
+      # @param langs [Array<Hash>]
+      # @param stage [Float]
+      # @return [Array<RelatonBib::DocumentIdentifier>]
+      def fetch_relaton_docids(pubid, edition, langs, stage)
+        pubid.edition = edition
+        pubid.language = langs.map { |k| k[:lang] }.join(",") if langs
+        pubid.urn_stage = stage
+        [
+          RelatonBib::DocumentIdentifier.new(id: pubid.to_s, type: "ISO",
+                                             primary: true),
+          RelatonBib::DocumentIdentifier.new(id: pubid.urn.to_s, type: "URN"),
+        ]
       end
 
       private
@@ -168,20 +187,6 @@ module RelatonIso
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      # Fetch docid.
-      # @param doc [Nokogiri:HTML::Document]
-      # @param edition [String]
-      # @param langs [Array<Hash>]
-      # @return [Array<RelatonBib::DocumentIdentifier>]
-      def fetch_docid(doc, edition, langs)
-        pubid = item_ref doc
-        [
-          RelatonBib::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
-          RelatonBib::DocumentIdentifier.new(
-            id: fetch_urn(doc, pubid, edition, langs), type: "URN",
-          ),
-        ]
-      end
 
       # @param doc [Nokogiri:HTML::Document]
       # @param pubid [String]
