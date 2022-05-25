@@ -9,8 +9,8 @@ module RelatonIso
     # Parse page.
     # @param lang [String, NilClass]
     # @return [RelatonIso::IsoBibliographicItem]
-    def fetch(lang = nil)
-      @fetch ||= Scrapper.parse_page @hit, lang
+    def fetch(lang = nil, all_parts = false)
+      @fetch ||= Scrapper.parse_page @hit, lang, all_parts
     end
 
     # @return [Integer]

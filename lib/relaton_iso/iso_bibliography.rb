@@ -27,7 +27,7 @@ module RelatonIso
       # @option opts [Boolean] :keep_year if undated reference should return
       #   actual reference with year
       #
-      # @return [String] Relaton XML serialisation of reference
+      # @return [RelatonIsoBib::IsoBibliographicItem] Relaton XML serialisation of reference
       def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity,Metrics/AbcSize
         code = ref.gsub(/\u2013/, "-")
         # %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?(?::(?<year1>\d{4}))?} =~ code
@@ -57,16 +57,6 @@ module RelatonIso
         else
           ret.to_most_recent_reference
         end
-      end
-
-      def ref_components(ref)
-        %r{
-          ^(?<code>ISO(?:\s|/)[^-/:()]+\d+)
-          (?:-(?<part>[\w-]+))?
-          (?::(?<year>\d{4}))?
-          (?:/(?<corr>\w+(?:\s\w+)?\s\d+)(?:(?<coryear>\d{4}))?)?
-        }x =~ ref
-        [code&.strip, part, year, corr, coryear]
       end
 
       def matches_amendment?(query_pubid, pubid)

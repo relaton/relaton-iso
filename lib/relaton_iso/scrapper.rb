@@ -52,10 +52,11 @@ module RelatonIso
       # Parse page.
       # @param hit_data [Hash]
       # @param lang [String, NilClass]
-      # @return [Hash]
-      def parse_page(hit_data, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      # @return [RelatonIsoBib::IsoBibliographicItem]
+      def parse_page(hit_data, lang = nil, all_parts = false) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         # path = "/contents/data/standard#{hit_data['splitPath']}/"\
         # "#{hit_data['csnumber']}.html"
+
         doc, url = get_page "#{hit_data[:path].sub '/sites/isoorg', ''}.html"
 
         # Fetch edition.
@@ -66,9 +67,7 @@ module RelatonIso
 
         RelatonIsoBib::IsoBibliographicItem.new(
           fetched: Date.today.to_s,
-          docid: fetch_relaton_docids(
-            Pubid::Iso::Identifier.parse(item_ref(doc)), edition, langs, stage_code(doc).to_f
-          ),
+          docid: fetch_relaton_docids(Pubid::Iso::Identifier.parse(item_ref(doc))),
           docnumber: fetch_docnumber(doc),
           edition: edition,
           language: langs.map { |l| l[:lang] },
@@ -95,14 +94,11 @@ module RelatonIso
       # @param langs [Array<Hash>]
       # @param stage [Float]
       # @return [Array<RelatonBib::DocumentIdentifier>]
-      def fetch_relaton_docids(pubid, edition, langs, stage)
-        pubid.edition = edition
-        pubid.language = langs.map { |k| k[:lang] }.join(",") if langs
-        pubid.urn_stage = stage
+      def fetch_relaton_docids(pubid)
+        pubid.urn_stage = 60.60
         [
-          RelatonBib::DocumentIdentifier.new(id: pubid.to_s, type: "ISO",
-                                             primary: true),
-          RelatonBib::DocumentIdentifier.new(id: pubid.urn.to_s, type: "URN"),
+          RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
+          RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
         ]
       end
 
@@ -186,30 +182,6 @@ module RelatonIso
         raise RelatonBib::RequestError, "Could not access #{url}"
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
-
-
-      # @param doc [Nokogiri:HTML::Document]
-      # @param pubid [String]
-      # @param edition [String]
-      # @param langs [Array<Hash>]
-      # @returnt [String]
-      def fetch_urn(doc, pubid, edition, langs) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
-        orig = pubid.split.first.downcase.split("/").join "-"
-        %r{(?<=)(?<type>DATA|GUIDE|ISP|IWA|PAS|R|TR|TS|TTA)} =~ pubid
-        _, part, _year, corr, = IsoBibliography.ref_components pubid
-        urn = "urn:iso:std:#{orig}"
-        urn += ":#{type.downcase}" if type
-        urn += ":#{fetch_docnumber(doc)}"
-        urn += ":-#{part}" if part
-        urn += ":stage-#{stage_code(doc)}"
-        urn += ":ed-#{edition}" if edition
-        if corr
-          corrparts = corr.split
-          urn += ":#{corrparts[0].downcase}:#{corrparts[-1]}"
-        end
-        urn += ":#{langs.map { |l| l[:lang] }.join(',')}"
-        urn
-      end
 
       def fetch_docnumber(doc)
         item_ref(doc)&.match(/\d+/)&.to_s

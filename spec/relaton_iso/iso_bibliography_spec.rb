@@ -123,8 +123,12 @@ RSpec.describe RelatonIso::IsoBibliography do
   end
 
   describe "#get" do
+    let(:pubid) { "ISO 19115-1" }
+    let(:urn) { "urn:iso:std:iso:19115:-1:stage-60.60" }
+
     context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
-      subject(:xml) { described_class.get("ISO 19115-1", nil, {}).to_xml }
+      subject { described_class.get(pubid, nil, {}) }
+      let(:xml) { subject.to_xml }
 
       it "generates correct output" do
         file = "spec/fixtures/iso_19115_keep_year.xml"
@@ -134,20 +138,22 @@ RSpec.describe RelatonIso::IsoBibliography do
               .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
         )
       end
+
+      it "returns correct document identifiers" do
+        expect(subject.docidentifier.map(&:id)).to eq([pubid, urn])
+      end
     end
 
     context "gets all parts document",
             vcr: { cassette_name: "iso_19115_all_parts" } do
       let(:xml) { subject.to_xml bibdata: true }
+      let(:pubid_all_parts) { "ISO 19115 (all parts)" }
+      let(:urn_all_parts) { "urn:iso:std:iso:19115:stage-60.60:ser" }
 
       shared_examples "all_parts" do
         it "returns (all parts) as identifier part" do
-          expect(xml).to include(
-            %(<project-number>ISO 19115 (all parts)</project-number>),
-          )
-          expect(xml).to include(
-            %(<docidentifier type="ISO" primary="true">ISO 19115 (all parts)</docidentifier>),
-          )
+          expect(subject.structuredidentifier.project_number).to eq(pubid_all_parts)
+          expect(subject.docidentifier.map(&:id)).to eq([pubid_all_parts, urn_all_parts])
         end
 
         it "include all matched documents without part" do
@@ -162,7 +168,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
       context "when using all_parts parameter" do
         subject do
-          described_class.get("ISO 19115", nil, all_parts: true)
+          described_class.get(pubid, nil, all_parts: true)
         end
 
         it "generates correct xml data" do
@@ -178,7 +184,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
 
       context "when using reference" do
-        subject { described_class.get "ISO 19115 (all parts)" }
+        subject { described_class.get pubid_all_parts }
 
         it_behaves_like "all_parts"
       end
