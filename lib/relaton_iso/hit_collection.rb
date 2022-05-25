@@ -18,18 +18,14 @@ module RelatonIso
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def to_all_parts(lang = nil) # rubocop:disable Metrics/CyclomaticComplexity
       # parts = @array.reject { |h| h.hit["docPart"]&.empty? }
-      hit = @array.min_by do |h|
-        IsoBibliography.ref_components(h.hit[:title])[1].to_i
-      end
+      hit = @array.min_by { |h| h.pubid.part }
       return @array.first.fetch lang unless hit
 
-      bibitem = hit.fetch lang
+      bibitem = hit.fetch(lang, true)
       all_parts_item = bibitem.to_all_parts
       @array.reject { |h| h.hit[:uuid] == hit.hit[:uuid] }.each do |hi|
-        %r{^(?<fr>ISO(?:\s|/)[^-/:()]+(?:-[\w-]+)?(?::\d{4})?
-          (?:/\w+(?:\s\w+)?\s\d+(?:\d{4})?)?)}x =~ hi.hit[:title]
         isobib = RelatonIsoBib::IsoBibliographicItem.new(
-          formattedref: RelatonBib::FormattedRef.new(content: fr),
+          formattedref: RelatonBib::FormattedRef.new(content: hi.pubid.to_s),
         )
         all_parts_item.relation << RelatonBib::DocumentRelation.new(
           type: "instance", bibitem: isobib,

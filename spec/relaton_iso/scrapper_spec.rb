@@ -52,15 +52,14 @@ RSpec.describe RelatonIso::Scrapper do
     end
   end
 
-  describe "#fetch_docid" do
+  describe "#fetch_relaton_docids" do
     subject do
-      described_class.fetch_relaton_docids(Pubid::Iso::Identifier.parse(pubid),
-                                           edition, langs, stage)
+      described_class.fetch_relaton_docids(Pubid::Iso::Identifier.parse(pubid))
     end
 
     let(:source_pubid) { "ISO 19115:2003" }
     let(:pubid) { "ISO 19115:2003 ED3(en,fr)" }
-    let(:urn) { "urn:iso:std:iso:19115:stage-90.93:ed-3:en,fr" }
+    let(:urn) { "urn:iso:std:iso:19115:stage-60.60:ed-3:en,fr" }
     let(:edition) { "3" }
     let(:langs) { [{ lang: "en" }, { lang: "fr", path: "/fr/standard/3569.html" }] }
     let(:stage) { 90.93 }
