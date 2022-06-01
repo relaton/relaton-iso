@@ -59,31 +59,6 @@ module RelatonIso
         end
       end
 
-      def matches_amendment?(query_pubid, pubid)
-        if query_pubid.amendment == pubid.amendment &&
-          query_pubid.amendment_stage == pubid.amendment_stage
-          return true
-        end
-
-        # when missing corrigendum year/number in query
-        !query_pubid.amendment_number && query_pubid.amendment_version == pubid.amendment_version &&
-          # corrigendum stage
-          (!query_pubid.amendment_stage || query_pubid.amendment_stage == pubid.amendment_stage)
-      end
-
-      def matches_corrigendum?(query_pubid, pubid)
-        # when matches full corrigendum part
-        if query_pubid.corrigendum == pubid.corrigendum &&
-          query_pubid.corrigendum_stage == pubid.corrigendum_stage
-          return true
-        end
-
-        # when missing corrigendum year/number in query
-        !query_pubid.corrigendum_number && query_pubid.corrigendum_version == pubid.corrigendum_version &&
-          # corrigendum stage
-          (!query_pubid.corrigendum_stage || query_pubid.corrigendum_stage == pubid.corrigendum_stage)
-      end
-
       # @param query_pubid [Pubid::Iso::Identifier]
       # @param pubid [Pubid::Iso::Identifier]
       # @param all_parts [Boolean] match with any parts when true
@@ -197,8 +172,8 @@ module RelatonIso
           hit_pubid = i.pubid
           matches_base?(query_pubid, hit_pubid, any_types_stages: any_types_stages) &&
             matches_parts?(query_pubid, hit_pubid, all_parts: all_parts) &&
-            matches_corrigendum?(query_pubid, hit_pubid) &&
-            matches_amendment?(query_pubid, hit_pubid)
+            query_pubid.corrigendum == hit_pubid.corrigendum &&
+            query_pubid.amendment == hit_pubid.amendment
         end
 
         query_pubid.year ? filter_hits_by_year(result, query_pubid.year) : result
