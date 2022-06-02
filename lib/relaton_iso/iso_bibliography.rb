@@ -30,10 +30,11 @@ module RelatonIso
       # @return [RelatonIsoBib::IsoBibliographicItem] Relaton XML serialisation of reference
       def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity,Metrics/AbcSize
         code = ref.gsub(/\u2013/, "-")
-        # %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?(?::(?<year1>\d{4}))?} =~ code
-        # TODO: extract with pubid-iso
+
+        # parse "all parts" request
         code.sub! " (all parts)", ""
         opts[:all_parts] ||= $~ && opts[:all_parts].nil?
+
         query_pubid = Pubid::Iso::Identifier.parse(code)
         query_pubid.year = year if year
 
@@ -131,15 +132,16 @@ module RelatonIso
       # @param opts [Hash]
       # @return [Array<RelatonIso::Hit>]
       def isobib_search_filter(query_pubid, opts)
-        ref = remove_part query_pubid.to_s(with_date: false), opts[:all_parts]
+        query_pubid.part = nil if opts[:all_parts]
         warn "[relaton-iso] (\"#{query_pubid}\") fetching..."
         # fetch hits collection
-        hit_collection = search(ref)
+        hit_collection = search(query_pubid.to_s(with_date: false))
         # filter only matching hits
         res = filter_hits hit_collection, query_pubid,
                           all_parts: opts[:all_parts]
         return res unless res.empty?
 
+        # lookup for documents with stages when no match without stage
         res = filter_hits hit_collection, query_pubid,
                           all_parts: opts[:all_parts], any_types_stages: true
         return res unless res.empty?
@@ -152,14 +154,6 @@ module RelatonIso
         end
         res
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-
-      def remove_part(ref, all_parts)
-        return ref unless all_parts
-
-        ref.sub %r{(\S+\s\d+)[\d-]+}, '\1'
-      end
-
 
       # @param hits [RelatonIso::HitCollection]
       # @param query_pubid [Pubid::Iso::Identifier]
