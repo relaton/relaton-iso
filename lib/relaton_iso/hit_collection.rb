@@ -11,7 +11,7 @@ module RelatonIso
     # @param text [String] reference to search
     def initialize(text)
       super
-      @array = text.match?(/^ISO\sTC\s184\/SC\s?4/) ? fetch_github : fetch_iso
+      @array = text.match?(/^ISO\s(?:TC\s184\/SC\s?4|IEC\sDIR\s(?:\d|IEC|JTC))/) ? fetch_github : fetch_iso
     end
 
     # @param lang [String, NilClass]
