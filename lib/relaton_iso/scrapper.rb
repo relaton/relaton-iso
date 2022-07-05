@@ -95,7 +95,7 @@ module RelatonIso
       # @param stage [Float]
       # @return [Array<RelatonBib::DocumentIdentifier>]
       def fetch_relaton_docids(pubid)
-        pubid.urn_stage = 60.60
+        # pubid.urn_stage = 60.60
         [
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),

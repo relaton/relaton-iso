@@ -124,7 +124,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   describe "#get" do
     let(:pubid) { "ISO 19115-1" }
-    let(:urn) { "urn:iso:std:iso:19115:-1:stage-60.60" }
+    let(:urn) { "urn:iso:std:iso:19115:-1" }
 
     context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
       subject { described_class.get(pubid, nil, {}) }
