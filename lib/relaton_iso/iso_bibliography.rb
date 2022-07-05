@@ -73,26 +73,32 @@ module RelatonIso
         end
       end
 
-      def matches_base?(query_pubid, pubid, any_types_stages: false)
+      def matches_base?(query_pubid, pubid, any_types_stages: false) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics?PerceivedComplexity
         query_pubid.publisher == pubid.publisher &&
           query_pubid.number == pubid.number &&
           query_pubid.copublisher == pubid.copublisher &&
-          (any_types_stages && query_pubid.stage.nil? || query_pubid.stage == pubid.stage) &&
-          (any_types_stages && query_pubid.type.nil? || query_pubid.type == pubid.type)
+          ((any_types_stages && query_pubid.stage.nil?) || query_pubid.stage == pubid.stage) &&
+          ((any_types_stages && query_pubid.type.nil?) || query_pubid.type == pubid.type)
       end
 
       # @param hit_collection [RelatonIso::HitCollection]
       # @param year [String]
       # @return [RelatonIso::HitCollection]
-      def filter_hits_by_year(hit_collection, year)
+      def filter_hits_by_year(hit_collection, year) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         missed_years = []
 
         # filter by year
         hits = hit_collection.select do |hit|
           if hit.pubid.year == year
             true
+          elsif hit.pubid.year.nil? && hit.hit[:year].to_s == year
+            hit.pubid.year = year
+            true
           else
-            missed_years << hit.pubid.year
+            missed_year = hit.pubid.year || hit.hit[:year].to_s
+            if missed_year && !missed_year.empty? && !missed_years.include?(missed_year)
+              missed_years << missed_year
+            end
             false
           end
         end
@@ -106,9 +112,7 @@ module RelatonIso
 
       private
 
-      # rubocop:disable Metrics/MethodLength
-
-      def fetch_ref_err(query_pubid, year)
+      def fetch_ref_err(query_pubid, year) # rubocop:disable Metrics/MethodLength
         id = year ? "#{query_pubid}:#{year}" : query_pubid
         warn "[relaton-iso] WARNING: no match found online for #{id}. "\
              "The code must be exactly like it is on the standards website."
@@ -124,14 +128,12 @@ module RelatonIso
         nil
       end
 
-      # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-
       # Search for hits. If no found then trying missed stages and ISO/IEC.
       #
       # @param query_pubid [Pubid::Iso::Identifier] reference without correction
       # @param opts [Hash]
       # @return [Array<RelatonIso::Hit>]
-      def isobib_search_filter(query_pubid, opts)
+      def isobib_search_filter(query_pubid, opts) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
         query_pubid.part = nil if opts[:all_parts]
         warn "[relaton-iso] (\"#{query_pubid}\") fetching..."
         # fetch hits collection

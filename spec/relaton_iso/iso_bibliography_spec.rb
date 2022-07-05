@@ -124,7 +124,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   describe "#get" do
     let(:pubid) { "ISO 19115-1" }
-    let(:urn) { "urn:iso:std:iso:19115:-1:stage-60.60" }
+    let(:urn) { "urn:iso:std:iso:19115:-1:stage-90.93:ed-1" }
 
     context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
       subject { described_class.get(pubid, nil, {}) }
@@ -133,10 +133,8 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "generates correct output" do
         file = "spec/fixtures/iso_19115_keep_year.xml"
         File.write file, xml, encoding: "UTF-8" unless File.exist? file
-        expect(xml).to be_equivalent_to(
-          File.read(file, encoding: "UTF-8")
-              .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
-        )
+        expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
+          .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
       end
 
       it "returns correct document identifiers" do
@@ -148,7 +146,7 @@ RSpec.describe RelatonIso::IsoBibliography do
             vcr: { cassette_name: "iso_19115_all_parts" } do
       let(:xml) { subject.to_xml bibdata: true }
       let(:pubid_all_parts) { "ISO 19115 (all parts)" }
-      let(:urn_all_parts) { "urn:iso:std:iso:19115:stage-60.60:ser" }
+      let(:urn_all_parts) { "urn:iso:std:iso:19115:stage-90.93:ed-1:ser" }
 
       shared_examples "all_parts" do
         it "returns (all parts) as identifier part" do
@@ -172,12 +170,10 @@ RSpec.describe RelatonIso::IsoBibliography do
         end
 
         it "generates correct xml data" do
-          # xml = subject.to_xml bibdata: true
           file = "spec/fixtures/all_parts.xml"
           File.write file, xml, encoding: "UTF-8" unless File.exist? file
-          expect(xml).to be_equivalent_to(
-            File.read(file, encoding: "utf-8")
-                .gsub(%r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"))
+          expect(xml).to be_equivalent_to File.read(file, encoding: "utf-8")
+            .gsub(%r{(?<=<fetched>)\d{4}-\d{2}-\d{2}}, Date.today.to_s)
         end
 
         it_behaves_like "all_parts"
@@ -369,6 +365,13 @@ RSpec.describe RelatonIso::IsoBibliography do
         result = RelatonIso::IsoBibliography.get "ISO TC 184/SC 4 N1110"
         expect(result.docidentifier[0].id).to eq "ISO/TC 184/SC 4 N1110"
         expect(result.docidentifier[0].primary).to be true
+      end
+    end
+
+    it "fetch ISO 19105:2022" do
+      VCR.use_cassette "iso_19105_2022" do
+        result = RelatonIso::IsoBibliography.get "ISO 19105:2022"
+        expect(result.docidentifier[0].id).to eq "ISO 19105:2022"
       end
     end
 

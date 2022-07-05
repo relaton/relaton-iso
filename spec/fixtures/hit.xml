@@ -1,5 +1,5 @@
 <bibdata type="standard">
-  <fetched>2022-05-25</fetched>
+  <fetched>2022-07-05</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -12,7 +12,7 @@
   <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:67039:en</uri>
   <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
   <docidentifier type="ISO" primary="true">ISO 19115-2:2019</docidentifier>
-  <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-60.60</docidentifier>
+  <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-60.60:ed-2</docidentifier>
   <docnumber>19115</docnumber>
   <date type="published">
     <on>2019-01</on>
@@ -44,11 +44,13 @@
   <relation type="obsoletes">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-2:2009</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115-2:2009</docidentifier>
     </bibitem>
   </relation>
   <relation type="updates">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-2:2019/Amd 1:2022</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115-2:2019/Amd 1:2022</docidentifier>
       <date type="circulated">
         <on>2019-01-10</on>
       </date>

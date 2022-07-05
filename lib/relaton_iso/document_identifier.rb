@@ -1,16 +1,15 @@
 module RelatonIso
   class DocumentIdentifier < RelatonBib::DocumentIdentifier
-    attr_accessor :all_parts
-
     def id
+      id_str = @id.to_s.sub(/\sED\d+/, "")
       if @all_parts
         if type == "URN"
           return "#{@id.urn}:ser"
-            else
-          return "#{@id} (all parts)"
+        else
+          return "#{id_str} (all parts)"
         end
       end
-      type == "URN" ? @id.urn.to_s : @id.to_s
+      type == "URN" ? @id.urn.to_s : id_str
     end
 
     def remove_part

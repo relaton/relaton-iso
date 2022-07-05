@@ -18,11 +18,11 @@ RSpec.describe RelatonIso::Scrapper do
     RelatonIso::Scrapper.send(:get_page, "/path")
   end
 
-  it "returs default structured identifier" do
-    doc = Nokogiri::HTML "<html><body></body></html>"
-    si = RelatonIso::Scrapper.send(:fetch_structuredidentifier, doc)
-    expect(si.id).to eq "?"
-  end
+  # it "returs default structured identifier" do
+  #   doc = Nokogiri::HTML "<html><body></body></html>"
+  #   si = RelatonIso::Scrapper.send(:fetch_structuredidentifier, doc)
+  #   expect(si.id).to eq "?"
+  # end
 
   it "returns TS type" do
     type = RelatonIso::Scrapper.send(:fetch_type, "ISO/TS 123")
@@ -35,10 +35,12 @@ RSpec.describe RelatonIso::Scrapper do
   end
 
   context "raises an error" do
+    let(:hit) { double "hit", hit: { path: "1234" } }
+
     it "could not access" do
       expect(Net::HTTP).to receive(:get_response).and_raise SocketError
       expect do
-        RelatonIso::Scrapper.parse_page(path: "1234")
+        RelatonIso::Scrapper.parse_page(hit)
       end.to raise_error RelatonBib::RequestError
     end
 
@@ -47,19 +49,20 @@ RSpec.describe RelatonIso::Scrapper do
       expect(resp).to receive(:code).and_return "404"
       expect(Net::HTTP).to receive(:get_response).and_return resp
       expect do
-        RelatonIso::Scrapper.parse_page(path: "1234")
+        RelatonIso::Scrapper.parse_page(hit)
       end.to raise_error RelatonBib::RequestError
     end
   end
 
   describe "#fetch_relaton_docids" do
     subject do
-      described_class.fetch_relaton_docids(Pubid::Iso::Identifier.parse(pubid))
+      expect(RelatonIso::Scrapper).to receive(:stage_code).and_return "90.93"
+      described_class.fetch_relaton_docids(:doc, Pubid::Iso::Identifier.parse(pubid))
     end
 
     let(:source_pubid) { "ISO 19115:2003" }
-    let(:pubid) { "ISO 19115:2003 ED3(en,fr)" }
-    let(:urn) { "urn:iso:std:iso:19115:stage-60.60:ed-3:en,fr" }
+    let(:pubid) { "ISO 19115:2003(en,fr)" }
+    let(:urn) { "urn:iso:std:iso:19115:stage-90.93:en,fr" }
     let(:edition) { "3" }
     let(:langs) { [{ lang: "en" }, { lang: "fr", path: "/fr/standard/3569.html" }] }
     let(:stage) { 90.93 }

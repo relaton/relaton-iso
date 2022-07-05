@@ -21,7 +21,7 @@ module RelatonIso
       hit = @array.min_by { |h| h.pubid.part }
       return @array.first.fetch lang unless hit
 
-      bibitem = hit.fetch(lang, true)
+      bibitem = hit.fetch(lang)
       all_parts_item = bibitem.to_all_parts
       @array.reject { |h| h.hit[:uuid] == hit.hit[:uuid] }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(

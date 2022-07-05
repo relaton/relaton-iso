@@ -50,52 +50,55 @@ module RelatonIso
 
     class << self
       # Parse page.
-      # @param hit_data [Hash]
+      # @param hit [RelatonIso::Hit]
       # @param lang [String, NilClass]
       # @return [RelatonIsoBib::IsoBibliographicItem]
-      def parse_page(hit_data, lang = nil, all_parts = false) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      def parse_page(hit, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
         # path = "/contents/data/standard#{hit_data['splitPath']}/"\
         # "#{hit_data['csnumber']}.html"
 
-        doc, url = get_page "#{hit_data[:path].sub '/sites/isoorg', ''}.html"
+        doc, url = get_page "#{hit.hit[:path].sub '/sites/isoorg', ''}.html"
 
         # Fetch edition.
         edition = doc&.xpath("//strong[contains(text(), 'Edition')]/..")
           &.children&.last&.text&.match(/\d+/)&.to_s
+        hit.pubid.edition = edition if edition
 
         titles, abstract, langs = fetch_titles_abstract(doc, lang)
 
         RelatonIsoBib::IsoBibliographicItem.new(
           fetched: Date.today.to_s,
-          docid: fetch_relaton_docids(Pubid::Iso::Identifier.parse(item_ref(doc))),
-          docnumber: fetch_docnumber(doc),
+          docid: fetch_relaton_docids(doc, hit.pubid),
+          docnumber: fetch_docnumber(hit.pubid),
           edition: edition,
           language: langs.map { |l| l[:lang] },
           script: langs.map { |l| script(l[:lang]) }.uniq,
           title: titles,
-          doctype: fetch_type(hit_data[:title]),
+          doctype: fetch_type(hit.hit[:title]),
           docstatus: fetch_status(doc),
           ics: fetch_ics(doc),
-          date: fetch_dates(doc, hit_data[:title]),
-          contributor: fetch_contributors(hit_data[:title]),
+          date: fetch_dates(doc, hit.hit[:title]),
+          contributor: fetch_contributors(hit.hit[:title]),
           editorialgroup: fetch_workgroup(doc),
           abstract: abstract,
           copyright: fetch_copyright(doc),
           link: fetch_link(doc, url),
           relation: fetch_relations(doc),
           place: ["Geneva"],
-          structuredidentifier: fetch_structuredidentifier(doc),
+          structuredidentifier: fetch_structuredidentifier(hit.pubid),
         )
       end
 
-      # Fetch relaton docids.
-      # @param pubid [Pubid::Iso::Identifier]
-      # @param edition [String]
-      # @param langs [Array<Hash>]
-      # @param stage [Float]
+      #
+      # Create document ids.
+      #
+      # @param doc [Nokogiri::HTML::Document] document
+      # @param pubid [Pubid::Iso::Identifier] pubid
+      #
       # @return [Array<RelatonBib::DocumentIdentifier>]
-      def fetch_relaton_docids(pubid)
-        pubid.urn_stage = 60.60
+      #
+      def fetch_relaton_docids(doc, pubid)
+        pubid.urn_stage = stage_code(doc).to_f
         [
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
@@ -183,22 +186,29 @@ module RelatonIso
       end
       # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
-      def fetch_docnumber(doc)
-        item_ref(doc)&.match(/\d+/)&.to_s
+      #
+      # Generate docnumber.
+      #
+      # @param [Pubid::Iso] pubid
+      #
+      # @return [String] docnumber
+      #
+      def fetch_docnumber(pubid)
+        pubid.to_s.match(/\d+/)&.to_s
       end
 
-      # @param doc [Nokogiri::HTML::Document]
-      def fetch_structuredidentifier(doc) # rubocop:disable Metrics/MethodLength
-        ref = item_ref doc
-        unless ref
-          return RelatonIsoBib::StructuredIdentifier.new(
-            project_number: "?", part_number: "", prefix: nil, id: "?",
-          )
-        end
-
-        m = ref.match(/^(.*?\d+)-?((?<=-)\d+|)/)
+      #
+      # Parse structuredidentifier.
+      #
+      # @param pubid [Pubid::Iso::Identifier] pubid
+      #
+      # @return [RelatonBib::StructuredIdentifier] structured identifier
+      #
+      def fetch_structuredidentifier(pubid) # rubocop:disable Metrics/MethodLength
         RelatonIsoBib::StructuredIdentifier.new(
-          project_number: m[1], part: m[2], type: "ISO",
+          project_number: "#{pubid.publisher} #{pubid.number}",
+          part: pubid&.part&.sub(/^-/, ""),
+          type: pubid.publisher,
         )
       end
 
@@ -228,7 +238,7 @@ module RelatonIso
       # Fetch workgroup.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Hash]
-      def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength
+      def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity
         wg_link = doc.css("div.entry-name.entry-block a")[0]
         # wg_url = DOMAIN + wg_link['href']
         workgroup = wg_link.text.split "/"
@@ -252,6 +262,7 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
       def fetch_relations(doc) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+        types = ["Now", "Now under review"]
         doc.xpath("//ul[@class='steps']/li", "//div[@class='sub-step']").reduce([]) do |a, r|
           r_type = r.at("h4", "h5").text
           date = []
@@ -263,14 +274,13 @@ module RelatonIso
                    "updates"
                  else r_type
                  end
-          if ["Now", "Now under review"].include?(type) then a
+          if types.include?(type) then a
           else
             a + r.css("a").map do |id|
-              fref = RelatonBib::FormattedRef.new(
-                content: id.text, format: "text/plain",
-              )
+              docid = RelatonBib::DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
+              fref = RelatonBib::FormattedRef.new(content: id.text, format: "text/plain")
               bibitem = RelatonIsoBib::IsoBibliographicItem.new(
-                formattedref: fref, date: date,
+                docid: [docid], formattedref: fref, date: date,
               )
               { type: type, bibitem: bibitem }
             end
@@ -285,7 +295,7 @@ module RelatonIso
       def fetch_type(ref)
         %r{
           ^(?<prefix>ISO|IWA|IEC)
-          (?:(/IEC|/IEEE|/PRF|/NP|/DGuide)*\s|/)
+          (?:(?:/IEC|/IEEE|/PRF|/NP|/DGuide)*\s|/)
           (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))
         }x =~ ref
         # return "international-standard" if type_match.nil?

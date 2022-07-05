@@ -1,12 +1,12 @@
 <bibitem id="ISO19115" type="standard">
-  <fetched>2022-05-25</fetched>
+  <fetched>2022-07-05</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
   <uri type="src">https://www.iso.org/standard/26020.html</uri>
   <uri type="rss">https://www.iso.org/contents/data/standard/02/60/26020.detail.rss</uri>
   <docidentifier type="ISO" primary="true">ISO 19115</docidentifier>
-  <docidentifier type="URN">urn:iso:std:iso:19115:stage-60.60</docidentifier>
+  <docidentifier type="URN">urn:iso:std:iso:19115:stage-95.99:ed-1</docidentifier>
   <docnumber>19115</docnumber>
   <contributor>
     <role type="publisher"/>
@@ -34,6 +34,7 @@
   <relation type="updates">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115-1:2014</docidentifier>
       <date type="circulated">
         <on>2014-03-19</on>
       </date>
@@ -42,6 +43,7 @@
   <relation type="updates">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115:2003/Cor 1:2006</docidentifier>
       <date type="circulated">
         <on>2014-03-19</on>
       </date>
@@ -49,14 +51,14 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <fetched>2022-05-25</fetched>
+      <fetched>2022-07-05</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata</title>
       <uri type="src">https://www.iso.org/standard/26020.html</uri>
       <uri type="rss">https://www.iso.org/contents/data/standard/02/60/26020.detail.rss</uri>
       <docidentifier type="ISO" primary="true">ISO 19115:2003</docidentifier>
-      <docidentifier type="URN">urn:iso:std:iso:19115:stage-60.60</docidentifier>
+      <docidentifier type="URN">urn:iso:std:iso:19115:stage-95.99:ed-1</docidentifier>
       <docnumber>19115</docnumber>
       <date type="published">
         <on>2003-05</on>
@@ -98,6 +100,7 @@ NOTE Certain mandatory metadata elements may not apply to these other forms of d
       <relation type="updates">
         <bibitem type="standard">
           <formattedref format="text/plain">ISO 19115-1:2014</formattedref>
+          <docidentifier type="ISO" primary="true">ISO 19115-1:2014</docidentifier>
           <date type="circulated">
             <on>2014-03-19</on>
           </date>
@@ -106,6 +109,7 @@ NOTE Certain mandatory metadata elements may not apply to these other forms of d
       <relation type="updates">
         <bibitem type="standard">
           <formattedref format="text/plain">ISO 19115:2003/Cor 1:2006</formattedref>
+          <docidentifier type="ISO" primary="true">ISO 19115:2003/Cor 1:2006</docidentifier>
           <date type="circulated">
             <on>2014-03-19</on>
           </date>
