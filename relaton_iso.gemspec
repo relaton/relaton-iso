@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
 
   spec.add_development_dependency "byebug"
-  # spec.add_development_dependency "debase"
   spec.add_development_dependency "equivalent-xml", "~> 0.6"
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "rake", "~> 13.0"
@@ -35,13 +34,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop"
   spec.add_development_dependency "rubocop-performance"
   spec.add_development_dependency "rubocop-rails"
-  # spec.add_development_dependency "ruby-debug-ide"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "vcr"
   spec.add_development_dependency "webmock"
 
-  # spec.add_dependency "relaton-iec", "~> 1.8.0"
   spec.add_dependency "algolia"
+  spec.add_dependency "pubid-iso", "~> 0.1.8"
   spec.add_dependency "relaton-iso-bib", "~> 1.12.0"
-  spec.add_dependency "pubid-iso", "~> 0.1.7"
 end

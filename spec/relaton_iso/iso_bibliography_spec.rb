@@ -378,7 +378,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch ISO IEC DIR" do
       VCR.use_cassette "iso_iec_dir_1" do
         result = RelatonIso::IsoBibliography.get "ISO/IEC DIR 1"
-        expect(result.docidentifier[0].is).to eq ""
+        expect(result.docidentifier[0].id).to eq "ISO/IEC DIR 1"
       end
     end
 

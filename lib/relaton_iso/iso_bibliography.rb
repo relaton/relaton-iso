@@ -168,8 +168,8 @@ module RelatonIso
           hit_pubid = i.pubid
           matches_base?(query_pubid, hit_pubid, any_types_stages: any_types_stages) &&
             matches_parts?(query_pubid, hit_pubid, all_parts: all_parts) &&
-            query_pubid.corrigendum == hit_pubid.corrigendum &&
-            query_pubid.amendment == hit_pubid.amendment
+            query_pubid.corrigendums == hit_pubid.corrigendums &&
+            query_pubid.amendments == hit_pubid.amendments
         end
 
         query_pubid.year ? filter_hits_by_year(result, query_pubid.year) : result

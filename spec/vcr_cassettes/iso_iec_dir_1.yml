@@ -1,0 +1,107 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/ISO_IEC_DIR_1.yaml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - raw.githubusercontent.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '340'
+      Cache-Control:
+      - max-age=300
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Etag:
+      - W/"ab32f529ec9895400a4fa60fc487b384384e3e8e886012f96f46adefbf93ff71"
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 3884:A7D7:E4A7F:198540:62DD2CC3
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Sun, 24 Jul 2022 11:28:03 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-sof1510027-SOF
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1658662083.017770,VS0,VE244
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - ecabd9ebcf959b2739559a1c4367d549d13a507a
+      Expires:
+      - Sun, 24 Jul 2022 11:33:03 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: |-
+        title:
+        - type: title-main
+          content: Procedures for the technical work
+          language: en
+          script: Latn
+
+        link:
+        - type: obp
+          content: https://www.iec.ch/members_experts/refdocs/iec/isoiecdir1%7Bed15.0%7Den.pdf
+
+        type: international-standard
+
+        docid:
+          id: ISO/IEC DIR 1
+          type: ISO
+          primary: true
+
+        date:
+          type: published
+          value: '2019-05-01'
+
+        edition: "15"
+
+        language:
+        - en
+
+        script: Latn
+
+        copyright:
+          owner:
+            name: International Electrotechnical Commission
+            abbreviation: IEC
+            url: iec.ch
+          from: '2019'
+  recorded_at: Sun, 24 Jul 2022 11:28:03 GMT
+recorded_with: VCR 6.1.0
