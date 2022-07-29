@@ -15,11 +15,11 @@ module RelatonIso
     end
 
     # @param lang [String, NilClass]
-    # @return [RelatonIsoBib::IsoBibliographicItem]
+    # @return [RelatonIsoBib::IsoBibliographicItem, nil]
     def to_all_parts(lang = nil) # rubocop:disable Metrics/CyclomaticComplexity
       # parts = @array.reject { |h| h.hit["docPart"]&.empty? }
       hit = @array.min_by { |h| h.pubid.part }
-      return @array.first.fetch lang unless hit
+      return @array.first&.fetch lang unless hit
 
       bibitem = hit.fetch(lang)
       all_parts_item = bibitem.to_all_parts
