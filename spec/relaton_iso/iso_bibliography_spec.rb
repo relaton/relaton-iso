@@ -304,7 +304,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch WD Amd" do
       VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
         result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO/IEC DIS 23008-1/WD Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC FDIS 23008-1/WD Amd 1"
       end
     end
 
@@ -610,13 +610,8 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:year) { "2015" }
 
       it "returns nothing" do
-        expect(subject).to be_empty
-      end
-
-      it "output warning" do
-        expect { subject }.to output(
-          /There was no match for #{year}, though there were matches found for/,
-        ).to_stderr
+        expect(subject[:hits]).to be_empty
+        expect(subject[:missed_years]).not_to be_empty
       end
     end
 
@@ -626,7 +621,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:pubid) { Pubid::Iso::Identifier.parse("ISO 19115:2003") }
 
       it "returns found document" do
-        expect(subject.first.pubid.to_s).to eq(pubid.to_s)
+        expect(subject[:hits].first.pubid.to_s).to eq(pubid.to_s)
       end
 
       it "don't output warning" do

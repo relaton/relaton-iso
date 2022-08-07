@@ -38,19 +38,19 @@ module RelatonIso
         query_pubid = Pubid::Iso::Identifier.parse(code)
         query_pubid.year = year if year
 
-        hits = isobib_search_filter(query_pubid, opts)
+        resp = isobib_search_filter(query_pubid, opts)
 
         # return only first one if not all_parts
-        ret = if !opts[:all_parts] || hits.size == 1
-                hits.any? && hits.first.fetch(opts[:lang])
+        ret = if !opts[:all_parts] || resp[:hits].size == 1
+                resp[:hits].any? && resp[:hits].first.fetch(opts[:lang])
               else
-                hits.to_all_parts(opts[:lang])
+                resp[:hits].to_all_parts(opts[:lang])
               end
 
         if ret
           warn "[relaton-iso] (\"#{query_pubid}\") found #{ret.docidentifier.first.id}"
         else
-          return fetch_ref_err(query_pubid, query_pubid.year)
+          return fetch_ref_err(query_pubid)
         end
 
         if (query_pubid.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
@@ -86,6 +86,7 @@ module RelatonIso
       # @return [RelatonIso::HitCollection]
       def filter_hits_by_year(hit_collection, year) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         missed_years = []
+        return { hits: hit_collection, missed_years: missed_years } if year.nil?
 
         # filter by year
         hits = hit_collection.select do |hit|
@@ -103,27 +104,22 @@ module RelatonIso
           end
         end
 
-        if hits.empty? && !missed_years.empty?
-          warn "[relaton-iso] (There was no match for #{year}, though there "\
-               "were matches found for #{missed_years.join(', ')}.)"
-        end
-        hits
+        { hits: hits, missed_years: missed_years }
       end
 
       private
 
-      def fetch_ref_err(query_pubid, year) # rubocop:disable Metrics/MethodLength
-        id = year ? "#{query_pubid}:#{year}" : query_pubid
-        warn "[relaton-iso] WARNING: no match found online for #{id}. "\
+      def fetch_ref_err(query_pubid) # rubocop:disable Metrics/MethodLength
+        warn "[relaton-iso] WARNING: no match found online for #{query_pubid}. " \
              "The code must be exactly like it is on the standards website."
         if /\d-\d/.match? query_pubid.to_s
-          warn "[relaton-iso] The provided document part may not exist, "\
+          warn "[relaton-iso] The provided document part may not exist, " \
                "or the document may no longer be published in parts."
         else
-          warn "[relaton-iso] If you wanted to cite all document parts for "\
-               "the reference, use \"#{query_pubid} (all parts)\".\nIf the document "\
-               "is not a standard, use its document type abbreviation "\
-               "(TS, TR, PAS, Guide)."
+          warn "[relaton-iso] If you wanted to cite all document parts for " \
+               "the reference, use \"#{query_pubid} (all parts)\"."
+          warn "[relaton-iso] If the document is not a standard, use its " \
+               "document type abbreviation (TS, TR, PAS, Guide)."
         end
         nil
       end
@@ -133,26 +129,34 @@ module RelatonIso
       # @param query_pubid [Pubid::Iso::Identifier] reference without correction
       # @param opts [Hash]
       # @return [Array<RelatonIso::Hit>]
-      def isobib_search_filter(query_pubid, opts) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+      def isobib_search_filter(query_pubid, opts) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+        missed_years = []
         query_pubid.part = nil if opts[:all_parts]
         warn "[relaton-iso] (\"#{query_pubid}\") fetching..."
         # fetch hits collection
         hit_collection = search(query_pubid.to_s(with_date: false))
         # filter only matching hits
-        res = filter_hits hit_collection, query_pubid,
-                          all_parts: opts[:all_parts]
-        return res unless res.empty?
+        res = filter_hits hit_collection, query_pubid, all_parts: opts[:all_parts]
+        return res unless res[:hits].empty?
 
+        missed_years += res[:missed_years]
         # lookup for documents with stages when no match without stage
         res = filter_hits hit_collection, query_pubid,
                           all_parts: opts[:all_parts], any_types_stages: true
-        return res unless res.empty?
+        return res unless res[:hits].empty?
 
+        missed_years += res[:missed_years]
         # TODO: do this at pubid-iso
         if query_pubid.publisher == "ISO" && query_pubid.copublisher.nil? # try ISO/IEC if ISO not found
           warn "[relaton-iso] Attempting ISO/IEC retrieval"
           query_pubid.copublisher = "IEC"
           res = filter_hits hit_collection, query_pubid, all_parts: opts[:all_parts]
+          missed_years += res[:missed_years]
+        end
+
+        if res[:hits].empty? && missed_years.any?
+          warn "[relaton-iso] (There was no match for #{query_pubid.year}, though there "\
+               "were matches found for #{missed_years.uniq.join(', ')}.)"
         end
         res
       end
@@ -172,7 +176,7 @@ module RelatonIso
             query_pubid.amendments == hit_pubid.amendments
         end
 
-        query_pubid.year ? filter_hits_by_year(result, query_pubid.year) : result
+        filter_hits_by_year(result, query_pubid.year)
       end
     end
   end
