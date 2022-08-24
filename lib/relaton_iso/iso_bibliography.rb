@@ -58,6 +58,8 @@ module RelatonIso
         else
           ret.to_most_recent_reference
         end
+      rescue Pubid::Core::Errors::ParseError
+        warn "[relaton-iso] (\"#{code}\") is not recognized as a standards identifier."
       end
 
       # @param query_pubid [Pubid::Iso::Identifier]

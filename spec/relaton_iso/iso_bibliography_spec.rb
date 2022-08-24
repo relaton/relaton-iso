@@ -631,4 +631,12 @@ RSpec.describe RelatonIso::IsoBibliography do
   end
   #
   # Do not return missed years if any year matched
+
+  it "rescue from pubid parse error" do
+    expect do
+      expect(RelatonIso::IsoBibliography.get("ISO/TC 211 Good Practices")).to be_nil
+    end.to output(
+      %r{\[relaton-iso\] \("ISO/TC 211 Good Practices"\) is not recognized as a standards identifier},
+    ).to_stderr
+  end
 end
