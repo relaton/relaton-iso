@@ -60,8 +60,8 @@ module RelatonIso
         doc, url = get_page "#{hit.hit[:path].sub '/sites/isoorg', ''}.html"
 
         # Fetch edition.
-        edition = doc&.xpath("//strong[contains(text(), 'Edition')]/..")
-          &.children&.last&.text&.match(/\d+/)&.to_s
+        edition = doc.at("//div[div[.='Edition']]/text()[last()]")
+          &.text&.match(/\d+$/)&.to_s
         hit.pubid.edition = edition if edition
 
         titles, abstract, langs = fetch_titles_abstract(doc, lang)
@@ -239,21 +239,20 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @return [Hash]
       def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity
-        wg_link = doc.css("div.entry-name.entry-block a")[0]
-        # wg_url = DOMAIN + wg_link['href']
+        wg = doc.at("//div[@class='clearfix']")
+        wg_link = wg.at "span/a"
         workgroup = wg_link.text.split "/"
         type = workgroup[1]&.match(/^[A-Z]+/)&.to_s || "TC"
         {
           name: "International Organization for Standardization",
           abbreviation: "ISO",
           url: "www.iso.org",
-          technical_committee: [{
-            name: doc.css("div.entry-title")[0].text,
-            identifier: wg_link.text,
-            type: type,
-            number: workgroup[1]&.match(/\d+/)&.to_s&.to_i,
-          }],
         }
+        tc_numb = workgroup[1]&.match(/\d+/)&.to_s&.to_i
+        tc_name = wg.at("span[@class='entry-title']").text
+        tc = RelatonBib::WorkGroup.new(name: tc_name, identifier: wg_link.text,
+                                       type: type, number: tc_numb)
+        RelatonIsoBib::EditorialGroup.new(technical_committee: [tc])
       end
 
       # rubocop:disable Metrics/MethodLength
@@ -266,7 +265,7 @@ module RelatonIso
         doc.xpath("//ul[@class='steps']/li", "//div[@class='sub-step']").reduce([]) do |a, r|
           r_type = r.at("h4", "h5").text
           date = []
-          type = case r_type
+          type = case r_type.strip
                  when "Previously", "Will be replaced by" then "obsoletes"
                  when "Corrigenda / Amendments", "Revised by", "Now confirmed"
                    on = doc.xpath('//span[@class="stage-date"][contains(., "-")]').last
@@ -374,8 +373,7 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
       def fetch_ics(doc)
-        doc.xpath("//strong[contains(text(), "\
-                  "'ICS')]/../following-sibling::dd/div/a").map do |i|
+        doc.xpath("//dl[dt/strong[.='ICS']]/dd/span/a").map do |i|
           code = i.text.match(/[\d.]+/).to_s.split "."
           { field: code[0], group: code[1], subgroup: code[2] }
         end
