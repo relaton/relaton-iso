@@ -92,13 +92,13 @@ module RelatonIso
 
         # filter by year
         hits = hit_collection.select do |hit|
-          if hit.pubid.year == year
+          if hit.pubid.year.to_s == year.to_s
             true
           elsif hit.pubid.year.nil? && hit.hit[:year].to_s == year
             hit.pubid.year = year
             true
           else
-            missed_year = hit.pubid.year || hit.hit[:year].to_s
+            missed_year = (hit.pubid.year || hit.hit[:year]).to_s
             if missed_year && !missed_year.empty? && !missed_years.include?(missed_year)
               missed_years << missed_year
             end
