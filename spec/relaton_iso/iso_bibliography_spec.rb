@@ -282,7 +282,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch correction" do
       VCR.use_cassette "iso_19110_amd_1_2011" do
-        result = RelatonIso::IsoBibliography.get("ISO 19110/Amd 1:2011", "2005")
+        result = RelatonIso::IsoBibliography.get("ISO 19110:2005/Amd 1:2011", "2005")
         expect(result.docidentifier.first.id).to eq "ISO 19110:2005/Amd 1:2011"
       end
     end
