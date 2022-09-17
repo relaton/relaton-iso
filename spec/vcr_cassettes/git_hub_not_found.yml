@@ -37,33 +37,92 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       X-Github-Request-Id:
-      - '080E:A0AA:7048AD:779E76:63243492'
+      - '0817:34DD:587CF0:634984:63259C49'
       Accept-Ranges:
       - bytes
       Date:
-      - Fri, 16 Sep 2022 08:32:19 GMT
+      - Sat, 17 Sep 2022 10:07:05 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-sof1510022-SOF
+      - cache-sof1510062-SOF
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1663317139.769034,VS0,VE284
+      - S1663409225.138835,VS0,VE190
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 62ec8735f67d28ec251d1ac3d0efd9a51aec6398
+      - 81cd7512d7dc36159d069e93f870c883c3947458
       Expires:
-      - Fri, 16 Sep 2022 08:37:19 GMT
+      - Sat, 17 Sep 2022 10:12:05 GMT
       Source-Age:
       - '0'
     body:
       encoding: UTF-8
       string: '404: Not Found'
-  recorded_at: Fri, 16 Sep 2022 08:32:18 GMT
+  recorded_at: Sat, 17 Sep 2022 10:07:05 GMT
+- request:
+    method: post
+    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
+    body:
+      encoding: UTF-8
+      string: '{"query":"ISO/IEC TC 184/SC 4 N111","hitsPerPage":100,"filters":"category:standard"}'
+    headers:
+      User-Agent:
+      - Algolia for Ruby (2.2.5), Ruby (3.0.0)
+      X-Algolia-Api-Key:
+      - dd1b9e1ab383f4d4817d29cd5e96d3f0
+      X-Algolia-Application-Id:
+      - JCL49WV5AR
+      Content-Type:
+      - application/json; charset=utf-8
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '30'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sat, 17 Sep 2022 10:07:05 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '328'
+      Connection:
+      - keep-alive
+      X-Alg-Pt:
+      - '1'
+      Accept-Encoding:
+      - deflate, gzip
+      Cache-Control:
+      - no-store
+      Access-Control-Allow-Origin:
+      - "*"
+      Timing-Allow-Origin:
+      - "*"
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Content-Disposition:
+      - inline; filename=a.txt
+    body:
+      encoding: UTF-8
+      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO/IEC
+        TC 184/SC 4 N111","params":"query=ISO%2FIEC+TC+184%2FSC+4+N111&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"total":1}}'
+  recorded_at: Sat, 17 Sep 2022 10:07:05 GMT
 recorded_with: VCR 6.1.0
