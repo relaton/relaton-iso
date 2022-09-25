@@ -62,7 +62,7 @@ RSpec.describe RelatonIso::Scrapper do
 
     let(:source_pubid) { "ISO 19115:2003" }
     let(:pubid) { "ISO 19115:2003(en,fr)" }
-    let(:urn) { "urn:iso:std:iso:19115:stage-90.93:en,fr" }
+    let(:urn) { "urn:iso:std:iso:19115:en,fr" }
     let(:edition) { "3" }
     let(:langs) { [{ lang: "en" }, { lang: "fr", path: "/fr/standard/3569.html" }] }
     let(:stage) { 90.93 }

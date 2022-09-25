@@ -124,7 +124,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   describe "#get" do
     let(:pubid) { "ISO 19115-1" }
-    let(:urn) { "urn:iso:std:iso:19115:-1:stage-90.93:ed-1" }
+    let(:urn) { "urn:iso:std:iso:19115:-1:ed-1" }
 
     context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
       subject { described_class.get(pubid, nil, {}) }
@@ -146,7 +146,7 @@ RSpec.describe RelatonIso::IsoBibliography do
             vcr: { cassette_name: "iso_19115_all_parts" } do
       let(:xml) { subject.to_xml bibdata: true }
       let(:pubid_all_parts) { "ISO 19115 (all parts)" }
-      let(:urn_all_parts) { "urn:iso:std:iso:19115:stage-90.93:ed-1:ser" }
+      let(:urn_all_parts) { "urn:iso:std:iso:19115:ed-1:ser" }
 
       shared_examples "all_parts" do
         it "returns (all parts) as identifier part" do
