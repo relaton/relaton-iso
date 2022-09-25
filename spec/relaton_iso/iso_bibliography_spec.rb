@@ -250,7 +250,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_2015" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
           .to output(
-            /There was no match for 2015, though there were matches found for 2003/,
+            /TIP: No match for edition year 2015, but matches exist for 2003/,
           ).to_stderr
       end
     end
@@ -259,7 +259,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_19115_30_2014" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115-30", "2014", {}) }
           .to output(
-            /The provided document part may not exist, or the document may no /,
+            /TIP: If it cannot be found, the document may no longer be published in parts/,
           ).to_stderr
       end
     end
@@ -268,7 +268,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_00000_2014" do
         expect { RelatonIso::IsoBibliography.get("ISO 00000", "2014", {}) }
           .to output(
-            /If you wanted to cite all document parts for the reference/,
+            /If you wish to cite all document parts for the reference/,
           ).to_stderr
       end
     end
