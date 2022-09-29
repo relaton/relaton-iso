@@ -303,7 +303,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch WD Amd" do
       VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
+        result = RelatonIso::IsoBibliography.get "ISO/IEC FDIS 23008-1/WD Amd 1"
         expect(result.docidentifier.first.id).to eq "ISO/IEC FDIS 23008-1/WD Amd 1"
       end
     end
