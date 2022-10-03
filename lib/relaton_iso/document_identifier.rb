@@ -1,7 +1,7 @@
 module RelatonIso
   class DocumentIdentifier < RelatonBib::DocumentIdentifier
     def id
-      id_str = @id.to_s.sub(/\sED\d+/, "")
+      id_str = @id.to_s(format: :ref_num_long).sub(/\sED\d+/, "")
       if @all_parts
         if type == "URN"
           return "#{@id.urn}:ser"

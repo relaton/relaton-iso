@@ -210,7 +210,10 @@ module RelatonIso
         warn "[relaton-iso] (\"#{query_pubid}\") Fetching from ISO..."
 
         # fetch hits collection
-        hit_collection = search(query_pubid.to_s(with_date: false))
+        query_pubid_without_year = query_pubid.dup
+        # remove year for query
+        query_pubid_without_year.year = nil
+        hit_collection = search(query_pubid_without_year.to_s(with_date: false))
 
         # filter only matching hits
         res = filter_hits hit_collection, query_pubid, all_parts: opts[:all_parts]
