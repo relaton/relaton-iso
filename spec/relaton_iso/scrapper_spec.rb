@@ -61,10 +61,9 @@ RSpec.describe RelatonIso::Scrapper do
     end
 
     let(:source_pubid) { "ISO 19115:2003" }
-    let(:pubid) { "ISO 19115:2003(en,fr)" }
-    let(:urn) { "urn:iso:std:iso:19115:en,fr" }
+    let(:pubid) { "ISO 19115:2003" }
+    let(:urn) { "urn:iso:std:iso:19115" }
     let(:edition) { "3" }
-    let(:langs) { [{ lang: "en" }, { lang: "fr", path: "/fr/standard/3569.html" }] }
     let(:stage) { 90.93 }
 
     it "returns PubID and URN RelatonBib document identifiers" do
