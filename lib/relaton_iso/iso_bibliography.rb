@@ -41,10 +41,8 @@ module RelatonIso
         resp = isobib_search_filter(query_pubid, opts)
 
         # Try with ISO/IEC prefix if ISO not found
-        if resp[:hits].empty? &&
-          query_pubid.copublisher.nil? &&
-          query_pubid.publisher == "ISO"
-
+        if resp[:hits].empty? && query_pubid.copublisher.nil? &&
+            query_pubid.publisher == "ISO"
           resp_isoiec = retry_isoiec_prefix(query_pubid, opts)
           resp = resp_isoiec unless resp_isoiec.nil?
         end
