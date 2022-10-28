@@ -98,7 +98,7 @@ module RelatonIso
       # @return [Array<RelatonBib::DocumentIdentifier>]
       #
       def fetch_relaton_docids(doc, pubid)
-        pubid.urn_stage = stage_code(doc).to_f
+        pubid.stage = Pubid::Iso::Stage.new(harmonized_code: stage_code(doc))
         [
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
@@ -226,7 +226,7 @@ module RelatonIso
       end
 
       def stage_code(doc)
-        doc.at("//ul[@class='dropdown-menu']/li[@class='active']"\
+        doc.at("//ul[@class='dropdown-menu']/li[@class='active']" \
                "/a/span[@class='stage-code']").text
       end
 

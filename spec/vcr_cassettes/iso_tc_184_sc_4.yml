@@ -23,7 +23,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '598'
+      - '601'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -31,7 +31,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"e08e0d8addf774e17f636a425dd87ec5334e0c6a09d4107ab0b1384eedea939e"
+      - W/"ad2f4300b25ed10507979e242050100029c6d8e39b67bf457ccef1a24735291d"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -41,29 +41,29 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - '0815:7212:23325C:2EF140:6351E2E7'
+      - '080F:618D:5038DA:6BC22C:635B4CE7'
       Accept-Ranges:
       - bytes
       Date:
-      - Fri, 21 Oct 2022 00:08:07 GMT
+      - Fri, 28 Oct 2022 03:30:47 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-iad-kcgs7200109-IAD
+      - cache-iad-kjyo7100045-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1666310887.454544,VS0,VE112
+      - S1666927848.715866,VS0,VE98
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - fad4071d064acc45d5fd0983381b1f246cb50380
+      - 6bb17ea231650aec0d3f252a528a2249570dccbc
       Expires:
-      - Fri, 21 Oct 2022 00:13:07 GMT
+      - Fri, 28 Oct 2022 03:35:47 GMT
       Source-Age:
       - '0'
     body:
@@ -98,7 +98,8 @@ http_interactions:
             name: International Organization for Standardization
             abbreviation: ISO
             url: www.iso.org
-          role: publisher
+          role:
+          - type: publisher
         revdate: '2000-11-08'
         language: en
         script: Latn
@@ -127,5 +128,5 @@ http_interactions:
         structuredidentifier:
           project_number: ISO/TC 184/SC 4 N1110
           tc_document_number: '1110'
-  recorded_at: Fri, 21 Oct 2022 00:08:07 GMT
+  recorded_at: Fri, 28 Oct 2022 03:30:47 GMT
 recorded_with: VCR 6.1.0

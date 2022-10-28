@@ -1,7 +1,7 @@
 module RelatonIso
   class DocumentIdentifier < RelatonBib::DocumentIdentifier
     def id
-      id_str = @id.to_s.sub(/\sED\d+/, "")
+      id_str = @id.to_s.sub(/\sED\d+/, "").squeeze(" ").sub(/^ISO\/\s/, "ISO ") # workarounds for pubid gem bugs
       if @all_parts
         if type == "URN"
           return "#{@id.urn}:ser"

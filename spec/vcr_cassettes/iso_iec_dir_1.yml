@@ -23,7 +23,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '388'
+      - '395'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -31,7 +31,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"067e8ce28556d1cf782212aa21668d9ff77d3939c4b38adf3617ca1832fc37f9"
+      - W/"e1ff27f683c8cf0a41661a3d1b3c263618397112fe390ecd2aa26e30104847fb"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -41,29 +41,29 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - '081A:8EB7:CF94E:16C68A:6351E2EB'
+      - '080A:6E92:20C941:38035A:635B4CEB'
       Accept-Ranges:
       - bytes
       Date:
-      - Fri, 21 Oct 2022 00:08:11 GMT
+      - Fri, 28 Oct 2022 03:30:51 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-iad-kjyo7100059-IAD
+      - cache-iad-kjyo7100101-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1666310891.481340,VS0,VE120
+      - S1666927851.273214,VS0,VE66
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 1dcaa80feeb1d5d8e4e8093670f321fe5eff93fe
+      - 591798b9d93eef257f354e708924437a7144cc0a
       Expires:
-      - Fri, 21 Oct 2022 00:13:11 GMT
+      - Fri, 28 Oct 2022 03:35:51 GMT
       Source-Age:
       - '0'
     body:
@@ -79,7 +79,8 @@ http_interactions:
         - type: obp
           content: https://www.iec.ch/members_experts/refdocs/iec/isoiecdir1%7Bed15.0%7Den.pdf
 
-        type: directives
+        type: standard
+        doctype: directive
 
         docid:
           id: ISO/IEC DIR 1
@@ -112,5 +113,5 @@ http_interactions:
                 - id: ISO/IEC DIR
                   type: ISO
                   primary: true
-  recorded_at: Fri, 21 Oct 2022 00:08:11 GMT
+  recorded_at: Fri, 28 Oct 2022 03:30:51 GMT
 recorded_with: VCR 6.1.0
