@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
-  <bibitem id="ISO/IS19115-2-2019" type="standard">
+  <bibitem id="ISO19115-2-2019" type="standard">
     <fetched>2022-10-27</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
@@ -60,7 +60,7 @@
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO/IS19115-2-2019/Amd1-2022" type="standard">
+  <bibitem id="ISO19115-2-2019/Amd1-2022" type="standard">
     <fetched>2022-10-27</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
@@ -108,7 +108,7 @@
     </copyright>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISOTS19115-3-2016" type="standard">
+  <bibitem id="ISO/TS19115-3-2016" type="standard">
     <fetched>2022-10-27</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
@@ -121,7 +121,7 @@
     <uri type="src">https://www.iso.org/standard/32579.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</uri>
-    <docidentifier type="ISO" primary="true">ISO TS 19115-3:2016</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO/TS 19115-3:2016</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso:ts:19115:-3:ed-1</docidentifier>
     <docnumber>19115</docnumber>
     <date type="published">
@@ -171,7 +171,7 @@ This implementation model does not alter the semantics of the target conceptual 
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISOTS19157-2-2016" type="standard">
+  <bibitem id="ISO/TS19157-2-2016" type="standard">
     <fetched>2022-10-27</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
@@ -184,7 +184,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <uri type="src">https://www.iso.org/standard/66197.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:66197:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/06/61/66197.detail.rss</uri>
-    <docidentifier type="ISO" primary="true">ISO TS 19157-2:2016</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO/TS 19157-2:2016</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso:ts:19157:-2:ed-1</docidentifier>
     <docnumber>19157</docnumber>
     <date type="published">
@@ -273,7 +273,7 @@ This implementation model does not alter the semantics of the target conceptual 
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISOTS19139-2-2012" type="standard">
+  <bibitem id="ISO/TS19139-2-2012" type="standard">
     <fetched>2022-10-27</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
@@ -285,7 +285,7 @@ This implementation model does not alter the semantics of the target conceptual 
     <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Mise en oeuvre par des schémas XML -- Partie 2: Extension pour l'imagerie et les données maillées</title>
     <uri type="src">https://www.iso.org/standard/57104.html</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/05/71/57104.detail.rss</uri>
-    <docidentifier type="ISO" primary="true">ISO TS 19139-2:2012</docidentifier>
+    <docidentifier type="ISO" primary="true">ISO/TS 19139-2:2012</docidentifier>
     <docidentifier type="URN">urn:iso:std:iso:ts:19139:-2:ed-1</docidentifier>
     <docnumber>19139</docnumber>
     <date type="published">
