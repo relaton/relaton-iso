@@ -117,7 +117,8 @@ module RelatonIso
 
         # filter by year
         hits = hit_collection.select do |hit|
-          if hit.pubid.year.to_s == year.to_s
+          if (hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s) ||
+            (!hit.pubid.base.nil? && hit.pubid.base.year.to_s == year.to_s)
             true
           elsif hit.pubid.year.nil? && hit.hit[:year].to_s == year
             hit.pubid.year = year
