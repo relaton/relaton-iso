@@ -124,7 +124,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   describe "#get" do
     let(:pubid) { "ISO 19115-1" }
-    let(:urn) { "urn:iso:std:iso:19115:-1:stage-90.93:ed-1" }
+    let(:urn) { "urn:iso:std:iso:19115:-1:ed-1" }
 
     context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
       subject { described_class.get(pubid, nil, {}) }
@@ -146,7 +146,7 @@ RSpec.describe RelatonIso::IsoBibliography do
             vcr: { cassette_name: "iso_19115_all_parts" } do
       let(:xml) { subject.to_xml bibdata: true }
       let(:pubid_all_parts) { "ISO 19115 (all parts)" }
-      let(:urn_all_parts) { "urn:iso:std:iso:19115:stage-90.93:ed-1:ser" }
+      let(:urn_all_parts) { "urn:iso:std:iso:19115:ed-1:ser" }
 
       shared_examples "all_parts" do
         it "returns (all parts) as identifier part" do
@@ -297,21 +297,21 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch CD Amd" do
       VCR.use_cassette "iso_16063_1_1999_cd_amd_2" do
         result = RelatonIso::IsoBibliography.get "ISO 16063-1:1998/CD Amd 2"
-        expect(result.docidentifier.first.id).to eq "ISO/CD 16063-1:1998/CD Amd 2"
+        expect(result.docidentifier.first.id).to eq "ISO 16063-1:1998/CD Amd 2"
       end
     end
 
     it "fetch WD Amd" do
       VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
         result = RelatonIso::IsoBibliography.get "ISO/IEC FDIS 23008-1/WD Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO/IEC WD 23008-1/WD Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC FDIS 23008-1/WD Amd 1"
       end
     end
 
     it "fetch AWI Amd" do
       VCR.use_cassette "iso_10844_2014_awi_amd_1" do
         result = RelatonIso::IsoBibliography.get "ISO 10844:2014/AWI Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO/WD 10844:2014/AWI Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO 10844:2014/AWI Amd 1"
       end
     end
 
@@ -345,6 +345,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
+    it "fetch ISO 125:2020" do
+      VCR.use_cassette "iso_125_2020" do
+        result = RelatonIso::IsoBibliography.get "ISO 125:2020", nil, {}
+        expect(result.docidentifier.first.id).to eq "ISO 125:2020"
+      end
+    end
+
     it "fetch public guide" do
       VCR.use_cassette "iso_guide_82_2019" do
         result = RelatonIso::IsoBibliography.get "ISO Guide 82:2019", nil, {}
@@ -371,7 +378,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch ISO 19105:2022" do
       VCR.use_cassette "iso_19105_2022" do
         result = RelatonIso::IsoBibliography.get "ISO 19105:2022"
-        expect(result.docidentifier[0].id).to eq "ISO/IS 19105:2022"
+        expect(result.docidentifier[0].id).to eq "ISO 19105:2022"
       end
     end
 
@@ -400,14 +407,14 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "ISO" do
         VCR.use_cassette "iso_22934" do
           result = RelatonIso::IsoBibliography.get "ISO 22934", nil, {}
-          expect(result.docidentifier.first.id).to eq "ISO/IS 22934"
+          expect(result.docidentifier.first.id).to eq "ISO 22934"
         end
       end
 
       it "ISO/IEC" do
         VCR.use_cassette "iso_iec_tr_29110_5_1_3_2017" do
           result = RelatonIso::IsoBibliography.get "ISO/IEC 29110-5-1-3:2017"
-          expect(result.docidentifier.first.id).to eq "ISO/IEC TR IS 29110-5-1-3:2017"
+          expect(result.docidentifier.first.id).to eq "ISO/IEC TR 29110-5-1-3:2017"
         end
       end
 

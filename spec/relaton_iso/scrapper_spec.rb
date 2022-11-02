@@ -62,7 +62,7 @@ RSpec.describe RelatonIso::Scrapper do
 
     let(:source_pubid) { "ISO 19115:2003" }
     let(:pubid) { "ISO 19115:2003" }
-    let(:urn) { "urn:iso:std:iso:19115:stage-90.93" }
+    let(:urn) { "urn:iso:std:iso:19115" }
     let(:edition) { "3" }
     let(:stage) { 90.93 }
 
