@@ -237,16 +237,18 @@ module RelatonIso
       # Fetch workgroup.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Hash]
-      def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity
+      def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         wg = doc.at("//div[@class='clearfix']")
         wg_link = wg.at "span/a"
+        return unless wg_link
+
         workgroup = wg_link.text.split "/"
         type = workgroup[1]&.match(/^[A-Z]+/)&.to_s || "TC"
-        {
-          name: "International Organization for Standardization",
-          abbreviation: "ISO",
-          url: "www.iso.org",
-        }
+        # {
+        #   name: "International Organization for Standardization",
+        #   abbreviation: "ISO",
+        #   url: "www.iso.org",
+        # }
         tc_numb = workgroup[1]&.match(/\d+/)&.to_s&.to_i
         tc_name = wg.at("span[@class='entry-title']").text
         tc = RelatonBib::WorkGroup.new(name: tc_name, identifier: wg_link.text,
