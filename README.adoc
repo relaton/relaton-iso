@@ -46,18 +46,40 @@ hit_collection.first
 
 item = hit_collection[2].fetch
 => #<RelatonIsoBib::IsoBibliographicItem:0x007fa5dca89510
- @abstract=
-  [#<RelatonBib::FormattedString:0x007fa5dca88458
-    @content=
-     "ISO/TS 19115-3:2016 defines an integrated XML implementation of ISO 19115‑1, ..."
 ...
 
 item.docidentifier
-=> [#<RelatonBib::DocumentIdentifier:0x007fd9ce9c6878 @id="ISO/TS 19115-3:2016", @scope=nil, @type="ISO">,
- #<RelatonBib::DocumentIdentifier:0x007fd9ce9c6350 @id="urn:iso:std:iso-ts:ts:19115:-3:stage-90.92:ed-1:en,fr", @scope=nil, @type="URN">]
+=> [#<RelatonIso::DocumentIdentifier:0x00007fa8b7db1f20
+  @id=
+   #<Pubid::Iso::Identifier:0x00007fa8b7db2a60
+    @base=#<Pubid::Iso::Identifier:0x00007fa8b7db2c68 @edition="1", @number="19115"@4, @part="1", @publisher="ISO", @year=2014>,
+    @number="2"@21,
+    @publisher="ISO",
+    @stage=#<Pubid::Iso::Stage:0x00007fa8b7db20d8 @abbr=nil, @harmonized_code=#<Pubid::Iso::HarmonizedStageCode:0x00007fa8b7db2088 @stages=["60.60"]>>,
+    @typed_stage=#<Pubid::Iso::TypedStage:0x00007fa8b7db2920 @type=#<Pubid::Iso::Type:0x00007fa8b7db26c8 @type=:amd>, @typed_stage=nil>,
+    @year=2020>,
+  @language=nil,
+  @primary=true,
+  @scope=nil,
+  @script=nil,
+  @type="ISO">,
+ #<RelatonIso::DocumentIdentifier:0x00007fa8b7db1e80
+  @id=
+   #<Pubid::Iso::Identifier:0x00007fa8b7db2a60
+    @base=#<Pubid::Iso::Identifier:0x00007fa8b7db2c68 @edition="1", @number="19115"@4, @part="1", @publisher="ISO", @year=2014>,
+    @number="2"@21,
+    @publisher="ISO",
+    @stage=#<Pubid::Iso::Stage:0x00007fa8b7db20d8 @abbr=nil, @harmonized_code=#<Pubid::Iso::HarmonizedStageCode:0x00007fa8b7db2088 @stages=["60.60"]>>,
+    @typed_stage=#<Pubid::Iso::TypedStage:0x00007fa8b7db2920 @type=#<Pubid::Iso::Type:0x00007fa8b7db26c8 @type=:amd>, @typed_stage=nil>,
+    @year=2020>,
+  @language=nil,
+  @primary=nil,
+  @scope=nil,
+  @script=nil,
+  @type="URN">]
 
- item.docidentifier.detect { |di| di.type == "URN" }.id
-=> "urn:iso:std:iso-ts:ts:19115:-3:stage-90.92:ed-1:en,fr"
+item.docidentifier.detect { |di| di.type == "URN" }.id
+=> "urn:iso:std:iso:19115:-1:ed-1:amd:2020:v2"
 ----
 
 === Fetch document by reference and year
@@ -65,14 +87,14 @@ item.docidentifier
 [source,ruby]
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115:2003"
-[relaton-iso] ("ISO 19115:2003") fetching...
-[relaton-iso] ("ISO 19115:2003") found ISO 19115:2003
+[relaton-iso] ("ISO 19115:2003") fetching from ISO...
+[relaton-iso] ("ISO 19115:2003") Found exact match.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c83429e30
 ...
 
 item = RelatonIso::IsoBibliography.get "ISO 19115", "2003"
-[relaton-iso] ("ISO 19115") fetching...
-[relaton-iso] ("ISO 19115") found ISO 19115:2003
+[relaton-iso] ("ISO 19115") fetching from ISO...
+[relaton-iso] ("ISO 19115:2003") Found exact match.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c828d3180
 ...
 
@@ -85,8 +107,8 @@ item.docidentifier[0].id
 [source,ruby]
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115"
-[relaton-iso] ("ISO 19115") fetching...
-[relaton-iso] ("ISO 19115") found ISO 19115:2003
+[relaton-iso] ("ISO 19115") fetching from ISO...
+[relaton-iso] ("ISO 19115") Found ("ISO 19115:2003").
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c830275a8
 ...
 
@@ -94,18 +116,18 @@ item.docidentifier[0].id
 => "ISO 19115:2003"
 ----
 
-=== Fetch part document
+=== Fetch a part document
 
 [source,ruby]
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115-1"
-[relaton-iso] ("ISO 19115-1") fetching...
-[relaton-iso] ("ISO 19115-1") found ISO 19115-1:2014
+[relaton-iso] ("ISO 19115-1") fetching from ISO...
+[relaton-iso] ("ISO 19115-1") Found ("ISO 19115-1:2014").
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c83408af0
 ...
 
 item.docidentifier[0].id
-=> "ISO 19115-1:2014"
+=> "ISO 19115-1"
 ----
 
 === Fetch all-parts document
@@ -113,14 +135,14 @@ item.docidentifier[0].id
 [source,ruby]
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115 (all parts)"
-[relaton-iso] ("ISO 19115") fetching...
-[relaton-iso] ("ISO 19115") found ISO 19115 (all parts)
+[relaton-iso] ("ISO 19115") Fetching from ISO...
+[relaton-iso] ("ISO 19115") Found exact match.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8ca216e118
 ...
 
 item = RelatonIso::IsoBibliography.get "ISO 19115", nil, all_parts: true
-[relaton-iso] ("ISO 19115") fetching...
-[relaton-iso] ("ISO 19115") found ISO 19115 (all parts)
+[relaton-iso] ("ISO 19115") Fetching from ISO...
+[relaton-iso] ("ISO 19115") Found exact match.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c830f3d38
 ...
 
@@ -128,13 +150,13 @@ item.docidentifier[0].id
 => "ISO 19115 (all parts)"
 
 item = RelatonIso::IsoBibliography.get "ISO 19115-1 (all parts)"
-[relaton-iso] ("ISO 19115-1") fetching...
-[relaton-iso] ("ISO 19115-1") found ISO 19115 (all parts)
+[relaton-iso] ("ISO 19115") Fetching from ISO...
+[relaton-iso] ("ISO 19115") Found exact match.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c8290e5a0
 
 item = RelatonIso::IsoBibliography.get "ISO 19115-1", nil, all_parts: true
-[relaton-iso] ("ISO 19115-1") fetching...
-[relaton-iso] ("ISO 19115-1") found ISO 19115 (all parts)
+[relaton-iso] ("ISO 19115") Fetching from ISO...
+[relaton-iso] ("ISO 19115") Found exact match.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c925355b8
 ...
 
@@ -144,7 +166,7 @@ item.docidentifier[0].id
 
 === Search for ISO/IEC Directives
 
-The ISO/IEC Derectives are stored in a static cache in a relaton gem. It needs to use the relaton gem to fetch the ISO/IEC Directives. Folloving reaferences are allowed to fetch:
+The ISO/IEC Directives are stored in a static cache in a relaton gem. It needs to use the relaton gem to fetch the ISO/IEC Directives. The following references are allowed to fetch:
 
 - ISO/IEC DIR 1 - Procedures for the technical work
 - ISO/IEC DIR 1 IEC SUP - Procedures for the technical work – Procedures specific to IEC
@@ -164,48 +186,30 @@ Possible options:
 [source,ruby]
 ----
 item.to_xml
-"<bibitem id="ISO/TS19115-3-2016" type="standard">
-  <fetched>2020-09-11</fetched>
-  <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
-  <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
-  <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
-  <title type="main" format="text/plain" language="en" script="Latn">Geographic information -  Metadata - Part 3: XML schema implementation for fundamental concepts</title>
-  <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
-  <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
-  <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 3: Mise en oeuvre par des schémas XML</title>
-  <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 3: Mise en oeuvre par des schémas XML</title>
-  <uri type="src">https://www.iso.org/standard/32579.html</uri>
-  <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:32579:en</uri>
-  <uri type="rss">https://www.iso.org/contents/data/standard/03/25/32579.detail.rss</uri>
-  <docidentifier type="ISO">ISO/TS 19115-3:2016</docidentifier>
-  <docidentifier type="URN">urn:iso:std:iso-ts:ts:19115:-3:stage-90.92:ed-1:en,fr</docidentifier>
-  ...
-</bibitem>"
+=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.2.1">
+      <fetched>2022-12-04</fetched>
+      <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+      <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
+      ...
+    </bibitem>"
 
 item.to_xml bibdata: true
-=>"<bibdata type="standard">
-  ...
-  <ext>
-    <doctype>technical-specification</doctype>
-    <editorialgroup>
-      <technical-committee number="211" type="TC">ISO/TC 211Geographic information/Geomatics</technical-committee>
-    </editorialgroup>
-    <ics>
-      <code>35.240.70</code>
-      <text>IT applications in science</text>
-    </ics>
-    <structuredidentifier type="ISO">
-      <project-number>ISO/TS 19115</project-number>
-    </structuredidentifier>
-  </ext>
-</bibdata>"
+=> "<bibdata type="standard" schema-version="v1.2.1">
+      <fetched>2022-12-04</fetched>
+      <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+      ...
+      <ext schema-version="v1.0.0">
+        <doctype>international-standard</doctype>
+        ...
+      </ext>
+    </bibdata>"
 
 item.to_xml note: [{ text: "Note", type: "note" }]
-=>"<bibitem id="ISO19115-1-2014">
-  ...
-  <note format="text/plain" type="note">Note</note>
-  ...
-</bibitem>"
+=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.2.1">
+      ...
+      <note format="text/plain" type="note">Note</note>
+      ...
+    </bibitem>"
 ----
 
 === Get specific language
@@ -213,47 +217,51 @@ item.to_xml note: [{ text: "Note", type: "note" }]
 [source,ruby]
 ----
 item.title lang: 'en'
-=> [#<RelatonBib::TypedTitleString:0x007fd9aedcf390
-  @title=#<RelatonBib::FormattedString:0x007fd9aedcf250 @content="Geographic information", @format="text/plain", @language=["en"], @script=["Latn"]>,
-  @type="title-intro">,
- #<RelatonBib::TypedTitleString:0x007fd9aedcf188
-  @title=#<RelatonBib::FormattedString:0x007fd9aedcf048 @content=" Metadata", @format="text/plain", @language=["en"], @script=["Latn"]>,
-  @type="title-main">,
- #<RelatonBib::TypedTitleString:0x007fd9aedcef80
-  @title=#<RelatonBib::FormattedString:0x007fd9aedcee40 @content="Part 3: XML schema implementation for fundamental concepts", @format="text/plain", @language=["en"], @script=["Latn"]>,
-  @type="title-part">,
- #<RelatonBib::TypedTitleString:0x007fd9aedcecb0
-  @title=
-   #<RelatonBib::FormattedString:0x007fd9aedceb70
-    @content="Geographic information -  Metadata - Part 3: XML schema implementation for fundamental concepts",
-    @format="text/plain",
-    @language=["en"],
-    @script=["Latn"]>,
-  @type="main">]
+=> #<RelatonBib::TypedTitleStringCollection:0x00007fa8b7f47c90
+ @array=
+  [#<RelatonBib::TypedTitleString:0x00007fa8b7be8a40
+    @title=#<RelatonBib::FormattedString:0x00007fa8b7be87c0 @content="Geographic information", @format="text/plain", @language=["en"], @script=["Latn"]>,
+    @type="title-intro">,
+   #<RelatonBib::TypedTitleString:0x00007fa8b7be84a0
+    @title=#<RelatonBib::FormattedString:0x00007fa8b7be83d8 @content="Metadata", @format="text/plain", @language=["en"], @script=["Latn"]>,
+    @type="title-main">,
+   #<RelatonBib::TypedTitleString:0x00007fa8b7be8130
+    @title=
+     #<RelatonBib::FormattedString:0x00007fa8b7be8018
+      @content="Geographic information – Metadata",
+      @format="text/plain",
+      @language=["en"],
+      @script=["Latn"]>,
+    @type="main">]>
 
 item.title lang: 'fr'
-=> [#<RelatonBib::TypedTitleString:0x007fd9ce9c7890
-  @title=#<RelatonBib::FormattedString:0x007fd9ce9c7750 @content="Information géographique", @format="text/plain", @language=["fr"], @script=["Latn"]>,
-  @type="title-intro">,
- #<RelatonBib::TypedTitleString:0x007fd9ce9c7688
-  @title=#<RelatonBib::FormattedString:0x007fd9ce9c7548 @content="Métadonnées", @format="text/plain", @language=["fr"], @script=["Latn"]>,
-  @type="title-main">,
- #<RelatonBib::TypedTitleString:0x007fd9ce9c7480
-  @title=#<RelatonBib::FormattedString:0x007fd9ce9c7340 @content="Partie 3: Mise en oeuvre par des schémas XML", @format="text/plain", @language=["fr"], @script=["Latn"]>,
-  @type="title-part">,
- #<RelatonBib::TypedTitleString:0x007fd9ce9c71b0
-  @title=
-   #<RelatonBib::FormattedString:0x007fd9ce9c7070
-    @content="Information géographique - Métadonnées - Partie 3: Mise en oeuvre par des schémas XML",
-    @format="text/plain",
-    @language=["fr"],
-    @script=["Latn"]>,
-  @type="main">]
+=> #<RelatonBib::TypedTitleStringCollection:0x00007fa8b7bcb4b8
+ @array=
+  [#<RelatonBib::TypedTitleString:0x00007fa8b7be3ea0
+    @title=#<RelatonBib::FormattedString:0x00007fa8b7be3dd8 @content="Information géographique", @format="text/plain", @language=["fr"], @script=["Latn"]>,
+    @type="title-intro">,
+   #<RelatonBib::TypedTitleString:0x00007fa8b7be3ba8
+    @title=#<RelatonBib::FormattedString:0x00007fa8b7be3b58 @content="Métadonnées", @format="text/plain", @language=["fr"], @script=["Latn"]>,
+    @type="title-main">,
+   #<RelatonBib::TypedTitleString:0x00007fa8b7be38d8
+    @title=
+     #<RelatonBib::FormattedString:0x00007fa8b7be3860
+      @content="Information géographique – Métadonnées",
+      @format="text/plain",
+      @language=["fr"],
+      @script=["Latn"]>,
+    @type="main">]>
 
-  item.abstract lang: 'en'
-=> #<RelatonBib::FormattedString:0x007fd9ce9d9bd0
+item = RelatonIso::IsoBibliography.get "ISO 19115:2003"
+[relaton-iso] ("ISO 19115:2003") Fetching from ISO...
+[relaton-iso] ("ISO 19115:2003") Found exact match.
+=> #<RelatonIsoBib::IsoBibliographicItem:0x00007fa8870b69e0
+
+item.abstract lang: 'en'
+item.abstract lang: 'en'
+=> #<RelatonBib::FormattedString:0x00007fa8870b4f78
  @content=
-  "ISO/TS 19115-3:2016 defines an integrated XML implementation of ISO 19115‑1, ISO 19115‑2, and concepts ..."
+  "ISO 19115:2003 defines the schema required for describing geographic information ...",
  @format="text/plain",
  @language=["en"],
  @script=["Latn"]>
@@ -266,9 +274,16 @@ Each ISO document has `src` type link and optional `obp`, `rss`, and `pub` link 
 [source,ruby]
 ----
 item.link
-=> [#<RelatonBib::TypedUri:0x00007ffdf001eb90 @content=#<Addressable::URI:0xaa0 URI:https://www.iso.org/standard/53798.html>, @type="src">,
- #<RelatonBib::TypedUri:0x00007ffdf001e960 @content=#<Addressable::URI:0xab4 URI:https://www.iso.org/obp/ui/#!iso:std:53798:en>, @type="obp">,
- #<RelatonBib::TypedUri:0x00007ffdf001e7a8 @content=#<Addressable::URI:0xac8 URI:https://www.iso.org/contents/data/standard/05/37/53798.detail.rss>, @type="rss">]
+=> [#<RelatonBib::TypedUri:0x00007fa8870ac5a8
+  @content=#<Addressable::URI:0xcc6514 URI:https://www.iso.org/standard/26020.html>,
+  @language=nil,
+  @script=nil,
+  @type="src">,
+ #<RelatonBib::TypedUri:0x00007fa8870a7490
+  @content=#<Addressable::URI:0xcc6528 URI:https://www.iso.org/contents/data/standard/02/60/26020.detail.rss>,
+  @language=nil,
+  @script=nil,
+  @type="rss">]
 ----
 
 == Development

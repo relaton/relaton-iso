@@ -66,12 +66,12 @@ module RelatonIso
           warn "[relaton-iso] (\"#{query_pubid}\") Found exact match."
         elsif matches_base?(query_pubid, response_pubid)
           warn "[relaton-iso] (\"#{query_pubid}\") " \
-            "Found (\"#{response_pubid}\")."
+               "Found (\"#{response_pubid}\")."
         elsif matches_base?(query_pubid, response_pubid, any_types_stages: true)
           warn "[relaton-iso] (\"#{query_pubid}\") TIP: " \
-            "Found with different type/stage, " \
-            "please amend to (\"#{response_pubid}\")."
-          else
+               "Found with different type/stage, " \
+               "please amend to (\"#{response_pubid}\")."
+        else
           # when there are all parts
           warn "[relaton-iso] (\"#{query_pubid}\") Found (\"#{response_pubid}\")."
         end
@@ -118,9 +118,8 @@ module RelatonIso
         # filter by year
         hits = hit_collection.select do |hit|
           if (hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s) ||
-            (!hit.pubid.base.nil? && hit.pubid.base.year.to_s == year.to_s)
-            true
-          elsif (!hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s)
+              (!hit.pubid.base.nil? && hit.pubid.base.year.to_s == year.to_s) ||
+              (!hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s)
             true
           elsif hit.pubid.year.nil? && hit.hit[:year].to_s == year
             hit.pubid.year = year
@@ -156,8 +155,8 @@ module RelatonIso
 
         unless %w(TS TR PAS Guide).include?(query_pubid.type)
           warn "[relaton-iso] (\"#{query_pubid}\") TIP: " \
-              "If the document is not an International Standard, use its " \
-              "deliverable type abbreviation (TS, TR, PAS, Guide)."
+               "If the document is not an International Standard, use its " \
+               "deliverable type abbreviation (TS, TR, PAS, Guide)."
         end
 
         nil
@@ -167,8 +166,8 @@ module RelatonIso
       # @param missed_years [Array<String>]
       def warn_missing_years(pubid, missed_years)
         warn "[relaton-iso] (\"#{pubid}\") TIP: " \
-          "No match for edition year #{pubid.year}, " \
-          "but matches exist for #{missed_years.uniq.join(', ')}."
+             "No match for edition year #{pubid.year}, " \
+             "but matches exist for #{missed_years.uniq.join(', ')}."
       end
 
       # Search for hits using ISO/IEC prefix.
@@ -176,16 +175,12 @@ module RelatonIso
       # @param old_pubid [Pubid::Iso::Identifier] reference with ISO prefix
       # @param opts [Hash]
       # @return [Array<RelatonIso::Hit>]
-      def retry_isoiec_prefix(old_pubid, opts)
-        return nil unless (
-          old_pubid.copublisher.nil? &&
-          old_pubid.publisher == "ISO"
-        )
+      def retry_isoiec_prefix(old_pubid, opts) # rubocop:disable Metrics/MethodLength
+        return nil unless old_pubid.copublisher.nil? && old_pubid.publisher == "ISO"
 
         pubid = old_pubid.dup
         pubid.copublisher = "IEC"
-        warn "[relaton-iso] (\"#{old_pubid}\") Not found, " \
-          "trying with ISO/IEC prefix (\"#{pubid}\")..."
+        warn "[relaton-iso] (\"#{old_pubid}\") Not found, trying with ISO/IEC prefix (\"#{pubid}\")..."
         resp_isoiec = isobib_search_filter(pubid, opts)
 
         if resp_isoiec[:hits].empty?
@@ -193,9 +188,8 @@ module RelatonIso
           return nil
         end
 
-        warn "[relaton-iso] (\"#{pubid}\") TIP: " \
-          "Found with ISO/IEC prefix, " \
-          "please amend to (\"#{pubid}\")."
+        warn "[relaton-iso] (\"#{pubid}\") TIP: Found with ISO/IEC prefix, " \
+             "please amend to (\"#{pubid}\")."
 
         resp_isoiec
       end
@@ -219,12 +213,14 @@ module RelatonIso
         # filter only matching hits
         res = filter_hits hit_collection, query_pubid, all_parts: opts[:all_parts]
         return res unless res[:hits].empty?
+
         missed_years += res[:missed_years]
 
         # lookup for documents with stages when no match without stage
         res = filter_hits hit_collection, query_pubid,
                           all_parts: opts[:all_parts], any_types_stages: true
         return res unless res[:hits].empty?
+
         missed_years += res[:missed_years]
 
         if missed_years.any?
@@ -251,7 +247,6 @@ module RelatonIso
 
         filter_hits_by_year(result, query_pubid.year)
       end
-
     end
   end
 end

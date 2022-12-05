@@ -42,7 +42,7 @@ module RelatonIso
     #
     # @return [Array<RelatonIso::Hit]
     #
-    def fetch_github # rubocop:disable Metrics/AbcSize
+    def fetch_github # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       ref = text.gsub(/[\s\/]/, "_").upcase
       url = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/#{ref}.yaml"
       resp = Net::HTTP.get_response URI(url)
@@ -50,6 +50,7 @@ module RelatonIso
 
       hash = YAML.safe_load resp.body
       bib_hash = RelatonIsoBib::HashConverter.hash_to_bib hash
+      bib_hash[:fetched] = Date.today.to_s
       bib = RelatonIsoBib::IsoBibliographicItem.new(**bib_hash)
       hit = Hit.new({ title: text }, self)
       hit.fetch = bib
