@@ -42,6 +42,9 @@ module RelatonIso
     # @return [Pubid::Iso::Identifier]
     def pubid
       @pubid ||= Pubid::Iso::Identifier.parse_from_title(hit[:title])
+    rescue Pubid::Iso::Errors::WrongTypeError => e
+      warn "[relaton-iso] unable to find an identifier in \"#{hit[:title]}\"."
+      warn "[relaton-iso] #{e.message}"
     end
   end
 end

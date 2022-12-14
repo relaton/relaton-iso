@@ -100,7 +100,18 @@ module RelatonIso
         query_pubid.part == pubid.part
       end
 
+      #
+      # Matches base of query_pubid and pubid.
+      #
+      # @param [Pubid::Iso::Identifier] query_pubid pubid to match
+      # @param [Pubid::Iso::Identifier] pubid pubid to match
+      # @param [Boolean] any_types_stages match with any types and stages
+      #
+      # @return [<Type>] <description>
+      #
       def matches_base?(query_pubid, pubid, any_types_stages: false) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics?PerceivedComplexity
+        return unless pubid
+
         query_pubid.publisher == pubid.publisher &&
           query_pubid.number == pubid.number &&
           query_pubid.copublisher == pubid.copublisher &&

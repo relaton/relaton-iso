@@ -303,8 +303,8 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch WD Amd" do
       VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO/IEC FDIS 23008-1/WD Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO/IEC FDIS 23008-1/WD Amd 1"
+        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1/WD Amd 1"
       end
     end
 
@@ -401,6 +401,11 @@ RSpec.describe RelatonIso::IsoBibliography do
         result = RelatonIso::IsoBibliography.get "ISO 6709:2008/Cor 1:2009"
         expect(result.docidentifier[0].id).to eq "ISO 6709:2008/Cor 1:2009"
       end
+    end
+
+    it "fetch ISO/IEC 10646", vcr: "iso_iec_10646" do
+      result = RelatonIso::IsoBibliography.get "ISO/IEC 10646"
+      expect(result.docidentifier[0].id).to eq "ISO/IEC 10646"
     end
 
     context "try to fetch stages" do
