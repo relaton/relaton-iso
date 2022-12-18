@@ -408,6 +408,11 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(result.docidentifier[0].id).to eq "ISO/IEC 10646"
     end
 
+    it "ISO/IEC Guide 2:1991", vcr: "iso_iec_guide_2_1991" do
+      result = RelatonIso::IsoBibliography.get "ISO/IEC Guide 2:1991"
+      expect(result.docidentifier[0].id).to eq "ISO/IEC Guide 2:1991"
+    end
+
     context "try to fetch stages" do
       it "ISO" do
         VCR.use_cassette "iso_22934" do

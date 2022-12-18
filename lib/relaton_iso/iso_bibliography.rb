@@ -110,7 +110,7 @@ module RelatonIso
       # @return [<Type>] <description>
       #
       def matches_base?(query_pubid, pubid, any_types_stages: false) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics?PerceivedComplexity
-        return unless pubid
+        return unless pubid.respond_to?(:publisher)
 
         query_pubid.publisher == pubid.publisher &&
           query_pubid.number == pubid.number &&
