@@ -59,8 +59,7 @@ module RelatonIso
         # puts "xxxxx #{ret.docidentifier.first.id.inspect}"
         response_docid = ret.docidentifier.first.id.sub(" (all parts)", "")
         response_pubid = Pubid::Iso::Identifier.parse(response_docid)
-
-        puts "xxxxx query_pubid(#{query_pubid}) response_pubid(#{response_pubid})"
+        # puts "xxxxx query_pubid(#{query_pubid}) response_pubid(#{response_pubid})"
 
         if query_pubid.to_s == response_pubid.to_s
           warn "[relaton-iso] (\"#{query_pubid}\") Found exact match."
