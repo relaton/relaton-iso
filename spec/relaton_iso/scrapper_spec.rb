@@ -1,23 +1,4 @@
 RSpec.describe RelatonIso::Scrapper do
-  it "follow http redirect" do
-    resp1 = double "response"
-    expect(resp1).to receive(:code).and_return "301"
-    expect(resp1).to receive(:[]).with("location").and_return "/new_path"
-    uri1 = URI "#{RelatonIso::Scrapper::DOMAIN}/path"
-    expect(Net::HTTP).to receive(:get_response).with(uri1).and_return resp1
-
-    resp2 = double "response"
-    expect(resp2).to receive(:body).and_return(
-      "<html><body></body></html>",
-      "<html><body><strong>text</strong></body></html>",
-      "<html><body><strong>text</strong></body></html>",
-    )
-    uri2 = URI "#{RelatonIso::Scrapper::DOMAIN}/new_path"
-    expect(Net::HTTP).to receive(:get_response).with(uri2).and_return(resp2).twice
-
-    RelatonIso::Scrapper.send(:get_page, "/path")
-  end
-
   # it "returs default structured identifier" do
   #   doc = Nokogiri::HTML "<html><body></body></html>"
   #   si = RelatonIso::Scrapper.send(:fetch_structuredidentifier, doc)
@@ -68,6 +49,103 @@ RSpec.describe RelatonIso::Scrapper do
 
     it "returns PubID and URN RelatonBib document identifiers" do
       expect(subject.map(&:id)).to eq([pubid, urn])
+    end
+  end
+
+  context "#get_page" do
+    it "no error" do
+      uri = double "uri", to_s: :url
+      expect(described_class).to receive(:get_redirection).with("/path").and_return [:resp, uri]
+      expect(described_class).to receive(:try_if_fail).with(:resp, uri).and_return :doc
+      expect(described_class.send(:get_page, "/path")).to eq %i[doc url]
+    end
+
+    it "error" do
+      expect(described_class).to receive(:get_redirection).with("/path").and_raise SocketError
+      expect { described_class.send(:get_page, "/path") }.to raise_error RelatonBib::RequestError
+    end
+  end
+
+  context "#get_redirection" do
+    before do
+      expect(URI).to receive(:parse).with("#{RelatonIso::Scrapper::DOMAIN}/path").and_return :uri
+    end
+    it "found without redirection" do
+      resp = double "response", code: "200"
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp
+      expect(described_class.send(:get_redirection, "/path")).to eq [resp, :uri]
+    end
+
+    it "found with redirection" do
+      resp = double "response", code: "301"
+      expect(resp).to receive(:[]).with("location").and_return "/new_path"
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp
+      expect(URI).to receive(:parse).with("#{RelatonIso::Scrapper::DOMAIN}/new_path").and_return :uri2
+      resp2 = double "response 2", code: "200"
+      expect(Net::HTTP).to receive(:get_response).with(:uri2).and_return resp2
+      expect(described_class.send(:get_redirection, "/path")).to eq [resp2, :uri2]
+    end
+
+    it "not found" do
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return double(code: "404")
+      expect { described_class.send(:get_redirection, "/path") }.to raise_error RelatonBib::RequestError
+    end
+  end
+
+  context "#try_if_fail" do
+    let(:resp) { double "response" }
+
+    it "success" do
+      expect(resp).to receive(:body).and_return(
+        "<html><body></body></html>",
+        "<html><body><main><div><section><div><div><div><nav><h1>ISO 123</h1></nav></div></div></div></section></div></main></body></html>",
+      )
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp
+      doc = described_class.send(:try_if_fail, resp, :uri)
+      expect(doc.at("h1").text).to eq "ISO 123"
+    end
+
+    it "fail" do
+      expect(resp).to receive(:body).and_return("<html><body></body></html>").exactly(10).times
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(resp).exactly(10).times
+      expect do
+        described_class.send(:try_if_fail, resp, :uri)
+      end.to raise_error RelatonBib::RequestError
+    end
+  end
+
+  context "#fetch_copyright" do
+    it "returns copyright" do
+      doc = Nokogiri::HTML <<~HTML
+        <html>
+          <body>
+            <main>
+              <div>
+                <div>
+                  <div>
+                    <div>
+                      <nav class="heading-condensed nav-relatives">
+                        <h1>ISO 123</h1>
+                      </nav>
+                    </div>
+                  </div>
+                <div>
+                  <div>
+                    <ul>
+                      <li>
+                        <div>
+                          <span itemprop="releaseDate">2017-01-01</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </main>
+          </body>
+        </html>
+      HTML
+      expect(described_class.send(:fetch_copyright, doc)).to eq [{ from: "2017", owner: [{ name: "ISO" }]}]
     end
   end
 end

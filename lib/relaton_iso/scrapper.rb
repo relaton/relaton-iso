@@ -57,11 +57,13 @@ module RelatonIso
         # path = "/contents/data/standard#{hit_data['splitPath']}/"\
         # "#{hit_data['csnumber']}.html"
 
-        doc, url = get_page "#{hit.hit[:path].sub '/sites/isoorg', ''}.html"
+        path = hit.hit[:path].sub("/sites/isoorg", "")
+        doc, url = get_page "#{path}.html"
 
         # Fetch edition.
         edition = doc.at("//div[div[.='Edition']]/text()[last()]")
           &.text&.match(/\d+$/)&.to_s
+        hit.pubid.base.edition ||= edition if hit.pubid.base
 
         titles, abstract, langs = fetch_titles_abstract(doc, lang)
 
@@ -155,35 +157,57 @@ module RelatonIso
         lgs
       end
 
-      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       # Get page.
       # @param path [String] page's path
       # @return [Array<Nokogiri::HTML::Document, String>]
       def get_page(path)
-        url = DOMAIN + path
-        uri = URI url
-        resp = Net::HTTP.get_response(uri) # .encode("UTF-8")
-        case resp.code
-        when "301"
-          path = resp["location"]
-          url = DOMAIN + path
-          uri = URI url
-          resp = Net::HTTP.get_response(uri) # .encode("UTF-8")
-        when "404", "302"
-          raise RelatonBib::RequestError, "#{url} not found."
-        end
-        n = 0
-        while resp.body !~ /<strong/ && n < 10
-          resp = Net::HTTP.get_response(uri) # .encode("UTF-8")
-          n += 1
-        end
-        [Nokogiri::HTML(resp.body), url]
+        resp, uri = get_redirection path
+        doc = try_if_fail resp, uri
+        [doc, uri.to_s]
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
              Net::ProtocolError, Errno::ETIMEDOUT
-        raise RelatonBib::RequestError, "Could not access #{url}"
+        raise RelatonBib::RequestError, "Could not access #{uri}"
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+      #
+      # Get the page from the given path. If the page is redirected, get the
+      # page from the new path.
+      #
+      # @param [String] path path to the page
+      #
+      # @return [Array<Net::HTTPOK, URI>] HTTP response and URI
+      # @raise [RelatonBib::RequestError] if the page is not found
+      #
+      def get_redirection(path)
+        url = DOMAIN + path
+        uri = URI url
+        resp = Net::HTTP.get_response(uri)
+        raise RelatonBib::RequestError, "#{url} not found." if %w[404 302].include? resp.code
+
+        resp.code == "301" ? get_redirection(resp["location"]) : [resp, uri]
+      end
+
+      #
+      # The iso.org site fails to respond sometimes. This method tries to get
+      # the response again.
+      #
+      # @param [Net::HTTPOK] resp HTTP response
+      # @param [URI::HTTPS] uri URI of the page
+      #
+      # @return [Nokogiri::HTML4::Document] document
+      # @raise [RelatonBib::RequestError] if the page could not be parsed
+      #
+      def try_if_fail(resp, uri)
+        10.times do
+          doc = Nokogiri::HTML(resp.body)
+          # stop trying if page has a document id
+          return doc if doc.at("//main/div/section/div/div/div/nav/h1")
+
+          resp = Net::HTTP.get_response(uri)
+        end
+        raise RelatonBib::RequestError, "Could not parse the page #{uri}"
+      end
 
       #
       # Generate docnumber.
@@ -399,12 +423,16 @@ module RelatonIso
       # Fetch copyright.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
-      def fetch_copyright(doc)
+      def fetch_copyright(doc) # rubocop:disable Metrics/MethodLength
         ref = item_ref doc
         owner_name = ref.match(/.*?(?=\s)/).to_s
         from = ref.match(/(?<=:)\d{4}/).to_s
         if from.empty?
-          from = doc.xpath("//span[@itemprop='releaseDate']").text.match(/\d{4}/).to_s
+          date = doc.at(
+            "//span[@itemprop='releaseDate']",
+            "//ul[@id='stages']/li[contains(@class,'active')]/ul/li[@class='active']/a/span[@class='stage-date']",
+          )
+          from = date.text.match(/\d{4}/).to_s
         end
         [{ owner: [{ name: owner_name }], from: from }]
       end
