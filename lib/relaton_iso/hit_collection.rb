@@ -18,7 +18,7 @@ module RelatonIso
     # @return [RelatonIsoBib::IsoBibliographicItem, nil]
     def to_all_parts(lang = nil) # rubocop:disable Metrics/CyclomaticComplexity
       # parts = @array.reject { |h| h.hit["docPart"]&.empty? }
-      hit = @array.min_by { |h| h.pubid.part }
+      hit = @array.min_by { |h| h.pubid.part.to_i }
       return @array.first&.fetch lang unless hit
 
       bibitem = hit.fetch(lang)

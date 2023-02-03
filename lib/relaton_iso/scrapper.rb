@@ -99,7 +99,7 @@ module RelatonIso
       # @return [Array<RelatonBib::DocumentIdentifier>]
       #
       def fetch_relaton_docids(doc, pubid)
-        pubid.stage = Pubid::Iso::Stage.new(harmonized_code: stage_code(doc))
+        pubid.stage ||= Pubid::Iso::Stage.new(harmonized_code: stage_code(doc))
         [
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
@@ -230,7 +230,7 @@ module RelatonIso
       def fetch_structuredidentifier(pubid) # rubocop:disable Metrics/MethodLength
         RelatonIsoBib::StructuredIdentifier.new(
           project_number: "#{pubid.publisher} #{pubid.number}",
-          part: pubid&.part&.sub(/^-/, ""),
+          part: pubid.part&.to_s, # &.sub(/^-/, ""),
           type: pubid.publisher,
         )
       end

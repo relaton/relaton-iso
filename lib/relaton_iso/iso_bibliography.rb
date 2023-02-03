@@ -160,7 +160,7 @@ module RelatonIso
         else
           warn "[relaton-iso] (\"#{query_pubid}\") TIP: " \
                "If you wish to cite all document parts for the reference, " \
-               "use (\"#{query_pubid.to_s(with_date: false)} (all parts)\")."
+               "use (\"#{query_pubid.to_s(format: :ref_undated)} (all parts)\")."
         end
 
         unless %w(TS TR PAS Guide).include?(query_pubid.type)
@@ -218,7 +218,7 @@ module RelatonIso
         query_pubid_without_year = query_pubid.dup
         # remove year for query
         query_pubid_without_year.year = nil
-        hit_collection = search(query_pubid_without_year.to_s(with_date: false))
+        hit_collection = search(query_pubid_without_year.to_s)
 
         # filter only matching hits
         res = filter_hits hit_collection, query_pubid, all_parts: opts[:all_parts]
