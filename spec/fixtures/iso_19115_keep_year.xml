@@ -1,5 +1,5 @@
-<bibitem id="ISO19115-1" type="standard" schema-version="v1.2.1">
-  <fetched>2023-02-02</fetched>
+<bibitem id="ISO19115-1" type="standard" schema-version="v1.2.3">
+  <fetched>2023-04-04</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -70,7 +70,7 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <fetched>2023-02-02</fetched>
+      <fetched>2023-04-04</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>

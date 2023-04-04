@@ -39,6 +39,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "webmock"
 
   spec.add_dependency "algolia"
-  spec.add_dependency "pubid-iso", "~> 0.4.0"
+  spec.add_dependency "pubid-iso", "~> 0.5.0"
   spec.add_dependency "relaton-iso-bib", "~> 1.14.0"
 end

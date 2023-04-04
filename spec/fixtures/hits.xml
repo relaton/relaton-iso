@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
-  <bibitem id="ISO19115-2-2019" type="standard" schema-version="v1.2.1">
-    <fetched>2023-02-02</fetched>
+  <bibitem id="ISO19115-2-2019" type="standard" schema-version="v1.2.3">
+    <fetched>2023-04-04</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -60,8 +60,8 @@
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO19115-2-2019/Amd1-2022" type="standard" schema-version="v1.2.1">
-    <fetched>2023-02-02</fetched>
+  <bibitem id="ISO19115-2-2019/Amd1-2022" type="standard" schema-version="v1.2.3">
+    <fetched>2023-04-04</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing -- Amendment 1</title>
@@ -108,8 +108,8 @@
     </copyright>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO/TS19115-3-2016" type="standard" schema-version="v1.2.1">
-    <fetched>2023-02-02</fetched>
+  <bibitem id="ISO/TS19115-3-2016" type="standard" schema-version="v1.2.3">
+    <fetched>2023-04-04</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -165,14 +165,14 @@ This implementation model does not alter the semantics of the target conceptual 
     </copyright>
     <relation type="obsoletes">
       <bibitem type="standard">
-        <formattedref format="text/plain">ISO/DIS 19115-3</formattedref>
-        <docidentifier type="ISO" primary="true">ISO/DIS 19115-3</docidentifier>
+        <formattedref format="text/plain">ISO/PRF 19115-3</formattedref>
+        <docidentifier type="ISO" primary="true">ISO/PRF 19115-3</docidentifier>
       </bibitem>
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO/TS19157-2-2016" type="standard" schema-version="v1.2.1">
-    <fetched>2023-02-02</fetched>
+  <bibitem id="ISO/TS19157-2-2016" type="standard" schema-version="v1.2.3">
+    <fetched>2023-04-04</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: XML schema implementation</title>
@@ -218,8 +218,8 @@ This implementation model does not alter the semantics of the target conceptual 
     </copyright>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.1">
-    <fetched>2023-02-02</fetched>
+  <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.3">
+    <fetched>2023-04-04</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -273,8 +273,8 @@ This implementation model does not alter the semantics of the target conceptual 
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO/TS19139-2-2012" type="standard" schema-version="v1.2.1">
-    <fetched>2023-02-02</fetched>
+  <bibitem id="ISO/TS19139-2-2012" type="standard" schema-version="v1.2.3">
+    <fetched>2023-04-04</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">XML schema implementation -- Part 2: Extensions for imagery and gridded data</title>

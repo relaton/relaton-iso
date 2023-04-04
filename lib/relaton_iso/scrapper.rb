@@ -99,7 +99,7 @@ module RelatonIso
       # @return [Array<RelatonBib::DocumentIdentifier>]
       #
       def fetch_relaton_docids(doc, pubid)
-        pubid.stage ||= Pubid::Iso::Stage.new(harmonized_code: stage_code(doc))
+        pubid.stage ||= Pubid::Iso::Identifier.parse_stage(stage_code(doc))
         [
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
@@ -118,7 +118,7 @@ module RelatonIso
         langs = languages(doc, lang).reduce([]) do |s, l|
           # Don't need to get page for en. We already have it.
           d = l[:path] ? get_page(l[:path])[0] : doc
-          unless d.at("//h5[@class='help-block']"\
+          unless d.at("//h5[@class='help-block']" \
                       "[.='недоступно на русском языке']")
             s << l
             titles += fetch_title(d, l[:lang])
