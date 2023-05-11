@@ -100,8 +100,10 @@ module RelatonIso
       #
       def fetch_relaton_docids(doc, pubid)
         pubid.stage ||= Pubid::Iso::Identifier.parse_stage(stage_code(doc))
+        isoref = Pubid::Iso::Identifier.create(language: "en", **pubid.get_params).to_s(format: :ref_num_short)
         [
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
+          RelatonBib::DocumentIdentifier.new(id: isoref, type: "iso-reference"),
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
         ]
       end

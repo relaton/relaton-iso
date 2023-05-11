@@ -43,12 +43,13 @@ RSpec.describe RelatonIso::Scrapper do
 
     let(:source_pubid) { "ISO 19115:2003" }
     let(:pubid) { "ISO 19115:2003" }
+    let(:isoref) { "ISO 19115:2003(E)" }
     let(:urn) { "urn:iso:std:iso:19115:stage-90.93" }
     let(:edition) { "3" }
     let(:stage) { 90.93 }
 
     it "returns PubID and URN RelatonBib document identifiers" do
-      expect(subject.map(&:id)).to eq([pubid, urn])
+      expect(subject.map(&:id)).to eq([pubid, isoref, urn])
     end
   end
 

@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 04 Apr 2023 16:16:20 GMT
+      - Thu, 11 May 2023 00:51:47 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Content-Length:
@@ -57,8 +57,8 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO
-        19115-30","params":"query=ISO+19115-30&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"request":{"roundTrip":296}}}'
-  recorded_at: Tue, 04 Apr 2023 16:16:20 GMT
+        19115-30","params":"query=ISO+19115-30&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"request":{"roundTrip":114}}}'
+  recorded_at: Thu, 11 May 2023 00:51:47 GMT
 - request:
     method: post
     uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
@@ -90,11 +90,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 04 Apr 2023 16:16:21 GMT
+      - Thu, 11 May 2023 00:51:47 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Content-Length:
-      - '395'
+      - '328'
       Connection:
       - keep-alive
       X-Alg-Pt:
@@ -116,6 +116,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO/IEC
-        19115-30","params":"query=ISO%2FIEC+19115-30&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":2,"processingTimingsMS":{"getIdx":{"load":{"total":1},"total":1},"request":{"roundTrip":110},"total":2},"serverTimeMS":3}'
-  recorded_at: Tue, 04 Apr 2023 16:16:21 GMT
+        19115-30","params":"query=ISO%2FIEC+19115-30&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"request":{"roundTrip":112}}}'
+  recorded_at: Thu, 11 May 2023 00:51:47 GMT
 recorded_with: VCR 6.1.0

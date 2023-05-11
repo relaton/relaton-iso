@@ -124,6 +124,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   describe "#get" do
     let(:pubid) { "ISO 19115-1" }
+    let(:isoref) { "ISO 19115-1(E)" }
     let(:urn) { "urn:iso:std:iso:19115:-1:stage-90.93:ed-1" }
 
     context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
@@ -138,7 +139,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
 
       it "returns correct document identifiers" do
-        expect(subject.docidentifier.map(&:id)).to eq([pubid, urn])
+        expect(subject.docidentifier.map(&:id)).to eq([pubid, isoref, urn])
       end
     end
 
@@ -146,12 +147,13 @@ RSpec.describe RelatonIso::IsoBibliography do
             vcr: { cassette_name: "iso_19115_all_parts" } do
       let(:xml) { subject.to_xml bibdata: true }
       let(:pubid_all_parts) { "ISO 19115 (all parts)" }
+      let(:isoref_all_parts) { "ISO 19115(E) (all parts)" }
       let(:urn_all_parts) { "urn:iso:std:iso:19115:stage-90.93:ed-1:ser" }
 
       shared_examples "all_parts" do
         it "returns (all parts) as identifier part" do
           expect(subject.structuredidentifier.project_number).to eq(pubid_all_parts)
-          expect(subject.docidentifier.map(&:id)).to eq([pubid_all_parts, urn_all_parts])
+          expect(subject.docidentifier.map(&:id)).to eq([pubid_all_parts, isoref_all_parts, urn_all_parts])
         end
 
         it "include all matched documents without part" do

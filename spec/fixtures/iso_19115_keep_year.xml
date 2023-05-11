@@ -1,5 +1,5 @@
 <bibitem id="ISO19115-1" type="standard" schema-version="v1.2.3">
-  <fetched>2023-04-04</fetched>
+  <fetched>2023-05-10</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -12,6 +12,7 @@
   <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:53798:en</uri>
   <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
   <docidentifier type="ISO" primary="true">ISO 19115-1</docidentifier>
+  <docidentifier type="iso-reference">ISO 19115-1(E)</docidentifier>
   <docidentifier type="URN">urn:iso:std:iso:19115:-1:stage-90.93:ed-1</docidentifier>
   <docnumber>19115</docnumber>
   <contributor>
@@ -70,7 +71,7 @@
   </relation>
   <relation type="instance">
     <bibitem type="standard">
-      <fetched>2023-04-04</fetched>
+      <fetched>2023-05-10</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -83,6 +84,7 @@
       <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:53798:en</uri>
       <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
       <docidentifier type="ISO" primary="true">ISO 19115-1:2014</docidentifier>
+      <docidentifier type="iso-reference">ISO 19115-1:2014(E)</docidentifier>
       <docidentifier type="URN">urn:iso:std:iso:19115:-1:stage-90.93:ed-1</docidentifier>
       <docnumber>19115</docnumber>
       <date type="published">
