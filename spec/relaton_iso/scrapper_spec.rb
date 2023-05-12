@@ -53,6 +53,11 @@ RSpec.describe RelatonIso::Scrapper do
     end
   end
 
+  it "#isoref" do
+    pubid = Pubid::Iso::Identifier.parse "ISO/DIS 14460"
+    expect(subject.isoref(pubid)).to eq "ISO/DIS 14460(E)"
+  end
+
   context "#get_page" do
     it "no error" do
       uri = double "uri", to_s: :url

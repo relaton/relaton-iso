@@ -93,19 +93,30 @@ module RelatonIso
       #
       # Create document ids.
       #
-      # @param doc [Nokogiri::HTML::Document] document
-      # @param pubid [Pubid::Iso::Identifier] pubid
+      # @param doc [Nokogiri::HTML::Document] document to parse
+      # @param pubid [Pubid::Iso::Identifier] publication identifier
       #
       # @return [Array<RelatonBib::DocumentIdentifier>]
       #
       def fetch_relaton_docids(doc, pubid)
         pubid.stage ||= Pubid::Iso::Identifier.parse_stage(stage_code(doc))
-        isoref = Pubid::Iso::Identifier.create(language: "en", **pubid.get_params).to_s(format: :ref_num_short)
         [
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
-          RelatonBib::DocumentIdentifier.new(id: isoref, type: "iso-reference"),
+          RelatonBib::DocumentIdentifier.new(id: isoref(pubid), type: "iso-reference"),
           RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
         ]
+      end
+
+      #
+      # Create ISO reference identifier with English language.
+      #
+      # @param [Pubid::Iso::Identifier] pubid publication identifier
+      #
+      # @return [String] English reference identifier
+      #
+      def isoref(pubid)
+        params = pubid.get_params.except(:typed_stage)
+        Pubid::Iso::Identifier.create(language: "en", **params).to_s(format: :ref_num_short)
       end
 
       private
