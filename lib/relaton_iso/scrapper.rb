@@ -215,7 +215,7 @@ module RelatonIso
         10.times do
           doc = Nokogiri::HTML(resp.body)
           # stop trying if page has a document id
-          return doc if doc.at("//main/div/section/div/div/div/nav/h1")
+          return doc if item_ref doc
 
           resp = Net::HTTP.get_response(uri)
         end
@@ -249,7 +249,7 @@ module RelatonIso
       end
 
       def item_ref(doc)
-        doc.at("//nav[contains(@class, 'heading-condensed')]/h1")&.text
+        doc.at("//main//section/div/div/div//h1")&.text
       end
 
       # Fetch status.

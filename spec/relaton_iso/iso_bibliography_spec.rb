@@ -415,6 +415,11 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(result.docidentifier[0].id).to eq "ISO/IEC Guide 2:1991"
     end
 
+    it "ISO/IEC 27001:2022", vcr: "iso_iec_27001_2022" do
+      result = RelatonIso::IsoBibliography.get "ISO/IEC 27001:2022"
+      expect(result.docidentifier[0].id).to eq "ISO/IEC 27001:2022"
+    end
+
     context "try to fetch stages" do
       it "ISO" do
         VCR.use_cassette "iso_22934" do
