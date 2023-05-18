@@ -127,25 +127,27 @@ RSpec.describe RelatonIso::Scrapper do
           <body>
             <main>
               <div>
-                <div>
+                <section>
                   <div>
                     <div>
-                      <nav class="heading-condensed nav-relatives">
-                        <h1>ISO 123</h1>
-                      </nav>
+                      <div>
+                        <nav class="heading-condensed nav-relatives">
+                          <h1>ISO 123</h1>
+                        </nav>
+                      </div>
+                    </div>
+                  <div>
+                    <div>
+                      <ul>
+                        <li>
+                          <div>
+                            <span itemprop="releaseDate">2017-01-01</span>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
-                <div>
-                  <div>
-                    <ul>
-                      <li>
-                        <div>
-                          <span itemprop="releaseDate">2017-01-01</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+                </section>
               </div>
             </main>
           </body>
