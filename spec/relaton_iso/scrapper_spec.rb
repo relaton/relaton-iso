@@ -20,7 +20,7 @@ RSpec.describe RelatonIso::Scrapper do
     let(:hit) { double "hit", hit: { path: "1234" } }
 
     it "could not access" do
-      expect(Net::HTTP).to receive(:get_response).and_raise SocketError
+      expect(Net::HTTP).to receive(:get_response).and_raise(SocketError).exactly(4).times
       expect do
         RelatonIso::Scrapper.parse_page(hit)
       end.to raise_error RelatonBib::RequestError
@@ -28,8 +28,8 @@ RSpec.describe RelatonIso::Scrapper do
 
     it "not found" do
       resp = double
-      expect(resp).to receive(:code).and_return "404"
-      expect(Net::HTTP).to receive(:get_response).and_return resp
+      expect(resp).to receive(:code).and_return("404").exactly(4).times
+      expect(Net::HTTP).to receive(:get_response).and_return(resp).exactly(4).times
       expect do
         RelatonIso::Scrapper.parse_page(hit)
       end.to raise_error RelatonBib::RequestError
@@ -68,7 +68,7 @@ RSpec.describe RelatonIso::Scrapper do
     end
 
     it "error" do
-      expect(described_class).to receive(:get_redirection).with("/path").and_raise SocketError
+      expect(described_class).to receive(:get_redirection).with("/path").and_raise(SocketError).exactly(4).times
       expect { described_class.send(:get_page, "/path") }.to raise_error RelatonBib::RequestError
     end
   end
@@ -94,8 +94,15 @@ RSpec.describe RelatonIso::Scrapper do
     end
 
     it "not found" do
-      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return double(code: "404")
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(double(code: "404")).exactly(4).times
       expect { described_class.send(:get_redirection, "/path") }.to raise_error RelatonBib::RequestError
+    end
+
+    it "retry" do
+      resp = double(code: "200")
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_raise(Errno::EPIPE).twice
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(resp)
+      expect(described_class.send(:get_redirection, "/path")).to eq [resp, :uri]
     end
   end
 
@@ -105,7 +112,8 @@ RSpec.describe RelatonIso::Scrapper do
     it "success" do
       expect(resp).to receive(:body).and_return(
         "<html><body></body></html>",
-        "<html><body><main><div><section><div><div><div><nav><h1>ISO 123</h1></nav></div></div></div></section></div></main></body></html>",
+        "<html><body><main><div><section><div><div><div><nav><h1>ISO 123</h1>" \
+          "</nav></div></div></div></section></div></main></body></html>",
       )
       expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp
       doc = described_class.send(:try_if_fail, resp, :uri)

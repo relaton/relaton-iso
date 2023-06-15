@@ -6,6 +6,8 @@ require "relaton_iso/hit"
 module RelatonIso
   # Page of hit collection.
   class HitCollection < RelatonBib::HitCollection
+    INDEXFILE = "index-v1.yaml"
+
     # @return [Boolean] whether the search was performed on GitHub
     attr_reader :from_gh
 
@@ -20,7 +22,7 @@ module RelatonIso
       self
     end
 
-    # @param lang [String, NilClass]
+    # @param lang [String, nil]
     # @return [RelatonIsoBib::IsoBibliographicItem, nil]
     def to_all_parts(lang = nil) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       # parts = @array.reject { |h| h.hit["docPart"]&.empty? }
@@ -32,6 +34,7 @@ module RelatonIso
       @array.reject { |h| h.hit[:uuid] == hit.hit[:uuid] }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(
           formattedref: RelatonBib::FormattedRef.new(content: hi.pubid.to_s),
+          docid: [RelatonBib::DocumentIdentifier.new(id: hi.pubid.to_s, type: "ISO", primary: true)]
         )
         all_parts_item.relation << RelatonBib::DocumentRelation.new(
           type: "instanceOf", bibitem: isobib,

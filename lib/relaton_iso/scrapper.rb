@@ -7,7 +7,9 @@ module RelatonIso
 
     TYPES = {
       "TS" => "technical-specification",
+      "DTS" => "technical-specification",
       "TR" => "technical-report",
+      "DTR" => "technical-report",
       "PAS" => "publicly-available-specification",
       # "AWI" => "approvedWorkItem",
       # "CD" => "committeeDraft",
@@ -58,6 +60,8 @@ module RelatonIso
       path = hit.hit[:path].sub("/sites/isoorg", "")
       doc, url = get_page "#{path}.html"
 
+      docid = doc.at("//nav[contains(@class,'heading-condensed')]/h1").text.split(" | ").first
+      hit.pubid ||= Pubid::Iso::Identifier.parse(docid)
       # Fetch edition.
       edition = doc.at("//div[div[.='Edition']]/text()[last()]")
         &.text&.match(/\d+$/)&.to_s
@@ -73,11 +77,11 @@ module RelatonIso
         language: langs.map { |l| l[:lang] },
         script: langs.map { |l| script(l[:lang]) }.uniq,
         title: titles,
-        doctype: fetch_type(hit.hit[:title]),
+        doctype: fetch_type(docid),
         docstatus: fetch_status(doc),
         ics: fetch_ics(doc),
-        date: fetch_dates(doc, hit.hit[:title]),
-        contributor: fetch_contributors(hit.hit[:title]),
+        date: fetch_dates(doc, docid),
+        contributor: fetch_contributors(docid),
         editorialgroup: fetch_workgroup(doc),
         abstract: abstract,
         copyright: fetch_copyright(doc),
@@ -121,7 +125,7 @@ module RelatonIso
 
     # Fetch titles and abstracts.
     # @param doc [Nokigiri::HTML::Document]
-    # @param lang [String, NilClass]
+    # @param lang [String, nil]
     # @return [Array<Array>]
     def fetch_titles_abstract(doc, lang) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       titles   = RelatonBib::TypedTitleStringCollection.new
@@ -129,8 +133,7 @@ module RelatonIso
       langs = languages(doc, lang).reduce([]) do |s, l|
         # Don't need to get page for en. We already have it.
         d = l[:path] ? get_page(l[:path])[0] : doc
-        unless d.at("//h5[@class='help-block']" \
-                    "[.='недоступно на русском языке']")
+        unless d.at("//h5[@class='help-block'][.='недоступно на русском языке']")
           s << l
           titles += fetch_title(d, l[:lang])
 
@@ -171,14 +174,21 @@ module RelatonIso
     # Get page.
     # @param path [String] page's path
     # @return [Array<Nokogiri::HTML::Document, String>]
-    def get_page(path)
-      resp, uri = get_redirection path
-      doc = try_if_fail resp, uri
-      [doc, uri.to_s]
-    rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
-            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-            Net::ProtocolError, Errno::ETIMEDOUT
-      raise RelatonBib::RequestError, "Could not access #{uri}"
+    def get_page(path) # rubocop:disable Metrics/MethodLength
+      try = 0
+      begin
+        resp, uri = get_redirection path
+        doc = try_if_fail resp, uri
+        [doc, uri.to_s]
+      rescue  SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
+              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+              Net::ProtocolError, Errno::ETIMEDOUT
+        try += 1
+        raise RelatonBib::RequestError, "Could not access #{DOMAIN}#{path}" if try > 3
+
+        sleep 1
+        retry
+      end
     end
 
     #
@@ -190,13 +200,30 @@ module RelatonIso
     # @return [Array<Net::HTTPOK, URI>] HTTP response and URI
     # @raise [RelatonBib::RequestError] if the page is not found
     #
-    def get_redirection(path)
+    def get_redirection(path) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       url = DOMAIN + path
       uri = URI url
-      resp = Net::HTTP.get_response(uri)
-      raise RelatonBib::RequestError, "#{url} not found." if %w[404 302].include? resp.code
+      try = 0
+      begin
+        resp = nil
+        loop do
+          try += 1
+          resp = Net::HTTP.get_response(uri)
+          break if %w[200 301].include? resp.code
 
-      resp.code == "301" ? get_redirection(resp["location"]) : [resp, uri]
+          raise RelatonBib::RequestError, "#{url} not found." if try > 3
+
+          sleep 1
+        end
+
+        resp.code == "301" ? get_redirection(resp["location"]) : [resp, uri]
+      rescue Errno::EPIPE => e
+        raise e if try > 3
+
+        try += 1
+        sleep 1
+        retry
+      end
     end
 
     #
@@ -333,8 +360,8 @@ module RelatonIso
     def fetch_type(ref)
       %r{
         ^(?<prefix>ISO|IWA|IEC)
-        (?:(?:/IEC|/IEEE|/PRF|/NP|/DGuide)*\s|/)
-        (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))
+        (?:(?:/IEC|/IEEE|/PRF|/NP|/SAE|/HL7|/DGuide)*\s|/)
+        (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|DTS|DTR|ISP|Guide|(?=\d+))
       }x =~ ref
       # return "international-standard" if type_match.nil?
       type = TYPES[type] || TYPES[prefix]

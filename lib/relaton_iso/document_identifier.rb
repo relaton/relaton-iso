@@ -10,6 +10,8 @@ module RelatonIso
         end
       end
       type == "URN" ? @id.urn.to_s : id_str
+    rescue Pubid::Iso::Errors::NoEditionError => e
+      warn "[relaton-iso] WARNING: #{type} identifier can't be generated for #{@id}: #{e.message}"
     end
 
     def remove_part

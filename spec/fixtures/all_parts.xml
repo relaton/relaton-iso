@@ -72,7 +72,7 @@
   </relation>
   <relation type="instanceOf">
     <bibitem type="standard">
-      <fetched>2023-08-25</fetched>
+      <fetched>2023-12-19</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -171,16 +171,19 @@ L'ISO 19115-1:2014 est applicable aux données numériques et services, ses prin
   <relation type="instanceOf">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-2:2019</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115-2:2019</docidentifier>
     </bibitem>
   </relation>
   <relation type="instanceOf">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-3:2023</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115-3:2023</docidentifier>
     </bibitem>
   </relation>
   <relation type="instanceOf">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-2:2009</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115-2:2009</docidentifier>
     </bibitem>
   </relation>
   <place>Geneva</place>
