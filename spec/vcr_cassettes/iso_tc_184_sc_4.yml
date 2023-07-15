@@ -41,29 +41,31 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 6A1E:1713:37FC5EC:427B4B9:646624AE
+      - 9422:7E27:F7F549:12A55F5:64B2A61C
       Accept-Ranges:
       - bytes
       Date:
-      - Thu, 18 May 2023 13:14:22 GMT
+      - Sat, 15 Jul 2023 13:58:52 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-atl18453-ATL
+      - cache-atl18494-ATL
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1684415662.034643,VS0,VE115
+      - S1689429532.248458,VS0,VE149
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
+      Cross-Origin-Resource-Policy:
+      - cross-origin
       X-Fastly-Request-Id:
-      - 073066b4a531774aced47771b10d79d6d4fb5d5f
+      - ddcd4691304f434778765e98a365aea76378e029
       Expires:
-      - Thu, 18 May 2023 13:19:22 GMT
+      - Sat, 15 Jul 2023 14:03:52 GMT
       Source-Age:
       - '0'
     body:
@@ -128,5 +130,5 @@ http_interactions:
         structuredidentifier:
           project_number: ISO/TC 184/SC 4 N1110
           tc_document_number: '1110'
-  recorded_at: Thu, 18 May 2023 13:14:22 GMT
-recorded_with: VCR 6.1.0
+  recorded_at: Sat, 15 Jul 2023 13:58:52 GMT
+recorded_with: VCR 6.2.0
