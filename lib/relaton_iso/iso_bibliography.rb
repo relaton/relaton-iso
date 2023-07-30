@@ -12,7 +12,7 @@ module RelatonIso
       # @param text [String]
       # @return [RelatonIso::HitCollection]
       def search(text)
-        HitCollection.new text.gsub(/\u2013/, "-")
+        HitCollection.new text.gsub("\u2013", "-")
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
              Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT,
@@ -29,7 +29,7 @@ module RelatonIso
       #
       # @return [RelatonIsoBib::IsoBibliographicItem] Relaton XML serialisation of reference
       def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity,Metrics/AbcSize
-        code = ref.gsub(/\u2013/, "-")
+        code = ref.gsub("\u2013", "-")
 
         # parse "all parts" request
         code.sub! " (all parts)", ""
@@ -39,6 +39,12 @@ module RelatonIso
         query_pubid.year = year if year
 
         resp = isobib_search_filter(query_pubid, opts)
+
+        if resp[:hits].empty? && ref.match?(/^ISO\/\w/)
+          resp_without_type = retry_without_type(ref, opts)
+          # resp = resp_without_type unless resp_without_type.nil?
+          return if resp_without_type.any?
+        end
 
         # Try with ISO/IEC prefix if ISO not found
         if resp[:hits].empty? && query_pubid.copublisher.nil? &&
@@ -56,23 +62,19 @@ module RelatonIso
 
         return fetch_ref_err(query_pubid) unless ret
 
-        # puts "xxxxx #{ret.docidentifier.first.id.inspect}"
         response_docid = ret.docidentifier.first.id.sub(" (all parts)", "")
         response_pubid = Pubid::Iso::Identifier.parse(response_docid)
-        # puts "xxxxx query_pubid(#{query_pubid}) response_pubid(#{response_pubid})"
 
         if query_pubid.to_s == response_pubid.to_s
-          warn "[relaton-iso] (\"#{query_pubid}\") Found exact match."
+          Logger.warn "(\"#{query_pubid}\") Found exact match."
         elsif matches_base?(query_pubid, response_pubid)
-          warn "[relaton-iso] (\"#{query_pubid}\") " \
-               "Found (\"#{response_pubid}\")."
+          Logger.warn "(\"#{query_pubid}\") Found (\"#{response_pubid}\")."
         elsif matches_base?(query_pubid, response_pubid, any_types_stages: true)
-          warn "[relaton-iso] (\"#{query_pubid}\") TIP: " \
-               "Found with different type/stage, " \
-               "please amend to (\"#{response_pubid}\")."
+          Logger.warn "(\"#{query_pubid}\") TIP: Found with different " \
+                      "type/stage, please amend to (\"#{response_pubid}\")."
         else
           # when there are all parts
-          warn "[relaton-iso] (\"#{query_pubid}\") Found (\"#{response_pubid}\")."
+          Logger.warn "(\"#{query_pubid}\") Found (\"#{response_pubid}\")."
         end
 
         get_all = (
@@ -83,9 +85,9 @@ module RelatonIso
         return ret if get_all
 
         ret.to_most_recent_reference
-
       rescue Pubid::Core::Errors::ParseError
-        warn "[relaton-iso] (\"#{code}\") is not recognized as a standards identifier."
+        Logger.warn "(\"#{code}\") is not recognized as a standards identifier."
+        nil
       end
 
       # @param query_pubid [Pubid::Iso::Identifier]
@@ -109,13 +111,13 @@ module RelatonIso
       # @return [<Type>] <description>
       #
       def matches_base?(query_pubid, pubid, any_types_stages: false) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics?PerceivedComplexity
-        return unless pubid.respond_to?(:publisher)
+        return false unless pubid.respond_to?(:publisher)
 
         query_pubid.publisher == pubid.publisher &&
           query_pubid.number == pubid.number &&
           query_pubid.copublisher == pubid.copublisher &&
           ((any_types_stages && query_pubid.stage.nil?) || query_pubid.stage == pubid.stage) &&
-          ((any_types_stages && query_pubid.type.nil?) || query_pubid.type == pubid.type)
+          (any_types_stages || query_pubid.type == pubid.type)
       end
 
       # @param hit_collection [RelatonIso::HitCollection]
@@ -150,23 +152,22 @@ module RelatonIso
 
       # @param query_pubid [Pubid::Iso::Identifier] PubID with no results
       def fetch_ref_err(query_pubid) # rubocop:disable Metrics/MethodLength
-        warn "[relaton-iso] (\"#{query_pubid}\") " \
-             "Not found. " \
-             "The identifier must be exactly as shown on the ISO website."
+        Logger.warn "(\"#{query_pubid}\") Not found. The identifier " \
+                    "must be exactly as shown on the ISO website."
 
         if query_pubid.part
-          warn "[relaton-iso] (\"#{query_pubid}\") TIP: " \
-               "If it cannot be found, the document may no longer be published in parts."
+          Logger.warn "(\"#{query_pubid}\") TIP: If it cannot be found, " \
+                      "the document may no longer be published in parts."
         else
-          warn "[relaton-iso] (\"#{query_pubid}\") TIP: " \
-               "If you wish to cite all document parts for the reference, " \
-               "use (\"#{query_pubid.to_s(format: :ref_undated)} (all parts)\")."
+          Logger.warn "(\"#{query_pubid}\") TIP: If you wish to cite " \
+                      "all document parts for the reference, use " \
+                      "(\"#{query_pubid.to_s(format: :ref_undated)} (all parts)\")."
         end
 
         unless %w(TS TR PAS Guide).include?(query_pubid.type)
-          warn "[relaton-iso] (\"#{query_pubid}\") TIP: " \
-               "If the document is not an International Standard, use its " \
-               "deliverable type abbreviation (TS, TR, PAS, Guide)."
+          Logger.warn "(\"#{query_pubid}\") TIP: If the document is not an " \
+                      "International Standard, use its " \
+                      "deliverable type abbreviation (TS, TR, PAS, Guide)."
         end
 
         nil
@@ -175,9 +176,8 @@ module RelatonIso
       # @param pubid [Pubid::Iso::Identifier]
       # @param missed_years [Array<String>]
       def warn_missing_years(pubid, missed_years)
-        warn "[relaton-iso] (\"#{pubid}\") TIP: " \
-             "No match for edition year #{pubid.year}, " \
-             "but matches exist for #{missed_years.uniq.join(', ')}."
+        Logger.warn "(\"#{pubid}\") TIP: No match for edition year #{pubid.year}, " \
+                    "but matches exist for #{missed_years.uniq.join(', ')}."
       end
 
       # Search for hits using ISO/IEC prefix.
@@ -190,18 +190,29 @@ module RelatonIso
 
         pubid = old_pubid.dup
         pubid.copublisher = "IEC"
-        warn "[relaton-iso] (\"#{old_pubid}\") Not found, trying with ISO/IEC prefix (\"#{pubid}\")..."
+        Logger.warn "(\"#{old_pubid}\") Not found, trying with ISO/IEC prefix (\"#{pubid}\")..."
         resp_isoiec = isobib_search_filter(pubid, opts)
 
         if resp_isoiec[:hits].empty?
-          warn "[relaton-iso] (\"#{pubid}\") Not found. "
+          Logger.warn "(\"#{pubid}\") Not found. "
           return nil
         end
 
-        warn "[relaton-iso] (\"#{pubid}\") TIP: Found with ISO/IEC prefix, " \
-             "please amend to (\"#{pubid}\")."
-
+        Logger.warn "(\"#{pubid}\") TIP: Found with ISO/IEC prefix, please amend to (\"#{pubid}\")."
         resp_isoiec
+      end
+
+      def retry_without_type(typed_ref, opts) # rubocop:disable Metrics/MethodLength
+        ref = typed_ref.sub(/^ISO\/\w+/, "ISO")
+        pubid = Pubid::Iso::Identifier.parse(ref)
+        Logger.warn "(\"#{typed_ref}\") Not found, trying without type (\"#{pubid}\")..."
+        resp_without_type = isobib_search_filter(pubid, opts)
+        if resp_without_type[:hits].empty?
+          Logger.warn "(\"#{pubid}\") Not found."
+          return nil
+        end
+        Logger.warn "(\"#{pubid}\") TIP: Found without type, please use reference (\"#{pubid}\")."
+        resp_without_type
       end
 
       # Search for hits. If no found then trying missed stages.
@@ -212,7 +223,7 @@ module RelatonIso
       def isobib_search_filter(query_pubid, opts) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         missed_years = []
         query_pubid.part = nil if opts[:all_parts]
-        warn "[relaton-iso] (\"#{query_pubid}\") Fetching from ISO..."
+        Logger.warn "(\"#{query_pubid}\") Fetching from ISO..."
 
         # fetch hits collection
         query_pubid_without_year = query_pubid.dup

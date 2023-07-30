@@ -3,6 +3,10 @@
 require "relaton_iso/iso_bibliography"
 
 RSpec.describe RelatonIso::IsoBibliography do
+  before do
+    RelatonIso::Config.instance_variable_set :@configuration, nil
+  end
+
   it "raise access error" do
     expect(Net::HTTP).to receive(:get_response).and_raise SocketError
     expect { RelatonIso::IsoBibliography.search "ISO TC 184/SC 4" }
@@ -248,12 +252,20 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "warns when a code matches a resource but the year does not" do
-      VCR.use_cassette "iso_19115_2015" do
+    context "warns when a code matches a resource but the year does not" do
+      it "ISO 19115:2015", vcr: "iso_19115_2015" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
           .to output(
             /TIP: No match for edition year 2015, but matches exist for 2003/,
           ).to_stderr
+      end
+    end
+
+    context "attempt the version with no doctype" do
+      it "ISO/TS 19103:2015", vcr: "iso_ts_19103_2015" do
+        expect do
+          expect(RelatonIso::IsoBibliography.get("ISO/TS 19103", "2015", {})).to be_nil
+        end.to output(/TIP: Found without type, please use reference/).to_stderr
       end
     end
 
@@ -601,7 +613,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         let(:query_pubid) { "ISO 6709" }
         let(:pubid) { "ISO TR 6709" }
 
-        it { is_expected.to be false }
+        it { is_expected.to be true }
       end
 
       context "when query already have stage" do
@@ -618,7 +630,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         let(:pubid) { "ISO 6709" }
 
         it "do not matches with different type" do
-          expect(subject).to be_falsey
+          expect(subject).to be true
         end
       end
     end
