@@ -261,11 +261,11 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    context "attempt the version with no doctype" do
+    context "look up the version with no doctype" do
       it "ISO/TS 19103:2015", vcr: "iso_ts_19103_2015" do
         expect do
           expect(RelatonIso::IsoBibliography.get("ISO/TS 19103", "2015", {})).to be_nil
-        end.to output(/TIP: Found without type, please use reference/).to_stderr
+        end.to output(/TIP: Matches exist for "ISO 19103:2015/).to_stderr
       end
     end
 
@@ -561,42 +561,42 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:query_pubid) { "ISO 6709-1" }
       let(:pubid) { "ISO 6709-2" }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be true }
     end
 
     context "when have different number" do
       let(:query_pubid) { "ISO 6708" }
       let(:pubid) { "ISO 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when have different publisher" do
       let(:query_pubid) { "ISO 6709" }
       let(:pubid) { "IEC 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when have different copublisher" do
       let(:query_pubid) { "ISO/IEC 6709" }
       let(:pubid) { "ISO 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when have different type" do
       let(:query_pubid) { "ISO/TS 6709" }
       let(:pubid) { "ISO 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when have different stage" do
       let(:query_pubid) { "ISO/DIS 6709" }
       let(:pubid) { "ISO 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when requested to match with any types and stages" do
@@ -606,7 +606,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         let(:query_pubid) { "ISO 6709" }
         let(:pubid) { "ISO/DIS 6709" }
 
-        it { is_expected.to be_truthy }
+        it { is_expected.to be true }
       end
 
       context "when have different type" do
@@ -621,7 +621,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         let(:pubid) { "ISO 6709" }
 
         it "do not matches with different stage" do
-          expect(subject).to be_falsey
+          expect(subject).to be true
         end
       end
 
@@ -645,8 +645,8 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:year) { "2015" }
 
       it "returns nothing" do
-        expect(subject[:hits]).to be_empty
-        expect(subject[:missed_years]).not_to be_empty
+        expect(subject[0]).to be_empty
+        expect(subject[1]).not_to be_empty
       end
     end
 
@@ -656,12 +656,18 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:pubid) { Pubid::Iso::Identifier.parse("ISO 19115:2003") }
 
       it "returns found document" do
-        expect(subject[:hits].first.pubid.to_s).to eq(pubid.to_s)
+        expect(subject[0].first.pubid.to_s).to eq(pubid.to_s)
       end
 
       it "don't output warning" do
         expect { subject }.not_to output.to_stderr
       end
+    end
+
+    it "set pubid year if it is missing" do
+      hit = double("hit", pubid: Pubid::Iso::Identifier.parse("ISO 19115"), hit: { year: "2019" })
+      result = described_class.filter_hits_by_year([hit], "2019")
+      expect(result[0].first.pubid.year).to eq "2019"
     end
   end
   #

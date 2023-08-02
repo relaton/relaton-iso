@@ -37,21 +37,21 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       X-Github-Request-Id:
-      - 0E46:0731:304D68:39ADFB:64C56734
+      - FA70:65CC:12F461:157379:64C962A4
       Accept-Ranges:
       - bytes
       Date:
-      - Sat, 29 Jul 2023 19:23:32 GMT
+      - Tue, 01 Aug 2023 19:53:09 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-iad-kjyo7100045-IAD
+      - cache-iad-kjyo7100161-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1690658612.303225,VS0,VE359
+      - S1690919589.292574,VS0,VE133
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -59,72 +59,81 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 7ccf17518fd8d70c8f81efb64e5077a28666d20c
+      - 0abe409a4cfa8e0ccc6b36f655f3cfb48d72ab2b
       Expires:
-      - Sat, 29 Jul 2023 19:28:32 GMT
+      - Tue, 01 Aug 2023 19:58:09 GMT
       Source-Age:
       - '0'
     body:
       encoding: UTF-8
       string: '404: Not Found'
-  recorded_at: Sat, 29 Jul 2023 19:23:32 GMT
+  recorded_at: Tue, 01 Aug 2023 19:53:09 GMT
 - request:
-    method: post
-    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
+    method: get
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/ISO_TC_184_SC_4_N111.yaml
     body:
-      encoding: UTF-8
-      string: '{"query":"ISO/IEC TC 184/SC 4 N111","hitsPerPage":100,"filters":"category:standard"}'
+      encoding: US-ASCII
+      string: ''
     headers:
-      User-Agent:
-      - Algolia for Ruby (2.3.2), Ruby (3.2.0)
-      X-Algolia-Api-Key:
-      - dd1b9e1ab383f4d4817d29cd5e96d3f0
-      X-Algolia-Application-Id:
-      - JCL49WV5AR
-      Content-Type:
-      - application/json; charset=utf-8
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
       - "*/*"
-      Connection:
-      - keep-alive
-      Keep-Alive:
-      - '30'
+      User-Agent:
+      - Ruby
+      Host:
+      - raw.githubusercontent.com
   response:
     status:
-      code: 200
-      message: OK
+      code: 404
+      message: Not Found
     headers:
-      Server:
-      - nginx
-      Date:
-      - Sat, 29 Jul 2023 19:23:32 GMT
-      Content-Type:
-      - application/json; charset=UTF-8
-      Content-Length:
-      - '403'
       Connection:
       - keep-alive
-      X-Alg-Pt:
-      - '1'
-      Accept-Encoding:
-      - deflate, gzip
-      Cache-Control:
-      - no-store
-      Access-Control-Allow-Origin:
-      - "*"
-      Timing-Allow-Origin:
-      - "*"
+      Content-Length:
+      - '14'
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Strict-Transport-Security:
+      - max-age=31536000
       X-Content-Type-Options:
       - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      Content-Disposition:
-      - inline; filename=a.txt
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Type:
+      - text/plain; charset=utf-8
+      X-Github-Request-Id:
+      - FA70:65CC:12F461:157379:64C962A4
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Tue, 01 Aug 2023 19:53:09 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-iad-kcgs7200045-IAD
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Timer:
+      - S1690919590.531615,VS0,VE2
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Access-Control-Allow-Origin:
+      - "*"
+      Cross-Origin-Resource-Policy:
+      - cross-origin
+      X-Fastly-Request-Id:
+      - 2732e95a5daa98afadf92cbd96691467ef42c681
+      Expires:
+      - Tue, 01 Aug 2023 19:58:09 GMT
+      Source-Age:
+      - '0'
     body:
       encoding: UTF-8
-      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO/IEC
-        TC 184/SC 4 N111","params":"query=ISO%2FIEC+TC+184%2FSC+4+N111&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"fetch":{"query":1,"total":1},"request":{"roundTrip":134},"total":1},"serverTimeMS":1}'
-  recorded_at: Sat, 29 Jul 2023 19:23:32 GMT
+      string: '404: Not Found'
+  recorded_at: Tue, 01 Aug 2023 19:53:09 GMT
 recorded_with: VCR 6.2.0
