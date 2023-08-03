@@ -64,23 +64,12 @@ module RelatonIso
     # @return [Array<RelatonIso::Hit>]
     #
     def fetch_iso # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      # %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?} =~ text
-      # http = Net::HTTP.new "www.iso.org", 443
-      # http.use_ssl = true
-      # search = ["status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED"]
-      # search << "docNumber=#{num}"
-      # search << "docPartNo=#{part}" if part
-      # q = search.join "&"
-      # resp = http.get("/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
-      #                 "Accept" => "application/json, text/plain, */*")
       config = Algolia::Search::Config.new(application_id: "JCL49WV5AR", api_key: "dd1b9e1ab383f4d4817d29cd5e96d3f0")
       client = Algolia::Search::Client.new config, logger: Config.configuration.logger
       index = client.init_index "all_en"
       resp = index.search text, hitsPerPage: 100, filters: "category:standard"
-      # return [] if resp.body.empty?
 
-      # json = JSON.parse resp.body
-      # json["standards"]
+      Logger.warn "Algolia response: #{resp[:hits].map { |h| h[:title][0..30].strip }.join ", "}"
       resp[:hits].map { |h| Hit.new h, self }.sort! do |a, b|
         if a.sort_weight == b.sort_weight && b.hit[:year] = a.hit[:year]
           a.hit[:title] <=> b.hit[:title]
@@ -91,19 +80,5 @@ module RelatonIso
         end
       end
     end
-
-    # @param hit [Hash]
-    # @return [Date]
-    # def parse_date(hit)
-    #   if hit["publicationDate"]
-    #     Date.strptime(hit["publicationDate"], "%Y-%m")
-    #   elsif %r{:(?<year>\d{4})} =~ hit["docRef"]
-    #     Date.strptime(year, "%Y")
-    #   elsif hit["newProjectDate"]
-    #     Date.parse hit["newProjectDate"]
-    #   else
-    #     Date.new 0
-    #   end
-    # end
   end
 end
