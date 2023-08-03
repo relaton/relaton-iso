@@ -40,35 +40,21 @@ module RelatonIso
         query_pubid.part = nil if opts[:all_parts]
         Logger.warn "(\"#{query_pubid}\") Fetching from ISO..."
 
-        hits, missed_years = isobib_search_filter(query_pubid, opts)
-        # hits, = isobib_search_filter(query_pubid, opts, any_types_stages: true) if hits.empty?
-
+        hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
         tip_ids = look_up_with_any_types_stages(hits, query_pubid, opts)
-        # tip_ids += look_up_isoiec_prefix(hits, query_pubid, opts)
 
-        # return only first one if not all_parts
         ret = if !opts[:all_parts] || hits.size == 1
                 hits.any? && hits.first.fetch(opts[:lang])
               else
                 hits.to_all_parts(opts[:lang])
               end
 
-        return fetch_ref_err(query_pubid, missed_years, tip_ids) unless ret
+        return fetch_ref_err(query_pubid, missed_year_ids, tip_ids) unless ret
 
         response_docid = ret.docidentifier.first.id.sub(" (all parts)", "")
         response_pubid = Pubid::Iso::Identifier.parse(response_docid)
 
-        # if query_pubid.to_s == response_pubid.to_s
-        #   Logger.warn "(\"#{query_pubid}\") Found exact match."
-        # elsif matches_base?(query_pubid, response_pubid)
-        #   Logger.warn "(\"#{query_pubid}\") Found (\"#{response_pubid}\")."
-        # elsif matches_base?(query_pubid, response_pubid, any_types_stages: true)
-        #   Logger.warn "(\"#{query_pubid}\") TIP: Found with different " \
-        #               "type/stage, please amend to (\"#{response_pubid}\")."
-        # else
-        #   # when there are all parts
         Logger.warn "(\"#{query_pubid}\") Found (\"#{response_pubid}\")."
-        # end
 
         get_all = (
           (query_pubid.year && opts[:keep_year].nil?) ||
@@ -115,41 +101,39 @@ module RelatonIso
 
       # @param hit_collection [RelatonIso::HitCollection]
       # @param year [String]
-      # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed years
-      def filter_hits_by_year(hit_collection, year) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-        missed_years = []
-        return [hit_collection, missed_years] if year.nil?
+      # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed year IDs
+      def filter_hits_by_year(hit_collection, year)
+        missed_year_ids = Set.new
+        return [hit_collection, missed_year_ids] if year.nil?
 
         # filter by year
         hits = hit_collection.select do |hit|
-          if (hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s) ||
-              (!hit.pubid.base.nil? && hit.pubid.base.year.to_s == year.to_s) ||
-              (!hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s)
-            true
-          elsif hit.pubid.year.nil? && hit.hit[:year].to_s == year
-            hit.pubid.year = year
-            true
-          else
-            missed_year = (hit.pubid.year || hit.hit[:year]).to_s
-            if missed_year && !missed_year.empty? && !missed_years.include?(missed_year)
-              missed_years << missed_year
-            end
-            false
-          end
+          hit.pubid.year ||= hit.hit[:year]
+          next true if check_year(year, hit)
+
+          missed_year_ids << hit.pubid.to_s if hit.pubid.year
+          false
         end
 
-        [hits, missed_years]
+        [hits, missed_year_ids]
       end
 
       private
 
-      # @param query_pubid [Pubid::Iso::Identifier] PubID with no results
-      def fetch_ref_err(pubid, missed_years, tip_ids) # rubocop:disable Metrics/MethodLength
+      def check_year(year, hit) # rubocop:disable Metrics/AbcSize
+        (hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s) ||
+          (!hit.pubid.base.nil? && hit.pubid.base.year.to_s == year.to_s) ||
+          (!hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s)
+      end
+
+      # @param pubid [Pubid::Iso::Identifier] PubID with no results
+      def fetch_ref_err(pubid, missed_year_ids, tip_ids) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
         Logger.warn "(\"#{pubid}\") Not found."
 
-        if missed_years.any?
-          Logger.warn "(\"#{pubid}\") TIP: No match for edition year #{pubid.year}, " \
-                      "but matches exist for #{missed_years.join(', ')}."
+        if missed_year_ids.any?
+          ids = missed_year_ids.map { |i| "\"#{i}\"" }.join(", ")
+          Logger.warn "(\"#{pubid}\") TIP: No match for edition year " \
+                      "#{pubid.year}, but matches exist for #{ids}."
         end
 
         if tip_ids.any?
@@ -166,62 +150,15 @@ module RelatonIso
                       "(\"#{pubid.to_s(format: :ref_undated)} (all parts)\")."
         end
 
-        # unless %w(TS TR PAS Guide).include?(pubid.type)
-        #   Logger.warn "(\"#{pubid}\") TIP: If the document is not an " \
-        #               "International Standard, use its " \
-        #               "deliverable type abbreviation (TS, TR, PAS, Guide)."
-        # end
-
         nil
       end
-
-      # @param pubid [Pubid::Iso::Identifier]
-      # @param missed_years [Array<String>]
-      # def warn_missing_years(pubid, missed_years)
-      #   Logger.warn "(\"#{pubid}\") TIP: No match for edition year #{pubid.year}, " \
-      #               "but matches exist for #{missed_years.uniq.join(', ')}."
-      # end
-
-      # Search for hits using ISO/IEC prefix.
-      #
-      # @param pubid [Pubid::Iso::Identifier] reference with ISO prefix
-      # @param opts [Hash]
-      # @return [Array<RelatonIso::Hit>]
-      # def look_up_isoiec_prefix(hits, pubid, opts) # rubocop:disable Metrics/MethodLength
-      #   found_ids = []
-      #   unless hits.empty? && pubid.copublisher.nil? && pubid.publisher == "ISO"
-      #     return found_ids
-      #   end
-
-      #   new_pubid = pubid.dup
-      #   new_pubid.copublisher = "IEC"
-      #   # Logger.warn "(\"#{old_pubid}\") Not found, trying with ISO/IEC prefix (\"#{pubid}\")..."
-      #   resp_isoiec, = isobib_search_filter(new_pubid, opts)
-
-      #   # if resp_isoiec[:hits].empty?
-      #   #   Logger.warn "(\"#{pubid}\") Not found. "
-      #   #   return nil
-      #   # end
-
-      #   # Logger.warn "(\"#{pubid}\") TIP: Found with ISO/IEC prefix, please amend to (\"#{pubid}\")."
-      #   found_ids << new_pubid if resp_isoiec.any?
-      #   found_ids
-      # end
 
       def look_up_with_any_types_stages(hits, pubid, opts) # rubocop:disable Metrics/MethodLength
         found_ids = []
         return found_ids unless !hits.from_gh && hits.empty? && pubid.copublisher.nil?
 
-        # ref = typed_ref.sub(/^ISO\/\w+/, "ISO")
-        # pubid = Pubid::Iso::Identifier.parse(ref)
-        # Logger.warn "(\"#{typed_ref}\") Not found, trying without type (\"#{pubid}\")..."
         resp, = isobib_search_filter(pubid, opts, any_types_stages: true)
-        # if resp_without_type[:hits].empty?
-        #   Logger.warn "(\"#{pubid}\") Not found."
-        #   return nil
-        # end
         resp.map &:pubid
-        # Logger.warn "(\"#{pubid}\") TIP: Found without type, please use reference (\"#{pubid}\")."
       end
 
       #
@@ -234,9 +171,6 @@ module RelatonIso
       # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed years
       #
       def isobib_search_filter(query_pubid, opts, any_types_stages: false) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-        # missed_years = []
-
-        # fetch hits collection
         query_pubid_without_year = query_pubid.dup
         # remove year for query
         query_pubid_without_year.year = nil
@@ -244,28 +178,18 @@ module RelatonIso
 
         # filter only matching hits
         filter_hits hit_collection, query_pubid, opts[:all_parts], any_types_stages
-        # return res unless res[:hits].empty?
-
-        # missed_years += res[:missed_years]
-
-        # lookup for documents with stages when no match without stage
-        # filter_hits hit_collection, query_pubid, all_parts: opts[:all_parts], any_types_stages: true
-        # return res unless res[:hits].empty?
-
-        # missed_years += res[:missed_years]
-
-        # if missed_years.any?
-        #   warn_missing_years(query_pubid, missed_years)
-        # end
-
-        # res
       end
 
-      # @param hits [RelatonIso::HitCollection]
+      #
+      # Filter hits by query_pubid.
+      #
+      # @param hit_collection [RelatonIso::HitCollection]
       # @param query_pubid [Pubid::Iso::Identifier]
       # @param all_parts [Boolean]
       # @param any_stypes_tages [Boolean]
-      # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed years
+      #
+      # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed year IDs
+      #
       def filter_hits(hit_collection, query_pubid, all_parts, any_stypes_tages) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         # filter out
         result = hit_collection.select do |i|

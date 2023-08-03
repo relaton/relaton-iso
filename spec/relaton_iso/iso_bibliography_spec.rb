@@ -216,25 +216,15 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "gets a code and year successfully" do
-      VCR.use_cassette "iso_19115_2003" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {})
-          .to_xml
-        expect(results).to include(%(<on>2003-05</on>))
-        expect(results).not_to include(
-          %(<docidentifier type="ISO" primary="true">ISO 19115-1:2003</docidentifier>),
-        )
-        expect(results).to include(
-          %(<docidentifier type="ISO" primary="true">ISO 19115:2003</docidentifier>),
-        )
+    context "gets a code and year successfully" do
+      it "with a year as an arg", vcr: "iso_19115_2003" do
+        bib = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {})
+        expect(bib.docidentifier[0].id).to eq "ISO 19115:2003"
       end
-    end
 
-    it "gets reference with an year in a code" do
-      VCR.use_cassette "iso_19115_1_2014" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {})
-          .to_xml
-        expect(results).to include %(<on>2014-04</on>)
+      it "with a year in a code", vcr: "iso_19115_1_2014" do
+        bib = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {})
+        expect(bib.docidentifier[0].id).to eq "ISO 19115-1:2014"
       end
     end
 
@@ -256,7 +246,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "ISO 19115:2015", vcr: "iso_19115_2015" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
           .to output(
-            /TIP: No match for edition year 2015, but matches exist for 2003/,
+            /TIP: No match for edition year 2015, but matches exist for "ISO 19115:2003"/,
           ).to_stderr
       end
     end
@@ -265,7 +255,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "ISO/TS 19103:2015", vcr: "iso_ts_19103_2015" do
         expect do
           expect(RelatonIso::IsoBibliography.get("ISO/TS 19103", "2015", {})).to be_nil
-        end.to output(/TIP: Matches exist for "ISO 19103:2015/).to_stderr
+        end.to output(/TIP: Matches exist for "ISO 19103:2015"/).to_stderr
       end
     end
 
