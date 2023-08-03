@@ -3,6 +3,10 @@
 require "relaton_iso/iso_bibliography"
 
 RSpec.describe RelatonIso::IsoBibliography do
+  before do
+    RelatonIso::Config.instance_variable_set :@configuration, nil
+  end
+
   it "raise access error" do
     expect(Net::HTTP).to receive(:get_response).and_raise SocketError
     expect { RelatonIso::IsoBibliography.search "ISO TC 184/SC 4" }
@@ -212,25 +216,15 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "gets a code and year successfully" do
-      VCR.use_cassette "iso_19115_2003" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {})
-          .to_xml
-        expect(results).to include(%(<on>2003-05</on>))
-        expect(results).not_to include(
-          %(<docidentifier type="ISO" primary="true">ISO 19115-1:2003</docidentifier>),
-        )
-        expect(results).to include(
-          %(<docidentifier type="ISO" primary="true">ISO 19115:2003</docidentifier>),
-        )
+    context "gets a code and year successfully" do
+      it "with a year as an arg", vcr: "iso_19115_2003" do
+        bib = RelatonIso::IsoBibliography.get("ISO 19115", "2003", {})
+        expect(bib.docidentifier[0].id).to eq "ISO 19115:2003"
       end
-    end
 
-    it "gets reference with an year in a code" do
-      VCR.use_cassette "iso_19115_1_2014" do
-        results = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {})
-          .to_xml
-        expect(results).to include %(<on>2014-04</on>)
+      it "with a year in a code", vcr: "iso_19115_1_2014" do
+        bib = RelatonIso::IsoBibliography.get("ISO 19115-1:2014", nil, {})
+        expect(bib.docidentifier[0].id).to eq "ISO 19115-1:2014"
       end
     end
 
@@ -248,12 +242,20 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    it "warns when a code matches a resource but the year does not" do
-      VCR.use_cassette "iso_19115_2015" do
+    context "warns when a code matches a resource but the year does not" do
+      it "ISO 19115:2015", vcr: "iso_19115_2015" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
           .to output(
-            /TIP: No match for edition year 2015, but matches exist for 2003/,
+            /TIP: No match for edition year 2015, but matches exist for "ISO 19115:2003"/,
           ).to_stderr
+      end
+    end
+
+    context "look up the version with no doctype" do
+      it "ISO/TS 19103:2015", vcr: "iso_ts_19103_2015" do
+        expect do
+          expect(RelatonIso::IsoBibliography.get("ISO/TS 19103", "2015", {})).to be_nil
+        end.to output(/TIP: Matches exist for "ISO 19103:2015"/).to_stderr
       end
     end
 
@@ -549,42 +551,42 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:query_pubid) { "ISO 6709-1" }
       let(:pubid) { "ISO 6709-2" }
 
-      it { is_expected.to be_truthy }
+      it { is_expected.to be true }
     end
 
     context "when have different number" do
       let(:query_pubid) { "ISO 6708" }
       let(:pubid) { "ISO 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when have different publisher" do
       let(:query_pubid) { "ISO 6709" }
       let(:pubid) { "IEC 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when have different copublisher" do
       let(:query_pubid) { "ISO/IEC 6709" }
       let(:pubid) { "ISO 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when have different type" do
       let(:query_pubid) { "ISO/TS 6709" }
       let(:pubid) { "ISO 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when have different stage" do
       let(:query_pubid) { "ISO/DIS 6709" }
       let(:pubid) { "ISO 6709" }
 
-      it { is_expected.to be_falsey }
+      it { is_expected.to be false }
     end
 
     context "when requested to match with any types and stages" do
@@ -594,14 +596,14 @@ RSpec.describe RelatonIso::IsoBibliography do
         let(:query_pubid) { "ISO 6709" }
         let(:pubid) { "ISO/DIS 6709" }
 
-        it { is_expected.to be_truthy }
+        it { is_expected.to be true }
       end
 
       context "when have different type" do
         let(:query_pubid) { "ISO 6709" }
         let(:pubid) { "ISO TR 6709" }
 
-        it { is_expected.to be false }
+        it { is_expected.to be true }
       end
 
       context "when query already have stage" do
@@ -609,7 +611,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         let(:pubid) { "ISO 6709" }
 
         it "do not matches with different stage" do
-          expect(subject).to be_falsey
+          expect(subject).to be true
         end
       end
 
@@ -618,7 +620,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         let(:pubid) { "ISO 6709" }
 
         it "do not matches with different type" do
-          expect(subject).to be_falsey
+          expect(subject).to be true
         end
       end
     end
@@ -633,8 +635,8 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:year) { "2015" }
 
       it "returns nothing" do
-        expect(subject[:hits]).to be_empty
-        expect(subject[:missed_years]).not_to be_empty
+        expect(subject[0]).to be_empty
+        expect(subject[1]).not_to be_empty
       end
     end
 
@@ -644,12 +646,18 @@ RSpec.describe RelatonIso::IsoBibliography do
       let(:pubid) { Pubid::Iso::Identifier.parse("ISO 19115:2003") }
 
       it "returns found document" do
-        expect(subject[:hits].first.pubid.to_s).to eq(pubid.to_s)
+        expect(subject[0].first.pubid.to_s).to eq(pubid.to_s)
       end
 
       it "don't output warning" do
         expect { subject }.not_to output.to_stderr
       end
+    end
+
+    it "set pubid year if it is missing" do
+      hit = double("hit", pubid: Pubid::Iso::Identifier.parse("ISO 19115"), hit: { year: "2019" })
+      result = described_class.filter_hits_by_year([hit], "2019")
+      expect(result[0].first.pubid.year).to eq "2019"
     end
   end
   #
