@@ -69,7 +69,6 @@ module RelatonIso
       index = client.init_index "all_en"
       resp = index.search text, hitsPerPage: 100, filters: "category:standard"
 
-      Logger.warn "Algolia response: #{resp[:hits].map { |h| h[:title][0..30].strip }.join ", "}"
       resp[:hits].map { |h| Hit.new h, self }.sort! do |a, b|
         if a.sort_weight == b.sort_weight && b.hit[:year] = a.hit[:year]
           a.hit[:title] <=> b.hit[:title]
