@@ -49,37 +49,11 @@ item = hit_collection[2].fetch
 ...
 
 item.docidentifier
-=> [#<RelatonIso::DocumentIdentifier:0x00007fa8b7db1f20
-  @id=
-   #<Pubid::Iso::Identifier:0x00007fa8b7db2a60
-    @base=#<Pubid::Iso::Identifier:0x00007fa8b7db2c68 @edition="1", @number="19115"@4, @part="1", @publisher="ISO", @year=2014>,
-    @number="2"@21,
-    @publisher="ISO",
-    @stage=#<Pubid::Iso::Stage:0x00007fa8b7db20d8 @abbr=nil, @harmonized_code=#<Pubid::Iso::HarmonizedStageCode:0x00007fa8b7db2088 @stages=["60.60"]>>,
-    @typed_stage=#<Pubid::Iso::TypedStage:0x00007fa8b7db2920 @type=#<Pubid::Iso::Type:0x00007fa8b7db26c8 @type=:amd>, @typed_stage=nil>,
-    @year=2020>,
-  @language=nil,
-  @primary=true,
-  @scope=nil,
-  @script=nil,
-  @type="ISO">,
- #<RelatonIso::DocumentIdentifier:0x00007fa8b7db1e80
-  @id=
-   #<Pubid::Iso::Identifier:0x00007fa8b7db2a60
-    @base=#<Pubid::Iso::Identifier:0x00007fa8b7db2c68 @edition="1", @number="19115"@4, @part="1", @publisher="ISO", @year=2014>,
-    @number="2"@21,
-    @publisher="ISO",
-    @stage=#<Pubid::Iso::Stage:0x00007fa8b7db20d8 @abbr=nil, @harmonized_code=#<Pubid::Iso::HarmonizedStageCode:0x00007fa8b7db2088 @stages=["60.60"]>>,
-    @typed_stage=#<Pubid::Iso::TypedStage:0x00007fa8b7db2920 @type=#<Pubid::Iso::Type:0x00007fa8b7db26c8 @type=:amd>, @typed_stage=nil>,
-    @year=2020>,
-  @language=nil,
-  @primary=nil,
-  @scope=nil,
-  @script=nil,
-  @type="URN">]
+=> [#<RelatonIso::DocumentIdentifier:0x0000000112a23a88
+...
 
 item.docidentifier.detect { |di| di.type == "URN" }.id
-=> "urn:iso:std:iso:19115:-1:ed-1:amd:2020:v2"
+=> "urn:iso:std:iso:19115:-1:ed-1:stage-60.60:amd:2020:v2"
 ----
 
 === Fetch document by reference and year
@@ -93,9 +67,9 @@ item = RelatonIso::IsoBibliography.get "ISO 19115:2003"
 ...
 
 item = RelatonIso::IsoBibliography.get "ISO 19115", "2003"
-[relaton-iso] ("ISO 19115") fetching from ISO...
-[relaton-iso] ("ISO 19115:2003") Found exact match.
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c828d3180
+[relaton-iso] ("ISO 19115:2003") Fetching from ISO...
+[relaton-iso] ("ISO 19115:2003") Found ("ISO 19115:2003").
+=> #<RelatonIsoBib::IsoBibliographicItem:0x0000000112c9ca80
 ...
 
 item.docidentifier[0].id
@@ -113,7 +87,7 @@ item = RelatonIso::IsoBibliography.get "ISO 19115"
 ...
 
 item.docidentifier[0].id
-=> "ISO 19115:2003"
+=> "ISO 19115"
 ----
 
 === Fetch a part document
@@ -136,13 +110,13 @@ item.docidentifier[0].id
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115 (all parts)"
 [relaton-iso] ("ISO 19115") Fetching from ISO...
-[relaton-iso] ("ISO 19115") Found exact match.
+[relaton-iso] ("ISO 19115") Found ("ISO 19115").
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8ca216e118
 ...
 
 item = RelatonIso::IsoBibliography.get "ISO 19115", nil, all_parts: true
 [relaton-iso] ("ISO 19115") Fetching from ISO...
-[relaton-iso] ("ISO 19115") Found exact match.
+[relaton-iso] ("ISO 19115") Found ("ISO 19115").
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c830f3d38
 ...
 
@@ -151,12 +125,12 @@ item.docidentifier[0].id
 
 item = RelatonIso::IsoBibliography.get "ISO 19115-1 (all parts)"
 [relaton-iso] ("ISO 19115") Fetching from ISO...
-[relaton-iso] ("ISO 19115") Found exact match.
+[relaton-iso] ("ISO 19115") Found ("ISO 19115").
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c8290e5a0
 
 item = RelatonIso::IsoBibliography.get "ISO 19115-1", nil, all_parts: true
 [relaton-iso] ("ISO 19115") Fetching from ISO...
-[relaton-iso] ("ISO 19115") Found exact match.
+[relaton-iso] ("ISO 19115") Found ("ISO 19115").
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c925355b8
 ...
 
@@ -217,35 +191,31 @@ item.to_xml note: [{ text: "Note", type: "note" }]
 [source,ruby]
 ----
 item.title lang: 'en'
-=> #<RelatonBib::TypedTitleStringCollection:0x00007fa8b7f47c90
+=> #<RelatonBib::TypedTitleStringCollection:0x0000000112783fd0
  @array=
-  [#<RelatonBib::TypedTitleString:0x00007fa8b7be8a40
-    @title=#<RelatonBib::FormattedString:0x00007fa8b7be87c0 @content="Geographic information", @format="text/plain", @language=["en"], @script=["Latn"]>,
+  [#<RelatonBib::TypedTitleString:0x00000001138e2380
+    @title=#<RelatonBib::FormattedString:0x0000000112d496b8 @content="Geographic information", @format="text/plain", @language=["en"], @script=["Latn"]>,
     @type="title-intro">,
-   #<RelatonBib::TypedTitleString:0x00007fa8b7be84a0
-    @title=#<RelatonBib::FormattedString:0x00007fa8b7be83d8 @content="Metadata", @format="text/plain", @language=["en"], @script=["Latn"]>,
+   #<RelatonBib::TypedTitleString:0x00000001138e1f70
+    @title=#<RelatonBib::FormattedString:0x0000000112d495c8 @content="Metadata", @format="text/plain", @language=["en"], @script=["Latn"]>,
     @type="title-main">,
-   #<RelatonBib::TypedTitleString:0x00007fa8b7be8130
+   #<RelatonBib::TypedTitleString:0x00000001138e1d68
     @title=
-     #<RelatonBib::FormattedString:0x00007fa8b7be8018
-      @content="Geographic information – Metadata",
-      @format="text/plain",
-      @language=["en"],
-      @script=["Latn"]>,
+     #<RelatonBib::FormattedString:0x0000000112d49488 @content="Geographic information – Metadata", @format="text/plain", @language=["en"], @script=["Latn"]>,
     @type="main">]>
 
 item.title lang: 'fr'
-=> #<RelatonBib::TypedTitleStringCollection:0x00007fa8b7bcb4b8
+=> #<RelatonBib::TypedTitleStringCollection:0x0000000113067458
  @array=
-  [#<RelatonBib::TypedTitleString:0x00007fa8b7be3ea0
-    @title=#<RelatonBib::FormattedString:0x00007fa8b7be3dd8 @content="Information géographique", @format="text/plain", @language=["fr"], @script=["Latn"]>,
+  [#<RelatonBib::TypedTitleString:0x00000001138e1c28
+    @title=#<RelatonBib::FormattedString:0x0000000112d49438 @content="Information géographique", @format="text/plain", @language=["fr"], @script=["Latn"]>,
     @type="title-intro">,
-   #<RelatonBib::TypedTitleString:0x00007fa8b7be3ba8
-    @title=#<RelatonBib::FormattedString:0x00007fa8b7be3b58 @content="Métadonnées", @format="text/plain", @language=["fr"], @script=["Latn"]>,
+   #<RelatonBib::TypedTitleString:0x00000001138e1b10
+    @title=#<RelatonBib::FormattedString:0x0000000112d49398 @content="Métadonnées", @format="text/plain", @language=["fr"], @script=["Latn"]>,
     @type="title-main">,
-   #<RelatonBib::TypedTitleString:0x00007fa8b7be38d8
+   #<RelatonBib::TypedTitleString:0x00000001138e1908
     @title=
-     #<RelatonBib::FormattedString:0x00007fa8b7be3860
+     #<RelatonBib::FormattedString:0x0000000112d491b8
       @content="Information géographique – Métadonnées",
       @format="text/plain",
       @language=["fr"],
@@ -254,10 +224,9 @@ item.title lang: 'fr'
 
 item = RelatonIso::IsoBibliography.get "ISO 19115:2003"
 [relaton-iso] ("ISO 19115:2003") Fetching from ISO...
-[relaton-iso] ("ISO 19115:2003") Found exact match.
+[relaton-iso] ("ISO 19115:2003") Found ("ISO 19115:2003").
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007fa8870b69e0
 
-item.abstract lang: 'en'
 item.abstract lang: 'en'
 => #<RelatonBib::FormattedString:0x00007fa8870b4f78
  @content=
@@ -274,13 +243,13 @@ Each ISO document has `src` type link and optional `obp`, `rss`, and `pub` link 
 [source,ruby]
 ----
 item.link
-=> [#<RelatonBib::TypedUri:0x00007fa8870ac5a8
-  @content=#<Addressable::URI:0xcc6514 URI:https://www.iso.org/standard/26020.html>,
+=> [#<RelatonBib::TypedUri:0x0000000112d66c40
+  @content=#<Addressable::URI:0x93d71c URI:https://www.iso.org/standard/26020.html>,
   @language=nil,
   @script=nil,
   @type="src">,
- #<RelatonBib::TypedUri:0x00007fa8870a7490
-  @content=#<Addressable::URI:0xcc6528 URI:https://www.iso.org/contents/data/standard/02/60/26020.detail.rss>,
+ #<RelatonBib::TypedUri:0x0000000112d66920
+  @content=#<Addressable::URI:0x93d730 URI:https://www.iso.org/contents/data/standard/02/60/26020.detail.rss>,
   @language=nil,
   @script=nil,
   @type="rss">]

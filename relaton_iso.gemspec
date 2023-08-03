@@ -10,10 +10,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 
-  spec.summary       = "RelatonIso: retrieve ISO Standards for bibliographic use "\
-                       "using the IsoBibliographicItem model"
-  spec.description   = "RelatonIso: retrieve ISO Standards for bibliographic use "\
-                       "using the IsoBibliographicItem model"
+  spec.summary       = "RelatonIso: retrieve ISO Standards for bibliographic " \
+                       "use using the IsoBibliographicItem model"
+  spec.description   = "RelatonIso: retrieve ISO Standards for bibliographic " \
+                       "use using the IsoBibliographicItem model"
 
   spec.homepage      = "https://github.com/relaton/relaton-iso"
   spec.license       = "BSD-2-Clause"
@@ -26,11 +26,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
-  spec.add_development_dependency "equivalent-xml", "~> 0.6"
-  spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-
   spec.add_dependency "algolia", "~> 2.3.0"
+  spec.add_dependency "pubid-core", "1.8.5"
   spec.add_dependency "pubid-iso", "~> 0.5.0"
+  spec.add_dependency "relaton-bib", "~> 1.14.12"
   spec.add_dependency "relaton-iso-bib", "~> 1.14.0"
 end

@@ -6,17 +6,19 @@ require "relaton_iso/hit"
 module RelatonIso
   # Page of hit collection.
   class HitCollection < RelatonBib::HitCollection
-    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    # @return [Boolean] whether the search was performed on GitHub
+    attr_reader :from_gh
 
     # @param text [String] reference to search
     def initialize(text)
       super
-      @array = text.match?(/^ISO[\s\/](?:TC\s184\/SC\s?4|IEC\sDIR\s(?:\d|IEC|JTC))/) ? fetch_github : fetch_iso
+      @from_gh = text.match?(/^ISO[\s\/](?:TC\s184\/SC\s?4|IEC\sDIR\s(?:\d|IEC|JTC))/)
+      @array = from_gh ? fetch_github : fetch_iso
     end
 
     # @param lang [String, NilClass]
     # @return [RelatonIsoBib::IsoBibliographicItem, nil]
-    def to_all_parts(lang = nil) # rubocop:disable Metrics/CyclomaticComplexity
+    def to_all_parts(lang = nil) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       # parts = @array.reject { |h| h.hit["docPart"]&.empty? }
       hit = @array.min_by { |h| h.pubid.part.to_i }
       return @array.first&.fetch lang unless hit
@@ -33,7 +35,6 @@ module RelatonIso
       end
       all_parts_item
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     private
 
@@ -63,23 +64,11 @@ module RelatonIso
     # @return [Array<RelatonIso::Hit>]
     #
     def fetch_iso # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      # %r{\s(?<num>\d+)(?:-(?<part>[\d-]+))?} =~ text
-      # http = Net::HTTP.new "www.iso.org", 443
-      # http.use_ssl = true
-      # search = ["status=ENT_ACTIVE,ENT_PROGRESS,ENT_INACTIVE,ENT_DELETED"]
-      # search << "docNumber=#{num}"
-      # search << "docPartNo=#{part}" if part
-      # q = search.join "&"
-      # resp = http.get("/cms/render/live/en/sites/isoorg.advancedSearch.do?#{q}",
-      #                 "Accept" => "application/json, text/plain, */*")
       config = Algolia::Search::Config.new(application_id: "JCL49WV5AR", api_key: "dd1b9e1ab383f4d4817d29cd5e96d3f0")
-      client = Algolia::Search::Client.new config, logger: ::Logger.new($stderr)
+      client = Algolia::Search::Client.new config, logger: Config.configuration.logger
       index = client.init_index "all_en"
       resp = index.search text, hitsPerPage: 100, filters: "category:standard"
-      # return [] if resp.body.empty?
 
-      # json = JSON.parse resp.body
-      # json["standards"]
       resp[:hits].map { |h| Hit.new h, self }.sort! do |a, b|
         if a.sort_weight == b.sort_weight && b.hit[:year] = a.hit[:year]
           a.hit[:title] <=> b.hit[:title]
@@ -90,19 +79,5 @@ module RelatonIso
         end
       end
     end
-
-    # @param hit [Hash]
-    # @return [Date]
-    # def parse_date(hit)
-    #   if hit["publicationDate"]
-    #     Date.strptime(hit["publicationDate"], "%Y-%m")
-    #   elsif %r{:(?<year>\d{4})} =~ hit["docRef"]
-    #     Date.strptime(year, "%Y")
-    #   elsif hit["newProjectDate"]
-    #     Date.parse hit["newProjectDate"]
-    #   else
-    #     Date.new 0
-    #   end
-    # end
   end
 end
