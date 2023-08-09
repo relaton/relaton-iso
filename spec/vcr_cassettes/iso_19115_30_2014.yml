@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 01 Aug 2023 04:48:51 GMT
+      - Wed, 09 Aug 2023 01:34:25 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Content-Length:
-      - '318'
+      - '319'
       Connection:
       - keep-alive
       X-Alg-Pt:
@@ -57,124 +57,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO
-        19115-30","params":"query=ISO+19115-30&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"request":{"roundTrip":255}}}'
-  recorded_at: Tue, 01 Aug 2023 04:48:51 GMT
-- request:
-    method: post
-    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
-    body:
-      encoding: UTF-8
-      string: '{"query":"ISO 19115-30","hitsPerPage":100,"filters":"category:standard"}'
-    headers:
-      User-Agent:
-      - Algolia for Ruby (2.3.2), Ruby (3.2.0)
-      X-Algolia-Api-Key:
-      - dd1b9e1ab383f4d4817d29cd5e96d3f0
-      X-Algolia-Application-Id:
-      - JCL49WV5AR
-      Content-Type:
-      - application/json; charset=utf-8
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      Connection:
-      - keep-alive
-      Keep-Alive:
-      - '30'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Tue, 01 Aug 2023 04:48:52 GMT
-      Content-Type:
-      - application/json; charset=UTF-8
-      Content-Length:
-      - '318'
-      Connection:
-      - keep-alive
-      X-Alg-Pt:
-      - '1'
-      Accept-Encoding:
-      - deflate, gzip
-      Cache-Control:
-      - no-store
-      Access-Control-Allow-Origin:
-      - "*"
-      Timing-Allow-Origin:
-      - "*"
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      Content-Disposition:
-      - inline; filename=a.txt
-    body:
-      encoding: UTF-8
-      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO
-        19115-30","params":"query=ISO+19115-30&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"request":{"roundTrip":109}}}'
-  recorded_at: Tue, 01 Aug 2023 04:48:51 GMT
-- request:
-    method: post
-    uri: https://jcl49wv5ar-dsn.algolia.net/1/indexes/all_en/query
-    body:
-      encoding: UTF-8
-      string: '{"query":"ISO/IEC 19115-30","hitsPerPage":100,"filters":"category:standard"}'
-    headers:
-      User-Agent:
-      - Algolia for Ruby (2.3.2), Ruby (3.2.0)
-      X-Algolia-Api-Key:
-      - dd1b9e1ab383f4d4817d29cd5e96d3f0
-      X-Algolia-Application-Id:
-      - JCL49WV5AR
-      Content-Type:
-      - application/json; charset=utf-8
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      Connection:
-      - keep-alive
-      Keep-Alive:
-      - '30'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Tue, 01 Aug 2023 04:48:52 GMT
-      Content-Type:
-      - application/json; charset=UTF-8
-      Content-Length:
-      - '328'
-      Connection:
-      - keep-alive
-      X-Alg-Pt:
-      - '1'
-      Accept-Encoding:
-      - deflate, gzip
-      Cache-Control:
-      - no-store
-      Access-Control-Allow-Origin:
-      - "*"
-      Timing-Allow-Origin:
-      - "*"
-      X-Content-Type-Options:
-      - nosniff
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains; preload
-      Content-Disposition:
-      - inline; filename=a.txt
-    body:
-      encoding: UTF-8
-      string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO/IEC
-        19115-30","params":"query=ISO%2FIEC+19115-30&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"request":{"roundTrip":109}}}'
-  recorded_at: Tue, 01 Aug 2023 04:48:52 GMT
+        19115-30","params":"query=ISO+19115-30&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"_request":{"roundTrip":111}}}'
+  recorded_at: Wed, 09 Aug 2023 01:34:25 GMT
 recorded_with: VCR 6.2.0

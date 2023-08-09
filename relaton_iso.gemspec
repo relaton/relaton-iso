@@ -27,8 +27,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
   spec.add_dependency "algolia", "~> 2.3.0"
-  spec.add_dependency "pubid-core", "1.8.5"
-  spec.add_dependency "pubid-iso", "~> 0.5.0"
-  spec.add_dependency "relaton-bib", "~> 1.14.12"
+  spec.add_dependency "pubid-iso", "~> 0.6.0"
+  spec.add_dependency "relaton-bib", "~> 1.14.13"
   spec.add_dependency "relaton-iso-bib", "~> 1.14.0"
 end

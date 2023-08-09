@@ -13,7 +13,11 @@ module RelatonIso
     def initialize(text)
       super
       @from_gh = text.match?(/^ISO[\s\/](?:TC\s184\/SC\s?4|IEC\sDIR\s(?:\d|IEC|JTC))/)
+    end
+
+    def fetch
       @array = from_gh ? fetch_github : fetch_iso
+      self
     end
 
     # @param lang [String, NilClass]
@@ -65,7 +69,7 @@ module RelatonIso
     #
     def fetch_iso # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       config = Algolia::Search::Config.new(application_id: "JCL49WV5AR", api_key: "dd1b9e1ab383f4d4817d29cd5e96d3f0")
-      client = Algolia::Search::Client.new config, logger: Config.configuration.logger
+      client = Algolia::Search::Client.new config, logger: RelatonIso.configuration.logger
       index = client.init_index "all_en"
       resp = index.search text, hitsPerPage: 100, filters: "category:standard"
 

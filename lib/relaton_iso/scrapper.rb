@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require "relaton_iso_bib"
-require "relaton_iso/hit"
-require "nokogiri"
-require "net/http"
-
 module RelatonIso
   # Scrapper.
   module Scrapper # rubocop:disable Metrics/ModuleLength
