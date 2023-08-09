@@ -1,10 +1,10 @@
-describe RelatonIso::Config do
-  after { RelatonIso::Config.instance_variable_set :@configuration, nil }
+describe RelatonIso do
+  after { RelatonIso.instance_variable_set :@configuration, nil }
 
   it "configure" do
-    RelatonIso::Config.configure do |conf|
+    RelatonIso.configure do |conf|
       conf.logger = :logger
     end
-    expect(RelatonIso::Config.configuration.logger).to eq :logger
+    expect(RelatonIso.configuration.logger).to eq :logger
   end
 end

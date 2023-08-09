@@ -3,8 +3,8 @@
 require "relaton_iso/iso_bibliography"
 
 RSpec.describe RelatonIso::IsoBibliography do
-  before do
-    RelatonIso::Config.instance_variable_set :@configuration, nil
+  before(:each) do
+    RelatonIso.instance_variable_set :@configuration, nil
   end
 
   it "raise access error" do
@@ -246,7 +246,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "ISO 19115:2015", vcr: "iso_19115_2015" do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
           .to output(
-            /TIP: No match for edition year 2015, but matches exist for "ISO 19115:2003"/,
+            /TIP: No match for edition year 2015, but matches exist for `ISO 19115:2003`/,
           ).to_stderr
       end
     end
@@ -254,8 +254,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     context "look up the version with no doctype" do
       it "ISO/TS 19103:2015", vcr: "iso_ts_19103_2015" do
         expect do
-          expect(RelatonIso::IsoBibliography.get("ISO/TS 19103", "2015", {})).to be_nil
-        end.to output(/TIP: Matches exist for "ISO 19103:2015"/).to_stderr
+          expect(RelatonIso::IsoBibliography.get("ISO/TS 19103:2015")).to be_nil
+        end.to output(/TIP: Matches exist for `ISO 19103:2015`/).to_stderr
       end
     end
 
@@ -629,7 +629,7 @@ RSpec.describe RelatonIso::IsoBibliography do
   describe "#filter_hits_by_year", vcr: { cassette_name: "iso_19115_2015" } do
     subject { described_class.filter_hits_by_year(hits_collection, year) }
 
-    let(:hits_collection) { RelatonIso::HitCollection.new("ISO 19115") }
+    let(:hits_collection) { RelatonIso::HitCollection.new("ISO 19115").fetch }
 
     context "when year is missing" do
       let(:year) { "2015" }
@@ -667,7 +667,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     expect do
       expect(RelatonIso::IsoBibliography.get("ISO/TC 211 Good Practices")).to be_nil
     end.to output(
-      %r{\[relaton-iso\] \("ISO/TC 211 Good Practices"\) is not recognized as a standards identifier},
+      %r{\[relaton-iso\] \(ISO/TC 211 Good Practices\) is not recognized as a standards identifier},
     ).to_stderr
   end
 end

@@ -12,7 +12,7 @@ module RelatonIso
       # @param text [String]
       # @return [RelatonIso::HitCollection]
       def search(text)
-        HitCollection.new text.gsub("\u2013", "-")
+        HitCollection.new(text.gsub("\u2013", "-")).fetch
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
              Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT,
@@ -38,10 +38,10 @@ module RelatonIso
         query_pubid = Pubid::Iso::Identifier.parse(code)
         query_pubid.year = year if year
         query_pubid.part = nil if opts[:all_parts]
-        Logger.warn "(\"#{query_pubid}\") Fetching from ISO..."
+        Util.warn "(#{query_pubid}) Fetching from ISO..."
 
         hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
-        tip_ids = look_up_with_any_types_stages(hits, query_pubid, opts)
+        tip_ids = look_up_with_any_types_stages(hits, ref, opts)
 
         ret = if !opts[:all_parts] || hits.size == 1
                 hits.any? && hits.first.fetch(opts[:lang])
@@ -54,7 +54,7 @@ module RelatonIso
         response_docid = ret.docidentifier.first.id.sub(" (all parts)", "")
         response_pubid = Pubid::Iso::Identifier.parse(response_docid)
 
-        Logger.warn "(\"#{query_pubid}\") Found (\"#{response_pubid}\")."
+        Util.warn "(#{query_pubid}) Found `#{response_pubid}`."
 
         get_all = (
           (query_pubid.year && opts[:keep_year].nil?) ||
@@ -65,7 +65,7 @@ module RelatonIso
 
         ret.to_most_recent_reference
       rescue Pubid::Core::Errors::ParseError
-        Logger.warn "(\"#{code}\") is not recognized as a standards identifier."
+        Util.warn "(#{code}) is not recognized as a standards identifier."
         nil
       end
 
@@ -128,35 +128,37 @@ module RelatonIso
 
       # @param pubid [Pubid::Iso::Identifier] PubID with no results
       def fetch_ref_err(pubid, missed_year_ids, tip_ids) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
-        Logger.warn "(\"#{pubid}\") Not found."
+        Util.warn "(#{pubid}) Not found."
 
         if missed_year_ids.any?
-          ids = missed_year_ids.map { |i| "\"#{i}\"" }.join(", ")
-          Logger.warn "(\"#{pubid}\") TIP: No match for edition year " \
-                      "#{pubid.year}, but matches exist for #{ids}."
+          ids = missed_year_ids.map { |i| "`#{i}`" }.join(", ")
+          Util.warn "(#{pubid}) TIP: No match for edition year " \
+                    "#{pubid.year}, but matches exist for #{ids}."
         end
 
         if tip_ids.any?
-          ids = tip_ids.map { |i| "\"#{i}\"" }.join(", ")
-          Logger.warn "(\"#{pubid}\") TIP: Matches exist for #{ids}."
+          ids = tip_ids.map { |i| "`#{i}`" }.join(", ")
+          Util.warn "(#{pubid}) TIP: Matches exist for #{ids}."
         end
 
         if pubid.part
-          Logger.warn "(\"#{pubid}\") TIP: If it cannot be found, " \
-                      "the document may no longer be published in parts."
+          Util.warn "(#{pubid}) TIP: If it cannot be found, " \
+                    "the document may no longer be published in parts."
         else
-          Logger.warn "(\"#{pubid}\") TIP: If you wish to cite " \
-                      "all document parts for the reference, use " \
-                      "(\"#{pubid.to_s(format: :ref_undated)} (all parts)\")."
+          Util.warn "(#{pubid}) TIP: If you wish to cite " \
+                    "all document parts for the reference, use " \
+                    "`#{pubid.to_s(format: :ref_undated)} (all parts)`."
         end
 
         nil
       end
 
-      def look_up_with_any_types_stages(hits, pubid, opts) # rubocop:disable Metrics/MethodLength
+      def look_up_with_any_types_stages(hits, ref, opts) # rubocop:disable Metrics/MethodLength
         found_ids = []
-        return found_ids unless !hits.from_gh && hits.empty? && pubid.copublisher.nil?
+        return found_ids if hits.from_gh || hits.any? || !ref.match?(/^ISO[\/\s][A-Z]/)
 
+        ref_no_type_stage = ref.sub(/^ISO[\/\s][A-Z]+/, "ISO")
+        pubid = Pubid::Iso::Identifier.parse(ref_no_type_stage)
         resp, = isobib_search_filter(pubid, opts, any_types_stages: true)
         resp.map &:pubid
       end
