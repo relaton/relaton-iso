@@ -1,4 +1,4 @@
-<bibitem id="ISO19115" type="standard" schema-version="v1.2.3">
+<bibitem id="ISO19115" type="standard" schema-version="v1.2.4">
   <fetched>2023-05-10</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
@@ -54,7 +54,7 @@
       </date>
     </bibitem>
   </relation>
-  <relation type="instance">
+  <relation type="instanceOf">
     <bibitem type="standard">
       <fetched>2023-05-10</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>

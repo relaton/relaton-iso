@@ -28,6 +28,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "algolia", "~> 2.3.0"
   spec.add_dependency "pubid-iso", "~> 0.6.0"
-  spec.add_dependency "relaton-bib", "~> 1.14.13"
-  spec.add_dependency "relaton-iso-bib", "~> 1.14.0"
+  spec.add_dependency "relaton-iso-bib", "~> 1.16.0"
 end

@@ -34,7 +34,7 @@ module RelatonIso
           formattedref: RelatonBib::FormattedRef.new(content: hi.pubid.to_s),
         )
         all_parts_item.relation << RelatonBib::DocumentRelation.new(
-          type: "instance", bibitem: isobib,
+          type: "instanceOf", bibitem: isobib,
         )
       end
       all_parts_item

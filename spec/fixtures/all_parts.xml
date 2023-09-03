@@ -1,5 +1,5 @@
-<bibdata type="standard" schema-version="v1.2.3">
-  <fetched>2023-07-15</fetched>
+<bibdata type="standard" schema-version="v1.2.4">
+  <fetched>2023-08-25</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -70,9 +70,9 @@
       </date>
     </bibitem>
   </relation>
-  <relation type="instance">
+  <relation type="instanceOf">
     <bibitem type="standard">
-      <fetched>2023-07-15</fetched>
+      <fetched>2023-08-25</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -168,17 +168,17 @@ L'ISO 19115-1:2014 est applicable aux données numériques et services, ses prin
       <place>Geneva</place>
     </bibitem>
   </relation>
-  <relation type="instance">
+  <relation type="instanceOf">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-2:2019</formattedref>
     </bibitem>
   </relation>
-  <relation type="instance">
+  <relation type="instanceOf">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO 19115-3</formattedref>
+      <formattedref format="text/plain">ISO 19115-3:2023</formattedref>
     </bibitem>
   </relation>
-  <relation type="instance">
+  <relation type="instanceOf">
     <bibitem type="standard">
       <formattedref format="text/plain">ISO 19115-2:2009</formattedref>
     </bibitem>
