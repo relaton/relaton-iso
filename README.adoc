@@ -72,14 +72,14 @@ item.docidentifier.detect { |di| di.type == "URN" }.id
 [source,ruby]
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115:2003"
-[relaton-iso] ("ISO 19115:2003") fetching from ISO...
-[relaton-iso] ("ISO 19115:2003") Found exact match.
+[relaton-iso] (ISO 19115:2003) fetching from ISO...
+[relaton-iso] (ISO 19115:2003) Found exact match.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c83429e30
 ...
 
 item = RelatonIso::IsoBibliography.get "ISO 19115", "2003"
-[relaton-iso] ("ISO 19115:2003") Fetching from ISO...
-[relaton-iso] ("ISO 19115:2003") Found ("ISO 19115:2003").
+[relaton-iso] (ISO 19115:2003) Fetching from ISO...
+[relaton-iso] (ISO 19115:2003) Found `ISO 19115:2003`.
 => #<RelatonIsoBib::IsoBibliographicItem:0x0000000112c9ca80
 ...
 
@@ -92,8 +92,8 @@ item.docidentifier[0].id
 [source,ruby]
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115"
-[relaton-iso] ("ISO 19115") fetching from ISO...
-[relaton-iso] ("ISO 19115") Found ("ISO 19115:2003").
+[relaton-iso] (ISO 19115) fetching from ISO...
+[relaton-iso] (ISO 19115) Found `ISO 19115:2003`.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c830275a8
 ...
 
@@ -106,8 +106,8 @@ item.docidentifier[0].id
 [source,ruby]
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115-1"
-[relaton-iso] ("ISO 19115-1") fetching from ISO...
-[relaton-iso] ("ISO 19115-1") Found ("ISO 19115-1:2014").
+[relaton-iso] (ISO 19115-1) fetching from ISO...
+[relaton-iso] (ISO 19115-1) Found `ISO 19115-1:2014`.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c83408af0
 ...
 
@@ -120,14 +120,14 @@ item.docidentifier[0].id
 [source,ruby]
 ----
 item = RelatonIso::IsoBibliography.get "ISO 19115 (all parts)"
-[relaton-iso] ("ISO 19115") Fetching from ISO...
-[relaton-iso] ("ISO 19115") Found ("ISO 19115").
+[relaton-iso] (ISO 19115) Fetching from ISO...
+[relaton-iso] (ISO 19115) Found `ISO 19115`.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8ca216e118
 ...
 
 item = RelatonIso::IsoBibliography.get "ISO 19115", nil, all_parts: true
-[relaton-iso] ("ISO 19115") Fetching from ISO...
-[relaton-iso] ("ISO 19115") Found ("ISO 19115").
+[relaton-iso] (ISO 19115) Fetching from ISO...
+[relaton-iso] (ISO 19115) Found `ISO 19115`.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c830f3d38
 ...
 
@@ -135,13 +135,13 @@ item.docidentifier[0].id
 => "ISO 19115 (all parts)"
 
 item = RelatonIso::IsoBibliography.get "ISO 19115-1 (all parts)"
-[relaton-iso] ("ISO 19115") Fetching from ISO...
-[relaton-iso] ("ISO 19115") Found ("ISO 19115").
+[relaton-iso] (ISO 19115) Fetching from ISO...
+[relaton-iso] (ISO 19115) Found `ISO 19115`.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c8290e5a0
 
 item = RelatonIso::IsoBibliography.get "ISO 19115-1", nil, all_parts: true
-[relaton-iso] ("ISO 19115") Fetching from ISO...
-[relaton-iso] ("ISO 19115") Found ("ISO 19115").
+[relaton-iso] (ISO 19115) Fetching from ISO...
+[relaton-iso] (ISO 19115) Found `ISO 19115`.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c925355b8
 ...
 
@@ -234,8 +234,8 @@ item.title lang: 'fr'
     @type="main">]>
 
 item = RelatonIso::IsoBibliography.get "ISO 19115:2003"
-[relaton-iso] ("ISO 19115:2003") Fetching from ISO...
-[relaton-iso] ("ISO 19115:2003") Found ("ISO 19115:2003").
+[relaton-iso] (ISO 19115:2003) Fetching from ISO...
+[relaton-iso] (ISO 19115:2003) Found `ISO 19115:2003`.
 => #<RelatonIsoBib::IsoBibliographicItem:0x00007fa8870b69e0
 
 item.abstract lang: 'en'
