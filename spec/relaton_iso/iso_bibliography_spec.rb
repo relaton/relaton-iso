@@ -157,7 +157,8 @@ RSpec.describe RelatonIso::IsoBibliography do
       shared_examples "all_parts" do
         it "returns (all parts) as identifier part" do
           expect(subject.structuredidentifier.project_number).to eq(pubid_all_parts)
-          expect(subject.docidentifier.map(&:id)).to eq([pubid_all_parts, isoref_all_parts, urn_all_parts])
+          expect(subject.docidentifier.map(&:id)).to eq([pubid_all_parts,
+                                                         isoref_all_parts, urn_all_parts])
         end
 
         it "include all matched documents without part" do
@@ -286,7 +287,8 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch correction" do
       VCR.use_cassette "iso_19110_amd_1_2011" do
-        result = RelatonIso::IsoBibliography.get("ISO 19110:2005/Amd 1:2011", "2005")
+        result = RelatonIso::IsoBibliography.get("ISO 19110:2005/Amd 1:2011",
+                                                 "2005")
         expect(result.docidentifier.first.id).to eq "ISO 19110:2005/Amd 1:2011"
       end
     end
@@ -392,10 +394,10 @@ RSpec.describe RelatonIso::IsoBibliography do
         expect(result.docidentifier[0].id).to eq "ISO/IEC DIR 1"
       end
 
-      # it "ISO/IEC DIR 2 ISO", vcr: "iso_iec_dir_2_iso" do
-      #   result = RelatonIso::IsoBibliography.get "ISO/IEC DIR 2 ISO"
-      #   expect(result.docidentifier[0].id).to eq "ISO/IEC DIR 2 ISO"
-      # end
+      it "ISO/IEC DIR 2 ISO", vcr: "iso_iec_dir_2_iso" do
+        result = RelatonIso::IsoBibliography.get "ISO/IEC DIR 2 ISO"
+        expect(result.docidentifier[0].id).to eq "ISO/IEC DIR 2 ISO"
+      end
     end
 
     it "fetch ISO 19156" do
@@ -660,7 +662,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "set pubid year if it is missing" do
-      hit = double("hit", pubid: Pubid::Iso::Identifier.parse("ISO 19115"), hit: { year: "2019" })
+      hit = double("hit", pubid: Pubid::Iso::Identifier.parse("ISO 19115"),
+                          hit: { year: "2019" })
       result = described_class.filter_hits_by_year([hit], "2019")
       expect(result[0].first.pubid.year).to eq "2019"
     end
@@ -672,7 +675,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     expect do
       expect(RelatonIso::IsoBibliography.get("ISO/TC 211 Good Practices")).to be_nil
     end.to output(
-      %r{\[relaton-iso\] \(ISO/TC 211 Good Practices\) is not recognized as a standards identifier},
+      %r{\[relaton-iso\] \(ISO/TC 211 Good Practices\) Is not recognized as a standards identifier},
     ).to_stderr
   end
 end

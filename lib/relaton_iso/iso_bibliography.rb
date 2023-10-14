@@ -38,7 +38,7 @@ module RelatonIso
         query_pubid = Pubid::Iso::Identifier.parse(code)
         query_pubid.year = year if year
         query_pubid.part = nil if opts[:all_parts]
-        Util.warn "(#{query_pubid}) Fetching from ISO..."
+        Util.warn "(#{query_pubid}) Fetching from iso.org ..."
 
         hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
         tip_ids = look_up_with_any_types_stages(hits, ref, opts)
@@ -54,7 +54,7 @@ module RelatonIso
         response_docid = ret.docidentifier.first.id.sub(" (all parts)", "")
         response_pubid = Pubid::Iso::Identifier.parse(response_docid)
 
-        Util.warn "(#{query_pubid}) Found `#{response_pubid}`."
+        Util.warn "(#{query_pubid}) Found: `#{response_pubid}`"
 
         get_all = (
           (query_pubid.year && opts[:keep_year].nil?) ||
@@ -65,7 +65,7 @@ module RelatonIso
 
         ret.to_most_recent_reference
       rescue Pubid::Core::Errors::ParseError
-        Util.warn "(#{code}) is not recognized as a standards identifier."
+        Util.warn "(#{code}) Is not recognized as a standards identifier."
         nil
       end
 
@@ -179,7 +179,8 @@ module RelatonIso
         hit_collection = search(query_pubid_without_year.to_s)
 
         # filter only matching hits
-        filter_hits hit_collection, query_pubid, opts[:all_parts], any_types_stages
+        filter_hits hit_collection, query_pubid, opts[:all_parts],
+                    any_types_stages
       end
 
       #
@@ -196,7 +197,8 @@ module RelatonIso
         # filter out
         result = hit_collection.select do |i|
           hit_pubid = i.pubid
-          matches_base?(query_pubid, hit_pubid, any_types_stages: any_stypes_tages) &&
+          matches_base?(query_pubid, hit_pubid,
+                        any_types_stages: any_stypes_tages) &&
             matches_parts?(query_pubid, hit_pubid, all_parts: all_parts) &&
             query_pubid.corrigendums == hit_pubid.corrigendums &&
             query_pubid.amendments == hit_pubid.amendments
