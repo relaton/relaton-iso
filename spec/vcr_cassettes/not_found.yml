@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sat, 14 Oct 2023 18:04:59 GMT
+      - Thu, 19 Oct 2023 17:54:35 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Content-Length:
-      - '315'
+      - '314'
       Connection:
       - keep-alive
       X-Alg-Pt:
@@ -57,6 +57,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO
-        111111","params":"query=ISO+111111&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"_request":{"roundTrip":100}}}'
-  recorded_at: Sat, 14 Oct 2023 18:04:59 GMT
+        111111","params":"query=ISO+111111&hitsPerPage=100&filters=category%3Astandard","processingTimeMS":1,"processingTimingsMS":{"_request":{"roundTrip":99}}}'
+  recorded_at: Thu, 19 Oct 2023 17:54:35 GMT
 recorded_with: VCR 6.2.0

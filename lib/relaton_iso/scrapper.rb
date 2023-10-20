@@ -270,11 +270,10 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @return [Hash]
       def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-        wg = doc.at("//div[@class='clearfix']")
-        wg_link = wg.at "span/a"
-        return unless wg_link
+        wg = doc.at("////div[contains(., 'Technical Committe')]/following-sibling::span/a")
+        return unless wg
 
-        workgroup = wg_link.text.split "/"
+        workgroup = wg.text.split "/"
         type = workgroup[1]&.match(/^[A-Z]+/)&.to_s || "TC"
         # {
         #   name: "International Organization for Standardization",
@@ -282,44 +281,48 @@ module RelatonIso
         #   url: "www.iso.org",
         # }
         tc_numb = workgroup[1]&.match(/\d+/)&.to_s&.to_i
-        tc_name = wg.at("span[@class='entry-title']").text
-        tc = RelatonBib::WorkGroup.new(name: tc_name, identifier: wg_link.text,
+        tc_name = wg[:title]
+        tc = RelatonBib::WorkGroup.new(name: tc_name, identifier: wg.text,
                                        type: type, number: tc_numb)
         RelatonIsoBib::EditorialGroup.new(technical_committee: [tc])
       end
 
-      # rubocop:disable Metrics/MethodLength
-
       # Fetch relations.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
-      def fetch_relations(doc) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+      def fetch_relations(doc)
         types = ["Now", "Now under review"]
         doc.xpath("//ul[@class='steps']/li", "//div[@class='sub-step']").reduce([]) do |a, r|
-          r_type = r.at("h4", "h5").text
-          date = []
-          type = case r_type.strip
-                 when "Previously", "Will be replaced by" then "obsoletes"
-                 when "Corrigenda / Amendments", "Revised by", "Now confirmed"
-                   on = doc.xpath('//span[@class="stage-date"][contains(., "-")]').last
-                   date << { type: "circulated", on: on.text } if on
-                   "updates"
-                 else r_type
-                 end
-          if types.include?(type) then a
-          else
-            a + r.css("a").map do |id|
-              docid = RelatonBib::DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
-              fref = RelatonBib::FormattedRef.new(content: id.text, format: "text/plain")
-              bibitem = RelatonIsoBib::IsoBibliographicItem.new(
-                docid: [docid], formattedref: fref, date: date,
-              )
-              { type: type, bibitem: bibitem }
-            end
-          end
+          type, date = relation_type(r.at("h4", "h5").text.strip, doc)
+          next a if types.include?(type)
+
+          a + create_relations(r, type, date)
         end
       end
-      # rubocop:enable Metrics/MethodLength
+
+      def relation_type(type, doc)
+        date = []
+        t = case type.strip
+            when "Previously", "Will be replaced by" then "obsoletes"
+            when "Corrigenda / Amendments", "Revised by", "Now confirmed"
+              on = doc.xpath('//span[@class="stage-date"][contains(., "-")]').last
+              date << { type: "circulated", on: on.text } if on
+              "updates"
+            else type
+            end
+        [t, date]
+      end
+
+      def create_relations(rel, type, date)
+        rel.css("a").map do |id|
+          docid = RelatonBib::DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
+          fref = RelatonBib::FormattedRef.new(content: id.text, format: "text/plain")
+          bibitem = RelatonIsoBib::IsoBibliographicItem.new(
+            docid: [docid], formattedref: fref, date: date,
+          )
+          { type: type, bibitem: bibitem }
+        end
+      end
 
       # Fetch type.
       # @param ref [String]
@@ -343,14 +346,20 @@ module RelatonIso
       # @param doc [Nokogiri::HTML::Document]
       # @param lang [String]
       # @return [Array<RelatonBib::TypedTitleString>]
-      def fetch_title(doc, lang)
-        content = doc.at(
-          "//nav[contains(@class,'heading-condensed')]/h2 | "\
-          "//nav[contains(@class,'heading-condensed')]/h3",
-        )&.text&.gsub(/\u2014/, "-")
-        return RelatonBib::TypedTitleStringCollection.new unless content
-
-        RelatonBib::TypedTitleString.from_string content, lang, script(lang)
+      def fetch_title(doc, lang) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
+        head = doc.at "//nav[contains(@class,'heading-condensed')]"
+        types = { "h2" => "title-intro", "h3" => "title-main", "h4" => "title-part" }
+        title_types = head.xpath("h2 | h3 | h4").each_with_object({}) do |t, h|
+          h[types[t.name]] = t.text
+        end
+        title = RelatonBib::TypedTitleStringCollection.new
+        title_types.each do |type, content|
+          title << RelatonBib::TypedTitleString.new(
+            type: type, content: content, language: lang, script: script(lang),
+          )
+        end
+        main = title.map { |t| t.title.content }.join " - "
+        title << RelatonBib::TypedTitleString.new(type: "main", content: main, language: lang, script: script(lang))
       end
 
       # Return ISO script code.
@@ -363,12 +372,11 @@ module RelatonIso
         end
       end
 
-      # rubocop:disable Metrics/MethodLength
       # Fetch dates
       # @param doc [Nokogiri::HTML::Document]
       # @param ref [String]
       # @return [Array<Hash>]
-      def fetch_dates(doc, ref) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity
+      def fetch_dates(doc, ref) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/MethodLength
         dates = []
         %r{^[^\s]+\s[\d-]+:(?<ref_date_str>\d{4})} =~ ref
         pub_date_str = doc.xpath("//span[@itemprop='releaseDate']").text
@@ -400,25 +408,28 @@ module RelatonIso
           mem << { entity: publisher, role: [type: "publisher"] }
         end
       end
-      # rubocop:enable Metrics/MethodLength
 
       # Fetch ICS.
       # @param doc [Nokogiri::HTML::Document]
       # @return [Array<Hash>]
       def fetch_ics(doc)
-        doc.xpath("//dl[dt/strong[.='ICS']]/dd/span/a").map do |i|
+        doc.xpath("//div[contains(., 'ICS')]/following-sibling::span/a").map do |i|
           code = i.text.match(/[\d.]+/).to_s.split "."
           { field: code[0], group: code[1], subgroup: code[2] }
         end
       end
 
+      #
       # Fetch links.
-      # @param doc [Nokogiri::HTML::Document]
-      # @param url [String]
+      #
+      # @param doc [Nokogiri::HTML::Document] document to parse
+      # @param url [String] document url
+      #
       # @return [Array<Hash>]
+      #
       def fetch_link(doc, url)
         links = [{ type: "src", content: url }]
-        obp = doc.at_css("a#obp-preview")
+        obp = doc.at("//h4[contains(@class, 'h5')]/a")
         links << { type: "obp", content: obp[:href] } if obp
         rss = doc.at("//a[contains(@href, 'rss')]")
         links << { type: "rss", content: DOMAIN + rss[:href] } if rss

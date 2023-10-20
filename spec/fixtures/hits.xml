@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
   <bibitem id="ISO19115-2-2019" type="standard" schema-version="v1.2.4">
-    <fetched>2023-10-14</fetched>
+    <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -62,15 +62,15 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2-2019/Amd1-2022" type="standard" schema-version="v1.2.4">
-    <fetched>2023-10-14</fetched>
+    <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
-    <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing -- Amendment 1</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing -- Amendment 1</title>
+    <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing</title>
     <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
     <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
-    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement -- Amendement 1</title>
+    <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement</title>
     <uri type="src">https://www.iso.org/standard/78888.html</uri>
     <uri type="obp">https://www.iso.org/obp/ui/en/#!iso:std:78888:en</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/07/88/78888.detail.rss</uri>
@@ -111,7 +111,7 @@
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-3-2023" type="standard" schema-version="v1.2.4">
-    <fetched>2023-10-14</fetched>
+    <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -171,7 +171,7 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19157-2-2016" type="standard" schema-version="v1.2.4">
-    <fetched>2023-10-14</fetched>
+    <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: XML schema implementation</title>
@@ -219,7 +219,7 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.4">
-    <fetched>2023-10-14</fetched>
+    <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -275,7 +275,7 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19115-3-2016" type="standard" schema-version="v1.2.4">
-    <fetched>2023-10-14</fetched>
+    <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -341,15 +341,15 @@ This implementation model does not alter the semantics of the target conceptual 
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO/TS19139-2-2012" type="standard" schema-version="v1.2.4">
-    <fetched>2023-10-14</fetched>
+    <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
-    <title type="title-part" format="text/plain" language="en" script="Latn">XML schema implementation -- Part 2: Extensions for imagery and gridded data</title>
-    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - XML schema implementation -- Part 2: Extensions for imagery and gridded data</title>
+    <title type="title-part" format="text/plain" language="en" script="Latn">XML schema implementation</title>
+    <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - XML schema implementation</title>
     <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
     <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
-    <title type="title-part" format="text/plain" language="fr" script="Latn">Mise en oeuvre par des schémas XML -- Partie 2: Extension pour l'imagerie et les données maillées</title>
-    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Mise en oeuvre par des schémas XML -- Partie 2: Extension pour l'imagerie et les données maillées</title>
+    <title type="title-part" format="text/plain" language="fr" script="Latn">Mise en oeuvre par des schémas XML</title>
+    <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Mise en oeuvre par des schémas XML</title>
     <uri type="src">https://www.iso.org/standard/57104.html</uri>
     <uri type="rss">https://www.iso.org/contents/data/standard/05/71/57104.detail.rss</uri>
     <docidentifier type="ISO" primary="true">ISO/TS 19139-2:2012</docidentifier>
