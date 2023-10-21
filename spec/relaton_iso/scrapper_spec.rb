@@ -120,6 +120,85 @@ RSpec.describe RelatonIso::Scrapper do
     end
   end
 
+  context "#fetch_title" do
+    it "intro, main, part" do
+      doc = Nokogiri::HTML <<~HTML
+        <nav role="navigation" aria-label="Children Navigation" class="heading-condensed nav-relatives">
+          <div class="section-head section-back"></div>
+          <h1><strike>ISO 19115-2:2009</strike></h1>
+          <h2 class="mt-0 ">Geographic information</h2>
+          <h3>Metadata</h3>
+          <h4>Part 2: Extensions for imagery and gridded data</h4>
+        </nav>
+      HTML
+      title = described_class.send(:fetch_title, doc, "en")
+      expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
+      expect(title.first.title.content).to eq "Geographic information"
+      expect(title.first.type).to eq "title-intro"
+      expect(title[1].title.content).to eq "Metadata"
+      expect(title[1].type).to eq "title-main"
+      expect(title[2].title.content).to eq "Part 2: Extensions for imagery and gridded data"
+      expect(title[2].type).to eq "title-part"
+      expect(title[3].title.content).to eq "Geographic information - Metadata - Part 2: Extensions for imagery and gridded data"
+      expect(title[3].type).to eq "main"
+    end
+
+    it "intro, main" do
+      doc = Nokogiri::HTML <<~HTML
+        <nav role="navigation" aria-label="Children Navigation" class="heading-condensed nav-relatives">
+          <div class="section-head section-back"></div>
+          <h1><strike>ISO 19115-2:2009</strike></h1>
+          <h2 class="mt-0 ">Geographic information</h2>
+          <h3>Metadata</h3>
+        </nav>
+      HTML
+      title = described_class.send(:fetch_title, doc, "en")
+      expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
+      expect(title.first.title.content).to eq "Geographic information"
+      expect(title.first.type).to eq "title-intro"
+      expect(title[1].title.content).to eq "Metadata"
+      expect(title[1].type).to eq "title-main"
+      expect(title[2].title.content).to eq "Geographic information - Metadata"
+      expect(title[2].type).to eq "main"
+    end
+
+    it "main" do
+      doc = Nokogiri::HTML <<~HTML
+        <nav role="navigation" aria-label="Children Navigation" class="heading-condensed nav-relatives">
+          <div class="section-head section-back"></div>
+          <h1><strike>ISO 19115-2:2009</strike></h1>
+          <h2 class="mt-0 ">Geographic information</h2>
+        </nav>
+      HTML
+      title = described_class.send(:fetch_title, doc, "en")
+      expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
+      expect(title.first.title.content).to eq "Geographic information"
+      expect(title.first.type).to eq "title-main"
+      expect(title[1].title.content).to eq "Geographic information"
+      expect(title[1].type).to eq "main"
+    end
+
+    it "split single title" do
+      doc = Nokogiri::HTML <<~HTML
+        <nav role="navigation" aria-label="Children Navigation" class="heading-condensed nav-relatives">
+          <div class="section-head section-back"></div>
+          <h1><strike>ISO 19115-2:2009</strike></h1>
+          <h2 class="mt-0 ">Geographic information - Metadata - Part 2: Extensions for imagery and gridded data</h2>
+        </nav>
+      HTML
+      title = described_class.send(:fetch_title, doc, "en")
+      expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
+      expect(title.first.title.content).to eq "Geographic information"
+      expect(title.first.type).to eq "title-intro"
+      expect(title[1].title.content).to eq "Metadata"
+      expect(title[1].type).to eq "title-main"
+      expect(title[2].title.content).to eq "Part 2: Extensions for imagery and gridded data"
+      expect(title[2].type).to eq "title-part"
+      expect(title[3].title.content).to eq "Geographic information - Metadata - Part 2: Extensions for imagery and gridded data"
+      expect(title[3].type).to eq "main"
+    end
+  end
+
   context "#fetch_copyright" do
     it "returns copyright" do
       doc = Nokogiri::HTML <<~HTML

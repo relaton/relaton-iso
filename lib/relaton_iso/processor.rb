@@ -4,7 +4,7 @@ module RelatonIso
   class Processor < Relaton::Processor
     attr_reader :idtype
 
-    def initialize
+    def initialize # rubocop:disable Lint/MissingSuper
       @short = :relaton_iso
       @prefix = "ISO"
       @defaultprefix = %r{^ISO(/IEC)?\s}
