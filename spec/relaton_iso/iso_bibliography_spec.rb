@@ -429,6 +429,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(result.docidentifier[0].id).to eq "ISO/IEC 27001:2022"
     end
 
+    it "doc with corrected date", vcr: "iso_iec_2382_2015" do
+      result = RelatonIso::IsoBibliography.get "ISO/IEC 2382:2015"
+      expect(result.docidentifier[0].id).to eq "ISO/IEC 2382:2015"
+      corrected_date = result.date.detect { |d| d.type == "corrected" }
+      expect(corrected_date.on.to_s).to eq "2022-10"
+    end
+
     context "try to fetch stages" do
       it "ISO" do
         VCR.use_cassette "iso_22934" do

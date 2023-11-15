@@ -389,23 +389,25 @@ module RelatonIso
     def fetch_dates(doc, ref) # rubocop:disable Metrics/AbcSize, Metrics/PerceivedComplexity, Metrics/MethodLength
       dates = []
       %r{^[^\s]+\s[\d-]+:(?<ref_date_str>\d{4})} =~ ref
-      pub_date_str = doc.xpath("//span[@itemprop='releaseDate']").text
+      pub_date_str = doc.at("//span[@itemprop='releaseDate']")
       if ref_date_str
         ref_date = Date.strptime ref_date_str, "%Y"
-        if pub_date_str.empty?
+        if pub_date_str.nil?
           dates << { type: "published", on: ref_date_str }
         else
-          pub_date = Date.strptime pub_date_str, "%Y"
+          pub_date = Date.strptime pub_date_str.text, "%Y"
           if pub_date.year > ref_date.year
             dates << { type: "published", on: ref_date_str }
-            dates << { type: "updated", on: pub_date_str }
+            dates << { type: "updated", on: pub_date_str.text }
           else
-            dates << { type: "published", on: pub_date_str }
+            dates << { type: "published", on: pub_date_str.text }
           end
         end
-      elsif !pub_date_str.empty?
-        dates << { type: "published", on: pub_date_str }
+      elsif pub_date_str
+        dates << { type: "published", on: pub_date_str.text }
       end
+      corr_data = doc.at "//span[@itemprop='dateModified']"
+      dates << { type: "corrected", on: corr_data.text } if corr_data
       dates
     end
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
-  <bibitem id="ISO19115-2-2019" type="standard" schema-version="v1.2.4">
+  <bibitem id="ISO19115-2-2019" type="standard" schema-version="v1.2.5">
     <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
@@ -61,7 +61,7 @@
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO19115-2-2019/Amd1-2022" type="standard" schema-version="v1.2.4">
+  <bibitem id="ISO19115-2-2019/Amd1-2022" type="standard" schema-version="v1.2.5">
     <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
@@ -110,7 +110,7 @@
     </copyright>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO19115-3-2023" type="standard" schema-version="v1.2.4">
+  <bibitem id="ISO19115-3-2023" type="standard" schema-version="v1.2.5">
     <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
@@ -170,7 +170,7 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO/TS19157-2-2016" type="standard" schema-version="v1.2.4">
+  <bibitem id="ISO/TS19157-2-2016" type="standard" schema-version="v1.2.5">
     <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
@@ -218,7 +218,7 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     </copyright>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.4">
+  <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.5">
     <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
@@ -274,7 +274,7 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO/TS19115-3-2016" type="standard" schema-version="v1.2.4">
+  <bibitem id="ISO/TS19115-3-2016" type="standard" schema-version="v1.2.5">
     <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
@@ -340,7 +340,7 @@ This implementation model does not alter the semantics of the target conceptual 
     </relation>
     <place>Geneva</place>
   </bibitem>
-  <bibitem id="ISO/TS19139-2-2012" type="standard" schema-version="v1.2.4">
+  <bibitem id="ISO/TS19139-2-2012" type="standard" schema-version="v1.2.5">
     <fetched>2023-10-19</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
