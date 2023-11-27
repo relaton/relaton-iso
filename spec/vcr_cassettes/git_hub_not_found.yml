@@ -37,21 +37,21 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       X-Github-Request-Id:
-      - A82C:8167:7280C4:87FB6A:6553F10C
+      - 2F6A:328A:EBF88E:120B687:6563CC17
       Accept-Ranges:
       - bytes
       Date:
-      - Tue, 14 Nov 2023 22:13:33 GMT
+      - Sun, 26 Nov 2023 22:52:07 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk1780034-PDK
+      - cache-pdk-kpdk1780119-PDK
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1700000013.167697,VS0,VE94
+      - S1701039127.252738,VS0,VE160
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -59,13 +59,13 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - d50dca76f164377f6f5a27800564eff8b0c75de5
+      - 6d5c2eac3f14f4104b671f4bf99efa2ba75426c5
       Expires:
-      - Tue, 14 Nov 2023 22:18:33 GMT
+      - Sun, 26 Nov 2023 22:57:07 GMT
       Source-Age:
       - '0'
     body:
       encoding: UTF-8
       string: '404: Not Found'
-  recorded_at: Tue, 14 Nov 2023 22:13:33 GMT
+  recorded_at: Sun, 26 Nov 2023 22:52:07 GMT
 recorded_with: VCR 6.2.0

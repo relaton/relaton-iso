@@ -6,13 +6,14 @@ RSpec.describe RelatonIso::Scrapper do
   # end
 
   it "returns TS type" do
-    type = RelatonIso::Scrapper.send(:fetch_type, "ISO/TS 123")
-    expect(type).to eq "technical-specification"
+    doctype = RelatonIso::Scrapper.send(:fetch_type, "ISO/TS 123")
+    expect(doctype).to be_instance_of RelatonIsoBib::DocumentType
+    expect(doctype.type).to eq "technical-specification"
   end
 
   it "returns IWA type" do
-    type = RelatonIso::Scrapper.send(:fetch_type, "IWA 123:2015")
-    expect(type).to eq "international-workshop-agreement"
+    doctype = RelatonIso::Scrapper.send(:fetch_type, "IWA 123:2015")
+    expect(doctype.type).to eq "international-workshop-agreement"
   end
 
   context "raises an error" do

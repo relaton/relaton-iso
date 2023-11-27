@@ -23,7 +23,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '672'
+      - '944'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -31,7 +31,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"e1ff27f683c8cf0a41661a3d1b3c263618397112fe390ecd2aa26e30104847fb"
+      - W/"07919db72cf77346895aefba9c35693eb891c92df133d3605c4b2dd9d9e56bdb"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -41,21 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 14AC:6CD5:D6817:104608:6553F0E6
+      - D504:7226:E01D1C:11754AA:6563CBEE
       Accept-Ranges:
       - bytes
       Date:
-      - Tue, 14 Nov 2023 22:12:55 GMT
+      - Sun, 26 Nov 2023 22:51:29 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk1780082-PDK
+      - cache-pdk-kpdk1780114-PDK
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1699999976.753944,VS0,VE95
+      - S1701039089.033736,VS0,VE119
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,57 +63,14 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 80b61170d63ea9ba7a72738d7e6c615e9f2f682c
+      - ba66e95aec6755666db3ab2f083212daf76fa7df
       Expires:
-      - Tue, 14 Nov 2023 22:17:55 GMT
+      - Sun, 26 Nov 2023 22:56:29 GMT
       Source-Age:
       - '0'
     body:
       encoding: ASCII-8BIT
-      string: |
-        title:
-        - type: title-main
-          content: Procedures for the technical work
-          language: en
-          script: Latn
-
-        link:
-        - type: obp
-          content: https://www.iec.ch/members_experts/refdocs/iec/isoiecdir1%7Bed15.0%7Den.pdf
-
-        type: standard
-        doctype: directive
-
-        docid:
-          id: ISO/IEC DIR 1
-          type: ISO
-          primary: true
-
-        date:
-          type: published
-          value: '2019-05-01'
-
-        edition: "15"
-
-        language:
-        - en
-
-        script: Latn
-
-        copyright:
-          owner:
-            name: International Electrotechnical Commission
-            abbreviation: IEC
-            url: iec.ch
-          from: '2019'
-
-        relation:
-          - type: partOf
-            bibitem:
-              formattedref: ISO/IEC DIR
-              docid:
-                - id: ISO/IEC DIR
-                  type: ISO
-                  primary: true
-  recorded_at: Tue, 14 Nov 2023 22:12:55 GMT
+      string: !binary |-
+        dGl0bGU6Ci0gdHlwZTogdGl0bGUtbWFpbgogIGNvbnRlbnQ6IElTTy9JRUMgRGlyZWN0aXZlcywgUGFydCAxCiAgbGFuZ3VhZ2U6IGVuCiAgc2NyaXB0OiBMYXRuCi0gdHlwZTogdGl0bGUtcGFydAogIGNvbnRlbnQ6IFByb2NlZHVyZXMgZm9yIHRoZSB0ZWNobmljYWwgd29yawogIGxhbmd1YWdlOiBlbgogIHNjcmlwdDogTGF0bgotIHR5cGU6IHRpdGxlLW1haW4KICBjb250ZW50OiBEaXJlY3RpdmVzIElTTy9JRUMsIFBhcnRpZSAxCiAgbGFuZ3VhZ2U6IGZyCiAgc2NyaXB0OiBMYXRuCi0gdHlwZTogdGl0bGUtcGFydAogIGNvbnRlbnQ6IFByb2PDqWR1cmUgcG91ciBsZXMgdHJhdmF1eCB0ZWNobmlxdWVzCiAgbGFuZ3VhZ2U6IGZyCiAgc2NyaXB0OiBMYXRuCgpsaW5rOgotIHR5cGU6IHNyYwogIGNvbnRlbnQ6IGh0dHBzOi8vd3d3Lmlzby5vcmcvc2l0ZXMvZGlyZWN0aXZlcy9jdXJyZW50L3BhcnQxL2luZGV4LnhodG1sCgp0eXBlOiBzdGFuZGFyZApkb2N0eXBlOiBkaXJlY3RpdmUKCmRvY2lkOgogIGlkOiBJU08vSUVDIERJUiAxCiAgdHlwZTogSVNPCiAgcHJpbWFyeTogdHJ1ZQoKZGF0ZToKICB0eXBlOiBwdWJsaXNoZWQKICB2YWx1ZTogJzIwMjMtMDUtMDEnCgplZGl0aW9uOiAiMTkiCgpsYW5ndWFnZToKLSBlbgoKc2NyaXB0OiBMYXRuCgpjb3B5cmlnaHQ6CiAgb3duZXI6CiAgICBuYW1lOiBJbnRlcm5hdGlvbmFsIE9yZ2FuaXphdGlvbiBmb3IgU3RhbmRhcmRpemF0aW9uCiAgICBhYmJyZXZpYXRpb246IElTTwogICAgdXJsOiB3d3cuaXNvLm9yZwogIGZyb206ICcxOTc2JwoKcmVsYXRpb246CiAgLSB0eXBlOiBwYXJ0T2YKICAgIGJpYml0ZW06CiAgICAgIGZvcm1hdHRlZHJlZjogSVNPL0lFQyBESVIKICAgICAgZG9jaWQ6CiAgICAgICAgLSBpZDogSVNPL0lFQyBESVIKICAgICAgICAgIHR5cGU6IElTTwogICAgICAgICAgcHJpbWFyeTogdHJ1ZQo=
+  recorded_at: Sun, 26 Nov 2023 22:51:28 GMT
 recorded_with: VCR 6.2.0

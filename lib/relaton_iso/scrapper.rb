@@ -17,6 +17,8 @@ module RelatonIso
       # "WD" => "workingDraft",
       # "R" => "recommendation",
       "Guide" => "guide",
+      "ISO" => "international-standard",
+      "IWA" => "international-workshop-agreement",
     }.freeze
 
     STGABBR = {
@@ -335,10 +337,8 @@ module RelatonIso
         (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))
       }x =~ ref
       # return "international-standard" if type_match.nil?
-      if TYPES[type] then TYPES[type]
-      elsif prefix == "ISO" then "international-standard"
-      elsif prefix == "IWA" then "international-workshop-agreement"
-      end
+      type = TYPES[type] || TYPES[prefix]
+      RelatonIsoBib::DocumentType.new(type: type)
       # rescue => _e
       #   puts 'Unknown document type: ' + title
     end
