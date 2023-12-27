@@ -204,8 +204,7 @@ module RelatonIso
       uri = URI(DOMAIN + path)
       try = 0
       begin
-        resp = get_response uri
-        resp.code == "301" ? get_redirection(resp["location"]) : [resp, uri]
+        get_response uri
       rescue Errno::EPIPE => e
         try += 1
         retry if check_try try, uri
@@ -223,15 +222,17 @@ module RelatonIso
 
     def get_response(uri)
       try = 0
+      resp = nil
       loop do
         try += 1
         resp = Net::HTTP.get_response(uri)
-        return resp if %w[200 301].include? resp.code
+        break if %w[200 301].include? resp.code
 
         raise RelatonBib::RequestError, "#{uri} not found." if try > 3
 
         sleep 1
       end
+      resp.code == "301" ? get_redirection(resp["location"]) : [resp, uri]
     end
 
     #
