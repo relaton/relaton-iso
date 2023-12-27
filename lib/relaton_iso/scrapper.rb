@@ -201,8 +201,7 @@ module RelatonIso
     # @raise [RelatonBib::RequestError] if the page is not found
     #
     def get_redirection(path) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      url = DOMAIN + path
-      uri = URI url
+      uri = URI(DOMAIN + path)
       try = 0
       begin
         resp = get_response uri
