@@ -22,6 +22,14 @@ module RelatonIso
       self
     end
 
+    def fetch_doc(opts)
+      if !opts[:all_parts] || size == 1
+        any? && first.fetch(opts[:lang])
+      else
+        to_all_parts(opts[:lang])
+      end
+    end
+
     # @param lang [String, nil]
     # @return [RelatonIsoBib::IsoBibliographicItem, nil]
     def to_all_parts(lang = nil) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength

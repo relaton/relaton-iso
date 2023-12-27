@@ -91,20 +91,24 @@ module RelatonIso
     #
     def get_redirection(path) # rubocop:disable Metrics/MethodLength
       try = 0
+      uri = URI(Scrapper::DOMAIN + path)
       begin
-        uri = URI(Scrapper::DOMAIN + path)
         resp = Net::HTTP.get_response(uri)
         resp.code == "302" ? get_redirection(resp["location"]) : resp
       rescue Net::OpenTimeout => e
         try += 1
-        if try < 3
-          warn "Timeout fetching #{Scrapper::DOMAIN}#{path}, retrying..."
-          sleep 1
-          retry
-        else
-          warn "Error fetching #{Scrapper::DOMAIN}#{path}"
-          warn e.message
-        end
+        retry if check_try try, uri
+
+        warn "Error fetching #{uri}"
+        warn e.message
+      end
+    end
+
+    def check_try(try, uri)
+      if try < 3
+        warn "Timeout fetching #{uri}, retrying..."
+        sleep 1
+        true
       end
     end
 

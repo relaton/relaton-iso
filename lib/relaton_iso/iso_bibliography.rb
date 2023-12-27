@@ -42,13 +42,7 @@ module RelatonIso
 
         hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
         tip_ids = look_up_with_any_types_stages(hits, ref, opts)
-
-        ret = if !opts[:all_parts] || hits.size == 1
-                hits.any? && hits.first.fetch(opts[:lang])
-              else
-                hits.to_all_parts(opts[:lang])
-              end
-
+        ret = hits.fetch_doc(opts)
         return fetch_ref_err(query_pubid, missed_year_ids, tip_ids) unless ret
 
         response_docid = ret.docidentifier.first.id.sub(" (all parts)", "")
@@ -150,7 +144,7 @@ module RelatonIso
         nil
       end
 
-      def look_up_with_any_types_stages(hits, ref, opts) # rubocop:disable Metrics/MethodLength
+      def look_up_with_any_types_stages(hits, ref, opts)
         found_ids = []
         return found_ids if hits.from_gh || hits.any? || !ref.match?(/^ISO[\/\s][A-Z]/)
 
@@ -169,15 +163,14 @@ module RelatonIso
       #
       # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed years
       #
-      def isobib_search_filter(query_pubid, opts, any_types_stages: false) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      def isobib_search_filter(query_pubid, opts, any_types_stages: false)
         query_pubid_without_year = query_pubid.dup
         # remove year for query
         query_pubid_without_year.year = nil
         hit_collection = search(query_pubid_without_year.to_s)
 
         # filter only matching hits
-        filter_hits hit_collection, query_pubid, opts[:all_parts],
-                    any_types_stages
+        filter_hits hit_collection, query_pubid, opts[:all_parts], any_types_stages
       end
 
       #
@@ -190,7 +183,7 @@ module RelatonIso
       #
       # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed year IDs
       #
-      def filter_hits(hit_collection, query_pubid, all_parts, any_stypes_tages) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      def filter_hits(hit_collection, query_pubid, all_parts, any_stypes_tages)
         # filter out
         result = hit_collection.select do |i|
           hit_pubid = i.pubid
