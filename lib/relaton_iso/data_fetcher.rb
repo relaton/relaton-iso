@@ -32,7 +32,7 @@ module RelatonIso
     #
     # @return [void]
     #
-    def self.fetch(output: "data-ics", format: "yaml")
+    def self.fetch(output: "data", format: "yaml")
       t1 = Time.now
       puts "Started at: #{t1}"
       FileUtils.mkdir_p output

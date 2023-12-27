@@ -14,8 +14,8 @@ describe RelatonIso::DataFetcher do
     before { expect(data_fetcher).to receive(:fetch) }
 
     it "iso-rss, default output and format" do
-      expect(described_class).to receive(:new).with("data-ics", "yaml").and_return data_fetcher
-      expect(FileUtils).to receive(:mkdir_p).with("data-ics")
+      expect(described_class).to receive(:new).with("data", "yaml").and_return data_fetcher
+      expect(FileUtils).to receive(:mkdir_p).with("data")
       described_class.fetch
     end
 
