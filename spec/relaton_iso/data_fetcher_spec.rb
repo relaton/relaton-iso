@@ -99,14 +99,14 @@ describe RelatonIso::DataFetcher do
           expect(Net::HTTP).to receive(:get_response).with(:uri).and_raise(Net::OpenTimeout).twice
           expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp
           expect(subject.get_redirection("/link1")).to eq resp
-        end.to output(/Timeout fetching https:\/\/www\.iso\.org\/link1, retrying.../).to_stderr
+        end.to output(/Timeout fetching uri, retrying.../).to_stderr
       end
 
       it "unsuccessful" do
         expect(Net::HTTP).to receive(:get_response).with(:uri).and_raise(Net::OpenTimeout).exactly(3).times
         expect do
           subject.get_redirection("/link1")
-        end.to output(/Error fetching https:\/\/www\.iso\.org\/link1/).to_stderr
+        end.to output(/Error fetching uri/).to_stderr
       end
     end
 

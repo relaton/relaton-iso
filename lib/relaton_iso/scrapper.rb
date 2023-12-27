@@ -208,11 +208,17 @@ module RelatonIso
         resp = get_response uri
         resp.code == "301" ? get_redirection(resp["location"]) : [resp, uri]
       rescue Errno::EPIPE => e
-        raise e if try > 3
-
         try += 1
+        retry if check_try try, uri
+        raise e
+      end
+    end
+
+    def check_try(try, uri)
+      if try < 3
+        warn "Timeout fetching #{uri}, retrying..."
         sleep 1
-        retry
+        true
       end
     end
 
