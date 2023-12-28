@@ -20,6 +20,7 @@ module RelatonIso
       # "R" => "recommendation",
       "Guide" => "guide",
       "ISO" => "international-standard",
+      "IEC" => "international-standard",
       "IWA" => "international-workshop-agreement",
     }.freeze
 

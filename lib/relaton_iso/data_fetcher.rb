@@ -93,8 +93,7 @@ module RelatonIso
       try = 0
       uri = URI(Scrapper::DOMAIN + path)
       begin
-        resp = Net::HTTP.get_response(uri)
-        resp.code == "302" ? get_redirection(resp["location"]) : resp
+        get_response uri
       rescue Net::OpenTimeout => e
         try += 1
         retry if check_try try, uri
@@ -102,6 +101,11 @@ module RelatonIso
         warn "Error fetching #{uri}"
         warn e.message
       end
+    end
+
+    def get_response(uri)
+      resp = Net::HTTP.get_response(uri)
+      resp.code == "302" ? get_redirection(resp["location"]) : resp
     end
 
     def check_try(try, uri)

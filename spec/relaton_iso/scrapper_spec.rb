@@ -98,11 +98,19 @@ RSpec.describe RelatonIso::Scrapper do
       expect { described_class.send(:get_redirection, "/path") }.to raise_error RelatonBib::RequestError
     end
 
-    it "retry" do
-      resp = double(code: "200")
-      expect(Net::HTTP).to receive(:get_response).with(:uri).and_raise(Errno::EPIPE).twice
-      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(resp)
-      expect(described_class.send(:get_redirection, "/path")).to eq [resp, :uri]
+    context "retry" do
+      let(:resp) { double(code: "200") }
+
+      it do
+        expect(Net::HTTP).to receive(:get_response).with(:uri).and_raise(Errno::EPIPE).twice
+        expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(resp)
+        expect(described_class.send(:get_redirection, "/path")).to eq [resp, :uri]
+      end
+
+      it "limit" do
+        expect(Net::HTTP).to receive(:get_response).with(:uri).and_raise(Errno::EPIPE).exactly(3).times
+        expect { described_class.send(:get_redirection, "/path") }.to raise_error Errno::EPIPE
+      end
     end
   end
 

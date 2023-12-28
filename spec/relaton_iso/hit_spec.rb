@@ -27,7 +27,7 @@ RSpec.describe RelatonIso::Hit do
       it {
         expect do
           subject
-        end.to output(/Unable to find an identifier/).to_stderr
+        end.to output(/Unable to find an identifier/).to_stderr_from_any_process
       }
     end
   end
