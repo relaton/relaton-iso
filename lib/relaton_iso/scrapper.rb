@@ -221,19 +221,17 @@ module RelatonIso
       end
     end
 
-    def get_response(uri)
-      try = 0
-      resp = nil
-      loop do
-        try += 1
-        resp = Net::HTTP.get_response(uri)
-        break if %w[200 301].include? resp.code
+    def get_response(uri, try = 0)
+      raise RelatonBib::RequestError, "#{uri} not found." if try > 3
 
-        raise RelatonBib::RequestError, "#{uri} not found." if try > 3
-
+      resp = Net::HTTP.get_response(uri)
+      case resp.code
+      when "200" then [resp, uri]
+      when "301" then get_redirection(resp["location"])
+      else
         sleep 1
+        get_response uri, try + 1
       end
-      resp.code == "301" ? get_redirection(resp["location"]) : [resp, uri]
     end
 
     #
