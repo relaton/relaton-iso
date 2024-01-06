@@ -139,13 +139,15 @@ describe RelatonIso::DataFetcher do
     end
 
     context "#save_doc" do
+      let(:id) { Pubid::Iso::Identifier.parse "ISO/IEC 123" }
+
       let(:doc) do
-        id = Pubid::Iso::Identifier.parse "ISO/IEC 123"
-        double "doc", docidentifier: [double(id: id, primary: true)]
+        docid = double(id: id, primary: true, to_s: id.to_s, to_h: id.to_h)
+        double "doc", docidentifier: [docid]
       end
 
       before do
-        expect(subject.index).to receive(:add_or_update).with("ISO/IEC 123", "data/iso-iec-123.yaml")
+        expect(subject.index).to receive(:add_or_update).with(id.to_h, "data/iso-iec-123.yaml")
         expect(subject).to receive(:serialize).with(doc).and_return :content
         expect(File).to receive(:write).with("data/iso-iec-123.yaml", :content, encoding: "UTF-8")
         expect(iso_queue).to receive(:move_last).with("/page_path.html")

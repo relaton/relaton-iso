@@ -42,7 +42,7 @@ module RelatonIso
       @array.reject { |h| h.hit[:uuid] == hit.hit[:uuid] }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(
           formattedref: RelatonBib::FormattedRef.new(content: hi.pubid.to_s),
-          docid: [RelatonBib::DocumentIdentifier.new(id: hi.pubid.to_s, type: "ISO", primary: true)]
+          docid: [DocumentIdentifier.new(id: hi.pubid, type: "ISO", primary: true)],
         )
         all_parts_item.relation << RelatonBib::DocumentRelation.new(
           type: "instanceOf", bibitem: isobib,
@@ -65,7 +65,7 @@ module RelatonIso
       return [] unless resp.code == "200"
 
       hash = YAML.safe_load resp.body
-      bib_hash = RelatonIsoBib::HashConverter.hash_to_bib hash
+      bib_hash = HashConverter.hash_to_bib hash
       bib_hash[:fetched] = Date.today.to_s
       bib = RelatonIsoBib::IsoBibliographicItem.new(**bib_hash)
       hit = Hit.new({ title: text }, self)

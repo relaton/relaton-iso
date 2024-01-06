@@ -50,9 +50,9 @@ module RelatonIso
     def fetch # rubocop:disable Metrics/AbcSize
       puts "Scrapping ICS pages..."
       fetch_ics
-      iso_queue.save
       puts "[#{Time.now}] Scrapping documents..."
       fetch_docs
+      iso_queue.save
       index.save
     end
 
@@ -149,7 +149,7 @@ module RelatonIso
     # @return [void]
     #
     def save_doc(doc, docpath) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      id = doc.docidentifier.detect(&:primary).id
+      id = doc.docidentifier.detect(&:primary)
       file_name = id.to_s.gsub(/[\s\/]+/, "-").downcase
       file = File.join @output, "#{file_name}.#{@ext}"
       if @files.include? file
@@ -157,7 +157,7 @@ module RelatonIso
       else
         @files << file
       end
-      index.add_or_update id.to_s, file
+      index.add_or_update id.to_h, file
       File.write file, serialize(doc), encoding: "UTF-8"
       iso_queue.move_last docpath
     end

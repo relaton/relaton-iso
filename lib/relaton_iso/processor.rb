@@ -41,7 +41,7 @@ module RelatonIso
     # @param hash [Hash]
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def hash_to_bib(hash)
-      item_hash = ::RelatonIsoBib::HashConverter.hash_to_bib(hash)
+      item_hash = HashConverter.hash_to_bib(hash)
       ::RelatonIsoBib::IsoBibliographicItem.new(**item_hash)
     end
 

@@ -61,8 +61,13 @@
     </relation>
     <place>Geneva</place>
   </bibitem>
+<<<<<<< HEAD
   <bibitem id="ISO19115-2-2019/Amd1-2022" type="standard" schema-version="v1.2.8">
     <fetched>2023-10-19</fetched>
+=======
+  <bibitem id="ISO19115-2-2019/Amd1-2022" type="standard" schema-version="v1.2.7">
+    <fetched>2023-12-29</fetched>
+>>>>>>> 6b66f7c (WIP)
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -110,8 +115,13 @@
     </copyright>
     <place>Geneva</place>
   </bibitem>
+<<<<<<< HEAD
   <bibitem id="ISO19115-3-2023" type="standard" schema-version="v1.2.8">
     <fetched>2023-10-19</fetched>
+=======
+  <bibitem id="ISO19115-3-2023" type="standard" schema-version="v1.2.7">
+    <fetched>2023-12-29</fetched>
+>>>>>>> 6b66f7c (WIP)
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -170,8 +180,13 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     </relation>
     <place>Geneva</place>
   </bibitem>
+<<<<<<< HEAD
   <bibitem id="ISO/TS19157-2-2016" type="standard" schema-version="v1.2.8">
     <fetched>2023-10-19</fetched>
+=======
+  <bibitem id="ISO/TS19157-2-2016" type="standard" schema-version="v1.2.7">
+    <fetched>2023-12-29</fetched>
+>>>>>>> 6b66f7c (WIP)
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information </title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Data quality</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: XML schema implementation</title>
@@ -218,8 +233,13 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     </copyright>
     <place>Geneva</place>
   </bibitem>
+<<<<<<< HEAD
   <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.8">
     <fetched>2023-10-19</fetched>
+=======
+  <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.7">
+    <fetched>2023-12-29</fetched>
+>>>>>>> 6b66f7c (WIP)
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -274,8 +294,13 @@ Le présent document décrit la procédure utilisée pour générer des schémas
     </relation>
     <place>Geneva</place>
   </bibitem>
+<<<<<<< HEAD
   <bibitem id="ISO/TS19115-3-2016" type="standard" schema-version="v1.2.8">
     <fetched>2023-10-19</fetched>
+=======
+  <bibitem id="ISO/TS19115-3-2016" type="standard" schema-version="v1.2.7">
+    <fetched>2023-12-29</fetched>
+>>>>>>> 6b66f7c (WIP)
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn"> Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 3: XML schema implementation for fundamental concepts</title>
@@ -340,8 +365,13 @@ This implementation model does not alter the semantics of the target conceptual 
     </relation>
     <place>Geneva</place>
   </bibitem>
+<<<<<<< HEAD
   <bibitem id="ISO/TS19139-2-2012" type="standard" schema-version="v1.2.8">
     <fetched>2023-10-19</fetched>
+=======
+  <bibitem id="ISO/TS19139-2-2012" type="standard" schema-version="v1.2.7">
+    <fetched>2023-12-29</fetched>
+>>>>>>> 6b66f7c (WIP)
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">XML schema implementation</title>

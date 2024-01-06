@@ -45,8 +45,8 @@ module RelatonIso
         ret = hits.fetch_doc(opts)
         return fetch_ref_err(query_pubid, missed_year_ids, tip_ids) unless ret
 
-        response_docid = ret.docidentifier.first.id.sub(" (all parts)", "")
-        response_pubid = Pubid::Iso::Identifier.parse(response_docid)
+        response_pubid = ret.docidentifier.first.id # .sub(" (all parts)", "")
+        # response_pubid = Pubid::Iso::Identifier.parse(response_docid)
 
         Util.warn "(#{query_pubid}) Found: `#{response_pubid}`"
 

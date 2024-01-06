@@ -14,6 +14,10 @@ module RelatonIso
       Util.warn "WARNING: #{type} identifier can't be generated for #{@id}: #{e.message}"
     end
 
+    def to_h
+      @id.to_h.compact
+    end
+
     def remove_part
       @id.part = nil
     end

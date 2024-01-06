@@ -104,9 +104,9 @@ module RelatonIso
     def fetch_relaton_docids(doc, pubid)
       pubid.stage ||= Pubid::Iso::Identifier.parse_stage(stage_code(doc))
       [
-        RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
+        DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
         RelatonBib::DocumentIdentifier.new(id: isoref(pubid), type: "iso-reference"),
-        RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
+        DocumentIdentifier.new(id: pubid, type: "URN"),
       ]
     end
 
@@ -118,7 +118,7 @@ module RelatonIso
     # @return [String] English reference identifier
     #
     def isoref(pubid)
-      params = pubid.get_params.reject { |k, _| k == :typed_stage }
+      params = pubid.to_h.reject { |k, _| k == :typed_stage }
       Pubid::Iso::Identifier.create(language: "en", **params).to_s(format: :ref_num_short)
     end
 
@@ -353,7 +353,7 @@ module RelatonIso
 
     def create_relations(rel, type, date)
       rel.css("a").map do |id|
-        docid = RelatonBib::DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
+        docid = DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
         fref = RelatonBib::FormattedRef.new(content: id.text, format: "text/plain")
         bibitem = RelatonIsoBib::IsoBibliographicItem.new(
           docid: [docid], formattedref: fref, date: date,
