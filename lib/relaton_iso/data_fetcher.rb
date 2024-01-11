@@ -149,15 +149,15 @@ module RelatonIso
     # @return [void]
     #
     def save_doc(doc, docpath) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      id = doc.docidentifier.detect(&:primary)
-      file_name = id.to_s.gsub(/[\s\/]+/, "-").downcase
+      docid = doc.docidentifier.detect(&:primary)
+      file_name = docid.id.gsub(/[\s\/:]+/, "-").downcase
       file = File.join @output, "#{file_name}.#{@ext}"
       if @files.include? file
-        warn "Duplicate file #{file} for #{id} from #{Scrapper::DOMAIN}#{docpath}"
+        warn "Duplicate file #{file} for #{docid} from #{Scrapper::DOMAIN}#{docpath}"
       else
         @files << file
       end
-      index.add_or_update id.to_h, file
+      index.add_or_update docid.to_h, file
       File.write file, serialize(doc), encoding: "UTF-8"
       iso_queue.move_last docpath
     end

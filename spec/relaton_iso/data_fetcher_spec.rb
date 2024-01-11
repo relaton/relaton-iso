@@ -142,7 +142,7 @@ describe RelatonIso::DataFetcher do
       let(:id) { Pubid::Iso::Identifier.parse "ISO/IEC 123" }
 
       let(:doc) do
-        docid = double(id: id, primary: true, to_s: id.to_s, to_h: id.to_h)
+        docid = double(id: id.to_s, primary: true, to_h: id.to_h)
         double "doc", docidentifier: [docid]
       end
 

@@ -15,7 +15,7 @@ module RelatonIso
     end
 
     def to_h
-      @id.to_h.compact
+      @id.to_h.compact.transform_values(&:to_s)
     end
 
     def remove_part
