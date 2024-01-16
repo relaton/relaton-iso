@@ -53,6 +53,7 @@ module RelatonIso
       puts "[#{Time.now}] Scrapping documents..."
       fetch_docs
       iso_queue.save
+      # index.sort! { |a, b| compare_docids a, b }
       index.save
     end
 
@@ -141,6 +142,10 @@ module RelatonIso
       warn e.backtrace
     end
 
+    # def compare_docids(id1, id2)
+    #   Pubid::Iso::Identifier.create(**id1).to_s <=> Pubid::Iso::Identifier.create(**id2).to_s
+    # end
+
     #
     # save document to file.
     #
@@ -153,12 +158,12 @@ module RelatonIso
       file_name = docid.id.gsub(/[\s\/:]+/, "-").downcase
       file = File.join @output, "#{file_name}.#{@ext}"
       if @files.include? file
-        warn "Duplicate file #{file} for #{docid} from #{Scrapper::DOMAIN}#{docpath}"
+        warn "Duplicate file #{file} for #{docid.id} from #{Scrapper::DOMAIN}#{docpath}"
       else
         @files << file
+        index.add_or_update docid.to_h, file
+        File.write file, serialize(doc), encoding: "UTF-8"
       end
-      index.add_or_update docid.to_h, file
-      File.write file, serialize(doc), encoding: "UTF-8"
       iso_queue.move_last docpath
     end
 

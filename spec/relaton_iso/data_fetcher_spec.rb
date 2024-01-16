@@ -147,13 +147,13 @@ describe RelatonIso::DataFetcher do
       end
 
       before do
-        expect(subject.index).to receive(:add_or_update).with(id.to_h, "data/iso-iec-123.yaml")
-        expect(subject).to receive(:serialize).with(doc).and_return :content
-        expect(File).to receive(:write).with("data/iso-iec-123.yaml", :content, encoding: "UTF-8")
         expect(iso_queue).to receive(:move_last).with("/page_path.html")
       end
 
       it "no file duplication" do
+        expect(subject.index).to receive(:add_or_update).with(id.to_h, "data/iso-iec-123.yaml")
+        expect(subject).to receive(:serialize).with(doc).and_return :content
+        expect(File).to receive(:write).with("data/iso-iec-123.yaml", :content, encoding: "UTF-8")
         subject.save_doc doc, "/page_path.html"
         expect(subject.instance_variable_get(:@files)).to eq ["data/iso-iec-123.yaml"]
       end

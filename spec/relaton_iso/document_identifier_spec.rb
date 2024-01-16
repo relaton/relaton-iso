@@ -33,10 +33,10 @@ RSpec.describe RelatonIso::DocumentIdentifier do
   it "#to_h" do
     pubid_hash = subject.to_h
     expect(pubid_hash[:publisher]).to eq "ISO"
-    expect(pubid_hash[:type]).to be :tr
+    expect(pubid_hash[:type]).to eq "TR"
     expect(pubid_hash[:number]).to eq "11071"
     expect(pubid_hash[:part]).to eq "2"
-    expect(pubid_hash[:year]).to eq 1996
+    expect(pubid_hash[:year]).to eq "1996"
     expect(pubid_hash.key?(:edition)).to be false
   end
 end

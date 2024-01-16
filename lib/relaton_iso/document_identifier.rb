@@ -15,7 +15,7 @@ module RelatonIso
     end
 
     def to_h
-      @id.to_h.compact.transform_values(&:to_s)
+      stringify_values @id.to_h
     end
 
     def remove_part
@@ -28,6 +28,17 @@ module RelatonIso
 
     def all_parts
       @all_parts = true
+    end
+
+    def stringify_values(hash) # rubocop:disable Metrics/CyclomaticComplexity
+      hash.transform_values do |v|
+        case v
+        when Array then v.map { |i| i.is_a?(Hash) ? stringify_values(i) : i.to_s }
+        when Hash then stringify_values(v)
+        when Symbol then v
+        else v.to_s
+        end
+      end.reject { |_k, v| v.empty? }
     end
   end
 end
