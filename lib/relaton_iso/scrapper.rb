@@ -71,7 +71,7 @@ module RelatonIso
       titles, abstract, langs = fetch_titles_abstract(doc, lang)
 
       RelatonIsoBib::IsoBibliographicItem.new(
-        fetched: Date.today.to_s,
+        # fetched: Date.today.to_s,
         docid: fetch_relaton_docids(doc, hit.pubid),
         docnumber: fetch_docnumber(hit.pubid),
         edition: edition,

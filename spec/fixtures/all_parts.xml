@@ -1,5 +1,5 @@
 <bibdata type="standard" schema-version="v1.2.8">
-  <fetched>2023-08-25</fetched>
+  <fetched>2024-01-19</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -11,7 +11,7 @@
   <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
   <docidentifier type="ISO" primary="true">ISO 19115 (all parts)</docidentifier>
   <docidentifier type="iso-reference">ISO 19115(E) (all parts)</docidentifier>
-  <docidentifier type="URN">urn:iso:std:iso:19115:stage-90.93:ed-1:ser</docidentifier>
+  <docidentifier type="URN">urn:iso:std:iso:19115</docidentifier>
   <docnumber>19115</docnumber>
   <date type="published">
     <on>2014-04</on>
@@ -72,7 +72,7 @@
   </relation>
   <relation type="instanceOf">
     <bibitem type="standard">
-      <fetched>2023-12-19</fetched>
+      <fetched>2024-01-19</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -86,7 +86,7 @@
       <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
       <docidentifier type="ISO" primary="true">ISO 19115-1:2014</docidentifier>
       <docidentifier type="iso-reference">ISO 19115-1:2014(E)</docidentifier>
-      <docidentifier type="URN">urn:iso:std:iso:19115:-1:stage-90.93:ed-1</docidentifier>
+      <docidentifier type="URN">urn:iso:std:iso:19115:-1:stage-90.93</docidentifier>
       <docnumber>19115</docnumber>
       <date type="published">
         <on>2014-04</on>
@@ -170,14 +170,14 @@ L'ISO 19115-1:2014 est applicable aux données numériques et services, ses prin
   </relation>
   <relation type="instanceOf">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO 19115-2:2019</formattedref>
-      <docidentifier type="ISO" primary="true">ISO 19115-2:2019</docidentifier>
+      <formattedref format="text/plain">ISO 19115-3:2023</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115-3:2023</docidentifier>
     </bibitem>
   </relation>
   <relation type="instanceOf">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO 19115-3:2023</formattedref>
-      <docidentifier type="ISO" primary="true">ISO 19115-3:2023</docidentifier>
+      <formattedref format="text/plain">ISO 19115-2:2019</formattedref>
+      <docidentifier type="ISO" primary="true">ISO 19115-2:2019</docidentifier>
     </bibitem>
   </relation>
   <relation type="instanceOf">

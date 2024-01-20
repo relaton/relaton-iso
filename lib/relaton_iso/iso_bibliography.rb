@@ -9,10 +9,11 @@ module RelatonIso
   # Class methods for search ISO standards.
   class IsoBibliography
     class << self
-      # @param text [String]
+      # @param text [Pubid::Iso::Identifier, String]
       # @return [RelatonIso::HitCollection]
-      def search(text)
-        HitCollection.new(text.gsub("\u2013", "-")).fetch
+      def search(pubid, opts = {})
+        pubid = Pubid::Iso::Identifier.parse(pubid) if pubid.is_a? String
+        HitCollection.new(pubid).fetch(opts)
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
              Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT,
@@ -36,8 +37,8 @@ module RelatonIso
         opts[:all_parts] ||= $~ && opts[:all_parts].nil?
 
         query_pubid = Pubid::Iso::Identifier.parse(code)
-        query_pubid.year = year if year
-        query_pubid.part = nil if opts[:all_parts]
+        query_pubid.root.year = year.to_i if year&.respond_to?(:to_i)
+        # query_pubid.root.part = nil if opts[:all_parts]
         Util.warn "(#{query_pubid}) Fetching from iso.org ..."
 
         hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
@@ -164,10 +165,7 @@ module RelatonIso
       # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed years
       #
       def isobib_search_filter(query_pubid, opts, any_types_stages: false)
-        query_pubid_without_year = query_pubid.dup
-        # remove year for query
-        query_pubid_without_year.year = nil
-        hit_collection = search(query_pubid_without_year.to_s)
+        hit_collection = search(query_pubid, opts)
 
         # filter only matching hits
         filter_hits hit_collection, query_pubid, opts[:all_parts], any_types_stages
@@ -179,19 +177,20 @@ module RelatonIso
       # @param hit_collection [RelatonIso::HitCollection]
       # @param query_pubid [Pubid::Iso::Identifier]
       # @param all_parts [Boolean]
-      # @param any_stypes_tages [Boolean]
+      # @param any_stypes_stages [Boolean]
       #
       # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed year IDs
       #
-      def filter_hits(hit_collection, query_pubid, all_parts, any_stypes_tages)
+      def filter_hits(hit_collection, query_pubid, all_parts, any_stypes_stages) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         # filter out
+        excludes = [:year]
+        excludes += %i[stage type] if any_stypes_stages
+        excludes << :part if all_parts
         result = hit_collection.select do |i|
-          hit_pubid = i.pubid
-          matches_base?(query_pubid, hit_pubid,
-                        any_types_stages: any_stypes_tages) &&
-            matches_parts?(query_pubid, hit_pubid, all_parts: all_parts) &&
-            query_pubid.corrigendums == hit_pubid.corrigendums &&
-            query_pubid.amendments == hit_pubid.amendments
+          if i.pubid.is_a? String then i.pubid == query_pubid.to_s
+          else
+            i.pubid.exclude(*excludes) == query_pubid.exclude(*excludes) && !(all_parts && i.pubid.part.nil?)
+          end
         end
 
         filter_hits_by_year(result, query_pubid.year)

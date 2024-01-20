@@ -7,19 +7,41 @@ module RelatonIso
   # Page of hit collection.
   class HitCollection < RelatonBib::HitCollection
     INDEXFILE = "index-v1.yaml"
+    ENDPOINT = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/"
 
     # @return [Boolean] whether the search was performed on GitHub
     attr_reader :from_gh
 
-    # @param text [String] reference to search
-    def initialize(text)
+    # @param text [Pubid::Iso::Identifier] reference to search
+    def initialize(pubid)
       super
-      @from_gh = text.match?(/^ISO[\s\/](?:TC\s184\/SC\s?4|IEC\sDIR\s(?:\d|IEC|JTC))/)
+      @from_gh = pubid.to_s.match?(/^ISO[\s\/](?:TC\s184\/SC\s?4|IEC\sDIR\s(?:\d|IEC|JTC))/)
     end
 
-    def fetch
-      @array = from_gh ? fetch_github : fetch_iso
+    # @return [Pubid::Iso::Identifier]
+    alias ref_pubid text
+
+    def fetch(opts = {}) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      # @array = from_gh ? fetch_github : fetch_iso
+      excludings = [:year]
+      excludings << :part if ref_pubid.part.nil? || opts[:all_parts]
+      @array = index.search do |row|
+        if row[:id].is_a? Hash
+          begin
+            pubid = Pubid::Iso::Identifier.create(**row[:id])
+          rescue StandardError => e
+            e
+          end
+          pubid.exclude(*excludings) == ref_pubid.exclude(*excludings)
+        else
+          ref_pubid.to_s == row[:id]
+        end
+      end.map { |row| Hit.new row, self }
       self
+    end
+
+    def index
+      @index ||= Relaton::Index.find_or_create :iso, url: "#{ENDPOINT}index-v1.zip", file: INDEXFILE
     end
 
     def fetch_doc(opts)
@@ -39,7 +61,7 @@ module RelatonIso
 
       bibitem = hit.fetch(lang)
       all_parts_item = bibitem.to_all_parts
-      @array.reject { |h| h.hit[:uuid] == hit.hit[:uuid] }.each do |hi|
+      @array.reject { |h| h.pubid.part == hit.pubid.part }.each do |hi|
         isobib = RelatonIsoBib::IsoBibliographicItem.new(
           formattedref: RelatonBib::FormattedRef.new(content: hi.pubid.to_s),
           docid: [DocumentIdentifier.new(id: hi.pubid, type: "ISO", primary: true)],

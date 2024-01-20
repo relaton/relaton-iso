@@ -12,22 +12,24 @@ RSpec.describe RelatonIso::Hit do
   end
 
   describe "#pubid" do
-    subject { described_class.new({ title: title }).pubid }
+    subject { described_class.new(hit).pubid }
 
     context "extracts pubid from title" do
-      let(:title) do
-        "ISO 19115-1:2014 Geographic information — Metadata — Part 1: Fundamentals"
-      end
+      let(:hit) { { id: { publisher: "ISO", number: "19115", part: "1", year: "2014" } } }
       let(:pubid) { "ISO 19115-1:2014" }
-      it { expect(subject.to_s).to eq(pubid) }
+      it do
+        expect(subject.to_s).to eq(pubid)
+      end
     end
 
     context "fails to extract pubid from title" do
-      let(:title) { "Geographic information — Metadata — Part 1: Fundamentals" }
+      let(:hit) { { id: { publisher: "ISO", number: "19115", type: "TYPE" } } }
       it {
         expect do
           subject
-        end.to output(/Unable to find an identifier/).to_stderr_from_any_process
+        end.to output(
+          match(/\[relaton-iso\] Unable to create an identifier/).and(match(/\[relaton-iso\] cannot parse type TYPE/)),
+        ).to_stderr_from_any_process
       }
     end
   end

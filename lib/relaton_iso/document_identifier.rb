@@ -15,7 +15,7 @@ module RelatonIso
     end
 
     def to_h
-      stringify_values @id.to_h
+      stringify_values(@id.to_h) if @id.respond_to? :to_h
     end
 
     def remove_part

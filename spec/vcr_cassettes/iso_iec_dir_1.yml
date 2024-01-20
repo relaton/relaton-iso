@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/ISO_IEC_DIR_1.yaml
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/static/ISO_IEC_DIR_1.yaml
     body:
       encoding: US-ASCII
-      string: ''
+      base64_string: ''
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -41,21 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 958C:2448:405913:4EA455:65A59A67
+      - F76E:2448:199E268:1E94FEA:65AB4A44
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 15 Jan 2024 20:49:44 GMT
+      - Sat, 20 Jan 2024 04:21:24 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk1780128-PDK
+      - cache-pdk-kpdk1780064-PDK
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1705351784.266658,VS0,VE122
+      - S1705724484.420659,VS0,VE122
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,14 +63,34 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 94781dbb20f53d043d368c8e33d94a5541ae2fd7
+      - 704956c05277a25c91274310578f470c583a6c5f
       Expires:
-      - Mon, 15 Jan 2024 20:54:44 GMT
+      - Sat, 20 Jan 2024 04:26:24 GMT
       Source-Age:
       - '0'
     body:
       encoding: ASCII-8BIT
-      string: !binary |-
-        dGl0bGU6Ci0gdHlwZTogdGl0bGUtbWFpbgogIGNvbnRlbnQ6IElTTy9JRUMgRGlyZWN0aXZlcywgUGFydCAxCiAgbGFuZ3VhZ2U6IGVuCiAgc2NyaXB0OiBMYXRuCi0gdHlwZTogdGl0bGUtcGFydAogIGNvbnRlbnQ6IFByb2NlZHVyZXMgZm9yIHRoZSB0ZWNobmljYWwgd29yawogIGxhbmd1YWdlOiBlbgogIHNjcmlwdDogTGF0bgotIHR5cGU6IHRpdGxlLW1haW4KICBjb250ZW50OiBEaXJlY3RpdmVzIElTTy9JRUMsIFBhcnRpZSAxCiAgbGFuZ3VhZ2U6IGZyCiAgc2NyaXB0OiBMYXRuCi0gdHlwZTogdGl0bGUtcGFydAogIGNvbnRlbnQ6IFByb2PDqWR1cmUgcG91ciBsZXMgdHJhdmF1eCB0ZWNobmlxdWVzCiAgbGFuZ3VhZ2U6IGZyCiAgc2NyaXB0OiBMYXRuCgpsaW5rOgotIHR5cGU6IHNyYwogIGNvbnRlbnQ6IGh0dHBzOi8vd3d3Lmlzby5vcmcvc2l0ZXMvZGlyZWN0aXZlcy9jdXJyZW50L3BhcnQxL2luZGV4LnhodG1sCgp0eXBlOiBzdGFuZGFyZApkb2N0eXBlOiBkaXJlY3RpdmUKCmRvY2lkOgogIGlkOiBJU08vSUVDIERJUiAxCiAgdHlwZTogSVNPCiAgcHJpbWFyeTogdHJ1ZQoKZGF0ZToKICB0eXBlOiBwdWJsaXNoZWQKICB2YWx1ZTogJzIwMjMtMDUtMDEnCgplZGl0aW9uOiAiMTkiCgpsYW5ndWFnZToKLSBlbgoKc2NyaXB0OiBMYXRuCgpjb3B5cmlnaHQ6CiAgb3duZXI6CiAgICBuYW1lOiBJbnRlcm5hdGlvbmFsIE9yZ2FuaXphdGlvbiBmb3IgU3RhbmRhcmRpemF0aW9uCiAgICBhYmJyZXZpYXRpb246IElTTwogICAgdXJsOiB3d3cuaXNvLm9yZwogIGZyb206ICcxOTc2JwoKcmVsYXRpb246CiAgLSB0eXBlOiBwYXJ0T2YKICAgIGJpYml0ZW06CiAgICAgIGZvcm1hdHRlZHJlZjogSVNPL0lFQyBESVIKICAgICAgZG9jaWQ6CiAgICAgICAgLSBpZDogSVNPL0lFQyBESVIKICAgICAgICAgIHR5cGU6IElTTwogICAgICAgICAgcHJpbWFyeTogdHJ1ZQo=
-  recorded_at: Mon, 15 Jan 2024 20:49:44 GMT
+      base64_string: |
+        dGl0bGU6Ci0gdHlwZTogdGl0bGUtbWFpbgogIGNvbnRlbnQ6IElTTy9JRUMg
+        RGlyZWN0aXZlcywgUGFydCAxCiAgbGFuZ3VhZ2U6IGVuCiAgc2NyaXB0OiBM
+        YXRuCi0gdHlwZTogdGl0bGUtcGFydAogIGNvbnRlbnQ6IFByb2NlZHVyZXMg
+        Zm9yIHRoZSB0ZWNobmljYWwgd29yawogIGxhbmd1YWdlOiBlbgogIHNjcmlw
+        dDogTGF0bgotIHR5cGU6IHRpdGxlLW1haW4KICBjb250ZW50OiBEaXJlY3Rp
+        dmVzIElTTy9JRUMsIFBhcnRpZSAxCiAgbGFuZ3VhZ2U6IGZyCiAgc2NyaXB0
+        OiBMYXRuCi0gdHlwZTogdGl0bGUtcGFydAogIGNvbnRlbnQ6IFByb2PDqWR1
+        cmUgcG91ciBsZXMgdHJhdmF1eCB0ZWNobmlxdWVzCiAgbGFuZ3VhZ2U6IGZy
+        CiAgc2NyaXB0OiBMYXRuCgpsaW5rOgotIHR5cGU6IHNyYwogIGNvbnRlbnQ6
+        IGh0dHBzOi8vd3d3Lmlzby5vcmcvc2l0ZXMvZGlyZWN0aXZlcy9jdXJyZW50
+        L3BhcnQxL2luZGV4LnhodG1sCgp0eXBlOiBzdGFuZGFyZApkb2N0eXBlOiBk
+        aXJlY3RpdmUKCmRvY2lkOgogIGlkOiBJU08vSUVDIERJUiAxCiAgdHlwZTog
+        SVNPCiAgcHJpbWFyeTogdHJ1ZQoKZGF0ZToKICB0eXBlOiBwdWJsaXNoZWQK
+        ICB2YWx1ZTogJzIwMjMtMDUtMDEnCgplZGl0aW9uOiAiMTkiCgpsYW5ndWFn
+        ZToKLSBlbgoKc2NyaXB0OiBMYXRuCgpjb3B5cmlnaHQ6CiAgb3duZXI6CiAg
+        ICBuYW1lOiBJbnRlcm5hdGlvbmFsIE9yZ2FuaXphdGlvbiBmb3IgU3RhbmRh
+        cmRpemF0aW9uCiAgICBhYmJyZXZpYXRpb246IElTTwogICAgdXJsOiB3d3cu
+        aXNvLm9yZwogIGZyb206ICcxOTc2JwoKcmVsYXRpb246CiAgLSB0eXBlOiBw
+        YXJ0T2YKICAgIGJpYml0ZW06CiAgICAgIGZvcm1hdHRlZHJlZjogSVNPL0lF
+        QyBESVIKICAgICAgZG9jaWQ6CiAgICAgICAgLSBpZDogSVNPL0lFQyBESVIK
+        ICAgICAgICAgIHR5cGU6IElTTwogICAgICAgICAgcHJpbWFyeTogdHJ1ZQo=
+  recorded_at: Sat, 20 Jan 2024 04:21:24 GMT
 recorded_with: VCR 6.2.0

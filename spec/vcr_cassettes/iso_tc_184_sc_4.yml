@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/ISO_TC_184_SC_4_N1110.yaml
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/static/ISO_TC_184_SC_4_N1110.yaml
     body:
       encoding: US-ASCII
-      string: ''
+      base64_string: ''
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -41,21 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 62E6:6DA8:450AB4:52CCF3:65A59A1C
+      - 3318:8299:1AF46D6:1FDB990:65AB29F0
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 15 Jan 2024 20:48:29 GMT
+      - Sat, 20 Jan 2024 02:03:28 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk1780047-PDK
+      - cache-pdk-kpdk1780082-PDK
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1705351709.951860,VS0,VE103
+      - S1705716208.385063,VS0,VE130
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,72 +63,44 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 14f01b3c1eccdb7293f7715fe71862044b4ba970
+      - 90c052528ed58e7f0cfab35165cd791d8a454d1f
       Expires:
-      - Mon, 15 Jan 2024 20:53:29 GMT
+      - Sat, 20 Jan 2024 02:08:28 GMT
       Source-Age:
       - '0'
     body:
       encoding: ASCII-8BIT
-      string: |
-        ---
-        id: ISO/TC184/SC4N1110
-        title:
-        - content: SC4 Quality Manual
-          type: title-main
-          language: en
-          script: Latn
-          format: text/plain
-        - content: SC4 Quality Manual
-          type: main
-          language: en
-          script: Latn
-          format: text/plain
-        link:
-          content: https://isotc.iso.org/livelink/livelink/fetch/-8837444/8838484/8838495/11568437/%28SC4N1110%29_SC4_Quality_Manual.pdf?nodeid=11571501&vernum=-2
-          type: doi
-        type: standard
-        docid:
-          id: ISO/TC 184/SC 4 N1110
-          type: ISO
-          primary: true
-        date:
-          type: published
-          value: '2000-11-08'
-        contributor:
-          organization:
-            name: International Organization for Standardization
-            abbreviation: ISO
-            url: www.iso.org
-          role:
-          - type: publisher
-        revdate: '2000-11-08'
-        language: en
-        script: Latn
-        copyright:
-          owner:
-            name: International Organization for Standardization
-            abbreviation: ISO
-            url: www.iso.org
-          from: '2000'
-        relation:
-          type: obsoletes
-          bibitem:
-            formattedref:
-              content: ISO/TC 184/SC 4/QC N146
-              language: en
-              script: Latn
-              format: text/plain
-        doctype: international-standard
-        editorialgroup:
-          technical_committee:
-            name: Technical Committee 184 for Industrial Automation Systems
-            number: '184'
-          subcommittee:
-            name: Integration Subcommittee 4 for Industrial Data
-            number: '4'
-        structuredidentifier:
-          project_number: ISO/TC 184/SC 4 N1110
-          tc_document_number: '1110'
-  recorded_at: Mon, 15 Jan 2024 20:48:29 GMT
+      base64_string: |
+        LS0tCmlkOiBJU08vVEMxODQvU0M0TjExMTAKdGl0bGU6Ci0gY29udGVudDog
+        U0M0IFF1YWxpdHkgTWFudWFsCiAgdHlwZTogdGl0bGUtbWFpbgogIGxhbmd1
+        YWdlOiBlbgogIHNjcmlwdDogTGF0bgogIGZvcm1hdDogdGV4dC9wbGFpbgot
+        IGNvbnRlbnQ6IFNDNCBRdWFsaXR5IE1hbnVhbAogIHR5cGU6IG1haW4KICBs
+        YW5ndWFnZTogZW4KICBzY3JpcHQ6IExhdG4KICBmb3JtYXQ6IHRleHQvcGxh
+        aW4KbGluazoKICBjb250ZW50OiBodHRwczovL2lzb3RjLmlzby5vcmcvbGl2
+        ZWxpbmsvbGl2ZWxpbmsvZmV0Y2gvLTg4Mzc0NDQvODgzODQ4NC84ODM4NDk1
+        LzExNTY4NDM3LyUyOFNDNE4xMTEwJTI5X1NDNF9RdWFsaXR5X01hbnVhbC5w
+        ZGY/bm9kZWlkPTExNTcxNTAxJnZlcm51bT0tMgogIHR5cGU6IGRvaQp0eXBl
+        OiBzdGFuZGFyZApkb2NpZDoKICBpZDogSVNPL1RDIDE4NC9TQyA0IE4xMTEw
+        CiAgdHlwZTogSVNPCiAgcHJpbWFyeTogdHJ1ZQpkYXRlOgogIHR5cGU6IHB1
+        Ymxpc2hlZAogIHZhbHVlOiAnMjAwMC0xMS0wOCcKY29udHJpYnV0b3I6CiAg
+        b3JnYW5pemF0aW9uOgogICAgbmFtZTogSW50ZXJuYXRpb25hbCBPcmdhbml6
+        YXRpb24gZm9yIFN0YW5kYXJkaXphdGlvbgogICAgYWJicmV2aWF0aW9uOiBJ
+        U08KICAgIHVybDogd3d3Lmlzby5vcmcKICByb2xlOgogIC0gdHlwZTogcHVi
+        bGlzaGVyCnJldmRhdGU6ICcyMDAwLTExLTA4JwpsYW5ndWFnZTogZW4Kc2Ny
+        aXB0OiBMYXRuCmNvcHlyaWdodDoKICBvd25lcjoKICAgIG5hbWU6IEludGVy
+        bmF0aW9uYWwgT3JnYW5pemF0aW9uIGZvciBTdGFuZGFyZGl6YXRpb24KICAg
+        IGFiYnJldmlhdGlvbjogSVNPCiAgICB1cmw6IHd3dy5pc28ub3JnCiAgZnJv
+        bTogJzIwMDAnCnJlbGF0aW9uOgogIHR5cGU6IG9ic29sZXRlcwogIGJpYml0
+        ZW06CiAgICBmb3JtYXR0ZWRyZWY6CiAgICAgIGNvbnRlbnQ6IElTTy9UQyAx
+        ODQvU0MgNC9RQyBOMTQ2CiAgICAgIGxhbmd1YWdlOiBlbgogICAgICBzY3Jp
+        cHQ6IExhdG4KICAgICAgZm9ybWF0OiB0ZXh0L3BsYWluCmRvY3R5cGU6IGlu
+        dGVybmF0aW9uYWwtc3RhbmRhcmQKZWRpdG9yaWFsZ3JvdXA6CiAgdGVjaG5p
+        Y2FsX2NvbW1pdHRlZToKICAgIG5hbWU6IFRlY2huaWNhbCBDb21taXR0ZWUg
+        MTg0IGZvciBJbmR1c3RyaWFsIEF1dG9tYXRpb24gU3lzdGVtcwogICAgbnVt
+        YmVyOiAnMTg0JwogIHN1YmNvbW1pdHRlZToKICAgIG5hbWU6IEludGVncmF0
+        aW9uIFN1YmNvbW1pdHRlZSA0IGZvciBJbmR1c3RyaWFsIERhdGEKICAgIG51
+        bWJlcjogJzQnCnN0cnVjdHVyZWRpZGVudGlmaWVyOgogIHByb2plY3RfbnVt
+        YmVyOiBJU08vVEMgMTg0L1NDIDQgTjExMTAKICB0Y19kb2N1bWVudF9udW1i
+        ZXI6ICcxMTEwJwo=
+  recorded_at: Sat, 20 Jan 2024 02:03:28 GMT
 recorded_with: VCR 6.2.0
