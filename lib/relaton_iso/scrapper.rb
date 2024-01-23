@@ -321,7 +321,7 @@ module RelatonIso
       tc_numb = workgroup[1]&.match(/\d+/)&.to_s&.to_i
       tc_name = wg[:title]
       tc = RelatonBib::WorkGroup.new(name: tc_name, identifier: wg.text,
-                                      type: type, number: tc_numb)
+                                     type: type, number: tc_numb)
       RelatonIsoBib::EditorialGroup.new(technical_committee: [tc])
     end
 
@@ -369,7 +369,7 @@ module RelatonIso
       %r{
         ^(?<prefix>ISO|IWA|IEC)
         (?:(?:/IEC|/IEEE|/PRF|/NP|/SAE|/HL7|/DGuide)*\s|/)
-        (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|DTS|DTR|ISP|Guide|(?=\d+))
+        (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|DTS|DTR|ISP|PWI|Guide|(?=\d+))
       }x =~ ref
       # return "international-standard" if type_match.nil?
       type = TYPES[type] || TYPES[prefix]
@@ -480,7 +480,7 @@ module RelatonIso
       links << { type: "obp", content: obp[:href] } if obp
       rss = doc.at("//a[contains(@href, 'rss')]")
       links << { type: "rss", content: DOMAIN + rss[:href] } if rss
-      pub = doc.at "//p[contains(., 'publicly available')]/a",
+      pub = doc.at  "//p[contains(., 'publicly available')]/a",
                     "//p[contains(., 'can be downloaded from the')]/a"
       links << { type: "pub", content: pub[:href] } if pub
       links
