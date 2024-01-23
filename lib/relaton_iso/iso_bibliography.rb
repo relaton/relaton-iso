@@ -177,15 +177,13 @@ module RelatonIso
       # @param hit_collection [RelatonIso::HitCollection]
       # @param query_pubid [Pubid::Iso::Identifier]
       # @param all_parts [Boolean]
-      # @param any_stypes_stages [Boolean]
+      # @param any_types_stages [Boolean]
       #
       # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed year IDs
       #
-      def filter_hits(hit_collection, query_pubid, all_parts, any_stypes_stages) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      def filter_hits(hit_collection, query_pubid, all_parts, any_types_stages) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
         # filter out
-        excludes = [:year]
-        excludes += %i[stage type] if any_stypes_stages
-        excludes << :part if all_parts
+        excludes = build_excludes(all_parts, any_types_stages)
         result = hit_collection.select do |i|
           if i.pubid.is_a? String then i.pubid == query_pubid.to_s
           else
@@ -194,6 +192,13 @@ module RelatonIso
         end
 
         filter_hits_by_year(result, query_pubid.year)
+      end
+
+      def build_excludes(all_parts, any_types_stages)
+        excludes = [:year]
+        excludes += %i[stage type] if any_types_stages
+        excludes << :part if all_parts
+        excludes
       end
     end
   end

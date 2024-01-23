@@ -54,23 +54,24 @@ module RelatonIso
 
     # @param lang [String, nil]
     # @return [RelatonIsoBib::IsoBibliographicItem, nil]
-    def to_all_parts(lang = nil) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      # parts = @array.reject { |h| h.hit["docPart"]&.empty? }
+    def to_all_parts(lang = nil) # rubocop:disable Metrics/AbcSize
       hit = @array.min_by { |h| h.pubid.part.to_i }
       return @array.first&.fetch lang unless hit
 
       bibitem = hit.fetch(lang)
       all_parts_item = bibitem.to_all_parts
       @array.reject { |h| h.pubid.part == hit.pubid.part }.each do |hi|
-        isobib = RelatonIsoBib::IsoBibliographicItem.new(
-          formattedref: RelatonBib::FormattedRef.new(content: hi.pubid.to_s),
-          docid: [DocumentIdentifier.new(id: hi.pubid, type: "ISO", primary: true)],
-        )
-        all_parts_item.relation << RelatonBib::DocumentRelation.new(
-          type: "instanceOf", bibitem: isobib,
-        )
+        all_parts_item.relation << create_relation(hi)
       end
       all_parts_item
+    end
+
+    def create_relation(hit)
+      docid = DocumentIdentifier.new(id: hit.pubid, type: "ISO", primary: true)
+      isobib = RelatonIsoBib::IsoBibliographicItem.new(
+        formattedref: RelatonBib::FormattedRef.new(content: hit.pubid.to_s), docid: [docid],
+      )
+      RelatonBib::DocumentRelation.new(type: "instanceOf", bibitem: isobib)
     end
 
     private

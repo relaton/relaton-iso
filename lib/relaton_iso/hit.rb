@@ -24,11 +24,7 @@ module RelatonIso
     # Parse page.
     # @param lang [String, nil]
     # @return [RelatonIso::IsoBibliographicItem]
-    def fetch(lang = nil)
-      # @fetch ||= Scrapper.parse_page self, lang
-      # # update edition for pubid using fetched data
-      # update_edition(@fetch)
-      # @fetch
+    def fetch(_lang = nil)
       @fetch ||= begin
         url = "#{HitCollection::ENDPOINT}#{hit[:file]}"
         resp = Net::HTTP.get_response URI(url)
@@ -54,9 +50,8 @@ module RelatonIso
       return @pubid if defined? @pubid
 
       @pubid = hit[:id].is_a?(Hash) ? Pubid::Iso::Identifier.create(**hit[:id]) : hit[:id]
-    rescue StandardError => e
-      Util.warn "Unable to create an identifier."
-      Util.warn e.message
+    rescue StandardError
+      Util.warn "Unable to create an identifier for #{hit[:id]}"
     end
   end
 end

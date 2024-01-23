@@ -31,14 +31,16 @@ module RelatonIso
     end
 
     def stringify_values(hash) # rubocop:disable Metrics/CyclomaticComplexity
-      hash.transform_values do |v|
-        case v
-        when Array then v.map { |i| i.is_a?(Hash) ? stringify_values(i) : i.to_s }
-        when Hash then stringify_values(v)
-        when Symbol then v
-        else v.to_s
-        end
-      end.reject { |_k, v| v.empty? }
+      hash.transform_values { |v| stringify(v) }.reject { |_k, v| v.empty? }
+    end
+
+    def stringify(val)
+      case val
+      when Array then val.map { |i| i.is_a?(Hash) ? stringify_values(i) : i.to_s }
+      when Hash then stringify_values(val)
+      when Symbol then val
+      else val.to_s
+      end
     end
   end
 end
