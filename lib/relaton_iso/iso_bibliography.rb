@@ -181,24 +181,27 @@ module RelatonIso
       #
       # @return [Array<RelatonIso::HitCollection, Array<String>>] hits and missed year IDs
       #
-      def filter_hits(hit_collection, query_pubid, all_parts, any_types_stages) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      def filter_hits(hit_collection, query_pubid, all_parts, any_types_stages) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
         # filter out
-        excludes = build_excludes(all_parts, any_types_stages)
+        excludings = build_excludings(all_parts, any_types_stages)
+        no_year_ref = hit_collection.no_year_ref.exclude(*excludings)
         result = hit_collection.select do |i|
           if i.pubid.is_a? String then i.pubid == query_pubid.to_s
           else
-            i.pubid.exclude(*excludes) == query_pubid.exclude(*excludes) && !(all_parts && i.pubid.part.nil?)
+            pubid = i.pubid.dup
+            pubid.base = pubid.base.exclude(:year) if pubid.base
+            pubid.exclude(*excludings) == no_year_ref && !(all_parts && i.pubid.part.nil?)
           end
         end
 
         filter_hits_by_year(result, query_pubid.year)
       end
 
-      def build_excludes(all_parts, any_types_stages)
-        excludes = [:year]
-        excludes += %i[stage type] if any_types_stages
-        excludes << :part if all_parts
-        excludes
+      def build_excludings(all_parts, any_types_stages)
+        excludings = [:year]
+        excludings += %i[type stage iteration] if any_types_stages
+        excludings << :part if all_parts
+        excludings
       end
     end
   end

@@ -271,33 +271,35 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    # it "fetch correction" do
-    #   VCR.use_cassette "iso_19110_amd_1_2011" do
-    #     result = RelatonIso::IsoBibliography.get("ISO 19110:2005/Amd 1:2011", "2005")
-    #     expect(result.docidentifier.first.id).to eq "ISO 19110:2005/Amd 1:2011"
-    #   end
-    # end
+    it "fetch correction" do
+      VCR.use_cassette "iso_19110_amd_1_2011" do
+        result = RelatonIso::IsoBibliography.get("ISO 19110:2005/Amd 1:2011", "2005")
+        expect(result.docidentifier.first.id).to eq "ISO 19110:2005/Amd 1:2011"
+      end
+    end
 
-    # it "fetch PRF Amd" do
-    #   VCR.use_cassette "iso_3839_1996_prf_amd_1" do
-    #     result = RelatonIso::IsoBibliography.get "ISO 3839:1996/PRF Amd 1"
-    #     expect(result.docidentifier.first.id).to eq "ISO 3839:1996/PRF Amd 1"
-    #   end
-    # end
+    it "fetch PRF Amd" do
+      VCR.use_cassette "iso_prf_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO 7029:2017/PRF Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO 7029:2017/PRF Amd 1"
+      end
+    end
 
-    # it "fetch CD Amd" do
-    #   VCR.use_cassette "iso_16063_1_1999_cd_amd_2" do
-    #     result = RelatonIso::IsoBibliography.get "ISO 16063-1:1998/CD Amd 2"
-    #     expect(result.docidentifier.first.id).to eq "ISO 16063-1:1998/CD Amd 2"
-    #   end
-    # end
+    it "fetch CD Amd" do
+      VCR.use_cassette "iso_16063_1_1999_cd_amd_2" do
+        result = RelatonIso::IsoBibliography.get "ISO 16063-1:1998/CD Amd 2"
+        expect(result.docidentifier.first.id).to eq "ISO 16063-1/CD Amd 2"
+        expect(result.relation[0].bibitem.docidentifier[0].id).to eq "ISO 16063-1:1998/CD Amd 2"
+      end
+    end
 
-    # it "fetch WD Amd" do
-    #   VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
-    #     result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
-    #     expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1:2023/WD Amd 1"
-    #   end
-    # end
+    it "fetch WD Amd" do
+      VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1/WD Amd 1"
+        expect(result.relation[0].bibitem.docidentifier[0].id).to eq "ISO/IEC 23008-1:2023/WD Amd 1"
+      end
+    end
 
     # it "fetch AWI Amd" do
     #   VCR.use_cassette "iso_10844_2014_awi_amd_1" do

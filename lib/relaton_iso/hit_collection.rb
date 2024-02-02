@@ -21,10 +21,13 @@ module RelatonIso
     # @return [Pubid::Iso::Identifier]
     alias ref_pubid text
 
-    def fetch(opts = {}) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    def no_year_ref
+      @no_year_ref ||= ref_pubid.dup.tap { |r| r.base = r.base.exclude(:year) if r.base }
+    end
+
+    def fetch(opts = {}) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       # @array = from_gh ? fetch_github : fetch_iso
-      excludings = [:year]
-      excludings << :part if ref_pubid.part.nil? || opts[:all_parts]
+      excludings = exclude_parts opts[:all_parts]
       @array = index.search do |row|
         if row[:id].is_a? Hash
           begin
@@ -32,12 +35,29 @@ module RelatonIso
           rescue StandardError => e
             e
           end
-          pubid.exclude(*excludings) == ref_pubid.exclude(*excludings)
+          begin
+            pubid.base = pubid.base.exclude(:year) if pubid.base
+            pubid.exclude(*excludings) == no_year_ref.exclude(*excludings)
+          rescue StandardError => e
+            e
+          end
         else
           ref_pubid.to_s == row[:id]
         end
       end.map { |row| Hit.new row, self }
+      @array.sort_by! { |h| h.pubid.to_s }.reverse!
       self
+    end
+
+    def exclude_parts(all_parts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+      excl_parts = [:year]
+      excl_parts << :part if ref_pubid.root.part.nil? || all_parts
+      if ref_pubid.stage.nil? || all_parts
+        excl_parts << :stage
+        excl_parts << :iteration
+      end
+      excl_parts << :edition if ref_pubid.root.edition.nil? || all_parts
+      excl_parts
     end
 
     def index

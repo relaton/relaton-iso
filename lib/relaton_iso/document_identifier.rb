@@ -30,7 +30,7 @@ module RelatonIso
       @all_parts = true
     end
 
-    def stringify_values(hash) # rubocop:disable Metrics/CyclomaticComplexity
+    def stringify_values(hash)
       hash.transform_values { |v| stringify(v) }.reject { |_k, v| v.empty? }
     end
 

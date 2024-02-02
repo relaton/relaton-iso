@@ -25,8 +25,10 @@ RSpec.describe RelatonIso::Hit do
     context "fails to extract pubid from title" do
       let(:hit) { { id: { publisher: "ISO", number: "19115", type: "TYPE" } } }
       it {
-        expect { subject }.to output(
-          /\[relaton-iso\] Unable to create an identifier for {:publisher=>"ISO", :number=>"19115", :type=>"TYPE"}/,
+        expect do
+          expect(subject).to be_nil
+        end.to output(
+          /\[relaton-iso\] Unable to create an identifier from {:publisher=>"ISO", :number=>"19115", :type=>"TYPE"}/,
         ).to_stderr_from_any_process
       }
     end

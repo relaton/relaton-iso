@@ -51,7 +51,8 @@ module RelatonIso
 
       @pubid = hit[:id].is_a?(Hash) ? Pubid::Iso::Identifier.create(**hit[:id]) : hit[:id]
     rescue StandardError
-      Util.warn "Unable to create an identifier for #{hit[:id]}"
+      Util.warn "Unable to create an identifier from #{hit[:id]}"
+      @pubid = nil
     end
   end
 end
