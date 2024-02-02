@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sun, 07 Jan 2024 16:08:25 GMT
+      - Fri, 02 Feb 2024 19:26:04 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Content-Length:
-      - '434'
+      - '475'
       Connection:
       - keep-alive
       X-Alg-Pt:
@@ -57,6 +57,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"hits":[],"nbHits":0,"page":0,"nbPages":0,"hitsPerPage":100,"exhaustiveNbHits":true,"exhaustiveTypo":true,"exhaustive":{"nbHits":true,"typo":true},"query":"ISO
-        111111","params":"query=ISO+111111&hitsPerPage=100&filters=category%3Astandard","queryID":"31fde845c0dc73f09a1bd276c691f221","_automaticInsights":true,"renderingContent":{},"processingTimeMS":1,"processingTimingsMS":{"_request":{"roundTrip":99},"total":1},"serverTimeMS":1}'
-  recorded_at: Sun, 07 Jan 2024 16:08:25 GMT
+        111111","params":"query=ISO+111111&hitsPerPage=100&filters=category%3Astandard","queryID":"b4f2a9a4672ccf4131fc67aed488de85","_automaticInsights":true,"renderingContent":{},"processingTimeMS":1,"processingTimingsMS":{"_request":{"roundTrip":106},"getIdx":{"load":{"total":1},"total":1},"total":2},"serverTimeMS":2}'
+  recorded_at: Fri, 02 Feb 2024 19:26:04 GMT
 recorded_with: VCR 6.2.0
