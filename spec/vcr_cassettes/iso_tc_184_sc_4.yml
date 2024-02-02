@@ -41,6 +41,7 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
+<<<<<<< HEAD
       - 1232:14B8:DDE3A3:10B3285:65BD3AA0
       Accept-Ranges:
       - bytes
@@ -50,12 +51,27 @@ http_interactions:
       - 1.1 varnish
       X-Served-By:
       - cache-pdk-kpdk1780050-PDK
+=======
+      - 911A:5C1E:6AED:87A7:65BD414B
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 02 Feb 2024 19:23:56 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-pdk-kpdk1780089-PDK
+>>>>>>> main
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
+<<<<<<< HEAD
       - S1706900129.124167,VS0,VE87
+=======
+      - S1706901837.705153,VS0,VE105
+>>>>>>> main
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,13 +79,20 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
+<<<<<<< HEAD
       - e6952a1c64193af4ac8f3fd31c8202b10f02665f
       Expires:
       - Fri, 02 Feb 2024 19:00:29 GMT
+=======
+      - c28c9457f00b24d8e649353e3f088896252c0d48
+      Expires:
+      - Fri, 02 Feb 2024 19:28:56 GMT
+>>>>>>> main
       Source-Age:
       - '0'
     body:
       encoding: ASCII-8BIT
+<<<<<<< HEAD
       base64_string: |
         LS0tCmlkOiBJU08vVEMxODQvU0M0TjExMTAKdGl0bGU6Ci0gY29udGVudDog
         U0M0IFF1YWxpdHkgTWFudWFsCiAgdHlwZTogdGl0bGUtbWFpbgogIGxhbmd1
@@ -103,4 +126,67 @@ http_interactions:
         YmVyOiBJU08vVEMgMTg0L1NDIDQgTjExMTAKICB0Y19kb2N1bWVudF9udW1i
         ZXI6ICcxMTEwJwo=
   recorded_at: Fri, 02 Feb 2024 18:55:29 GMT
+=======
+      string: |
+        ---
+        id: ISO/TC184/SC4N1110
+        title:
+        - content: SC4 Quality Manual
+          type: title-main
+          language: en
+          script: Latn
+          format: text/plain
+        - content: SC4 Quality Manual
+          type: main
+          language: en
+          script: Latn
+          format: text/plain
+        link:
+          content: https://isotc.iso.org/livelink/livelink/fetch/-8837444/8838484/8838495/11568437/%28SC4N1110%29_SC4_Quality_Manual.pdf?nodeid=11571501&vernum=-2
+          type: doi
+        type: standard
+        docid:
+          id: ISO/TC 184/SC 4 N1110
+          type: ISO
+          primary: true
+        date:
+          type: published
+          value: '2000-11-08'
+        contributor:
+          organization:
+            name: International Organization for Standardization
+            abbreviation: ISO
+            url: www.iso.org
+          role:
+          - type: publisher
+        revdate: '2000-11-08'
+        language: en
+        script: Latn
+        copyright:
+          owner:
+            name: International Organization for Standardization
+            abbreviation: ISO
+            url: www.iso.org
+          from: '2000'
+        relation:
+          type: obsoletes
+          bibitem:
+            formattedref:
+              content: ISO/TC 184/SC 4/QC N146
+              language: en
+              script: Latn
+              format: text/plain
+        doctype: international-standard
+        editorialgroup:
+          technical_committee:
+            name: Technical Committee 184 for Industrial Automation Systems
+            number: '184'
+          subcommittee:
+            name: Integration Subcommittee 4 for Industrial Data
+            number: '4'
+        structuredidentifier:
+          project_number: ISO/TC 184/SC 4 N1110
+          tc_document_number: '1110'
+  recorded_at: Fri, 02 Feb 2024 19:23:56 GMT
+>>>>>>> main
 recorded_with: VCR 6.2.0
