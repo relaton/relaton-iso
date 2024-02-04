@@ -58,8 +58,8 @@ module RelatonIso
       # path = "/contents/data/standard#{hit_data['splitPath']}/"\
       # "#{hit_data['csnumber']}.html"
 
-      path = hit.hit[:path].sub("/sites/isoorg", "")
-      doc, url = get_page "#{path}.html"
+      path = hit.hit[:path] # .sub("/sites/isoorg", "")
+      doc, url = get_page path
 
       docid = doc.at("//nav[contains(@class,'heading-condensed')]/h1").text.split(" | ").first
       hit.pubid ||= Pubid::Iso::Identifier.parse(docid)
@@ -371,11 +371,8 @@ module RelatonIso
         (?:(?:/IEC|/IEEE|/PRF|/NP|/SAE|/HL7|/DGuide)*\s|/)
         (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|DTS|DTR|ISP|PWI|Guide|(?=\d+))
       }x =~ ref
-      # return "international-standard" if type_match.nil?
-      type = TYPES[type] || TYPES[prefix]
+      type = TYPES[type] || TYPES[prefix] || "international-standard"
       RelatonIsoBib::DocumentType.new(type: type)
-      # rescue => _e
-      #   puts 'Unknown document type: ' + title
     end
 
     # Fetch titles.

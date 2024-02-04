@@ -39,7 +39,7 @@ module RelatonIso
         query_pubid = Pubid::Iso::Identifier.parse(code)
         query_pubid.root.year = year.to_i if year&.respond_to?(:to_i)
         # query_pubid.root.part = nil if opts[:all_parts]
-        Util.warn "(#{query_pubid}) Fetching from iso.org ..."
+        Util.warn "(#{query_pubid}) Fetching from Relaton repository ..."
 
         hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
         tip_ids = look_up_with_any_types_stages(hits, ref, opts)
@@ -189,7 +189,7 @@ module RelatonIso
           if i.pubid.is_a? String then i.pubid == query_pubid.to_s
           else
             pubid = i.pubid.dup
-            pubid.base = pubid.base.exclude(:year) if pubid.base
+            pubid.base = pubid.base.exclude(:year, :edition) if pubid.base
             pubid.exclude(*excludings) == no_year_ref && !(all_parts && i.pubid.part.nil?)
           end
         end
@@ -198,7 +198,7 @@ module RelatonIso
       end
 
       def build_excludings(all_parts, any_types_stages)
-        excludings = [:year]
+        excludings = %i[year edition]
         excludings += %i[type stage iteration] if any_types_stages
         excludings << :part if all_parts
         excludings

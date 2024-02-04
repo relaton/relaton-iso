@@ -132,8 +132,8 @@ module RelatonIso
     # @return [void]
     #
     def fetch_doc(docpath)
-      path = docpath.sub(/\.html$/, "")
-      hit = Hit.new({ path: path }, nil)
+      # path = docpath.sub(/\.html$/, "")
+      hit = Hit.new({ path: docpath }, nil)
       doc = Scrapper.parse_page hit
       @mutex.synchronize { save_doc doc, docpath }
     rescue StandardError => e

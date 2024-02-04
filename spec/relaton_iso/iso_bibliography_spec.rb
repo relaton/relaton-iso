@@ -281,7 +281,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     it "fetch PRF Amd" do
       VCR.use_cassette "iso_prf_amd_1" do
         result = RelatonIso::IsoBibliography.get "ISO 7029:2017/PRF Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO 7029:2017/PRF Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO 7029/Amd 1"
+        expect(result.relation[0].bibitem.docidentifier[0].id).to eq "ISO 7029:2017/Amd 1"
       end
     end
 
@@ -301,12 +302,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    # it "fetch AWI Amd" do
-    #   VCR.use_cassette "iso_10844_2014_awi_amd_1" do
-    #     result = RelatonIso::IsoBibliography.get "ISO 10844:2014/AWI Amd 1"
-    #     expect(result.docidentifier.first.id).to eq "ISO 10844:2014/AWI Amd 1"
-    #   end
-    # end
+    it "fetch AWI Amd" do
+      VCR.use_cassette "iso_avi_amd" do
+        result = RelatonIso::IsoBibliography.get "ISO 10791-6:2014/AWI Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO 10791-6/AWI Amd 1"
+        expect(result.relation[0].bibitem.docidentifier[0].id).to eq "ISO 10791-6:2014/AWI Amd 1"
+      end
+    end
 
     # it "fetch NP Amd" do
     #   VCR.use_cassette "iso_1862_1_2017_np_amd_1" do
@@ -345,13 +347,13 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    # it "fetch public guide" do
-    #   VCR.use_cassette "iso_guide_82_2019" do
-    #     result = RelatonIso::IsoBibliography.get "ISO Guide 82:2019", nil, {}
-    #     expect(result.link.detect { |l| l.type == "pub" }.content.to_s)
-    #       .to include "https://isotc.iso.org/livelink/livelink"
-    #   end
-    # end
+    it "fetch public guide" do
+      VCR.use_cassette "iso_guide_82_2019" do
+        result = RelatonIso::IsoBibliography.get "ISO Guide 82:2019", nil, {}
+        expect(result.link.detect { |l| l.type == "pub" }.content.to_s)
+          .to include "https://isotc.iso.org/livelink/livelink"
+      end
+    end
 
     it "fetch circulated date" do
       VCR.use_cassette "iso_iec_8824_1_2015" do
@@ -394,22 +396,22 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    # it "fetch ISO 6709:2008/Cor 1:2009" do
-    #   VCR.use_cassette "iso_6709_2008_cor_1_2009" do
-    #     result = RelatonIso::IsoBibliography.get "ISO 6709:2008/Cor 1:2009"
-    #     expect(result.docidentifier[0].id).to eq "ISO 6709:2008/Cor 1:2009"
-    #   end
-    # end
+    it "fetch ISO 6709:2008/Cor 1:2009" do
+      VCR.use_cassette "iso_6709_2008_cor_1_2009" do
+        result = RelatonIso::IsoBibliography.get "ISO 6709:2008/Cor 1:2009"
+        expect(result.docidentifier[0].id).to eq "ISO 6709:2008/Cor 1:2009"
+      end
+    end
 
     it "fetch ISO/IEC 10646", vcr: "iso_iec_10646" do
       result = RelatonIso::IsoBibliography.get "ISO/IEC 10646"
       expect(result.docidentifier[0].id).to eq "ISO/IEC 10646"
     end
 
-    # it "ISO/IEC Guide 2:1991", vcr: "iso_iec_guide_2_1991" do
-    #   result = RelatonIso::IsoBibliography.get "ISO/IEC Guide 2:1991"
-    #   expect(result.docidentifier[0].id).to eq "ISO/IEC Guide 2:1991"
-    # end
+    it "ISO/IEC Guide 2:1991", vcr: "iso_iec_guide_2_1991" do
+      result = RelatonIso::IsoBibliography.get "ISO/IEC Guide 2:1991"
+      expect(result.docidentifier[0].id).to eq "ISO/IEC Guide 2:1991"
+    end
 
     # it "ISO/IEC 27001:2022", vcr: "iso_iec_27001_2022" do
     #   result = RelatonIso::IsoBibliography.get "ISO/IEC 27001:2022"

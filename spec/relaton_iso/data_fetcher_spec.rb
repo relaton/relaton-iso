@@ -126,15 +126,15 @@ describe RelatonIso::DataFetcher do
 
       it "successful" do
         expect(RelatonIso::Scrapper).to receive(:parse_page).with(:hit).and_return :doc
-        expect(subject).to receive(:save_doc).with(:doc, "/page_path.html")
-        subject.fetch_doc "/page_path.html"
+        expect(subject).to receive(:save_doc).with(:doc, "/page_path")
+        subject.fetch_doc "/page_path"
       end
 
       it "unsuccessful" do
         expect(RelatonIso::Scrapper).to receive(:parse_page).and_raise StandardError
         expect do
-          subject.fetch_doc "/page_path.html"
-        end.to output(/Error fetching document: https:\/\/www.iso\.org\/page_path\.html/).to_stderr
+          subject.fetch_doc "/page_path"
+        end.to output(/Error fetching document: https:\/\/www.iso\.org\/page_path/).to_stderr
       end
     end
 

@@ -12,12 +12,7 @@ module RelatonIso
     # Update edition for pubid when provided in Bibliographic Item
     def update_edition(bibliographic_item)
       if bibliographic_item.edition
-        # add edition to base document if available
-        if pubid.base
-          pubid.base.edition = bibliographic_item.edition.content
-        else
-          pubid.edition = bibliographic_item.edition.content
-        end
+        pubid.root.edition = bibliographic_item.edition.content
       end
     end
 
