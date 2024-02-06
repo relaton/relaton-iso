@@ -130,8 +130,15 @@ describe RelatonIso::DataFetcher do
         subject.fetch_doc "/page_path"
       end
 
-      it "unsuccessful" do
-        expect(RelatonIso::Scrapper).to receive(:parse_page).and_raise StandardError
+      it "Open timeout" do
+        expect(RelatonIso::Scrapper).to receive(:parse_page).and_raise Net::OpenTimeout
+        expect do
+          subject.fetch_doc "/page_path"
+        end.to output(/Error fetching document: https:\/\/www.iso\.org\/page_path/).to_stderr
+      end
+
+      it "Read timeout" do
+        expect(RelatonIso::Scrapper).to receive(:parse_page).and_raise Net::ReadTimeout
         expect do
           subject.fetch_doc "/page_path"
         end.to output(/Error fetching document: https:\/\/www.iso\.org\/page_path/).to_stderr
