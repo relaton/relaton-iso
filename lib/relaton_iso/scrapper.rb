@@ -66,7 +66,7 @@ module RelatonIso
       # Fetch edition.
       edition = doc.at("//div[div[.='Edition']]/text()[last()]")
         &.text&.match(/\d+$/)&.to_s
-      hit.pubid.base.edition ||= edition if hit.pubid.base
+      hit.pubid.root.edition ||= edition if hit.pubid.base
 
       titles, abstract, langs = fetch_titles_abstract(doc, lang)
 

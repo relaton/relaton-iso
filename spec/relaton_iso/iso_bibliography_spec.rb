@@ -413,10 +413,10 @@ RSpec.describe RelatonIso::IsoBibliography do
       expect(result.docidentifier[0].id).to eq "ISO/IEC Guide 2:1991"
     end
 
-    # it "ISO/IEC 27001:2022", vcr: "iso_iec_27001_2022" do
-    #   result = RelatonIso::IsoBibliography.get "ISO/IEC 27001:2022"
-    #   expect(result.docidentifier[0].id).to eq "ISO/IEC 27001:2022"
-    # end
+    it "ISO/IEC 27001:2022", vcr: "iso_iec_27001_2022" do
+      result = RelatonIso::IsoBibliography.get "ISO/IEC 27001:2022"
+      expect(result.docidentifier[0].id).to eq "ISO/IEC 27001:2022"
+    end
 
     it "doc with corrected date", vcr: "iso_iec_2382_2015" do
       result = RelatonIso::IsoBibliography.get "ISO/IEC 2382:2015"
