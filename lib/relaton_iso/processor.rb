@@ -60,8 +60,8 @@ module RelatonIso
     #
     # Remove index file
     #
-    def remove_index
-      Relaton::Index.find_or_create(:bipm, url: true, file: HitCollection::INDEX_FILE).remove_file
+    def remove_index_file
+      Relaton::Index.find_or_create(:iso, url: true, file: HitCollection::INDEXFILE).remove_file
     end
   end
 end
