@@ -51,7 +51,7 @@ module RelatonIso
 
         Util.warn "(#{query_pubid}) Found: `#{response_pubid}`"
 
-        get_all = (query_pubid.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
+        get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
 
         return ret if get_all
 

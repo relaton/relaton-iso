@@ -275,9 +275,9 @@ module RelatonIso
     #
     def fetch_structuredidentifier(pubid) # rubocop:disable Metrics/MethodLength
       RelatonIsoBib::StructuredIdentifier.new(
-        project_number: "#{pubid.publisher} #{pubid.number}",
-        part: pubid.part&.to_s, # &.sub(/^-/, ""),
-        type: pubid.publisher,
+        project_number: "#{pubid.root.publisher} #{pubid.root.number}",
+        part: pubid.root.part&.to_s, # &.sub(/^-/, ""),
+        type: pubid.root.publisher,
       )
     end
 
