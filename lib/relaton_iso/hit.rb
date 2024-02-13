@@ -44,10 +44,16 @@ module RelatonIso
     def pubid
       return @pubid if defined? @pubid
 
-      @pubid = hit[:id].is_a?(Hash) ? Pubid::Iso::Identifier.create(**hit[:id]) : hit[:id]
+      create_pubid hit[:id]
     rescue StandardError
       Util.warn "Unable to create an identifier from #{hit[:id]}"
       @pubid = nil
+    end
+
+    private
+
+    def create_pubid(id)
+      @pubid = id.is_a?(Hash) ? Pubid::Iso::Identifier.create(**id) : id
     end
   end
 end
