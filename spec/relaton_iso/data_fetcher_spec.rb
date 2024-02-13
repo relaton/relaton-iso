@@ -120,12 +120,12 @@ describe RelatonIso::DataFetcher do
     end
 
     context "#fetch_doc" do
-      before do
-        expect(RelatonIso::Hit).to receive(:new).with({ path: "/page_path" }, nil).and_return :hit
-      end
+      # before do
+      #   expect(RelatonIso::Hit).to receive(:new).with({ path: "/page_path" }, nil).and_return :hit
+      # end
 
       it "successful" do
-        expect(RelatonIso::Scrapper).to receive(:parse_page).with(:hit).and_return :doc
+        expect(RelatonIso::Scrapper).to receive(:parse_page).with("/page_path").and_return :doc
         expect(subject).to receive(:save_doc).with(:doc, "/page_path")
         subject.fetch_doc "/page_path"
       end

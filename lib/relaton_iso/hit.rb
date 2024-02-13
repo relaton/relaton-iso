@@ -10,11 +10,11 @@ module RelatonIso
     attr_writer :pubid
 
     # Update edition for pubid when provided in Bibliographic Item
-    def update_edition(bibliographic_item)
-      if bibliographic_item.edition
-        pubid.root.edition = bibliographic_item.edition.content
-      end
-    end
+    # def update_edition(bibliographic_item)
+    #   if bibliographic_item.edition
+    #     pubid.root.edition = bibliographic_item.edition.content
+    #   end
+    # end
 
     # Parse page.
     # @param lang [String, nil]

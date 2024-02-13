@@ -39,4 +39,32 @@ RSpec.describe RelatonIso::DocumentIdentifier do
     expect(pubid_hash[:year]).to eq "1996"
     expect(pubid_hash.key?(:edition)).to be false
   end
+
+  it "#remove part" do
+    subject.remove_part
+    expect(subject.id).to eq "ISO/TR 11071:1996"
+  end
+
+  it "#remove date" do
+    subject.remove_date
+    expect(subject.id).to eq "ISO/TR 11071-2"
+  end
+
+  context "#stringify" do
+    it "array" do
+      expect(subject.stringify([1, 2, 3])).to eq %w[1 2 3]
+    end
+
+    it "hash" do
+      expect(subject.stringify(a: 1, b: 2)).to eq(a: "1", b: "2")
+    end
+
+    it "symbol" do
+      expect(subject.stringify(:a)).to eq :a
+    end
+
+    it "other" do
+      expect(subject.stringify(1)).to eq "1"
+    end
+  end
 end

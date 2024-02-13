@@ -13,7 +13,7 @@ module RelatonIso
       # @return [RelatonIso::HitCollection]
       def search(pubid, opts = {})
         pubid = Pubid::Iso::Identifier.parse(pubid) if pubid.is_a? String
-        HitCollection.new(pubid).fetch(opts)
+        HitCollection.new(pubid, opts).fetch
       rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
              Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT,
@@ -28,7 +28,7 @@ module RelatonIso
       # @option opts [Boolean] :keep_year if undated reference should return
       #   actual reference with year
       #
-      # @return [RelatonIsoBib::IsoBibliographicItem] Relaton XML serialisation of reference
+      # @return [RelatonIsoBib::IsoBibliographicItem] Bibliographic item
       def get(ref, year = nil, opts = {}) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity,Metrics/AbcSize
         code = ref.gsub("\u2013", "-")
 
@@ -38,21 +38,16 @@ module RelatonIso
 
         query_pubid = Pubid::Iso::Identifier.parse(code)
         query_pubid.root.year = year.to_i if year&.respond_to?(:to_i)
-        # query_pubid.root.part = nil if opts[:all_parts]
         Util.warn "(#{query_pubid}) Fetching from Relaton repository ..."
 
         hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
         tip_ids = look_up_with_any_types_stages(hits, ref, opts)
-        ret = hits.fetch_doc(opts)
+        ret = hits.fetch_doc
         return fetch_ref_err(query_pubid, missed_year_ids, tip_ids) unless ret
 
         response_pubid = ret.docidentifier.first.id # .sub(" (all parts)", "")
-        # response_pubid = Pubid::Iso::Identifier.parse(response_docid)
-
         Util.warn "(#{query_pubid}) Found: `#{response_pubid}`"
-
         get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
-
         return ret if get_all
 
         ret.to_most_recent_reference
@@ -81,7 +76,7 @@ module RelatonIso
       #
       # @return [<Type>] <description>
       #
-      def matches_base?(query_pubid, pubid, any_types_stages: false) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics?PerceivedComplexity
+      def matches_base?(query_pubid, pubid, any_types_stages: false) # rubocop:disable Metrics?PerceivedComplexity
         return false unless pubid.respond_to?(:publisher)
 
         query_pubid.publisher == pubid.publisher &&
@@ -146,8 +141,7 @@ module RelatonIso
       end
 
       def look_up_with_any_types_stages(hits, ref, opts)
-        found_ids = []
-        return found_ids if hits.from_gh || hits.any? || !ref.match?(/^ISO[\/\s][A-Z]/)
+        return [] if hits.any? || !ref.match?(/^ISO[\/\s][A-Z]/)
 
         ref_no_type_stage = ref.sub(/^ISO[\/\s][A-Z]+/, "ISO")
         pubid = Pubid::Iso::Identifier.parse(ref_no_type_stage)
@@ -184,7 +178,7 @@ module RelatonIso
       def filter_hits(hit_collection, query_pubid, all_parts, any_types_stages) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
         # filter out
         excludings = build_excludings(all_parts, any_types_stages)
-        no_year_ref = hit_collection.no_year_ref.exclude(*excludings)
+        no_year_ref = hit_collection.ref_pubid_no_year.exclude(*excludings)
         result = hit_collection.select do |i|
           if i.pubid.is_a? String then i.pubid == query_pubid.to_s
           else

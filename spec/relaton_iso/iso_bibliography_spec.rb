@@ -486,8 +486,6 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
   end
 
-  describe "#remove_part"
-
   describe "#isobib_results_filter" do
     context "when data's years matches" do
       it "returns first hit"

@@ -51,45 +51,38 @@ module RelatonIso
     extend self
 
     # Parse page.
-    # @param hit [RelatonIso::Hit]
-    # @param lang [String, NilClass]
+    # @param path [String]
+    # @param lang [String, nil]
     # @return [RelatonIsoBib::IsoBibliographicItem]
-    def parse_page(hit, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-      # path = "/contents/data/standard#{hit_data['splitPath']}/"\
-      # "#{hit_data['csnumber']}.html"
-
-      path = hit.hit[:path] # .sub("/sites/isoorg", "")
+    def parse_page(path, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       doc, url = get_page path
-
-      docid = doc.at("//nav[contains(@class,'heading-condensed')]/h1").text.split(" | ").first
-      hit.pubid ||= Pubid::Iso::Identifier.parse(docid)
+      id = doc.at("//nav[contains(@class,'heading-condensed')]/h1").text.split(" | ").first
+      pubid = Pubid::Iso::Identifier.parse(id)
       # Fetch edition.
-      edition = doc.at("//div[div[.='Edition']]/text()[last()]")
-        &.text&.match(/\d+$/)&.to_s
-      hit.pubid.root.edition ||= edition if hit.pubid.base
+      edition = doc.at("//div[div[.='Edition']]/text()[last()]")&.text&.match(/\d+$/)&.to_s
+      pubid.root.edition ||= edition if pubid.base
 
       titles, abstract, langs = fetch_titles_abstract(doc, lang)
 
       RelatonIsoBib::IsoBibliographicItem.new(
-        # fetched: Date.today.to_s,
-        docid: fetch_relaton_docids(doc, hit.pubid),
-        docnumber: fetch_docnumber(hit.pubid),
+        docid: fetch_relaton_docids(doc, pubid),
+        docnumber: fetch_docnumber(pubid),
         edition: edition,
         language: langs.map { |l| l[:lang] },
         script: langs.map { |l| script(l[:lang]) }.uniq,
         title: titles,
-        doctype: fetch_type(docid),
+        doctype: fetch_type(id),
         docstatus: fetch_status(doc),
         ics: fetch_ics(doc),
-        date: fetch_dates(doc, docid),
-        contributor: fetch_contributors(docid),
+        date: fetch_dates(doc, id),
+        contributor: fetch_contributors(id),
         editorialgroup: fetch_workgroup(doc),
         abstract: abstract,
         copyright: fetch_copyright(doc),
         link: fetch_link(doc, url),
         relation: fetch_relations(doc),
         place: ["Geneva"],
-        structuredidentifier: fetch_structuredidentifier(hit.pubid),
+        structuredidentifier: fetch_structuredidentifier(pubid),
       )
     end
 
@@ -128,46 +121,43 @@ module RelatonIso
     # @param doc [Nokigiri::HTML::Document]
     # @param lang [String, nil]
     # @return [Array<Array>]
-    def fetch_titles_abstract(doc, lang) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    def fetch_titles_abstract(doc, lang) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       titles   = RelatonBib::TypedTitleStringCollection.new
       abstract = []
-      langs = languages(doc, lang).reduce([]) do |s, l|
+      langs = languages(doc, lang).each_with_object([]) do |l, s|
         # Don't need to get page for en. We already have it.
         d = l[:path] ? get_page(l[:path])[0] : doc
         unless d.at("//h5[@class='help-block'][.='недоступно на русском языке']")
           s << l
           titles += fetch_title(d, l[:lang])
 
-          # Fetch abstracts.
-          abstract_content = d.xpath(
-            "//div[@itemprop='description']/p|//div[@itemprop='description']/ul/li",
-          ).map do |a|
-            a.name == "li" ? "- #{a.text}" : a.text
-          end.reject(&:empty?).join("\n")
-          unless abstract_content.empty?
-            abstract << {
-              content: abstract_content,
-              language: l[:lang],
-              script: script(l[:lang]),
-              format: "text/plain",
-            }
-          end
+          abstr = parse_abstract(d, l)
+          abstract << abstr if abstr
         end
-        s
       end
       [titles, abstract, langs]
     end
 
+    def parse_abstract(doc, lang)
+      abstract_content = doc.xpath(
+        "//div[@itemprop='description']/p|//div[@itemprop='description']/ul/li",
+      ).map { |a| a.name == "li" ? "- #{a.text}" : a.text }.reject(&:empty?).join("\n")
+      return if abstract_content.empty?
+
+      { content: abstract_content, language: lang[:lang],
+        script: script(lang[:lang]), format: "text/plain" }
+    end
+
     # Returns available languages.
     # @param doc [Nokogiri::HTML::Document]
-    # @pqrqm lang [String, NilClass]
+    # @param lang [String, nil]
     # @return [Array<Hash>]
     def languages(doc, lang)
       lgs = [{ lang: "en" }]
       doc.css("li#lang-switcher ul li a").each do |lang_link|
         lang_path = lang_link.attr("href")
         l = lang_path.match(%r{^/(fr)/})
-        lgs << { lang: l[1], path: lang_path } if l && (!lang || l[1] == lang)
+        lgs << { lang: l[1], path: lang_path } if l && (!lang || l[1] != lang)
       end
       lgs
     end
@@ -281,6 +271,13 @@ module RelatonIso
       )
     end
 
+    #
+    # Parse ID from the document.
+    #
+    # @param [Nokogiri::HTML::Document] doc document to parse
+    #
+    # @return [String, nil] ID
+    #
     def item_ref(doc)
       doc.at("//main//section/div/div/div//h1")&.text
     end
@@ -306,7 +303,7 @@ module RelatonIso
 
     # Fetch workgroup.
     # @param doc [Nokogiri::HTML::Document]
-    # @return [Hash]
+    # @return [RelatonIsoBib::EditorialGroup, nil]
     def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       wg = doc.at("////div[contains(., 'Technical Committe')]/following-sibling::span/a")
       return unless wg
@@ -338,6 +335,14 @@ module RelatonIso
       end
     end
 
+    #
+    # Parse relation type and dates.
+    #
+    # @param [String] type parsed type
+    # @param [Nokogiri::HTML::Document] doc document to parse
+    #
+    # @return [Array<String,Array>] type and dates
+    #
     def relation_type(type, doc)
       date = []
       t = case type.strip
@@ -351,6 +356,17 @@ module RelatonIso
       [t, date]
     end
 
+    #
+    # Create relations.
+    #
+    # @param [Nokogiri::HTML::Element] rel relation element
+    # @param [String] type relation type
+    # @param [Hash{Symbol=>String}] date relation document date
+    # @option date [String] :type date type
+    # @option date [String] :on date
+    #
+    # @return [Array<Hash>] Relations
+    #
     def create_relations(rel, type, date)
       rel.css("a").map do |id|
         docid = DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)

@@ -9,69 +9,62 @@ module RelatonIso
     INDEXFILE = "index-v1.yaml"
     ENDPOINT = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/"
 
-    # @return [Boolean] whether the search was performed on GitHub
-    attr_reader :from_gh
-
     # @param text [Pubid::Iso::Identifier] reference to search
-    def initialize(pubid)
+    def initialize(pubid, opts = {})
       super
-      @from_gh = pubid.to_s.match?(/^ISO[\s\/](?:TC\s184\/SC\s?4|IEC\sDIR\s(?:\d|IEC|JTC))/)
+      @opts = opts
     end
 
     # @return [Pubid::Iso::Identifier]
     alias ref_pubid text
 
-    def no_year_ref
-      @no_year_ref ||= ref_pubid.dup.tap { |r| r.base = r.base.exclude(:year) if r.base }
+    def ref_pubid_no_year
+      @ref_pubid_no_year ||= ref_pubid.dup.tap { |r| r.base = r.base.exclude(:year) if r.base }
     end
 
-    def fetch(opts = {}) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-      # @array = from_gh ? fetch_github : fetch_iso
-      excludings = exclude_parts opts[:all_parts]
-      exc_no_year_ref = no_year_ref.exclude(*excludings)
+    def ref_pubid_excluded
+      @ref_pubid_excluded ||= ref_pubid_no_year.exclude(*excludings)
+    end
+
+    def fetch # rubocop:disable Metrics/AbcSize
       @array = index.search do |row|
-        if row[:id].is_a? Hash
-          begin
-            pubid = Pubid::Iso::Identifier.create(**row[:id])
-          rescue StandardError => e
-            e
-          end
-          begin
-            pubid.base = pubid.base.exclude(:year, :edition) if pubid.base
-            dir_excludings = excludings.dup
-            dir_excludings << :edition unless pubid.typed_stage_abbrev == "DIR"
-            pubid.exclude(*dir_excludings) == exc_no_year_ref
-          rescue StandardError => e
-            e
-          end
-        else
-          ref_pubid.to_s == row[:id]
-        end
-      end.map { |row| Hit.new row, self }
-      @array.sort_by! { |h| h.pubid.to_s }.reverse!
+        row[:id].is_a?(Hash) ? pubid_match?(row[:id]) : ref_pubid.to_s == row[:id]
+      end.map { |row| Hit.new row, self }.sort_by! { |h| h.pubid.to_s }.reverse!
       self
     end
 
-    def exclude_parts(all_parts) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+    def pubid_match?(id) # rubocop:disable Metrics/AbcSize
+      pubid = Pubid::Iso::Identifier.create(**id)
+      pubid.base = pubid.base.exclude(:year, :edition) if pubid.base
+      dir_excludings = excludings.dup
+      dir_excludings << :edition unless pubid.typed_stage_abbrev == "DIR"
+      pubid.exclude(*dir_excludings) == ref_pubid_excluded
+    rescue StandardError => e
+      Util.warn "(#{ref_pubid}) WARNING: #{e.message}"
+    end
+
+    def excludings
+      return @excludings if defined? @excludings
+
       excl_parts = %i[year]
-      excl_parts << :part if ref_pubid.root.part.nil? || all_parts
-      if ref_pubid.stage.nil? || all_parts
+      excl_parts << :part if ref_pubid.root.part.nil? || @opts[:all_parts]
+      if ref_pubid.stage.nil? || @opts[:all_parts]
         excl_parts << :stage
         excl_parts << :iteration
       end
       # excl_parts << :edition if ref_pubid.root.edition.nil? || all_parts
-      excl_parts
+      @escludings = excl_parts
     end
 
     def index
       @index ||= Relaton::Index.find_or_create :iso, url: "#{ENDPOINT}index-v1.zip", file: INDEXFILE
     end
 
-    def fetch_doc(opts)
-      if !opts[:all_parts] || size == 1
-        any? && first.fetch(opts[:lang])
+    def fetch_doc
+      if !@opts[:all_parts] || size == 1
+        any? && first.fetch(@opts[:lang])
       else
-        to_all_parts(opts[:lang])
+        to_all_parts(@opts[:lang])
       end
     end
 
@@ -97,48 +90,48 @@ module RelatonIso
       RelatonBib::DocumentRelation.new(type: "instanceOf", bibitem: isobib)
     end
 
-    private
+    # private
 
     #
     # Fetch document from GitHub repository
     #
     # @return [Array<RelatonIso::Hit]
     #
-    def fetch_github # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      ref = text.gsub(/[\s\/]/, "_").upcase
-      url = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/#{ref}.yaml"
-      resp = Net::HTTP.get_response URI(url)
-      return [] unless resp.code == "200"
+    # def fetch_github # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    #   ref = text.gsub(/[\s\/]/, "_").upcase
+    #   url = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/#{ref}.yaml"
+    #   resp = Net::HTTP.get_response URI(url)
+    #   return [] unless resp.code == "200"
 
-      hash = YAML.safe_load resp.body
-      bib_hash = HashConverter.hash_to_bib hash
-      bib_hash[:fetched] = Date.today.to_s
-      bib = RelatonIsoBib::IsoBibliographicItem.new(**bib_hash)
-      hit = Hit.new({ title: text }, self)
-      hit.fetch = bib
-      [hit]
-    end
+    #   hash = YAML.safe_load resp.body
+    #   bib_hash = HashConverter.hash_to_bib hash
+    #   bib_hash[:fetched] = Date.today.to_s
+    #   bib = RelatonIsoBib::IsoBibliographicItem.new(**bib_hash)
+    #   hit = Hit.new({ title: text }, self)
+    #   hit.fetch = bib
+    #   [hit]
+    # end
 
     #
     # Fetch hits from iso.org
     #
     # @return [Array<RelatonIso::Hit>]
     #
-    def fetch_iso # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      config = Algolia::Search::Config.new(application_id: "JCL49WV5AR", api_key: "dd1b9e1ab383f4d4817d29cd5e96d3f0")
-      client = Algolia::Search::Client.new config, logger: RelatonIso.configuration.logger
-      index = client.init_index "all_en"
-      resp = index.search text, hitsPerPage: 100, filters: "category:standard"
+    # def fetch_iso # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    #   config = Algolia::Search::Config.new(application_id: "JCL49WV5AR", api_key: "dd1b9e1ab383f4d4817d29cd5e96d3f0")
+    #   client = Algolia::Search::Client.new config, logger: RelatonIso.configuration.logger
+    #   index = client.init_index "all_en"
+    #   resp = index.search text, hitsPerPage: 100, filters: "category:standard"
 
-      resp[:hits].map { |h| Hit.new h, self }.sort! do |a, b|
-        if a.sort_weight == b.sort_weight && b.hit[:year] = a.hit[:year]
-          a.hit[:title] <=> b.hit[:title]
-        elsif a.sort_weight == b.sort_weight
-          b.hit[:year] - a.hit[:year]
-        else
-          a.sort_weight - b.sort_weight
-        end
-      end
-    end
+    #   resp[:hits].map { |h| Hit.new h, self }.sort! do |a, b|
+    #     if a.sort_weight == b.sort_weight && b.hit[:year] = a.hit[:year]
+    #       a.hit[:title] <=> b.hit[:title]
+    #     elsif a.sort_weight == b.sort_weight
+    #       b.hit[:year] - a.hit[:year]
+    #     else
+    #       a.sort_weight - b.sort_weight
+    #     end
+    #   end
+    # end
   end
 end
