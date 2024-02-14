@@ -9,14 +9,27 @@ module RelatonIso
       @prefix = "ISO"
       @defaultprefix = %r{^ISO(/IEC)?\s}
       @idtype = "ISO"
+      @datasets = %w[iso-ics]
     end
 
     # @param code [String]
-    # @param date [String, NilClass] year
+    # @param date [String, nil] year
     # @param opts [Hash]
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def get(code, date, opts)
       ::RelatonIso::IsoBibliography.get(code, date, opts)
+    end
+
+    #
+    # Fetch all the documents from https://www.iso.org/standards-catalogue/browse-by-ics.html
+    #
+    # @param [String] source source name (iso-rss, iso-rss-all)
+    # @param [Hash] opts
+    # @option opts [String] :output directory to output documents
+    # @option opts [String] :format output format (xml, yaml, bibxml)
+    #
+    def fetch_data(_source, opts)
+      DataFetcher.fetch(**opts)
     end
 
     # @param xml [String]
@@ -28,7 +41,7 @@ module RelatonIso
     # @param hash [Hash]
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def hash_to_bib(hash)
-      item_hash = ::RelatonIsoBib::HashConverter.hash_to_bib(hash)
+      item_hash = HashConverter.hash_to_bib(hash)
       ::RelatonIsoBib::IsoBibliographicItem.new(**item_hash)
     end
 
@@ -42,6 +55,13 @@ module RelatonIso
     # @return [Integer]
     def threads
       3
+    end
+
+    #
+    # Remove index file
+    #
+    def remove_index_file
+      Relaton::Index.find_or_create(:iso, url: true, file: HitCollection::INDEXFILE).remove_file
     end
   end
 end

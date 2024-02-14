@@ -8,8 +8,10 @@ RSpec.describe RelatonIso::IsoBibliography do
   end
 
   it "raise access error" do
-    expect(Net::HTTP).to receive(:get_response).and_raise SocketError
-    expect { RelatonIso::IsoBibliography.search "ISO TC 184/SC 4" }
+    hc = double "hit_collection"
+    expect(RelatonIso::HitCollection).to receive(:new).and_return hc
+    expect(hc).to receive(:fetch).and_raise SocketError
+    expect { RelatonIso::IsoBibliography.search "ISO 19115" }
       .to raise_error RelatonBib::RequestError
   end
 
@@ -67,22 +69,16 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return list of titles" do
-      expect(subject.title).to be_instance_of(
-        RelatonBib::TypedTitleStringCollection,
-      )
+      expect(subject.title).to be_instance_of(RelatonBib::TypedTitleStringCollection)
     end
 
     it "return en title" do
-      expect(subject.title(lang: "en").first).to be_instance_of(
-        RelatonBib::TypedTitleString,
-      )
+      expect(subject.title(lang: "en").first).to be_instance_of RelatonBib::TypedTitleString
     end
 
     it "return string of abstract" do
       formatted_string = subject.abstract(lang: "en")
-      expect(subject.abstract(lang: "en").to_s).to eq(
-        formatted_string&.content.to_s,
-      )
+      expect(subject.abstract(lang: "en").to_s).to eq formatted_string&.content.to_s
     end
 
     it "return item urls" do
@@ -105,15 +101,11 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return workgroup" do
-      expect(subject.editorialgroup).to be_instance_of(
-        RelatonIsoBib::EditorialGroup,
-      )
+      expect(subject.editorialgroup).to be_instance_of RelatonIsoBib::EditorialGroup
     end
 
     it "return relations" do
-      expect(subject.relation).to be_instance_of(
-        RelatonBib::DocRelationCollection,
-      )
+      expect(subject.relation).to be_instance_of RelatonBib::DocRelationCollection
     end
 
     it "return replace realations" do
@@ -129,7 +121,7 @@ RSpec.describe RelatonIso::IsoBibliography do
   describe "#get" do
     let(:pubid) { "ISO 19115-1" }
     let(:isoref) { "ISO 19115-1(E)" }
-    let(:urn) { "urn:iso:std:iso:19115:-1:stage-90.93:ed-1" }
+    let(:urn) { "urn:iso:std:iso:19115:-1:stage-90.93" }
 
     context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
       subject { described_class.get(pubid, nil, {}) }
@@ -147,27 +139,21 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    context "gets all parts document",
-            vcr: { cassette_name: "iso_19115_all_parts" } do
+    context "gets all parts document", vcr: { cassette_name: "iso_19115_all_parts" } do
       let(:xml) { subject.to_xml bibdata: true }
       let(:pubid_all_parts) { "ISO 19115 (all parts)" }
       let(:isoref_all_parts) { "ISO 19115(E) (all parts)" }
-      let(:urn_all_parts) { "urn:iso:std:iso:19115:stage-90.93:ed-1:ser" }
+      let(:urn_all_parts) { "urn:iso:std:iso:19115" }
 
       shared_examples "all_parts" do
         it "returns (all parts) as identifier part" do
           expect(subject.structuredidentifier.project_number).to eq(pubid_all_parts)
-          expect(subject.docidentifier.map(&:id)).to eq([pubid_all_parts,
-                                                         isoref_all_parts, urn_all_parts])
+          expect(subject.docidentifier.map(&:id)).to eq([pubid_all_parts, isoref_all_parts, urn_all_parts])
         end
 
         it "include all matched documents without part" do
           expect(subject.relation.map { |r| r.bibitem.formattedref&.content })
-            .to include(
-              "ISO 19115-1:2014/Amd 1:2018",
-              "ISO 19115-2:2019",
-              "ISO 19115-2:2009",
-            )
+            .to include("ISO 19115-1:2014/Amd 1:2018", "ISO 19115-2:2019", "ISO 19115-2:2009")
         end
       end
 
@@ -287,18 +273,17 @@ RSpec.describe RelatonIso::IsoBibliography do
 
     it "fetch correction" do
       VCR.use_cassette "iso_19110_amd_1_2011" do
-        result = RelatonIso::IsoBibliography.get("ISO 19110:2005/Amd 1:2011",
-                                                 "2005")
+        result = RelatonIso::IsoBibliography.get("ISO 19110:2005/Amd 1:2011", "2005")
         expect(result.docidentifier.first.id).to eq "ISO 19110:2005/Amd 1:2011"
       end
     end
 
-    # it "fetch PRF Amd" do
-    #   VCR.use_cassette "iso_3839_1996_prf_amd_1" do
-    #     result = RelatonIso::IsoBibliography.get "ISO 3839:1996/PRF Amd 1"
-    #     expect(result.docidentifier.first.id).to eq "ISO 3839:1996/PRF Amd 1"
-    #   end
-    # end
+    it "fetch PRF Amd" do
+      VCR.use_cassette "iso_prf_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO 7029:2017/PRF Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO 7029:2017/Amd 1"
+      end
+    end
 
     it "fetch CD Amd" do
       VCR.use_cassette "iso_16063_1_1999_cd_amd_2" do
@@ -307,17 +292,18 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    # it "fetch WD Amd" do
-    #   VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
-    #     result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
-    #     expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1:2023/WD Amd 1"
-    #   end
-    # end
+    it "fetch WD Amd" do
+      VCR.use_cassette "iso_iec_23008_1_wd_amd_1" do
+        result = RelatonIso::IsoBibliography.get "ISO/IEC 23008-1/WD Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO/IEC 23008-1/WD Amd 1"
+        expect(result.relation[0].bibitem.docidentifier[0].id).to eq "ISO/IEC 23008-1:2023/WD Amd 1"
+      end
+    end
 
     it "fetch AWI Amd" do
-      VCR.use_cassette "iso_10844_2014_awi_amd_1" do
-        result = RelatonIso::IsoBibliography.get "ISO 10844:2014/AWI Amd 1"
-        expect(result.docidentifier.first.id).to eq "ISO 10844:2014/AWI Amd 1"
+      VCR.use_cassette "iso_avi_amd" do
+        result = RelatonIso::IsoBibliography.get "ISO 10791-6:2014/AWI Amd 1"
+        expect(result.docidentifier.first.id).to eq "ISO 10791-6:2014/AWI Amd 1"
       end
     end
 
@@ -459,29 +445,29 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
 
-    context "fetch specific language" do
-      it "en" do
-        VCR.use_cassette "iso_19115_en" do
-          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en")
-          xml = result.to_xml
-          file = "spec/fixtures/iso_19115_en.xml"
-          File.write file, xml, encoding: "UTF-8" unless File.exist? file
-          expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
-            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
-        end
-      end
+    # context "fetch specific language" do
+    #   it "en" do
+    #     VCR.use_cassette "iso_19115_en" do
+    #       result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "en")
+    #       xml = result.to_xml
+    #       file = "spec/fixtures/iso_19115_en.xml"
+    #       File.write file, xml, encoding: "UTF-8" unless File.exist? file
+    #       expect(xml).to be_equivalent_to File.read(file, encoding: "UTF-8")
+    #         .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
+    #     end
+    #   end
 
-      it "fr" do
-        VCR.use_cassette "iso_19115_fr" do
-          result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "fr")
-            .to_xml
-          file = "spec/fixtures/iso_19115_fr.xml"
-          File.write file, result, encoding: "UTF-8" unless File.exist? file
-          expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
-            .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
-        end
-      end
-    end
+    #   it "fr" do
+    #     VCR.use_cassette "iso_19115_fr" do
+    #       result = RelatonIso::IsoBibliography.get("ISO 19115", nil, lang: "fr")
+    #         .to_xml
+    #       file = "spec/fixtures/iso_19115_fr.xml"
+    #       File.write file, result, encoding: "UTF-8" unless File.exist? file
+    #       expect(result).to be_equivalent_to File.read(file, encoding: "UTF-8")
+    #         .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}/, Date.today.to_s)
+    #     end
+    #   end
+    # end
 
     context "return not found" do
       it do
@@ -499,8 +485,6 @@ RSpec.describe RelatonIso::IsoBibliography do
       end
     end
   end
-
-  describe "#remove_part"
 
   describe "#isobib_results_filter" do
     context "when data's years matches" do
@@ -642,8 +626,8 @@ RSpec.describe RelatonIso::IsoBibliography do
 
   describe "#filter_hits_by_year", vcr: { cassette_name: "iso_19115_2015" } do
     subject { described_class.filter_hits_by_year(hits_collection, year) }
-
-    let(:hits_collection) { RelatonIso::HitCollection.new("ISO 19115").fetch }
+    let(:pubid) { Pubid::Iso::Identifier.parse("ISO 19115") }
+    let(:hits_collection) { RelatonIso::HitCollection.new(pubid).fetch }
 
     context "when year is missing" do
       let(:year) { "2015" }

@@ -7,7 +7,9 @@ module RelatonIso
 
     TYPES = {
       "TS" => "technical-specification",
+      "DTS" => "technical-specification",
       "TR" => "technical-report",
+      "DTR" => "technical-report",
       "PAS" => "publicly-available-specification",
       # "AWI" => "approvedWorkItem",
       # "CD" => "committeeDraft",
@@ -18,6 +20,7 @@ module RelatonIso
       # "R" => "recommendation",
       "Guide" => "guide",
       "ISO" => "international-standard",
+      "IEC" => "international-standard",
       "IWA" => "international-workshop-agreement",
     }.freeze
 
@@ -48,43 +51,38 @@ module RelatonIso
     extend self
 
     # Parse page.
-    # @param hit [RelatonIso::Hit]
-    # @param lang [String, NilClass]
+    # @param path [String]
+    # @param lang [String, nil]
     # @return [RelatonIsoBib::IsoBibliographicItem]
-    def parse_page(hit, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-      # path = "/contents/data/standard#{hit_data['splitPath']}/"\
-      # "#{hit_data['csnumber']}.html"
-
-      path = hit.hit[:path].sub("/sites/isoorg", "")
-      doc, url = get_page "#{path}.html"
-
+    def parse_page(path, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+      doc, url = get_page path
+      id = doc.at("//nav[contains(@class,'heading-condensed')]/h1").text.split(" | ").first
+      pubid = Pubid::Iso::Identifier.parse(id)
       # Fetch edition.
-      edition = doc.at("//div[div[.='Edition']]/text()[last()]")
-        &.text&.match(/\d+$/)&.to_s
-      hit.pubid.base.edition ||= edition if hit.pubid.base
+      edition = doc.at("//div[div[.='Edition']]/text()[last()]")&.text&.match(/\d+$/)&.to_s
+      pubid.root.edition ||= edition if pubid.base
 
       titles, abstract, langs = fetch_titles_abstract(doc, lang)
 
       RelatonIsoBib::IsoBibliographicItem.new(
-        fetched: Date.today.to_s,
-        docid: fetch_relaton_docids(doc, hit.pubid),
-        docnumber: fetch_docnumber(hit.pubid),
+        docid: fetch_relaton_docids(doc, pubid),
+        docnumber: fetch_docnumber(pubid),
         edition: edition,
         language: langs.map { |l| l[:lang] },
         script: langs.map { |l| script(l[:lang]) }.uniq,
         title: titles,
-        doctype: fetch_type(hit.hit[:title]),
+        doctype: fetch_type(id),
         docstatus: fetch_status(doc),
         ics: fetch_ics(doc),
-        date: fetch_dates(doc, hit.hit[:title]),
-        contributor: fetch_contributors(hit.hit[:title]),
+        date: fetch_dates(doc, id),
+        contributor: fetch_contributors(id),
         editorialgroup: fetch_workgroup(doc),
         abstract: abstract,
         copyright: fetch_copyright(doc),
         link: fetch_link(doc, url),
         relation: fetch_relations(doc),
         place: ["Geneva"],
-        structuredidentifier: fetch_structuredidentifier(hit.pubid),
+        structuredidentifier: fetch_structuredidentifier(pubid),
       )
     end
 
@@ -99,9 +97,9 @@ module RelatonIso
     def fetch_relaton_docids(doc, pubid)
       pubid.stage ||= Pubid::Iso::Identifier.parse_stage(stage_code(doc))
       [
-        RelatonIso::DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
+        DocumentIdentifier.new(id: pubid, type: "ISO", primary: true),
         RelatonBib::DocumentIdentifier.new(id: isoref(pubid), type: "iso-reference"),
-        RelatonIso::DocumentIdentifier.new(id: pubid, type: "URN"),
+        DocumentIdentifier.new(id: pubid, type: "URN"),
       ]
     end
 
@@ -121,49 +119,45 @@ module RelatonIso
 
     # Fetch titles and abstracts.
     # @param doc [Nokigiri::HTML::Document]
-    # @param lang [String, NilClass]
+    # @param lang [String, nil]
     # @return [Array<Array>]
-    def fetch_titles_abstract(doc, lang) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    def fetch_titles_abstract(doc, lang) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
       titles   = RelatonBib::TypedTitleStringCollection.new
       abstract = []
-      langs = languages(doc, lang).reduce([]) do |s, l|
+      langs = languages(doc, lang).each_with_object([]) do |l, s|
         # Don't need to get page for en. We already have it.
         d = l[:path] ? get_page(l[:path])[0] : doc
-        unless d.at("//h5[@class='help-block']" \
-                    "[.='недоступно на русском языке']")
+        unless d.at("//h5[@class='help-block'][.='недоступно на русском языке']")
           s << l
           titles += fetch_title(d, l[:lang])
 
-          # Fetch abstracts.
-          abstract_content = d.xpath(
-            "//div[@itemprop='description']/p|//div[@itemprop='description']/ul/li",
-          ).map do |a|
-            a.name == "li" ? "- #{a.text}" : a.text
-          end.reject(&:empty?).join("\n")
-          unless abstract_content.empty?
-            abstract << {
-              content: abstract_content,
-              language: l[:lang],
-              script: script(l[:lang]),
-              format: "text/plain",
-            }
-          end
+          abstr = parse_abstract(d, l)
+          abstract << abstr if abstr
         end
-        s
       end
       [titles, abstract, langs]
     end
 
+    def parse_abstract(doc, lang)
+      abstract_content = doc.xpath(
+        "//div[@itemprop='description']/p|//div[@itemprop='description']/ul/li",
+      ).map { |a| a.name == "li" ? "- #{a.text}" : a.text }.reject(&:empty?).join("\n")
+      return if abstract_content.empty?
+
+      { content: abstract_content, language: lang[:lang],
+        script: script(lang[:lang]), format: "text/plain" }
+    end
+
     # Returns available languages.
     # @param doc [Nokogiri::HTML::Document]
-    # @pqrqm lang [String, NilClass]
+    # @param lang [String, nil]
     # @return [Array<Hash>]
     def languages(doc, lang)
       lgs = [{ lang: "en" }]
       doc.css("li#lang-switcher ul li a").each do |lang_link|
         lang_path = lang_link.attr("href")
         l = lang_path.match(%r{^/(fr)/})
-        lgs << { lang: l[1], path: lang_path } if l && (!lang || l[1] == lang)
+        lgs << { lang: l[1], path: lang_path } if l && (!lang || l[1] != lang)
       end
       lgs
     end
@@ -171,14 +165,21 @@ module RelatonIso
     # Get page.
     # @param path [String] page's path
     # @return [Array<Nokogiri::HTML::Document, String>]
-    def get_page(path)
-      resp, uri = get_redirection path
-      doc = try_if_fail resp, uri
-      [doc, uri.to_s]
-    rescue SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
-            EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-            Net::ProtocolError, Errno::ETIMEDOUT
-      raise RelatonBib::RequestError, "Could not access #{uri}"
+    def get_page(path) # rubocop:disable Metrics/MethodLength
+      try = 0
+      begin
+        resp, uri = get_redirection path
+        doc = try_if_fail resp, uri
+        [doc, uri.to_s]
+      rescue  SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
+              EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+              Net::ProtocolError, Errno::ETIMEDOUT
+        try += 1
+        raise RelatonBib::RequestError, "Could not access #{DOMAIN}#{path}" if try > 3
+
+        sleep 1
+        retry
+      end
     end
 
     #
@@ -190,13 +191,37 @@ module RelatonIso
     # @return [Array<Net::HTTPOK, URI>] HTTP response and URI
     # @raise [RelatonBib::RequestError] if the page is not found
     #
-    def get_redirection(path)
-      url = DOMAIN + path
-      uri = URI url
-      resp = Net::HTTP.get_response(uri)
-      raise RelatonBib::RequestError, "#{url} not found." if %w[404 302].include? resp.code
+    def get_redirection(path) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+      uri = URI(DOMAIN + path)
+      try = 0
+      begin
+        get_response uri
+      rescue Errno::EPIPE => e
+        try += 1
+        retry if check_try try, uri
+        raise e
+      end
+    end
 
-      resp.code == "301" ? get_redirection(resp["location"]) : [resp, uri]
+    def check_try(try, uri)
+      if try < 3
+        warn "Timeout fetching #{uri}, retrying..."
+        sleep 1
+        true
+      end
+    end
+
+    def get_response(uri, try = 0)
+      raise RelatonBib::RequestError, "#{uri} not found." if try > 3
+
+      resp = Net::HTTP.get_response(uri)
+      case resp.code
+      when "200" then [resp, uri]
+      when "301" then get_redirection(resp["location"])
+      else
+        sleep 1
+        get_response uri, try + 1
+      end
     end
 
     #
@@ -240,12 +265,19 @@ module RelatonIso
     #
     def fetch_structuredidentifier(pubid) # rubocop:disable Metrics/MethodLength
       RelatonIsoBib::StructuredIdentifier.new(
-        project_number: "#{pubid.publisher} #{pubid.number}",
-        part: pubid.part&.to_s, # &.sub(/^-/, ""),
-        type: pubid.publisher,
+        project_number: "#{pubid.root.publisher} #{pubid.root.number}",
+        part: pubid.root.part&.to_s, # &.sub(/^-/, ""),
+        type: pubid.root.publisher,
       )
     end
 
+    #
+    # Parse ID from the document.
+    #
+    # @param [Nokogiri::HTML::Document] doc document to parse
+    #
+    # @return [String, nil] ID
+    #
     def item_ref(doc)
       doc.at("//main//section/div/div/div//h1")&.text
     end
@@ -271,7 +303,7 @@ module RelatonIso
 
     # Fetch workgroup.
     # @param doc [Nokogiri::HTML::Document]
-    # @return [Hash]
+    # @return [RelatonIsoBib::EditorialGroup, nil]
     def fetch_workgroup(doc) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       wg = doc.at("////div[contains(., 'Technical Committe')]/following-sibling::span/a")
       return unless wg
@@ -286,7 +318,7 @@ module RelatonIso
       tc_numb = workgroup[1]&.match(/\d+/)&.to_s&.to_i
       tc_name = wg[:title]
       tc = RelatonBib::WorkGroup.new(name: tc_name, identifier: wg.text,
-                                      type: type, number: tc_numb)
+                                     type: type, number: tc_numb)
       RelatonIsoBib::EditorialGroup.new(technical_committee: [tc])
     end
 
@@ -303,6 +335,14 @@ module RelatonIso
       end
     end
 
+    #
+    # Parse relation type and dates.
+    #
+    # @param [String] type parsed type
+    # @param [Nokogiri::HTML::Document] doc document to parse
+    #
+    # @return [Array<String,Array>] type and dates
+    #
     def relation_type(type, doc)
       date = []
       t = case type.strip
@@ -316,9 +356,20 @@ module RelatonIso
       [t, date]
     end
 
+    #
+    # Create relations.
+    #
+    # @param [Nokogiri::HTML::Element] rel relation element
+    # @param [String] type relation type
+    # @param [Hash{Symbol=>String}] date relation document date
+    # @option date [String] :type date type
+    # @option date [String] :on date
+    #
+    # @return [Array<Hash>] Relations
+    #
     def create_relations(rel, type, date)
       rel.css("a").map do |id|
-        docid = RelatonBib::DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
+        docid = DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
         fref = RelatonBib::FormattedRef.new(content: id.text, format: "text/plain")
         bibitem = RelatonIsoBib::IsoBibliographicItem.new(
           docid: [docid], formattedref: fref, date: date,
@@ -333,14 +384,11 @@ module RelatonIso
     def fetch_type(ref)
       %r{
         ^(?<prefix>ISO|IWA|IEC)
-        (?:(?:/IEC|/IEEE|/PRF|/NP|/DGuide)*\s|/)
-        (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|Guide|(?=\d+))
+        (?:(?:/IEC|/IEEE|/PRF|/NP|/SAE|/HL7|/DGuide)*\s|/)
+        (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|DTS|DTR|ISP|PWI|Guide|(?=\d+))
       }x =~ ref
-      # return "international-standard" if type_match.nil?
-      type = TYPES[type] || TYPES[prefix]
+      type = TYPES[type] || TYPES[prefix] || "international-standard"
       RelatonIsoBib::DocumentType.new(type: type)
-      # rescue => _e
-      #   puts 'Unknown document type: ' + title
     end
 
     # Fetch titles.
@@ -445,7 +493,7 @@ module RelatonIso
       links << { type: "obp", content: obp[:href] } if obp
       rss = doc.at("//a[contains(@href, 'rss')]")
       links << { type: "rss", content: DOMAIN + rss[:href] } if rss
-      pub = doc.at "//p[contains(., 'publicly available')]/a",
+      pub = doc.at  "//p[contains(., 'publicly available')]/a",
                     "//p[contains(., 'can be downloaded from the')]/a"
       links << { type: "pub", content: pub[:href] } if pub
       links

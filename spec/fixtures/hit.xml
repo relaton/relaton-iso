@@ -13,7 +13,7 @@
   <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
   <docidentifier type="ISO" primary="true">ISO 19115-2:2019</docidentifier>
   <docidentifier type="iso-reference">ISO 19115-2:2019(E)</docidentifier>
-  <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-90.20:ed-2</docidentifier>
+  <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-90.20</docidentifier>
   <docnumber>19115</docnumber>
   <date type="published">
     <on>2019-01</on>
