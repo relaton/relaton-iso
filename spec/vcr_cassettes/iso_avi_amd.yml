@@ -45,17 +45,17 @@ http_interactions:
       Accept-Ranges:
       - bytes
       Date:
-      - Tue, 13 Feb 2024 23:37:02 GMT
+      - Wed, 14 Feb 2024 00:22:41 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-katl1840070-PDK
+      - cache-pdk-katl1840032-PDK
       X-Cache:
-      - MISS
+      - HIT
       X-Cache-Hits:
-      - '0'
+      - '1'
       X-Timer:
-      - S1707867423.762230,VS0,VE99
+      - S1707870161.162984,VS0,VE107
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,9 +63,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - d131b5830c74f14d31c78b5590a21042132640c6
+      - 9d27a423f71da5120e963b51fb4d82a898c46664
       Expires:
-      - Tue, 13 Feb 2024 23:42:02 GMT
+      - Wed, 14 Feb 2024 00:27:41 GMT
       Source-Age:
       - '0'
     body:
@@ -125,5 +125,5 @@ http_interactions:
         IHRleHQ6IE1hY2hpbmluZyBjZW50cmVzCnN0cnVjdHVyZWRpZGVudGlmaWVy
         OgogIHByb2plY3RfbnVtYmVyOiBJU08gMTA3OTEKICBwYXJ0OiAnNicKICB0
         eXBlOiBJU08KZXh0OgogIHNjaGVtYS12ZXJzaW9uOiB2MS4wLjAK
-  recorded_at: Tue, 13 Feb 2024 23:37:02 GMT
+  recorded_at: Wed, 14 Feb 2024 00:22:41 GMT
 recorded_with: VCR 6.2.0

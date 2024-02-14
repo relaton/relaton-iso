@@ -45,17 +45,17 @@ http_interactions:
       Accept-Ranges:
       - bytes
       Date:
-      - Tue, 13 Feb 2024 23:36:10 GMT
+      - Wed, 14 Feb 2024 00:21:44 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-katl1840099-PDK
+      - cache-pdk-katl1840049-PDK
       X-Cache:
-      - MISS
+      - HIT
       X-Cache-Hits:
-      - '0'
+      - '1'
       X-Timer:
-      - S1707867370.121202,VS0,VE138
+      - S1707870104.304648,VS0,VE108
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,9 +63,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 53ea30d9a38d95873bb4e49732ca440226804947
+      - 49f4edd757a7a60ab952b8ca2b0fb28c2cc9b04c
       Expires:
-      - Tue, 13 Feb 2024 23:41:10 GMT
+      - Wed, 14 Feb 2024 00:26:44 GMT
       Source-Age:
       - '0'
     body:
@@ -140,5 +140,5 @@ http_interactions:
         ZCByYXcgcnViYmVyCnN0cnVjdHVyZWRpZGVudGlmaWVyOgogIHByb2plY3Rf
         bnVtYmVyOiBJU08gMTIzCiAgdHlwZTogSVNPCmV4dDoKICBzY2hlbWEtdmVy
         c2lvbjogdjEuMC4wCg==
-  recorded_at: Tue, 13 Feb 2024 23:36:10 GMT
+  recorded_at: Wed, 14 Feb 2024 00:21:44 GMT
 recorded_with: VCR 6.2.0
