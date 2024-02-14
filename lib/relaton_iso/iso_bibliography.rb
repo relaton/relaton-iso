@@ -178,7 +178,7 @@ module RelatonIso
       excludings = build_excludings(all_parts, any_types_stages)
       no_year_ref = hit_collection.ref_pubid_no_year.exclude(*excludings)
       result = hit_collection.select do |i|
-        pubid_match? i.pubid, query_pubid, all_parts, excludings, no_year_ref
+        pubid_match?(i.pubid, query_pubid, excludings, no_year_ref) && !(all_parts && i.pubid.part.nil?)
       end
 
       filter_hits_by_year(result, query_pubid.year)
@@ -191,12 +191,12 @@ module RelatonIso
       excludings
     end
 
-    def pubid_match?(pubid, query_pubid, all_parts, excludings, no_year_ref)
+    def pubid_match?(pubid, query_pubid, excludings, no_year_ref)
       if pubid.is_a? String then pubid == query_pubid.to_s
       else
         pubid = pubid.dup
         pubid.base = pubid.base.exclude(:year, :edition) if pubid.base
-        pubid.exclude(*excludings) == no_year_ref && !(all_parts && pubid.part.nil?)
+        pubid.exclude(*excludings) == no_year_ref
       end
     end
   end
