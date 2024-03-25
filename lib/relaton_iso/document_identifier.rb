@@ -11,7 +11,7 @@ module RelatonIso
       end
       type == "URN" ? @id.urn.to_s : id_str
     rescue Pubid::Iso::Errors::NoEditionError => e
-      Util.warn "WARNING: #{type} identifier can't be generated for #{@id}: #{e.message}"
+      Util.warn "#{type} identifier can't be generated for `#{@id}`: #{e.message}"
     end
 
     def to_h

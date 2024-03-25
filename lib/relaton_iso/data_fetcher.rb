@@ -99,8 +99,7 @@ module RelatonIso
         try += 1
         retry if check_try try, uri
 
-        warn "Error fetching #{uri}"
-        warn e.message
+        Util.error "Error fetching #{uri}, #{e.message}"
       end
     end
 
@@ -111,7 +110,7 @@ module RelatonIso
 
     def check_try(try, uri)
       if try < 3
-        warn "Timeout fetching #{uri}, retrying..."
+        Util.warn "Timeout fetching #{uri}, retrying..."
         sleep 1
         true
       end
@@ -137,9 +136,8 @@ module RelatonIso
       doc = Scrapper.parse_page docpath
       @mutex.synchronize { save_doc doc, docpath }
     rescue StandardError => e
-      warn "Error fetching document: #{Scrapper::DOMAIN}#{docpath}"
-      warn e.message
-      warn e.backtrace
+      Util.error "Error fetching document: #{Scrapper::DOMAIN}#{docpath}\n" \
+        "#{e.message}\n#{e.backtrace}"
     end
 
     # def compare_docids(id1, id2)
@@ -158,7 +156,7 @@ module RelatonIso
       file_name = docid.id.gsub(/[\s\/:]+/, "-").downcase
       file = File.join @output, "#{file_name}.#{@ext}"
       if @files.include? file
-        warn "Duplicate file #{file} for #{docid.id} from #{Scrapper::DOMAIN}#{docpath}"
+        Util.warn "Duplicate file #{file} for #{docid.id} from #{Scrapper::DOMAIN}#{docpath}"
       else
         @files << file
         index.add_or_update docid.to_h, file

@@ -277,7 +277,7 @@ item.to_xml bibdata: true
       <fetched>2022-12-04</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       ...
-      <ext schema-version="v1.0.0">
+      <ext schema-version="v1.0.3">
         <doctype>international-standard</doctype>
         ...
       </ext>

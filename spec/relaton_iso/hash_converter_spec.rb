@@ -22,7 +22,9 @@ describe RelatonIso::HashConverter do
     it "warns if unable to create document identifier" do
       expect do
         described_class.create_docid(id: "ISO123", type: "ISO", primary: true)
-      end.to output(/\[relaton-iso\] Unable to create a Pubid::Iso::Identifier from `ISO123`/).to_stderr_from_any_process
+      end.to output(
+        /\[relaton-iso\] WARN: Unable to create a Pubid::Iso::Identifier from `ISO123`/,
+      ).to_stderr_from_any_process
     end
   end
 end
