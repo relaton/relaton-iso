@@ -39,7 +39,7 @@ module RelatonIso
 
       query_pubid = Pubid::Iso::Identifier.parse(code)
       query_pubid.root.year = year.to_i if year&.respond_to?(:to_i)
-      Util.warn "(#{query_pubid}) Fetching from Relaton repository ..."
+      Util.info "Fetching from Relaton repository ...", key: query_pubid.to_s
 
       hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
       tip_ids = look_up_with_any_types_stages(hits, ref, opts)
@@ -47,13 +47,13 @@ module RelatonIso
       return fetch_ref_err(query_pubid, missed_year_ids, tip_ids) unless ret
 
       response_pubid = ret.docidentifier.first.id # .sub(" (all parts)", "")
-      Util.warn "(#{query_pubid}) Found: `#{response_pubid}`"
+      Util.info "Found: `#{response_pubid}`", key: query_pubid.to_s
       get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
       return ret if get_all
 
       ret.to_most_recent_reference
     rescue Pubid::Core::Errors::ParseError
-      Util.warn "(#{code}) Is not recognized as a standards identifier."
+      Util.info "Is not recognized as a standards identifier.", key: code
       nil
     end
 
@@ -116,23 +116,23 @@ module RelatonIso
 
     # @param pubid [Pubid::Iso::Identifier] PubID with no results
     def fetch_ref_err(pubid, missed_year_ids, tip_ids) # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
-      Util.warn "(#{pubid}) Not found."
+      Util.info "Not found.", key: pubid.to_s
 
       if missed_year_ids.any?
         ids = missed_year_ids.map { |i| "`#{i}`" }.join(", ")
-        Util.warn "(#{pubid}) TIP: No match for edition year #{pubid.year}, but matches exist for #{ids}."
+        Util.info "TIP: No match for edition year #{pubid.year}, but matches exist for #{ids}.", key: pubid.to_s
       end
 
       if tip_ids.any?
         ids = tip_ids.map { |i| "`#{i}`" }.join(", ")
-        Util.warn "(#{pubid}) TIP: Matches exist for #{ids}."
+        Util.info "TIP: Matches exist for #{ids}.", key: pubid.to_s
       end
 
       if pubid.part
-        Util.warn "(#{pubid}) TIP: If it cannot be found, the document may no longer be published in parts."
+        Util.info "TIP: If it cannot be found, the document may no longer be published in parts.", key: pubid.to_s
       else
-        Util.warn "(#{pubid}) TIP: If you wish to cite all document parts for the reference, " \
-                  "use `#{pubid.to_s(format: :ref_undated)} (all parts)`."
+        Util.info "TIP: If you wish to cite all document parts for the reference, " \
+                  "use `#{pubid.to_s(format: :ref_undated)} (all parts)`.", key: pubid.to_s
       end
 
       nil

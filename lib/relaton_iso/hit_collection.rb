@@ -48,8 +48,7 @@ module RelatonIso
     def create_pubid(id)
       Pubid::Iso::Identifier.create(**id)
     rescue StandardError => e
-      Util.warn "(#{ref_pubid}) WARNING: #{e.message}"
-      nil
+      Util.warn e.message, key: ref_pubid.to_s
     end
 
     def excludings
