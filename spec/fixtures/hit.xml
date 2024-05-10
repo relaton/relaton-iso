@@ -1,13 +1,13 @@
-<bibdata type="standard" schema-version="v1.2.8">
+<bibdata type="standard" schema-version="v1.3.1">
   <fetched>2024-02-02</fetched>
-  <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
-  <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
-  <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
-  <title type="main" format="text/plain" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing</title>
-  <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
-  <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
-  <title type="title-part" format="text/plain" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement</title>
-  <title type="main" format="text/plain" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement</title>
+  <title type="title-intro" language="en" script="Latn">Geographic information</title>
+  <title type="title-main" language="en" script="Latn">Metadata</title>
+  <title type="title-part" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
+  <title type="main" language="en" script="Latn">Geographic information - Metadata - Part 2: Extensions for acquisition and processing</title>
+  <title type="title-intro" language="fr" script="Latn">Information géographique</title>
+  <title type="title-main" language="fr" script="Latn">Métadonnées</title>
+  <title type="title-part" language="fr" script="Latn">Partie 2: Extensions pour l'acquisition et le traitement</title>
+  <title type="main" language="fr" script="Latn">Information géographique - Métadonnées - Partie 2: Extensions pour l'acquisition et le traitement</title>
   <uri type="src">https://www.iso.org/standard/67039.html</uri>
   <uri type="obp">https://www.iso.org/obp/ui/en/#!iso:std:67039:en</uri>
   <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
@@ -44,13 +44,13 @@
   </copyright>
   <relation type="obsoletes">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO 19115-2:2009</formattedref>
+      <formattedref>ISO 19115-2:2009</formattedref>
       <docidentifier type="ISO" primary="true">ISO 19115-2:2009</docidentifier>
     </bibitem>
   </relation>
   <relation type="updates">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO 19115-2:2019/Amd 1:2022</formattedref>
+      <formattedref>ISO 19115-2:2019/Amd 1:2022</formattedref>
       <docidentifier type="ISO" primary="true">ISO 19115-2:2019/Amd 1:2022</docidentifier>
       <date type="circulated">
         <on>2024-01-15</on>
@@ -58,7 +58,7 @@
     </bibitem>
   </relation>
   <place>Geneva</place>
-  <ext schema-version="v1.0.0">
+  <ext schema-version="v1.0.3">
     <doctype>international-standard</doctype>
     <editorialgroup>
       <technical-committee number="211" type="TC" identifier="ISO/TC 211">Geographic information/Geomatics</technical-committee>

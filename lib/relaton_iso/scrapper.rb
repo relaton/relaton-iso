@@ -369,8 +369,8 @@ module RelatonIso
     #
     def create_relations(rel, type, date)
       rel.css("a").map do |id|
-        docid = DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
-        fref = RelatonBib::FormattedRef.new(content: id.text, format: "text/plain")
+        docid = RelatonBib::DocumentIdentifier.new(type: "ISO", id: id.text, primary: true)
+        fref = RelatonBib::FormattedRef.new(id.text)
         bibitem = RelatonIsoBib::IsoBibliographicItem.new(
           docid: [docid], formattedref: fref, date: date,
         )
@@ -406,7 +406,7 @@ module RelatonIso
           type: types[i], content: p, language: lang, script: script(lang),
         )
       end.compact
-      main = title.map { |t| t.title.content }.join " - "
+      main = title.map(&:to_s).join " - "
       title << RelatonBib::TypedTitleString.new(type: "main", content: main, language: lang, script: script(lang))
     end
 

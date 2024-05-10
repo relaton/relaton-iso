@@ -11,8 +11,9 @@ RSpec.describe RelatonIso::IsoBibliography do
     hc = double "hit_collection"
     expect(RelatonIso::HitCollection).to receive(:new).and_return hc
     expect(hc).to receive(:fetch).and_raise SocketError
-    expect { RelatonIso::IsoBibliography.search "ISO 19115" }
-      .to raise_error RelatonBib::RequestError
+    expect do
+      RelatonIso::IsoBibliography.search "ISO 19115"
+    end.to raise_error RelatonBib::RequestError
   end
 
   it "fetch hits" do
@@ -20,9 +21,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       hits = RelatonIso::IsoBibliography.search("ISO 19115")
       expect(hits).to be_instance_of RelatonIso::HitCollection
       expect(hits.first).to be_instance_of RelatonIso::Hit
-      expect(hits.first.fetch).to be_instance_of(
-        RelatonIsoBib::IsoBibliographicItem,
-      )
+      expect(hits.first.fetch).to be_instance_of(RelatonIsoBib::IsoBibliographicItem)
     end
   end
 
@@ -77,8 +76,8 @@ RSpec.describe RelatonIso::IsoBibliography do
     end
 
     it "return string of abstract" do
-      formatted_string = subject.abstract(lang: "en")
-      expect(subject.abstract(lang: "en").to_s).to eq formatted_string&.content.to_s
+      abstract = subject.abstract(lang: "en")
+      expect(subject.abstract(lang: "en").to_s).to eq abstract&.to_s
     end
 
     it "return item urls" do
@@ -121,7 +120,7 @@ RSpec.describe RelatonIso::IsoBibliography do
   describe "#get" do
     let(:pubid) { "ISO 19115-1" }
     let(:isoref) { "ISO 19115-1(E)" }
-    let(:urn) { "urn:iso:std:iso:19115:-1:stage-90.93" }
+    let(:urn) { "urn:iso:std:iso:19115:-1:stage-90.20" }
 
     context "gets a code", vcr: { cassette_name: "iso_19115_1" } do
       subject { described_class.get(pubid, nil, {}) }
@@ -152,7 +151,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         end
 
         it "include all matched documents without part" do
-          expect(subject.relation.map { |r| r.bibitem.formattedref&.content })
+          expect(subject.relation.map { |r| r.bibitem.formattedref&.to_s })
             .to include("ISO 19115-1:2014/Amd 1:2018", "ISO 19115-2:2019", "ISO 19115-2:2009")
         end
       end
