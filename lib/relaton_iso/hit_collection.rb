@@ -94,7 +94,7 @@ module RelatonIso
     def create_relation(hit)
       docid = DocumentIdentifier.new(id: hit.pubid, type: "ISO", primary: true)
       isobib = RelatonIsoBib::IsoBibliographicItem.new(
-        formattedref: RelatonBib::FormattedRef.new(content: hit.pubid.to_s), docid: [docid],
+        formattedref: RelatonBib::FormattedRef.new(hit.pubid.to_s), docid: [docid],
       )
       RelatonBib::DocumentRelation.new(type: "instanceOf", bibitem: isobib)
     end

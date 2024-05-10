@@ -223,7 +223,7 @@ RSpec.describe RelatonIso::Scrapper do
     expect(relations.size).to eq 1
     expect(relations.first[:type]).to eq "obsoletes"
     expect(relations.first[:bibitem]).to be_instance_of RelatonIsoBib::IsoBibliographicItem
-    expect(relations.first[:bibitem].formattedref.content).to eq "ISO 123:1985"
+    expect(relations.first[:bibitem].formattedref.to_s).to eq "ISO 123:1985"
     expect(relations.first[:bibitem].docidentifier.first.id).to eq "ISO 123:1985"
     expect(relations.first[:bibitem].docidentifier.first.type).to eq "ISO"
     expect(relations.first[:bibitem].docidentifier.first.primary).to be true
@@ -269,13 +269,13 @@ RSpec.describe RelatonIso::Scrapper do
       HTML
       title = described_class.send(:fetch_title, doc, "en")
       expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
-      expect(title.first.title.content).to eq "Geographic information"
+      expect(title.first.to_s).to eq "Geographic information"
       expect(title.first.type).to eq "title-intro"
-      expect(title[1].title.content).to eq "Metadata"
+      expect(title[1].to_s).to eq "Metadata"
       expect(title[1].type).to eq "title-main"
-      expect(title[2].title.content).to eq "Part 2: Extensions for imagery and gridded data"
+      expect(title[2].to_s).to eq "Part 2: Extensions for imagery and gridded data"
       expect(title[2].type).to eq "title-part"
-      expect(title[3].title.content).to eq "Geographic information - Metadata - Part 2: Extensions for imagery and gridded data"
+      expect(title[3].to_s).to eq "Geographic information - Metadata - Part 2: Extensions for imagery and gridded data"
       expect(title[3].type).to eq "main"
     end
 
@@ -290,11 +290,11 @@ RSpec.describe RelatonIso::Scrapper do
       HTML
       title = described_class.send(:fetch_title, doc, "en")
       expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
-      expect(title.first.title.content).to eq "Geographic information"
+      expect(title.first.to_s).to eq "Geographic information"
       expect(title.first.type).to eq "title-intro"
-      expect(title[1].title.content).to eq "Metadata"
+      expect(title[1].to_s).to eq "Metadata"
       expect(title[1].type).to eq "title-main"
-      expect(title[2].title.content).to eq "Geographic information - Metadata"
+      expect(title[2].to_s).to eq "Geographic information - Metadata"
       expect(title[2].type).to eq "main"
     end
 
@@ -308,9 +308,9 @@ RSpec.describe RelatonIso::Scrapper do
       HTML
       title = described_class.send(:fetch_title, doc, "en")
       expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
-      expect(title.first.title.content).to eq "Geographic information"
+      expect(title.first.to_s).to eq "Geographic information"
       expect(title.first.type).to eq "title-main"
-      expect(title[1].title.content).to eq "Geographic information"
+      expect(title[1].to_s).to eq "Geographic information"
       expect(title[1].type).to eq "main"
     end
 
@@ -324,13 +324,13 @@ RSpec.describe RelatonIso::Scrapper do
       HTML
       title = described_class.send(:fetch_title, doc, "en")
       expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
-      expect(title.first.title.content).to eq "Geographic information"
+      expect(title.first.to_s).to eq "Geographic information"
       expect(title.first.type).to eq "title-intro"
-      expect(title[1].title.content).to eq "Metadata"
+      expect(title[1].to_s).to eq "Metadata"
       expect(title[1].type).to eq "title-main"
-      expect(title[2].title.content).to eq "Part 2: Extensions for imagery and gridded data"
+      expect(title[2].to_s).to eq "Part 2: Extensions for imagery and gridded data"
       expect(title[2].type).to eq "title-part"
-      expect(title[3].title.content).to eq "Geographic information - Metadata - Part 2: Extensions for imagery and gridded data"
+      expect(title[3].to_s).to eq "Geographic information - Metadata - Part 2: Extensions for imagery and gridded data"
       expect(title[3].type).to eq "main"
     end
   end
