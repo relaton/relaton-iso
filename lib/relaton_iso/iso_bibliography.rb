@@ -17,8 +17,7 @@ module RelatonIso
       HitCollection.new(pubid, opts).fetch
     rescue  SocketError, Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
             EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
-            Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT,
-            Algolia::AlgoliaUnreachableHostError => e
+            Net::ProtocolError, OpenSSL::SSL::SSLError, Errno::ETIMEDOUT => e
       raise RelatonBib::RequestError, e.message
     end
 

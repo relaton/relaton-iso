@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/iso-125-2020.yaml
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/iso-125:2020.yaml
     body:
       encoding: US-ASCII
       base64_string: ''
@@ -23,7 +23,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '3360'
+      - '3382'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -31,7 +31,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"6edef9da2e40db735e7a3917d73b8e287fe76dd060137921586b35b05885dbc9"
+      - W/"c7cd024b90db5c60ce2c808c6adfbf0377d4ec23ad1fa37fa840826e48e10aff"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -41,21 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 44AC:6405:2E57DA:37A1D4:65CBFD2E
+      - 50EA:26CEEB:6E39DB:7CD7DF:664ABD6B
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 14 Feb 2024 00:22:59 GMT
+      - Mon, 20 May 2024 03:03:07 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-katl1840043-PDK
+      - cache-pdk-katl1840087-PDK
       X-Cache:
-      - HIT
+      - MISS
       X-Cache-Hits:
-      - '1'
+      - '0'
       X-Timer:
-      - S1707870179.012848,VS0,VE93
+      - S1716174188.621157,VS0,VE115
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,15 +63,15 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 301354108ae51b111f87e6baff96282d94f26081
+      - 14c6ed01ad6fe3a8d10eb757c3352bf396dd3283
       Expires:
-      - Wed, 14 Feb 2024 00:27:59 GMT
+      - Mon, 20 May 2024 03:08:07 GMT
       Source-Age:
       - '0'
     body:
       encoding: ASCII-8BIT
       base64_string: |
-        LS0tCnNjaGVtYS12ZXJzaW9uOiB2MS4yLjgKaWQ6IElTTzEyNS0yMDIwCnRp
+        LS0tCnNjaGVtYS12ZXJzaW9uOiB2MS4yLjcKaWQ6IElTTzEyNS0yMDIwCnRp
         dGxlOgotIGNvbnRlbnQ6IE5hdHVyYWwgcnViYmVyIGxhdGV4IGNvbmNlbnRy
         YXRlCiAgbGFuZ3VhZ2U6CiAgLSBlbgogIHNjcmlwdDoKICAtIExhdG4KICBm
         b3JtYXQ6IHRleHQvcGxhaW4KICB0eXBlOiB0aXRsZS1pbnRybwotIGNvbnRl
@@ -137,14 +137,15 @@ http_interactions:
         dHlwZTogc3RhbmRhcmQKICAgIGRvY2lkOgogICAgLSBpZDogSVNPIDEyNToy
         MDExCiAgICAgIHR5cGU6IElTTwogICAgICBwcmltYXJ5OiB0cnVlCiAgICBm
         b3JtYXR0ZWRyZWY6CiAgICAgIGNvbnRlbnQ6IElTTyAxMjU6MjAxMQogICAg
-        ICBmb3JtYXQ6IHRleHQvcGxhaW4KcGxhY2U6Ci0gR2VuZXZhCmRvY3R5cGU6
-        CiAgdHlwZTogaW50ZXJuYXRpb25hbC1zdGFuZGFyZAplZGl0b3JpYWxncm91
-        cDoKICB0ZWNobmljYWxfY29tbWl0dGVlOgogIC0gbmFtZTogUmF3IG1hdGVy
-        aWFscyAoaW5jbHVkaW5nIGxhdGV4KSBmb3IgdXNlIGluIHRoZSBydWJiZXIg
-        aW5kdXN0cnkKICAgIG51bWJlcjogNDUKICAgIHR5cGU6IFRDCiAgICBpZGVu
-        dGlmaWVyOiBJU08vVEMgNDUvU0MgMwppY3M6Ci0gY29kZTogODMuMDQwLjEw
-        CiAgdGV4dDogTGF0ZXggYW5kIHJhdyBydWJiZXIKc3RydWN0dXJlZGlkZW50
-        aWZpZXI6CiAgcHJvamVjdF9udW1iZXI6IElTTyAxMjUKICB0eXBlOiBJU08K
-        ZXh0OgogIHNjaGVtYS12ZXJzaW9uOiB2MS4wLjAK
-  recorded_at: Wed, 14 Feb 2024 00:22:59 GMT
+        ICBmb3JtYXQ6IHRleHQvcGxhaW4KcGxhY2U6Ci0gR2VuZXZhCmZldGNoZWQ6
+        ICcyMDI0LTAxLTE2Jwpkb2N0eXBlOgogIHR5cGU6IGludGVybmF0aW9uYWwt
+        c3RhbmRhcmQKZWRpdG9yaWFsZ3JvdXA6CiAgdGVjaG5pY2FsX2NvbW1pdHRl
+        ZToKICAtIG5hbWU6IFJhdyBtYXRlcmlhbHMgKGluY2x1ZGluZyBsYXRleCkg
+        Zm9yIHVzZSBpbiB0aGUgcnViYmVyIGluZHVzdHJ5CiAgICBudW1iZXI6IDQ1
+        CiAgICB0eXBlOiBUQwogICAgaWRlbnRpZmllcjogSVNPL1RDIDQ1L1NDIDMK
+        aWNzOgotIGNvZGU6IDgzLjA0MC4xMAogIHRleHQ6IExhdGV4IGFuZCByYXcg
+        cnViYmVyCnN0cnVjdHVyZWRpZGVudGlmaWVyOgogIHByb2plY3RfbnVtYmVy
+        OiBJU08gMTI1CiAgdHlwZTogSVNPCmV4dDoKICBzY2hlbWEtdmVyc2lvbjog
+        djEuMC4wCg==
+  recorded_at: Mon, 20 May 2024 03:03:07 GMT
 recorded_with: VCR 6.2.0
