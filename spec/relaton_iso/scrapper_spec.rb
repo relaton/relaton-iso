@@ -169,7 +169,7 @@ RSpec.describe RelatonIso::Scrapper do
     it "success" do
       expect(resp).to receive(:body).and_return(
         "<html><body></body></html>",
-        "<html><body><main><div><section><div><div><div><nav><h1>ISO 123</h1>" \
+        "<html><body><main><div><section><div><div><div><nav><h1><span>ISO 123</span></h1>" \
           "</nav></div></div></div></section></div></main></body></html>",
       )
       expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp

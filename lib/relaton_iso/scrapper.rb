@@ -56,7 +56,7 @@ module RelatonIso
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def parse_page(path, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       doc, url = get_page path
-      id = doc.at("//nav[contains(@class,'heading-condensed')]/h1").text.split(" | ").first
+      id = doc.at("//h1/span[1]").text.strip
       pubid = Pubid::Iso::Identifier.parse(id)
       # Fetch edition.
       edition = doc.at("//div[div[.='Edition']]/text()[last()]")&.text&.match(/\d+$/)&.to_s
@@ -279,7 +279,7 @@ module RelatonIso
     # @return [String, nil] ID
     #
     def item_ref(doc)
-      doc.at("//main//section/div/div/div//h1")&.text
+      doc.at("//main//section/div/div/div//h1/span[1]")&.text
     end
 
     # Fetch status.
@@ -489,7 +489,7 @@ module RelatonIso
     #
     def fetch_link(doc, url)
       links = [{ type: "src", content: url }]
-      obp = doc.at("//h4[contains(@class, 'h5')]/a")
+      obp = doc.at("//a[.='Read sample']")
       links << { type: "obp", content: obp[:href] } if obp
       rss = doc.at("//a[contains(@href, 'rss')]")
       links << { type: "rss", content: DOMAIN + rss[:href] } if rss
