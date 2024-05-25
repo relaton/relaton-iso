@@ -56,7 +56,7 @@ module RelatonIso
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def parse_page(path, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       doc, url = get_page path
-      id = doc.at("//h1/span[1]").text.strip
+      id = doc.at("//h1/span[1]").text.split(" | ").first.strip
       pubid = Pubid::Iso::Identifier.parse(id)
       # Fetch edition.
       edition = doc.at("//div[div[.='Edition']]/text()[last()]")&.text&.match(/\d+$/)&.to_s
