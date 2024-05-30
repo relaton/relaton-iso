@@ -327,7 +327,9 @@ module RelatonIso
     # @return [Array<Hash>]
     def fetch_relations(doc)
       types = ["Now", "Now under review"]
-      doc.xpath("//ul[@class='steps']/li", "//div[@class='sub-step']").reduce([]) do |a, r|
+      doc.xpath(
+        "//ul[@class='steps']/li", "//div[contains(@class, 'sub-step')]"
+      ).reduce([]) do |a, r|
         type, date = relation_type(r.at("h4", "h5").text.strip, doc)
         next a if types.include?(type)
 
@@ -347,7 +349,7 @@ module RelatonIso
       date = []
       t = case type.strip
           when "Previously", "Will be replaced by" then "obsoletes"
-          when "Corrigenda / Amendments", "Revised by", "Now confirmed"
+          when /Corrigenda|Amendments|Revised by|Now confirmed|replaced by/
             on = doc.xpath('//span[@class="stage-date"][contains(., "-")]').last
             date << { type: "circulated", on: on.text } if on
             "updates"
@@ -411,9 +413,9 @@ module RelatonIso
     end
 
     def titles(doc)
-      head = doc.at "//nav[contains(@class,'heading-condensed')]"
-      ttls = head.xpath("h2 | h3 | h4").map &:text
-      ttls = ttls[0].split " - " if ttls.size == 1
+      # head = doc.at "//nav[contains(@class,'heading-condensed')]"
+      ttls = doc.xpath("//h1[@class='stdTitle']/span[position()>1]").map(&:text)
+      ttls[0, 1] = ttls[0].split(/\s(?:-|\u2014)\s/) # if ttls.size == 1
       case ttls.size
       when 0, 1 then [nil, ttls.first, nil]
       else RelatonBib::TypedTitleString.intro_or_part ttls
