@@ -279,7 +279,7 @@ module RelatonIso
     # @return [String, nil] ID
     #
     def item_ref(doc)
-      doc.at("//main//section/div/div/div//h1/span[1]")&.text
+      doc.at("//main//section/div/div/div//h1/span[1]")&.text&.strip
     end
 
     # Fetch status.

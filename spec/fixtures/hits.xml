@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
   <bibitem id="ISO19115-2-2019" type="standard" schema-version="v1.2.8">
-    <fetched>2024-02-02</fetched>
+    <fetched>2024-06-17</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -15,7 +15,7 @@
     <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
     <docidentifier type="ISO" primary="true">ISO 19115-2:2019</docidentifier>
     <docidentifier type="iso-reference">ISO 19115-2:2019(E)</docidentifier>
-    <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-90.20</docidentifier>
+    <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-90.93</docidentifier>
     <docnumber>19115</docnumber>
     <date type="published">
       <on>2019-01</on>
@@ -34,13 +34,13 @@
     <script>Latn</script>
     <status>
       <stage>90</stage>
-      <substage>20</substage>
+      <substage>93</substage>
     </status>
     <copyright>
       <from>2019</from>
       <owner>
         <organization>
-          <name>ISO</name>
+          <name/>
         </organization>
       </owner>
     </copyright>
@@ -55,14 +55,14 @@
         <formattedref format="text/plain">ISO 19115-2:2019/Amd 1:2022</formattedref>
         <docidentifier type="ISO" primary="true">ISO 19115-2:2019/Amd 1:2022</docidentifier>
         <date type="circulated">
-          <on>2024-01-15</on>
+          <on>2024-06-11</on>
         </date>
       </bibitem>
     </relation>
     <place>Geneva</place>
   </bibitem>
   <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.8">
-    <fetched>2024-02-02</fetched>
+    <fetched>2024-06-17</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -102,7 +102,7 @@
       <from>2009</from>
       <owner>
         <organization>
-          <name>ISO</name>
+          <name/>
         </organization>
       </owner>
     </copyright>
