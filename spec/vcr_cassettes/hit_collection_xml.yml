@@ -45,17 +45,17 @@ http_interactions:
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 17 Jun 2024 05:08:49 GMT
+      - Mon, 17 Jun 2024 06:06:19 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-iad-kjyo7100155-IAD
+      - cache-iad-kjyo7100161-IAD
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-      - S1718600930.564014,VS0,VE1
+      - S1718604379.001219,VS0,VE3
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,9 +63,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 26561f5c8e5d0de3cc97c8ab7a0eaf52777d8bbf
+      - 6ed1138b415f13e30f45818ee0b48969b057db4d
       Expires:
-      - Mon, 17 Jun 2024 05:13:49 GMT
+      - Mon, 17 Jun 2024 06:11:19 GMT
       Source-Age:
       - '6'
     body:
@@ -136,7 +136,7 @@ http_interactions:
         dHJ1Y3R1cmVkaWRlbnRpZmllcjoKICBwcm9qZWN0X251bWJlcjogSVNPIDE5
         MTE1CiAgcGFydDogJzInCiAgdHlwZTogSVNPCmV4dDoKICBzY2hlbWEtdmVy
         c2lvbjogdjEuMC4wCg==
-  recorded_at: Mon, 17 Jun 2024 05:08:49 GMT
+  recorded_at: Mon, 17 Jun 2024 06:06:18 GMT
 - request:
     method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/iso-19115-2-2009.yaml
@@ -182,17 +182,17 @@ http_interactions:
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 17 Jun 2024 05:08:49 GMT
+      - Mon, 17 Jun 2024 06:06:19 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-iad-kjyo7100073-IAD
+      - cache-iad-kjyo7100039-IAD
       X-Cache:
-      - MISS
+      - HIT
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1718600930.646454,VS0,VE97
+      - S1718604379.086598,VS0,VE36
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -200,9 +200,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 15b2894a16db15ecdb10cdfd983209edb75e4f6d
+      - 7139fccab89bc4f720706e8098d9add33f3f9a96
       Expires:
-      - Mon, 17 Jun 2024 05:13:49 GMT
+      - Mon, 17 Jun 2024 06:11:19 GMT
       Source-Age:
       - '0'
     body:
@@ -305,5 +305,5 @@ http_interactions:
         aWNhdGlvbnMgaW4gc2NpZW5jZQpzdHJ1Y3R1cmVkaWRlbnRpZmllcjoKICBw
         cm9qZWN0X251bWJlcjogSVNPIDE5MTE1CiAgcGFydDogJzInCiAgdHlwZTog
         SVNPCmV4dDoKICBzY2hlbWEtdmVyc2lvbjogdjEuMC4wCg==
-  recorded_at: Mon, 17 Jun 2024 05:08:49 GMT
+  recorded_at: Mon, 17 Jun 2024 06:06:18 GMT
 recorded_with: VCR 6.2.0

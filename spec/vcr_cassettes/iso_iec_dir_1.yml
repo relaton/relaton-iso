@@ -45,17 +45,17 @@ http_interactions:
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 17 Jun 2024 05:13:49 GMT
+      - Mon, 17 Jun 2024 06:10:47 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-iad-kjyo7100124-IAD
+      - cache-iad-kjyo7100098-IAD
       X-Cache:
-      - MISS
+      - HIT
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1718601229.034346,VS0,VE61
+      - S1718604648.699223,VS0,VE44
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,9 +63,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 52739a6416999bc9b1a70732a2b9d3b9dd49f058
+      - e527d0d02b296b3a0ea8a0667ab54dafe6380f92
       Expires:
-      - Mon, 17 Jun 2024 05:18:49 GMT
+      - Mon, 17 Jun 2024 06:15:47 GMT
       Source-Age:
       - '0'
     body:
@@ -92,5 +92,5 @@ http_interactions:
         YXJ0T2YKICAgIGJpYml0ZW06CiAgICAgIGZvcm1hdHRlZHJlZjogSVNPL0lF
         QyBESVIKICAgICAgZG9jaWQ6CiAgICAgICAgLSBpZDogSVNPL0lFQyBESVIK
         ICAgICAgICAgIHR5cGU6IElTTwogICAgICAgICAgcHJpbWFyeTogdHJ1ZQo=
-  recorded_at: Mon, 17 Jun 2024 05:13:48 GMT
+  recorded_at: Mon, 17 Jun 2024 06:10:47 GMT
 recorded_with: VCR 6.2.0
