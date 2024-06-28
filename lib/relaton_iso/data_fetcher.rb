@@ -95,7 +95,7 @@ module RelatonIso
       uri = URI(Scrapper::DOMAIN + path)
       begin
         get_response uri
-      rescue Net::OpenTimeout, Net::ReadTimeout => e
+      rescue Net::OpenTimeout, Net::ReadTimeout, Errno::ECONNREFUSED => e
         try += 1
         retry if check_try try, uri
 
