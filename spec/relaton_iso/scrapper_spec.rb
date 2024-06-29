@@ -145,7 +145,7 @@ RSpec.describe RelatonIso::Scrapper do
     end
 
     it "not found" do
-      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(double(code: "404")).exactly(4).times
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(double(code: "504")).exactly(4).times
       expect { described_class.send(:get_redirection, "/path") }.to raise_error RelatonBib::RequestError
     end
 

@@ -218,8 +218,9 @@ module RelatonIso
       case resp.code
       when "200" then [resp, uri]
       when "301" then get_redirection(resp["location"])
+      when "404" then raise RelatonBib::RequestError, "#{uri} not found."
       else
-        sleep 1
+        sleep (2**try)
         get_response uri, try + 1
       end
     end
