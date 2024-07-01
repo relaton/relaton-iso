@@ -56,7 +56,7 @@ module RelatonIso
     # @return [RelatonIsoBib::IsoBibliographicItem]
     def parse_page(path, lang = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       doc, url = get_page path
-      id = doc.at("//nav[contains(@class,'heading-condensed')]/h1").text.split(" | ").first
+      id = doc.at("//h1/span[1]").text.split(" | ").first.strip
       pubid = Pubid::Iso::Identifier.parse(id)
       # Fetch edition.
       edition = doc.at("//div[div[.='Edition']]/text()[last()]")&.text&.match(/\d+$/)&.to_s
@@ -218,8 +218,9 @@ module RelatonIso
       case resp.code
       when "200" then [resp, uri]
       when "301" then get_redirection(resp["location"])
+      when "404" then raise RelatonBib::RequestError, "#{uri} not found."
       else
-        sleep 1
+        sleep (2**try)
         get_response uri, try + 1
       end
     end
@@ -279,7 +280,7 @@ module RelatonIso
     # @return [String, nil] ID
     #
     def item_ref(doc)
-      doc.at("//main//section/div/div/div//h1")&.text
+      doc.at("//main//section/div/div/div//h1/span[1]")&.text&.strip
     end
 
     # Fetch status.
@@ -327,7 +328,9 @@ module RelatonIso
     # @return [Array<Hash>]
     def fetch_relations(doc)
       types = ["Now", "Now under review"]
-      doc.xpath("//ul[@class='steps']/li", "//div[@class='sub-step']").reduce([]) do |a, r|
+      doc.xpath(
+        "//ul[@class='steps']/li", "//div[contains(@class, 'sub-step')]"
+      ).reduce([]) do |a, r|
         type, date = relation_type(r.at("h4", "h5").text.strip, doc)
         next a if types.include?(type)
 
@@ -347,7 +350,7 @@ module RelatonIso
       date = []
       t = case type.strip
           when "Previously", "Will be replaced by" then "obsoletes"
-          when "Corrigenda / Amendments", "Revised by", "Now confirmed"
+          when /Corrigenda|Amendments|Revised by|Now confirmed|replaced by/
             on = doc.xpath('//span[@class="stage-date"][contains(., "-")]').last
             date << { type: "circulated", on: on.text } if on
             "updates"
@@ -411,9 +414,9 @@ module RelatonIso
     end
 
     def titles(doc)
-      head = doc.at "//nav[contains(@class,'heading-condensed')]"
-      ttls = head.xpath("h2 | h3 | h4").map &:text
-      ttls = ttls[0].split " - " if ttls.size == 1
+      # head = doc.at "//nav[contains(@class,'heading-condensed')]"
+      ttls = doc.xpath("//h1[@class='stdTitle']/span[position()>1]").map(&:text)
+      ttls[0, 1] = ttls[0].split(/\s(?:-|\u2014)\s/) # if ttls.size == 1
       case ttls.size
       when 0, 1 then [nil, ttls.first, nil]
       else RelatonBib::TypedTitleString.intro_or_part ttls
@@ -489,7 +492,7 @@ module RelatonIso
     #
     def fetch_link(doc, url)
       links = [{ type: "src", content: url }]
-      obp = doc.at("//h4[contains(@class, 'h5')]/a")
+      obp = doc.at("//a[.='Read sample']")
       links << { type: "obp", content: obp[:href] } if obp
       rss = doc.at("//a[contains(@href, 'rss')]")
       links << { type: "rss", content: DOMAIN + rss[:href] } if rss

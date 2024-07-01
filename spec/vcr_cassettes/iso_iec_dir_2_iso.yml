@@ -41,6 +41,7 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
+<<<<<<< HEAD
       - 5414:178E:77EEB1:84A62E:65FA28A5
       Accept-Ranges:
       - bytes
@@ -50,12 +51,27 @@ http_interactions:
       - 1.1 varnish
       X-Served-By:
       - cache-pdk-katl1840049-PDK
+=======
+      - 7092:354AE0:92038:A25A5:667F26A9
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Fri, 28 Jun 2024 21:10:02 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-iad-kjyo7100058-IAD
+>>>>>>> main
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
+<<<<<<< HEAD
       - S1710893222.550957,VS0,VE116
+=======
+      - S1719609002.142176,VS0,VE111
+>>>>>>> main
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -63,9 +79,15 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
+<<<<<<< HEAD
       - e7bd9cb41cbd2860578ab5e57b0ec8a4aaf68de1
       Expires:
       - Wed, 20 Mar 2024 00:12:01 GMT
+=======
+      - 5acce55f5977c04c3b81b83e5f00f1d22f4245b1
+      Expires:
+      - Fri, 28 Jun 2024 21:15:02 GMT
+>>>>>>> main
       Source-Age:
       - '0'
     body:
@@ -94,5 +116,9 @@ http_interactions:
         ICAgYmliaXRlbToKICAgICAgZm9ybWF0dGVkcmVmOiBJU08vSUVDIERJUiAy
         CiAgICAgIGRvY2lkOgogICAgICAgIC0gaWQ6IElTTy9JRUMgRElSIDIKICAg
         ICAgICAgIHR5cGU6IElTTwogICAgICAgICAgcHJpbWFyeTogdHJ1ZQo=
+<<<<<<< HEAD
   recorded_at: Wed, 20 Mar 2024 00:07:01 GMT
+=======
+  recorded_at: Fri, 28 Jun 2024 21:10:02 GMT
+>>>>>>> main
 recorded_with: VCR 6.2.0

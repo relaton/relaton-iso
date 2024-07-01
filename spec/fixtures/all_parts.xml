@@ -30,7 +30,7 @@
   <script>Latn</script>
   <status>
     <stage>90</stage>
-    <substage>93</substage>
+    <substage>20</substage>
   </status>
   <copyright>
     <from>2014</from>
@@ -57,7 +57,7 @@
       <formattedref format="text/plain">ISO 19115-1:2014/Amd 1:2018</formattedref>
       <docidentifier type="ISO" primary="true">ISO 19115-1:2014/Amd 1:2018</docidentifier>
       <date type="circulated">
-        <on>2019-06-13</on>
+        <on>2024-04-15</on>
       </date>
     </bibitem>
   </relation>
@@ -66,13 +66,13 @@
       <formattedref format="text/plain">ISO 19115-1:2014/Amd 2:2020</formattedref>
       <docidentifier type="ISO" primary="true">ISO 19115-1:2014/Amd 2:2020</docidentifier>
       <date type="circulated">
-        <on>2019-06-13</on>
+        <on>2024-04-15</on>
       </date>
     </bibitem>
   </relation>
   <relation type="instanceOf">
     <bibitem type="standard">
-      <fetched>2024-01-19</fetched>
+      <fetched>2024-06-17</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -86,7 +86,7 @@
       <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
       <docidentifier type="ISO" primary="true">ISO 19115-1:2014</docidentifier>
       <docidentifier type="iso-reference">ISO 19115-1:2014(E)</docidentifier>
-      <docidentifier type="URN">urn:iso:std:iso:19115:-1:stage-90.93</docidentifier>
+      <docidentifier type="URN">urn:iso:std:iso:19115:-1:stage-90.20</docidentifier>
       <docnumber>19115</docnumber>
       <date type="published">
         <on>2014-04</on>
@@ -125,7 +125,7 @@ L'ISO 19115-1:2014 définit:
 L'ISO 19115-1:2014 est applicable aux données numériques et services, ses principes peuvent être étendus à bien d'autres types de ressources telles que les cartes, les graphes et les documents textes, de même qu'à des données non géographiques. Certains éléments de métadonnées conditionnels peuvent ne pas s'appliquer à ces autres formes de données.</abstract>
       <status>
         <stage>90</stage>
-        <substage>93</substage>
+        <substage>20</substage>
       </status>
       <copyright>
         <from>2014</from>
@@ -152,7 +152,7 @@ L'ISO 19115-1:2014 est applicable aux données numériques et services, ses prin
           <formattedref format="text/plain">ISO 19115-1:2014/Amd 1:2018</formattedref>
           <docidentifier type="ISO" primary="true">ISO 19115-1:2014/Amd 1:2018</docidentifier>
           <date type="circulated">
-            <on>2019-06-13</on>
+            <on>2024-04-15</on>
           </date>
         </bibitem>
       </relation>
@@ -161,7 +161,7 @@ L'ISO 19115-1:2014 est applicable aux données numériques et services, ses prin
           <formattedref format="text/plain">ISO 19115-1:2014/Amd 2:2020</formattedref>
           <docidentifier type="ISO" primary="true">ISO 19115-1:2014/Amd 2:2020</docidentifier>
           <date type="circulated">
-            <on>2019-06-13</on>
+            <on>2024-04-15</on>
           </date>
         </bibitem>
       </relation>

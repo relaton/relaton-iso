@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "algolia"
 require "relaton_iso/hit"
 
 module RelatonIso

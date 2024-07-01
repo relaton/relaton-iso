@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 RSpec.describe RelatonIso::Scrapper do
   let(:doc) do
     Nokogiri::HTML File.read "spec/fixtures/iso_123.html", encoding: "UTF-8"
@@ -143,7 +145,7 @@ RSpec.describe RelatonIso::Scrapper do
     end
 
     it "not found" do
-      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(double(code: "404")).exactly(4).times
+      expect(Net::HTTP).to receive(:get_response).with(:uri).and_return(double(code: "504")).exactly(4).times
       expect { described_class.send(:get_redirection, "/path") }.to raise_error RelatonBib::RequestError
     end
 
@@ -169,7 +171,7 @@ RSpec.describe RelatonIso::Scrapper do
     it "success" do
       expect(resp).to receive(:body).and_return(
         "<html><body></body></html>",
-        "<html><body><main><div><section><div><div><div><nav><h1>ISO 123</h1>" \
+        "<html><body><main><div><section><div><div><div><nav><h1><span>ISO 123</span></h1>" \
           "</nav></div></div></div></section></div></main></body></html>",
       )
       expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp
@@ -259,13 +261,11 @@ RSpec.describe RelatonIso::Scrapper do
   context "#fetch_title" do
     it "intro, main, part" do
       doc = Nokogiri::HTML <<~HTML
-        <nav role="navigation" aria-label="Children Navigation" class="heading-condensed nav-relatives">
-          <div class="section-head section-back"></div>
-          <h1><strike>ISO 19115-2:2009</strike></h1>
-          <h2 class="mt-0 ">Geographic information</h2>
-          <h3>Metadata</h3>
-          <h4>Part 2: Extensions for imagery and gridded data</h4>
-        </nav>
+        <h1 class="stdTitle">
+          <span class="d-block mb-3 "><strike>ISO 19115-2:2009</strike></span>
+          <span class="lead d-block mb-3">Geographic information — Metadata</span>
+          <span class="lead d-block fw-semibold">Part 2: Extensions for imagery and gridded data</span>
+        </h1>
       HTML
       title = described_class.send(:fetch_title, doc, "en")
       expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
@@ -281,12 +281,11 @@ RSpec.describe RelatonIso::Scrapper do
 
     it "intro, main" do
       doc = Nokogiri::HTML <<~HTML
-        <nav role="navigation" aria-label="Children Navigation" class="heading-condensed nav-relatives">
-          <div class="section-head section-back"></div>
-          <h1><strike>ISO 19115-2:2009</strike></h1>
-          <h2 class="mt-0 ">Geographic information</h2>
-          <h3>Metadata</h3>
-        </nav>
+        <h1 class="stdTitle">
+          <span class="d-block mb-3 "><strike>ISO 19115-2:2009</strike></span>
+          <span class="lead d-block mb-3">Geographic information</span>
+          <span class="lead d-block fw-semibold">Metadata</span>
+        </h1>
       HTML
       title = described_class.send(:fetch_title, doc, "en")
       expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
@@ -300,11 +299,10 @@ RSpec.describe RelatonIso::Scrapper do
 
     it "main" do
       doc = Nokogiri::HTML <<~HTML
-        <nav role="navigation" aria-label="Children Navigation" class="heading-condensed nav-relatives">
-          <div class="section-head section-back"></div>
-          <h1><strike>ISO 19115-2:2009</strike></h1>
-          <h2 class="mt-0 ">Geographic information</h2>
-        </nav>
+        <h1 class="stdTitle">
+          <span class="d-block mb-3 "><strike>ISO 19115-2:2009</strike></span>
+          <span class="lead d-block mb-3">Geographic information</span>
+        </h1>
       HTML
       title = described_class.send(:fetch_title, doc, "en")
       expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
@@ -316,11 +314,10 @@ RSpec.describe RelatonIso::Scrapper do
 
     it "split single title" do
       doc = Nokogiri::HTML <<~HTML
-        <nav role="navigation" aria-label="Children Navigation" class="heading-condensed nav-relatives">
-          <div class="section-head section-back"></div>
-          <h1><strike>ISO 19115-2:2009</strike></h1>
-          <h2 class="mt-0 ">Geographic information - Metadata - Part 2: Extensions for imagery and gridded data</h2>
-        </nav>
+        <h1 class="stdTitle">
+          <span class="d-block mb-3 "><strike>ISO 19115-2:2009</strike></span>
+          <span class="lead d-block mb-3">Geographic information — Metadata - Part 2: Extensions for imagery and gridded data</span>
+        </h1>
       HTML
       title = described_class.send(:fetch_title, doc, "en")
       expect(title).to be_instance_of RelatonBib::TypedTitleStringCollection
