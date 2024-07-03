@@ -41,37 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-<<<<<<< HEAD
-      - E4A6:3157DF:CFEBD1:E61BD2:65FA2846
+      - FEC0:3F2BF:E144F:F22FA:6685B809
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 20 Mar 2024 00:05:27 GMT
+      - Wed, 03 Jul 2024 20:43:53 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-katl1840080-PDK
-=======
-      - EE78:E4F84:25BA51:299362:667F262B
-      Accept-Ranges:
-      - bytes
-      Date:
-      - Fri, 28 Jun 2024 21:07:55 GMT
-      Via:
-      - 1.1 varnish
-      X-Served-By:
-      - cache-iad-kjyo7100141-IAD
->>>>>>> main
+      - cache-iad-kjyo7100112-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-<<<<<<< HEAD
-      - S1710893127.033054,VS0,VE102
-=======
-      - S1719608876.699066,VS0,VE92
->>>>>>> main
+      - S1720039433.428103,VS0,VE92
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -79,15 +63,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-<<<<<<< HEAD
-      - ca2e1bb7c76b7c3803f2544bb4991a445a0af0c3
+      - 16f96e954d876b4764250cdd10e79773e097bc39
       Expires:
-      - Wed, 20 Mar 2024 00:10:27 GMT
-=======
-      - 071fe40abdb89926f74be773ee53ecaea9383137
-      Expires:
-      - Fri, 28 Jun 2024 21:12:55 GMT
->>>>>>> main
+      - Wed, 03 Jul 2024 20:48:53 GMT
       Source-Age:
       - '0'
     body:
@@ -246,9 +224,5 @@ http_interactions:
         NjAKICB0ZXh0OiBQcmVzZW50YXRpb24gbGF5ZXIKc3RydWN0dXJlZGlkZW50
         aWZpZXI6CiAgcHJvamVjdF9udW1iZXI6IElTTyA4ODI0CiAgcGFydDogJzEn
         CiAgdHlwZTogSVNPCmV4dDoKICBzY2hlbWEtdmVyc2lvbjogdjEuMC4wCg==
-<<<<<<< HEAD
-  recorded_at: Wed, 20 Mar 2024 00:05:27 GMT
-=======
-  recorded_at: Fri, 28 Jun 2024 21:07:55 GMT
->>>>>>> main
+  recorded_at: Wed, 03 Jul 2024 20:43:53 GMT
 recorded_with: VCR 6.2.0

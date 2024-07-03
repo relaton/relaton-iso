@@ -61,13 +61,8 @@
     </relation>
     <place>Geneva</place>
   </bibitem>
-<<<<<<< HEAD
   <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.9">
     <fetched>2024-02-02</fetched>
-=======
-  <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.8">
-    <fetched>2024-06-17</fetched>
->>>>>>> main
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>

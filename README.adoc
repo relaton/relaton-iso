@@ -31,24 +31,13 @@ Or install it yourself as:
 
 == Usage
 
-=== Configuration
-
-Configuration is optional. The available option is `logger` which is a `Logger` instance. By default, the logger is `Logger.new($stderr)` with `Logger::WARN` level. To change the logger level, use `RelatonIso.configure` block.
+=== Search for standards using keywords
 
 [source,ruby]
 ----
 require 'relaton_iso'
 => true
 
-RelatonIso.configure do |config|
-  config.logger.level = Logger::DEBUG
-end
-----
-
-=== Search for standards using keywords
-
-[source,ruby]
-----
 hit_collection = RelatonIso::IsoBibliography.search("ISO 19115")
 => <RelatonIso::HitCollection:0x007fa5bc847038 @ref=19115 @fetched=false>
 
@@ -359,6 +348,10 @@ item.link
   @script=nil,
   @type="rss">]
 ----
+
+=== Logging
+
+RelatonIso uses the relaton-logger gem for logging. By default, it logs to STDOUT. To change the log levels and add other loggers, read the https://github.com/relaton/relaton-logger#usage[relaton-logger] documentation.
 
 == Development
 

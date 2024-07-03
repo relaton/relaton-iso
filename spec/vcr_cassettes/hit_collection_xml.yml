@@ -41,37 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-<<<<<<< HEAD
-      - D1C0:BF25F:1C28D9:212831:65FA27DD
+      - 4E82:49666:215908:240604:6685B713
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 20 Mar 2024 00:03:46 GMT
+      - Wed, 03 Jul 2024 20:40:00 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-katl1840041-PDK
-=======
-      - F3E6:2D03DA:1A5393:1D3CAA:667F259E
-      Accept-Ranges:
-      - bytes
-      Date:
-      - Fri, 28 Jun 2024 21:05:41 GMT
-      Via:
-      - 1.1 varnish
-      X-Served-By:
-      - cache-iad-kjyo7100156-IAD
->>>>>>> main
+      - cache-iad-kjyo7100032-IAD
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-<<<<<<< HEAD
-      - S1710893026.361741,VS0,VE2
-=======
-      - S1719608741.272769,VS0,VE1
->>>>>>> main
+      - S1720039200.121465,VS0,VE2
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -79,17 +63,11 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-<<<<<<< HEAD
-      - feda44e8899777aa616b9b64e99a1feba840a750
+      - 88e5b73b6204188ab8b718123fb32fafb68e84db
       Expires:
-      - Wed, 20 Mar 2024 00:08:46 GMT
-=======
-      - c810593b38425186356bf0b8caaf6d4f7b1cc6fe
-      Expires:
-      - Fri, 28 Jun 2024 21:10:41 GMT
->>>>>>> main
+      - Wed, 03 Jul 2024 20:45:00 GMT
       Source-Age:
-      - '4'
+      - '12'
     body:
       encoding: ASCII-8BIT
       base64_string: |
@@ -158,11 +136,7 @@ http_interactions:
         c3RydWN0dXJlZGlkZW50aWZpZXI6CiAgcHJvamVjdF9udW1iZXI6IElTTyAx
         OTExNQogIHBhcnQ6ICcyJwogIHR5cGU6IElTTwpleHQ6CiAgc2NoZW1hLXZl
         cnNpb246IHYxLjAuMAo=
-<<<<<<< HEAD
-  recorded_at: Wed, 20 Mar 2024 00:03:46 GMT
-=======
-  recorded_at: Fri, 28 Jun 2024 21:05:41 GMT
->>>>>>> main
+  recorded_at: Wed, 03 Jul 2024 20:40:00 GMT
 - request:
     method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/iso-19115-2-2009.yaml
@@ -204,37 +178,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-<<<<<<< HEAD
-      - 81A2:7ACC:684D19:7E46AA:65FA27E1
+      - 9F7F:914D:212121:23CF60:6685B71F
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 20 Mar 2024 00:03:46 GMT
+      - Wed, 03 Jul 2024 20:40:00 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-katl1840090-PDK
-=======
-      - 4449:6F51C:8C1C3:9A912:667F25A3
-      Accept-Ranges:
-      - bytes
-      Date:
-      - Fri, 28 Jun 2024 21:05:41 GMT
-      Via:
-      - 1.1 varnish
-      X-Served-By:
-      - cache-iad-kjyo7100064-IAD
->>>>>>> main
+      - cache-iad-kjyo7100061-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-<<<<<<< HEAD
-      - S1710893026.438549,VS0,VE97
-=======
-      - S1719608741.347129,VS0,VE68
->>>>>>> main
+      - S1720039200.208825,VS0,VE95
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -242,15 +200,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-<<<<<<< HEAD
-      - 43cf93acdcfccf233c0ff73502bc6fd9083c437b
+      - 904322ea89403621e8271d06bfb91ba01d09e96f
       Expires:
-      - Wed, 20 Mar 2024 00:08:46 GMT
-=======
-      - 063b84aa6ac2d9d6b521fc365d58cd0c9199dd63
-      Expires:
-      - Fri, 28 Jun 2024 21:10:41 GMT
->>>>>>> main
+      - Wed, 03 Jul 2024 20:45:00 GMT
       Source-Age:
       - '0'
     body:
@@ -353,9 +305,5 @@ http_interactions:
         bGljYXRpb25zIGluIHNjaWVuY2UKc3RydWN0dXJlZGlkZW50aWZpZXI6CiAg
         cHJvamVjdF9udW1iZXI6IElTTyAxOTExNQogIHBhcnQ6ICcyJwogIHR5cGU6
         IElTTwpleHQ6CiAgc2NoZW1hLXZlcnNpb246IHYxLjAuMAo=
-<<<<<<< HEAD
-  recorded_at: Wed, 20 Mar 2024 00:03:46 GMT
-=======
-  recorded_at: Fri, 28 Jun 2024 21:05:41 GMT
->>>>>>> main
+  recorded_at: Wed, 03 Jul 2024 20:40:00 GMT
 recorded_with: VCR 6.2.0
