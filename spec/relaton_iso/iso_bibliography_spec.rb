@@ -3,8 +3,12 @@
 require "relaton_iso/iso_bibliography"
 
 RSpec.describe RelatonIso::IsoBibliography do
-  before(:each) do
-    RelatonIso.instance_variable_set :@configuration, nil
+  before do |example|
+    next if example.metadata[:skip_before]
+
+    # Force to download index file
+    allow_any_instance_of(Relaton::Index::Type).to receive(:actual?).and_return(false)
+    allow_any_instance_of(Relaton::Index::FileIO).to receive(:check_file).and_return(nil)
   end
 
   it "raise access error" do
@@ -20,9 +24,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       hits = RelatonIso::IsoBibliography.search("ISO 19115")
       expect(hits).to be_instance_of RelatonIso::HitCollection
       expect(hits.first).to be_instance_of RelatonIso::Hit
-      expect(hits.first.fetch).to be_instance_of(
-        RelatonIsoBib::IsoBibliographicItem,
-      )
+      expect(hits.first.fetch).to be_instance_of(RelatonIsoBib::IsoBibliographicItem)
     end
   end
 
@@ -234,7 +236,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         expect { RelatonIso::IsoBibliography.get("ISO 19115", "2015", {}) }
           .to output(
             /TIP: No match for edition year 2015, but matches exist for `ISO 19115:2003`/,
-          ).to_stderr
+          ).to_stderr_from_any_process
       end
     end
 
@@ -242,7 +244,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       it "ISO/TS 19103:2015", vcr: "iso_ts_19103_2015" do
         expect do
           expect(RelatonIso::IsoBibliography.get("ISO/TS 19103:2015")).to be_nil
-        end.to output(/TIP: Matches exist for `ISO 19103:2015`/).to_stderr
+        end.to output(/TIP: Matches exist for `ISO 19103:2015`/).to_stderr_from_any_process
       end
     end
 
@@ -251,7 +253,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         expect { RelatonIso::IsoBibliography.get("ISO 19115-30", "2014", {}) }
           .to output(
             /TIP: If it cannot be found, the document may no longer be published in parts/,
-          ).to_stderr
+          ).to_stderr_from_any_process
       end
     end
 
@@ -260,7 +262,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         expect { RelatonIso::IsoBibliography.get("ISO 00000", "2014", {}) }
           .to output(
             /If you wish to cite all document parts for the reference/,
-          ).to_stderr
+          ).to_stderr_from_any_process
       end
     end
 
@@ -647,8 +649,8 @@ RSpec.describe RelatonIso::IsoBibliography do
         expect(subject[0].first.pubid.to_s).to eq(pubid.to_s)
       end
 
-      it "don't output warning" do
-        expect { subject }.not_to output.to_stderr
+      it "don't output warning", :skip_before do
+        expect { subject }.not_to output.to_stderr_from_any_process
       end
     end
 
@@ -666,7 +668,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     expect do
       expect(RelatonIso::IsoBibliography.get("ISO/TC 211 Good Practices")).to be_nil
     end.to output(
-      %r{\[relaton-iso\] \(ISO/TC 211 Good Practices\) Is not recognized as a standards identifier},
-    ).to_stderr
+      %r{\[relaton-iso\] INFO: \(ISO/TC 211 Good Practices\) Is not recognized as a standards identifier},
+    ).to_stderr_from_any_process
   end
 end

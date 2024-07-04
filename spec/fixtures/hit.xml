@@ -1,5 +1,5 @@
-<bibdata type="standard" schema-version="v1.2.8">
-  <fetched>2024-06-17</fetched>
+<bibdata type="standard" schema-version="v1.2.9">
+  <fetched>2024-02-02</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -58,7 +58,7 @@
     </bibitem>
   </relation>
   <place>Geneva</place>
-  <ext schema-version="v1.0.0">
+  <ext schema-version="v1.0.3">
     <doctype>international-standard</doctype>
     <editorialgroup>
       <technical-committee number="211" type="TC" identifier="ISO/TC 211">Geographic information/Geomatics</technical-committee>

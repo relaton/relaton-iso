@@ -25,7 +25,7 @@ RSpec.describe RelatonIso::DocumentIdentifier do
       expect do
         pubid.id
       end.to output(
-        /\[relaton-iso\] WARNING: URN identifier can't be generated for ISO 1111\/Amd: Base document must have edition/,
+        /\[relaton-iso\] WARN: URN identifier can't be generated for `ISO 1111\/Amd`: Base document must have edition/,
       ).to_stderr_from_any_process
     end
   end
