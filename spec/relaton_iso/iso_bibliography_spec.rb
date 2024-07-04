@@ -3,6 +3,14 @@
 require "relaton_iso/iso_bibliography"
 
 RSpec.describe RelatonIso::IsoBibliography do
+  before do |example|
+    next if example.metadata[:skip_before]
+
+    # Force to download index file
+    allow_any_instance_of(Relaton::Index::Type).to receive(:actual?).and_return(false)
+    allow_any_instance_of(Relaton::Index::FileIO).to receive(:check_file).and_return(nil)
+  end
+
   it "raise access error" do
     hc = double "hit_collection"
     expect(RelatonIso::HitCollection).to receive(:new).and_return hc
@@ -641,7 +649,7 @@ RSpec.describe RelatonIso::IsoBibliography do
         expect(subject[0].first.pubid.to_s).to eq(pubid.to_s)
       end
 
-      it "don't output warning" do
+      it "don't output warning", :skip_before do
         expect { subject }.not_to output.to_stderr_from_any_process
       end
     end
