@@ -52,7 +52,7 @@ module RelatonIso
 
       ret.to_most_recent_reference
     rescue Pubid::Core::Errors::ParseError
-      Util.info "Is not recognized as a standards identifier.", key: code
+      Util.warn "Is not recognized as a standards identifier.", key: code
       nil
     end
 

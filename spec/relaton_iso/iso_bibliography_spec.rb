@@ -668,7 +668,7 @@ RSpec.describe RelatonIso::IsoBibliography do
     expect do
       expect(RelatonIso::IsoBibliography.get("ISO/TC 211 Good Practices")).to be_nil
     end.to output(
-      %r{\[relaton-iso\] INFO: \(ISO/TC 211 Good Practices\) Is not recognized as a standards identifier},
+      %r{\[relaton-iso\] WARN: \(ISO/TC 211 Good Practices\) Is not recognized as a standards identifier},
     ).to_stderr_from_any_process
   end
 end
