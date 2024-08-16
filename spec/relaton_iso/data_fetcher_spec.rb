@@ -1,12 +1,21 @@
 describe RelatonIso::DataFetcher do
   subject { described_class.new "data", "yaml" }
 
+  before do
+    ENV["GITHUB_TOKEN"] = "token"
+  end
+
   it "initializes" do
     data_fetcher = described_class.new "data", "bibxml"
     expect(data_fetcher.instance_variable_get(:@output)).to eq "data"
     expect(data_fetcher.instance_variable_get(:@format)).to eq "bibxml"
     expect(data_fetcher.instance_variable_get(:@ext)).to eq "xml"
     expect(data_fetcher.instance_variable_get(:@files)).to eq []
+    expect(data_fetcher.instance_variable_get(:@queue)).to be_instance_of Queue
+    expect(data_fetcher.instance_variable_get(:@mutex)).to be_instance_of Mutex
+    expect(data_fetcher.instance_variable_get(:@gh_issue)).to be_instance_of Relaton::Logger::Channels::GhIssue
+    expect(Relaton.logger_pool[:gh_issue]).to be_instance_of Relaton::Logger::Log
+    expect(data_fetcher.instance_variable_get(:@errors)[:id]).to be true
   end
 
   context "fetch" do
@@ -27,23 +36,36 @@ describe RelatonIso::DataFetcher do
   end
 
   context "instance methods" do
-    let(:iso_queue) { double "iso_queue" }
     let(:index) { double "index" }
+    let(:page) { double "page" }
+    let(:item) { double "item" }
+    let(:id) { Pubid::Iso::Identifier.parse "ISO/IEC 123" }
 
-    before do
-      allow(RelatonIso::Queue).to receive(:new).and_return iso_queue
+    let(:doc) do
+      docid = RelatonIso::DocumentIdentifier.new id: id, type: "ISO", primary: true
+      RelatonIsoBib::IsoBibliographicItem.new docid: [docid]
     end
 
     it "#iso_queue" do
-      expect(subject.iso_queue).to be iso_queue
+      expect(subject.iso_queue).to be_instance_of RelatonIso::Queue
     end
 
     it "#fetch" do
       expect(subject).to receive(:fetch_ics).with(no_args)
       expect(subject).to receive(:fetch_docs).with(no_args)
       expect(subject.index).to receive(:save).with(no_args)
-      expect(iso_queue).to receive(:save).with(no_args)
+      expect(subject.iso_queue).to receive(:save).with(no_args)
       subject.fetch
+    end
+
+    it "#repot_errors" do
+      errors = subject.instance_variable_get(:@errors)
+      errors[:id] = false
+      errors[:title] = true
+      expect(subject.instance_variable_get(:@gh_issue)).to receive(:create_issue)
+      expect do
+        subject.repot_errors
+      end.to output("[relaton-iso] ERROR: Failed to fetch title\n").to_stderr_from_any_process
     end
 
     it "#fetch_ics" do
@@ -53,29 +75,76 @@ describe RelatonIso::DataFetcher do
 
     context "#fetch_ics_page" do
       let(:resp) { double "response", body: :html }
-      let(:page) { double "page" }
-      let(:item) { double "item" }
       let(:queue) { subject.instance_variable_get(:@queue) }
 
-      before do
-        expect(subject).to receive(:get_redirection).with("/standards-catalogue/browse-by-ics.html").and_return resp
-        expect(Nokogiri).to receive(:HTML).with(:html).and_return page
+      context "successful" do
+        before do
+          expect(subject).to receive(:get_redirection)
+            .with("/standards-catalogue/browse-by-ics.html").and_return resp
+          expect(Nokogiri).to receive(:HTML).with(:html).and_return page
+        end
+
+        it "with ICS" do
+          expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a").and_return []
+          expect(item).to receive(:[]).with(:href).and_return "/ics/01.html"
+          expect(page).to receive(:xpath).with("//td[@data-title='ICS']/a").and_return [item]
+          expect(queue).to receive(:<<).with("/ics/01.html")
+          subject.fetch_ics_page "/standards-catalogue/browse-by-ics.html"
+        end
+
+        it "with documents" do
+          expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a").and_return [item]
+          expect(item).to receive(:[]).with(:href).and_return "/standard/62510.html?browse=ics"
+          expect(page).to receive(:xpath).with("//td[@data-title='ICS']/a").and_return []
+          subject.fetch_ics_page "/standards-catalogue/browse-by-ics.html"
+          expect(subject.iso_queue[0]).to eq "/standard/62510.html"
+        end
       end
 
-      it "with ICS" do
-        expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a").and_return []
+      it "unsuccessful" do
+        expect(subject).to receive(:get_redirection).with("/standards-catalogue/browse-by-ics.html").and_return nil
+        expect do
+          subject.fetch_ics_page "/standards-catalogue/browse-by-ics.html"
+        end.to output(
+          /ERROR: Failed fetching ICS page https:\/\/www.iso\.org\/standards-catalogue\/browse-by-ics\.html/,
+        ).to_stderr_from_any_process
+      end
+    end
+
+    context "#parse_doc_links" do
+      it "successful" do
+        expect(item).to receive(:[]).with(:href).and_return "/standard/62510.html?browse=ics"
+        expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a")
+          .and_return [item]
+        subject.parse_doc_links page, "/standards-catalogue/browse-by-ics.html"
+        expect(subject.iso_queue[0]).to eq "/standard/62510.html"
+      end
+
+      it "unsuccessful" do
+        expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a")
+          .and_return []
+        expect do
+          subject.parse_doc_links page, "/standards-catalogue/browse-by-ics.html"
+        end.to output(
+          /ERROR: Failed to scrape doc links on https:\/\/www.iso\.org\/standards-catalogue\/browse-by-ics\.html/,
+        ).to_stderr_from_any_process
+      end
+    end
+
+    context "#parse_ics_links" do
+      it "successful" do
         expect(item).to receive(:[]).with(:href).and_return "/ics/01.html"
         expect(page).to receive(:xpath).with("//td[@data-title='ICS']/a").and_return [item]
-        expect(queue).to receive(:<<).with("/ics/01.html")
-        subject.fetch_ics_page "/standards-catalogue/browse-by-ics.html"
+        expect(subject.instance_variable_get(:@queue)).to receive(:<<).with("/ics/01.html")
+        subject.parse_ics_links page, "/standards-catalogue/browse-by-ics.html"
       end
 
-      it "with documents" do
-        expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a").and_return [item]
-        expect(item).to receive(:[]).with(:href).and_return "/standard/62510.html?browse=ics"
+      it "unsuccessful" do
         expect(page).to receive(:xpath).with("//td[@data-title='ICS']/a").and_return []
-        expect(iso_queue).to receive(:add_first).with("/standard/62510.html")
-        subject.fetch_ics_page "/standards-catalogue/browse-by-ics.html"
+        expect { subject.parse_ics_links page, "/standards-catalogue/browse-by-ics.html" }
+          .to output(
+            /ERROR: Failed to scrape ICS links on https:\/\/www.iso\.org\/standards-catalogue\/browse-by-ics\.html/,
+          ).to_stderr_from_any_process
       end
     end
 
@@ -99,19 +168,18 @@ describe RelatonIso::DataFetcher do
           expect(Net::HTTP).to receive(:get_response).with(:uri).and_raise(Net::OpenTimeout).twice
           expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp
           expect(subject.get_redirection("/link1")).to eq resp
-        end.to output(/Timeout fetching uri, retrying.../).to_stderr_from_any_process
+        end.to output(/WARN: Timeout fetching uri, retrying.../).to_stderr_from_any_process
       end
 
       it "unsuccessful" do
         expect(Net::HTTP).to receive(:get_response).with(:uri).and_raise(Net::OpenTimeout).exactly(3).times
-        expect do
-          subject.get_redirection("/link1")
-        end.to output(/Error fetching uri/).to_stderr_from_any_process
+        expect { subject.get_redirection("/link1") }
+          .to output(/WARN: Failed fetching uri/).to_stderr_from_any_process
       end
     end
 
     it "#fetch_docs" do
-      expect(iso_queue).to receive(:[]).with(0..10_000).and_return %w[/page_path1 /page_path2]
+      expect(subject.iso_queue).to receive(:[]).with(0..10_000).and_return %w[/page_path1 /page_path2]
       queue = subject.instance_variable_get(:@queue)
       expect(queue).to receive(:<<).with("/page_path1")
       expect(queue).to receive(:<<).with("/page_path2")
@@ -120,77 +188,58 @@ describe RelatonIso::DataFetcher do
     end
 
     context "#fetch_doc" do
-      # before do
-      #   expect(RelatonIso::Hit).to receive(:new).with({ path: "/page_path" }, nil).and_return :hit
-      # end
-
       it "successful" do
-        expect(RelatonIso::Scrapper).to receive(:parse_page).with("/page_path").and_return :doc
+        expect(RelatonIso::Scrapper).to receive(:parse_page)
+          .with("/page_path", errors: {}).and_return :doc
         expect(subject).to receive(:save_doc).with(:doc, "/page_path")
         subject.fetch_doc "/page_path"
       end
 
       it "Open timeout" do
         expect(RelatonIso::Scrapper).to receive(:parse_page).and_raise Net::OpenTimeout
-        expect do
-          subject.fetch_doc "/page_path"
-        end.to output(/Error fetching document: https:\/\/www.iso\.org\/page_path/).to_stderr_from_any_process
+        expect { subject.fetch_doc "/page_path" }
+          .to output(/WARN: Fail fetching document: https:\/\/www.iso\.org\/page_path/)
+          .to_stderr_from_any_process
       end
 
       it "Read timeout" do
         expect(RelatonIso::Scrapper).to receive(:parse_page).and_raise Net::ReadTimeout
-        expect do
-          subject.fetch_doc "/page_path"
-        end.to output(/Error fetching document: https:\/\/www.iso\.org\/page_path/).to_stderr_from_any_process
+        expect { subject.fetch_doc "/page_path" }
+          .to output(/WARN: Fail fetching document: https:\/\/www.iso\.org\/page_path/)
+          .to_stderr_from_any_process
       end
     end
 
     context "#save_doc" do
-      let(:id) { Pubid::Iso::Identifier.parse "ISO/IEC 123" }
-
-      let(:doc) do
-        docid = double(id: id.to_s, primary: true, to_h: id.to_h)
-        double "doc", docidentifier: [docid]
-      end
-
-      before do
-        expect(iso_queue).to receive(:move_last).with("/page_path.html")
-      end
-
       it "no file duplication" do
+        subject.iso_queue.add_first "/page_path1.html"
+        subject.iso_queue.add_first "/page_path2.html"
         expect(subject.index).to receive(:add_or_update).with(id.to_h, "data/iso-iec-123.yaml")
-        expect(subject).to receive(:serialize).with(doc).and_return :content
-        expect(File).to receive(:write).with("data/iso-iec-123.yaml", :content, encoding: "UTF-8")
-        subject.save_doc doc, "/page_path.html"
+        expect(File).to receive(:write).with("data/iso-iec-123.yaml", /ISO\/IEC 123/, encoding: "UTF-8")
+        subject.save_doc doc, "/page_path1.html"
         expect(subject.instance_variable_get(:@files)).to eq ["data/iso-iec-123.yaml"]
+        expect(subject.iso_queue[0]).to eq "/page_path2.html"
       end
 
       it "file duplication" do
         subject.instance_variable_set(:@files, ["data/iso-iec-123.yaml"])
-        expect do
-          subject.save_doc doc, "/page_path.html"
-        end.to output(/Duplicate file data\/iso-iec-123\.yaml/).to_stderr_from_any_process
+        expect { subject.save_doc doc, "/page_path.html" }
+          .to output(/WARN: Duplicate file data\/iso-iec-123\.yaml/).to_stderr_from_any_process
       end
     end
 
     context "#serialize" do
-      let(:doc) { double "doc" }
-
-      it "yaml" do
-        expect(doc).to receive_message_chain(:to_hash, :to_yaml).and_return :yaml
-        expect(subject.serialize(doc)).to be :yaml
-      end
+      it("yaml") { expect(subject.serialize(doc)).to include "id: ISO/IEC 123" }
 
       it "bibxml" do
         subject.instance_variable_set(:@format, "bibxml")
-        expect(doc).to receive(:to_bibxml).and_return :bibxml
-        expect(subject.serialize(doc)).to be :bibxml
+        expect(subject.serialize(doc)).to include '<reference anchor="ISO/IEC.123"'
       end
 
       it "xml" do
         subject.instance_variable_set(:@format, "xml")
-        expect(doc).to receive(:to_xml).with(bibdata: true).and_return :xml
-        expect(subject.serialize(doc)).to be :xml
+        expect(subject.serialize(doc)).to include '<docidentifier type="ISO" ' \
+          'primary="true">ISO/IEC 123</docidentifier>'
       end
     end
   end
@@ -198,20 +247,18 @@ describe RelatonIso::DataFetcher do
   context "integration" do
     it "call fetch_doc asynchroniously" do
       expect(subject).to receive(:fetch_doc).with("/page_path.html")
-      iso_queue = double "iso_queue"
-      expect(iso_queue).to receive(:[]).with(0..10_000).and_return ["/page_path.html"]
-      expect(subject).to receive(:iso_queue).and_return iso_queue
+      subject.iso_queue.add_first "/page_path.html"
       subject.fetch_docs
     end
 
-    it "fetch ics", vcr: "fetch_ics" do
-      # expect(subject).to receive(:fetch_ics_page).with("/standards-catalogue/browse-by-ics.html").and_call_original
-      # expect(subject).to receive(:fetch_ics_page).with("/ics/01.html").and_call_original
-      # expect(subject).to receive(:fetch_ics_page).with("/ics/01.020.html").and_call_original
-      # allow(subject).to receive(:fetch_ics_page).and_return nil
-      # subject.fetch_ics
-      # expect(subject.iso_queue[0..2]).to eq %w[/standard/62510.html /standard/45797.html /standard/71971.html]
-    end
+    # it "fetch ics", vcr: "fetch_ics" do
+    #   expect(subject).to receive(:fetch_ics_page).with("/standards-catalogue/browse-by-ics.html").and_call_original
+    #   expect(subject).to receive(:fetch_ics_page).with("/ics/01.html").and_call_original
+    #   expect(subject).to receive(:fetch_ics_page).with("/ics/01.020.html").and_call_original
+    #   allow(subject).to receive(:fetch_ics_page).and_return nil
+    #   subject.fetch_ics
+    #   expect(subject.iso_queue[0..2]).to eq %w[/standard/62510.html /standard/45797.html /standard/71971.html]
+    # end
 
     # it "fetch docs", vcr: "fetch_docs" do
     #   subject.iso_queue.add_first "/standard/62510.html"

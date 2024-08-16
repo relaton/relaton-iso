@@ -7,13 +7,16 @@ module RelatonIso
     # @param [String] output output directory
     # @param [String] format format of output files (yaml, bibxml, xml)
     #
-    def initialize(output, format)
+    def initialize(output, format) # rubocop:disable Metrics/AbcSize
       @output = output
       @format = format
       @ext = format.sub(/^bib/, "")
       @files = []
       @queue = ::Queue.new
       @mutex = Mutex.new
+      @gh_issue = Relaton::Logger::Channels::GhIssue.new "relaton/relaton-iso", "Error fetching ISO documents"
+      Relaton.logger_pool[:gh_issue] = Relaton::Logger::Log.new(@gh_issue, levels: [:error])
+      @errors = Hash.new(true)
     end
 
     def index
@@ -34,12 +37,12 @@ module RelatonIso
     #
     def self.fetch(output: "data", format: "yaml")
       t1 = Time.now
-      puts "Started at: #{t1}"
+      Util.info "Started at: #{t1}"
       FileUtils.mkdir_p output
       new(output, format).fetch
       t2 = Time.now
-      puts "Stopped at: #{t2}"
-      puts "Done in: #{(t2 - t1).round} sec."
+      Util.info "Stopped at: #{t2}"
+      Util.info "Done in: #{(t2 - t1).round} sec."
     end
 
     #
@@ -48,13 +51,21 @@ module RelatonIso
     # @return [void]
     #
     def fetch # rubocop:disable Metrics/AbcSize
-      puts "Scrapping ICS pages..."
+      Util.info "Scrapping ICS pages..."
       fetch_ics
-      puts "[#{Time.now}] Scrapping documents..."
+      Util.info "(#{Time.now}) Scrapping documents..."
       fetch_docs
       iso_queue.save
       # index.sort! { |a, b| compare_docids a, b }
       index.save
+      repot_errors
+    end
+
+    def repot_errors
+      @errors.select { |_, v| v }.each_key do |k|
+        Util.error "Failed to fetch #{k}"
+      end
+      @gh_issue.create_issue
     end
 
     #
@@ -72,14 +83,30 @@ module RelatonIso
 
     def fetch_ics_page(path)
       resp = get_redirection path
-      page = Nokogiri::HTML(resp.body)
-      page.xpath("//td[@data-title='Standard and/or project']/div/div/a").each do |item|
-        iso_queue.add_first item[:href].split("?").first
+      unless resp
+        Util.error "Failed fetching ICS page #{url(path)}"
+        return
       end
 
-      page.xpath("//td[@data-title='ICS']/a").each do |item|
-        @queue << item[:href]
-      end
+      page = Nokogiri::HTML(resp.body)
+      parse_doc_links page, path
+      parse_ics_links page, path
+    end
+
+    def parse_doc_links(page, path)
+      doc_links = page.xpath "//td[@data-title='Standard and/or project']/div/div/a"
+      Util.error "Failed to scrape doc links on #{url(path)}" if doc_links.empty?
+      doc_links.each { |item| iso_queue.add_first item[:href].split("?").first }
+    end
+
+    def parse_ics_links(page, path)
+      ics_links = page.xpath("//td[@data-title='ICS']/a")
+      Util.error "Failed to scrape ICS links on #{url(path)}" if ics_links.empty?
+      ics_links.each { |item| @queue << item[:href] }
+    end
+
+    def url(path)
+      Scrapper::DOMAIN + path
     end
 
     #
@@ -88,18 +115,18 @@ module RelatonIso
     #
     # @param [String] path path to the page
     #
-    # @return [Net::HTTPOK] HTTP response
+    # @return [Net::HTTPOK, nil] HTTP response
     #
     def get_redirection(path) # rubocop:disable Metrics/MethodLength
       try = 0
-      uri = URI(Scrapper::DOMAIN + path)
+      uri = URI url(path)
       begin
         get_response uri
       rescue Net::OpenTimeout, Net::ReadTimeout, Errno::ECONNREFUSED => e
         try += 1
         retry if check_try try, uri
 
-        Util.error "Error fetching #{uri}, #{e.message}"
+        Util.warn "Failed fetching #{uri}, #{e.message}"
       end
     end
 
@@ -131,13 +158,10 @@ module RelatonIso
     # @return [void]
     #
     def fetch_doc(docpath)
-      # path = docpath.sub(/\.html$/, "")
-      # hit = Hit.new({ path: docpath }, nil)
-      doc = Scrapper.parse_page docpath
+      doc = Scrapper.parse_page docpath, errors: @errors
       @mutex.synchronize { save_doc doc, docpath }
     rescue StandardError => e
-      Util.error "Error fetching document: #{Scrapper::DOMAIN}#{docpath}\n" \
-        "#{e.message}\n#{e.backtrace}"
+      Util.warn "Fail fetching document: #{url(docpath)}\n#{e.message}\n#{e.backtrace}"
     end
 
     # def compare_docids(id1, id2)
@@ -156,7 +180,7 @@ module RelatonIso
       file_name = docid.id.gsub(/[\s\/:]+/, "-").downcase
       file = File.join @output, "#{file_name}.#{@ext}"
       if @files.include? file
-        Util.warn "Duplicate file #{file} for #{docid.id} from #{Scrapper::DOMAIN}#{docpath}"
+        Util.warn "Duplicate file #{file} for #{docid.id} from #{url(docpath)}"
       else
         @files << file
         index.add_or_update docid.to_h, file
