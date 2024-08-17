@@ -123,11 +123,8 @@ describe RelatonIso::DataFetcher do
       it "unsuccessful" do
         expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a")
           .and_return []
-        expect do
-          subject.parse_doc_links page, "/standards-catalogue/browse-by-ics.html"
-        end.to output(
-          /ERROR: Failed to scrape doc links on https:\/\/www.iso\.org\/standards-catalogue\/browse-by-ics\.html/,
-        ).to_stderr_from_any_process
+        subject.parse_doc_links page, "/standards-catalogue/browse-by-ics.html"
+        expect(subject.instance_variable_get(:@errors)).to eq doc_links: true
       end
     end
 
@@ -141,10 +138,8 @@ describe RelatonIso::DataFetcher do
 
       it "unsuccessful" do
         expect(page).to receive(:xpath).with("//td[@data-title='ICS']/a").and_return []
-        expect { subject.parse_ics_links page, "/standards-catalogue/browse-by-ics.html" }
-          .to output(
-            /ERROR: Failed to scrape ICS links on https:\/\/www.iso\.org\/standards-catalogue\/browse-by-ics\.html/,
-          ).to_stderr_from_any_process
+        subject.parse_ics_links page, "/standards-catalogue/browse-by-ics.html"
+        expect(subject.instance_variable_get(:@errors)).to eq ics_links: true
       end
     end
 

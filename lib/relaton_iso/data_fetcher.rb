@@ -95,13 +95,13 @@ module RelatonIso
 
     def parse_doc_links(page, path)
       doc_links = page.xpath "//td[@data-title='Standard and/or project']/div/div/a"
-      Util.error "Failed to scrape doc links on #{url(path)}" if doc_links.empty?
+      @errors[:doc_links] &&= doc_links.empty?
       doc_links.each { |item| iso_queue.add_first item[:href].split("?").first }
     end
 
     def parse_ics_links(page, path)
       ics_links = page.xpath("//td[@data-title='ICS']/a")
-      Util.error "Failed to scrape ICS links on #{url(path)}" if ics_links.empty?
+      @errors[:ics_links] &&= ics_links.empty?
       ics_links.each { |item| @queue << item[:href] }
     end
 
