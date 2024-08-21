@@ -180,13 +180,29 @@ module RelatonIso
       file_name = docid.id.gsub(/[\s\/:]+/, "-").downcase
       file = File.join @output, "#{file_name}.#{@ext}"
       if @files.include? file
-        Util.warn "Duplicate file #{file} for #{docid.id} from #{url(docpath)}"
+        rewrite_abandoned_doc doc, docid, file, docpath
       else
         @files << file
-        index.add_or_update docid.to_h, file
-        File.write file, serialize(doc), encoding: "UTF-8"
+        write_file file, doc, docid
       end
       iso_queue.move_last docpath
+    end
+
+    def rewrite_abandoned_doc(doc, docid, file, docpath) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      hash = YAML.load_file file
+      item_hash = HashConverter.hash_to_bib hash
+      bib = ::RelatonIsoBib::IsoBibliographicItem.new(**item_hash)
+      if doc.status&.substage && doc.status.substage.value != "98" &&
+          bib.status&.substage && bib.status.substage.value == "98"
+        write_file file, doc, docid
+      else
+        Util.warn "Duplicate file #{file} for #{docid.id} from #{url(docpath)}"
+      end
+    end
+
+    def write_file(file, doc, docid)
+      index.add_or_update docid.to_h, file
+      File.write file, serialize(doc), encoding: "UTF-8"
     end
 
     #
