@@ -410,6 +410,7 @@ module RelatonIso
         (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|DTS|DTR|ISP|PWI|Guide|(?=\d+))
       }x =~ id
       type = TYPES[type] || TYPES[prefix] || "international-standard"
+      Util.warn "Empty document type for #{id}" if type.nil? || type.empty?
       RelatonIsoBib::DocumentType.new(type: type)
     end
 
