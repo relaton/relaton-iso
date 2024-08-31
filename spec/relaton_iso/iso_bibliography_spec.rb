@@ -4,7 +4,7 @@ require "relaton_iso/iso_bibliography"
 
 RSpec.describe RelatonIso::IsoBibliography do
   before do |example|
-    return if example.metadata[:skip_before]
+    next if example.metadata[:skip_before]
 
     # Force to download index file
     allow_any_instance_of(Relaton::Index::Type).to receive(:actual?).and_return(false)
