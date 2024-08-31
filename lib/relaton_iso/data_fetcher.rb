@@ -188,15 +188,14 @@ module RelatonIso
       iso_queue.move_last docpath
     end
 
-    def rewrite_abandoned_doc(doc, docid, file, docpath) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    def rewrite_abandoned_doc(doc, docid, file, docpath) # rubocop:disable Metrics/AbcSize
       hash = YAML.load_file file
       item_hash = HashConverter.hash_to_bib hash
       bib = ::RelatonIsoBib::IsoBibliographicItem.new(**item_hash)
-      if doc.status&.substage && doc.status.substage.value != "98" &&
-          bib.status&.substage && bib.status.substage.value == "98"
-        write_file file, doc, docid
-      else
+      if doc.edition&.content == bib.edition&.content
         Util.warn "Duplicate file #{file} for #{docid.id} from #{url(docpath)}"
+      elsif doc.edition && doc.edition.content.to_i > bib.edition.content.to_i
+        write_file file, doc, docid
       end
     end
 

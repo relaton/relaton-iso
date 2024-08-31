@@ -4,14 +4,14 @@ require "relaton_iso/iso_bibliography"
 
 RSpec.describe RelatonIso::IsoBibliography do
   before do |example|
-    next if example.metadata[:skip_before]
+    return if example.metadata[:skip_before]
 
     # Force to download index file
     allow_any_instance_of(Relaton::Index::Type).to receive(:actual?).and_return(false)
     allow_any_instance_of(Relaton::Index::FileIO).to receive(:check_file).and_return(nil)
   end
 
-  it "raise access error" do
+  it "raise access error", :skip_before do
     hc = double "hit_collection"
     expect(RelatonIso::HitCollection).to receive(:new).and_return hc
     expect(hc).to receive(:fetch).and_raise SocketError
@@ -34,11 +34,8 @@ RSpec.describe RelatonIso::IsoBibliography do
       xml = hits[0].to_xml bibdata: true
       file_path = "spec/fixtures/hit.xml"
       File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
-      expect(xml).to be_equivalent_to(
-        File.read(file_path, encoding: "utf-8").sub(
-          %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
-        ),
-      )
+      expect(xml).to be_equivalent_to File.read(file_path, encoding: "utf-8")
+        .sub %r{<fetched>[^<]+</fetched>}, "<fetched>#{Date.today}</fetched>"
     end
   end
 
@@ -350,7 +347,7 @@ RSpec.describe RelatonIso::IsoBibliography do
       VCR.use_cassette "iso_guide_82_2019" do
         result = RelatonIso::IsoBibliography.get "ISO Guide 82:2019", nil, {}
         expect(result.link.detect { |l| l.type == "pub" }.content.to_s)
-          .to include "https://isotc.iso.org/livelink/livelink"
+          .to include("https://isotc.iso.org/livelink/livelink")
       end
     end
 

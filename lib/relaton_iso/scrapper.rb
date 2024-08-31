@@ -104,6 +104,8 @@ module RelatonIso
       @pubid = Pubid::Iso::Identifier.parse(id)
       @pubid.root.edition ||= edition if @pubid.base
       @pubid
+    rescue StandardError => e
+      Util.error "Failed to parse pubid from #{id}: #{e.message}"
     end
 
     def edition
@@ -406,11 +408,10 @@ module RelatonIso
     def fetch_type
       %r{
         ^(?<prefix>ISO|IWA|IEC)
-        (?:(?:/IEC|/IEEE|/PRF|/NP|/SAE|/HL7|/DGuide)*\s|/)
+        (?:(?:/CIE|/IEC|/IEEE|/PRF|/NP|/SAE|/HL7|/DGuide)*\s|/)
         (?<type>TS|TR|PAS|AWI|CD|FDIS|NP|DIS|WD|R|DTS|DTR|ISP|PWI|Guide|(?=\d+))
       }x =~ id
       type = TYPES[type] || TYPES[prefix] || "international-standard"
-      Util.warn "Empty document type for #{id}" if type.nil? || type.empty?
       RelatonIsoBib::DocumentType.new(type: type)
     end
 

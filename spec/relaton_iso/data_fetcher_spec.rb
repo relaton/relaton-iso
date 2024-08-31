@@ -40,9 +40,8 @@ describe RelatonIso::DataFetcher do
     let(:page) { double "page" }
     let(:item) { double "item" }
     let(:id) { Pubid::Iso::Identifier.parse "ISO/IEC 123" }
-    let(:status) { RelatonBib::DocumentStatus.new(stage: "60", substage: "99") }
     let(:docid) { RelatonIso::DocumentIdentifier.new id: id, type: "ISO", primary: true }
-    let(:doc) { RelatonIsoBib::IsoBibliographicItem.new docid: [docid], docstatus: status }
+    let(:doc) { RelatonIsoBib::IsoBibliographicItem.new docid: [docid], edition: "2" }
 
     it "#iso_queue" do
       expect(subject.iso_queue).to be_instance_of RelatonIso::Queue
@@ -215,17 +214,17 @@ describe RelatonIso::DataFetcher do
       end
 
       context "file duplication" do
+        before { subject.instance_variable_set(:@files, ["data/iso-iec-123.yaml"]) }
+
         it "warn" do
-          subject.instance_variable_set(:@files, ["data/iso-iec-123.yaml"])
           expect(YAML).to receive(:load_file).with("data/iso-iec-123.yaml").and_return doc.to_hash
           expect { subject.save_doc doc, "/page_path.html" }
             .to output(/WARN: Duplicate file data\/iso-iec-123\.yaml/).to_stderr_from_any_process
         end
 
         it "rewrite" do
-          subject.instance_variable_set(:@files, ["data/iso-iec-123.yaml"])
           hash = doc.to_hash
-          hash["docstatus"] = { "stage" => { "value" => "60" }, "substage" => { "value" => "98" } }
+          hash["edition"] = "1"
           expect(YAML).to receive(:load_file).with("data/iso-iec-123.yaml").and_return hash
           expect(subject.index).to receive(:add_or_update).with(id.to_h, "data/iso-iec-123.yaml")
           expect(File).to receive(:write).with("data/iso-iec-123.yaml", /ISO\/IEC 123/, encoding: "UTF-8")
