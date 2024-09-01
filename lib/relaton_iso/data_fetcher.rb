@@ -89,17 +89,17 @@ module RelatonIso
       end
 
       page = Nokogiri::HTML(resp.body)
-      parse_doc_links page, path
-      parse_ics_links page, path
+      parse_doc_links page
+      parse_ics_links page
     end
 
-    def parse_doc_links(page, path)
+    def parse_doc_links(page)
       doc_links = page.xpath "//td[@data-title='Standard and/or project']/div/div/a"
       @errors[:doc_links] &&= doc_links.empty?
       doc_links.each { |item| iso_queue.add_first item[:href].split("?").first }
     end
 
-    def parse_ics_links(page, path)
+    def parse_ics_links(page)
       ics_links = page.xpath("//td[@data-title='ICS']/a")
       @errors[:ics_links] &&= ics_links.empty?
       ics_links.each { |item| @queue << item[:href] }
@@ -194,7 +194,7 @@ module RelatonIso
       if edition_greater?(doc, bib) || edition_equal_substage98?(doc, bib)
         write_file file, doc, docid
       elsif @files.include? file
-        Util.warn "Duplicate file `#{file}` for `#{docid.id}` from `#{docpath}`"
+        Util.warn "Duplicate file `#{file}` for `#{docid.id}` from `#{url(docpath)}`"
       end
     end
 
