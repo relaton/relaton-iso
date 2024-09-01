@@ -11,7 +11,7 @@ module RelatonIso
       @output = output
       @format = format
       @ext = format.sub(/^bib/, "")
-      @files = []
+      @files = Set.new
       @queue = ::Queue.new
       @mutex = Mutex.new
       @gh_issue = Relaton::Logger::Channels::GhIssue.new "relaton/relaton-iso", "Error fetching ISO documents"
@@ -179,27 +179,36 @@ module RelatonIso
       docid = doc.docidentifier.detect(&:primary)
       file_name = docid.id.gsub(/[\s\/:]+/, "-").downcase
       file = File.join @output, "#{file_name}.#{@ext}"
-      if @files.include? file
-        rewrite_abandoned_doc doc, docid, file, docpath
+      if File.exist?(file)
+        rewrite_with_same_or_newer doc, docid, file, docpath
       else
-        @files << file
         write_file file, doc, docid
       end
       iso_queue.move_last docpath
     end
 
-    def rewrite_abandoned_doc(doc, docid, file, docpath) # rubocop:disable Metrics/AbcSize
+    def rewrite_with_same_or_newer(doc, docid, file, docpath)
       hash = YAML.load_file file
       item_hash = HashConverter.hash_to_bib hash
       bib = ::RelatonIsoBib::IsoBibliographicItem.new(**item_hash)
-      if doc.edition&.content == bib.edition&.content
-        Util.warn "Duplicate file #{file} for #{docid.id} from #{url(docpath)}"
-      elsif doc.edition && doc.edition.content.to_i > bib.edition.content.to_i
+      if edition_greater?(doc, bib) || edition_equal_substage98?(doc, bib)
         write_file file, doc, docid
+      elsif @files.include? file
+        Util.warn "Duplicate file `#{file}` for `#{docid.id}` from `#{docpath}`"
       end
     end
 
+    def edition_greater?(doc, bib)
+      doc.edition && bib.edition && doc.edition.content.to_i > bib.edition.content.to_i
+    end
+
+    def edition_equal_substage98?(doc, bib) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+      doc.edition&.content == bib.edition&.content &&
+        (doc.status&.substage&.value != "98" || bib.status&.substage&.value == "98")
+    end
+
     def write_file(file, doc, docid)
+      @files << file
       index.add_or_update docid.to_h, file
       File.write file, serialize(doc), encoding: "UTF-8"
     end
