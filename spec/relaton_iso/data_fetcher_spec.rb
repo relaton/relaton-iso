@@ -114,14 +114,14 @@ describe RelatonIso::DataFetcher do
         expect(item).to receive(:[]).with(:href).and_return "/standard/62510.html?browse=ics"
         expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a")
           .and_return [item]
-        subject.parse_doc_links page, "/standards-catalogue/browse-by-ics.html"
+        subject.parse_doc_links page # , "/standards-catalogue/browse-by-ics.html"
         expect(subject.iso_queue[0]).to eq "/standard/62510.html"
       end
 
       it "unsuccessful" do
         expect(page).to receive(:xpath).with("//td[@data-title='Standard and/or project']/div/div/a")
           .and_return []
-        subject.parse_doc_links page, "/standards-catalogue/browse-by-ics.html"
+        subject.parse_doc_links page # , "/standards-catalogue/browse-by-ics.html"
         expect(subject.instance_variable_get(:@errors)).to eq doc_links: true
       end
     end
@@ -131,12 +131,12 @@ describe RelatonIso::DataFetcher do
         expect(item).to receive(:[]).with(:href).and_return "/ics/01.html"
         expect(page).to receive(:xpath).with("//td[@data-title='ICS']/a").and_return [item]
         expect(subject.instance_variable_get(:@queue)).to receive(:<<).with("/ics/01.html")
-        subject.parse_ics_links page, "/standards-catalogue/browse-by-ics.html"
+        subject.parse_ics_links page # , "/standards-catalogue/browse-by-ics.html"
       end
 
       it "unsuccessful" do
         expect(page).to receive(:xpath).with("//td[@data-title='ICS']/a").and_return []
-        subject.parse_ics_links page, "/standards-catalogue/browse-by-ics.html"
+        subject.parse_ics_links page # , "/standards-catalogue/browse-by-ics.html"
         expect(subject.instance_variable_get(:@errors)).to eq ics_links: true
       end
     end
