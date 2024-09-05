@@ -191,10 +191,10 @@ module RelatonIso
       hash = YAML.load_file file
       item_hash = HashConverter.hash_to_bib hash
       bib = ::RelatonIsoBib::IsoBibliographicItem.new(**item_hash)
-      if edition_greater?(doc, bib) || edition_equal_substage98?(doc, bib)
+      if edition_greater?(doc, bib) || replace_substage98?(doc, bib)
         write_file file, doc, docid
-      elsif @files.include? file
-        Util.warn "Duplicate file `#{file}` for `#{docid.id}` from `#{url(docpath)}`"
+      elsif @files.include?(file) && !edition_greater?(bib, doc)
+        Util.warn "Duplicate file `#{file}` for `#{docid.id}` from #{url(docpath)}"
       end
     end
 
@@ -202,7 +202,7 @@ module RelatonIso
       doc.edition && bib.edition && doc.edition.content.to_i > bib.edition.content.to_i
     end
 
-    def edition_equal_substage98?(doc, bib) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    def replace_substage98?(doc, bib) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
       doc.edition&.content == bib.edition&.content &&
         (doc.status&.substage&.value != "98" || bib.status&.substage&.value == "98")
     end
