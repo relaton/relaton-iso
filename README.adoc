@@ -210,7 +210,6 @@ This is the undated reference.
 `ISO/IEC DIR 1 + IEC SUP:{yyyy}`::: Available edition years from 2016 (ed12) to 2023 (ed19).
 
 
-
 ==== ISO/IEC JTC 1 governance documents
 
 `ISO/IEC JTC 1 DIR`::
