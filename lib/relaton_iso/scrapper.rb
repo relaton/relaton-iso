@@ -65,7 +65,7 @@ module RelatonIso
     end
 
     def parse(path) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-      @doc, url = get_page path
+      @doc, @url = get_page path
       titles, abstract, langs = fetch_titles_abstract
 
       RelatonIsoBib::IsoBibliographicItem.new(
@@ -83,7 +83,7 @@ module RelatonIso
         editorialgroup: fetch_workgroup,
         abstract: abstract,
         copyright: fetch_copyright,
-        link: fetch_link(url),
+        link: fetch_link(@url),
         relation: fetch_relations,
         place: ["Geneva"],
         structuredidentifier: fetch_structuredidentifier,
@@ -283,11 +283,8 @@ module RelatonIso
     # @return [RelatonBib::StructuredIdentifier] structured identifier
     #
     def fetch_structuredidentifier # rubocop:disable Metrics/MethodLength
-      RelatonIsoBib::StructuredIdentifier.new(
-        project_number: "#{pubid.root.publisher} #{pubid.root.number}",
-        part: pubid.root.part&.to_s, # &.sub(/^-/, ""),
-        type: pubid.root.publisher,
-      )
+      pnum = File.basename(@url, ".*")
+      RelatonIsoBib::StructuredIdentifier.new(project_number: pnum, type: pubid.root.publisher)
     end
 
     #

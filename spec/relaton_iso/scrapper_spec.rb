@@ -64,7 +64,10 @@ RSpec.describe RelatonIso::Scrapper do
   end
 
   context do
-    before { subject.instance_variable_set :@doc, doc }
+    before do
+      subject.instance_variable_set :@doc, doc
+      subject.instance_variable_set :@url, "https://www.iso.org/standard/26020.html"
+    end
 
     describe "#id" do
       it "returns document ID" do
@@ -168,8 +171,7 @@ RSpec.describe RelatonIso::Scrapper do
     it "#fetch_structuredidentifier" do
       si = subject.send(:fetch_structuredidentifier)
       expect(si).to be_instance_of RelatonIsoBib::StructuredIdentifier
-      expect(si.project_number).to eq "ISO 123"
-      expect(si.part).to be_nil
+      expect(si.project_number).to eq "26020"
       expect(si.type).to eq "ISO"
     end
 
