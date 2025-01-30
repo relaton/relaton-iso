@@ -146,7 +146,7 @@ RSpec.describe RelatonIso::IsoBibliography do
 
       shared_examples "all_parts" do
         it "returns (all parts) as identifier part" do
-          expect(subject.structuredidentifier.project_number).to eq(pubid_all_parts)
+          expect(subject.structuredidentifier.project_number).to eq("53798 (all parts)")
           expect(subject.docidentifier.map(&:id)).to eq([pubid_all_parts, isoref_all_parts, urn_all_parts])
         end
 
