@@ -2,11 +2,11 @@
 
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "relaton_iso/version"
+require "relaton/iso/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "relaton-iso"
-  spec.version       = RelatonIso::VERSION
+  spec.version       = Relaton::Iso::VERSION
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 
@@ -28,5 +28,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "pubid", "~> 0.1.1"
   spec.add_dependency "relaton-index", "~> 0.2.12"
-  spec.add_dependency "relaton-iso-bib", "~> 1.20.0"
+  spec.add_dependency "relaton-bib", "~> 2.0.0-alpha.1"
 end

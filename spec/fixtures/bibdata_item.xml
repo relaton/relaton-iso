@@ -1,0 +1,207 @@
+<bibdata type="standard" schema-version="v1.2.9">
+  <fetched>2011-06-22</fetched>
+  <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+  <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
+  <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
+  <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata – Part 1: Fundamentals</title>
+  <title type="title-intro" format="text/plain" language="fr" script="Latn">Information géographique</title>
+  <title type="title-main" format="text/plain" language="fr" script="Latn">Métadonnées</title>
+  <title type="title-part" format="text/plain" language="fr" script="Latn">Information géographique</title>
+  <title type="main" format="text/plain" language="fr" script="Latn">Information géographique – Métadonnées – Information géographique</title>
+  <uri type="src">https://www.iso.org/standard/53798.html</uri>
+  <uri type="obp">https://www.iso.org/obp/ui/#!iso:std:53798:en</uri>
+  <uri type="rss">https://www.iso.org/contents/data/standard/05/37/53798.detail.rss</uri>
+  <docidentifier type="ISO" primary="true">TC211</docidentifier>
+  <docnumber>123456</docnumber>
+  <date type="issued">
+    <on>2014</on>
+  </date>
+  <date type="published">
+    <on>2014-04</on>
+  </date>
+  <date type="accessed">
+    <on>2015-05-20</on>
+  </date>
+  <contributor>
+    <role type="publisher">
+      <description>Publisher role</description>
+    </role>
+    <organization>
+      <name>International Organization for Standardization</name>
+      <abbreviation>ISO</abbreviation>
+      <uri>www.iso.org</uri>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en">A. Bierman</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>IETF</name>
+          <abbreviation>IETF</abbreviation>
+          <identifier type="uri">www.ietf.org</identifier>
+        </organization>
+      </affiliation>
+      <address>
+        <street>Street</street>
+        <city>City</city>
+        <state>State</state>
+        <country>Country</country>
+        <postcode>123456</postcode>
+      </address>
+      <phone>223322</phone>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>IETF</name>
+      <abbreviation>IETF</abbreviation>
+      <identifier type="uri">www.ietf.org</identifier>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <forename initial="A"/>
+        <surname>Bierman</surname>
+      </name>
+      <affiliation>
+        <organization>
+          <name>IETF</name>
+          <abbreviation>IETF</abbreviation>
+        </organization>
+      </affiliation>
+      <identifier type="uri">www.person.com</identifier>
+      <address>
+        <street>Street</street>
+        <city>City</city>
+        <state>State</state>
+        <country>Country</country>
+        <postcode>123456</postcode>
+      </address>
+      <phone>223322</phone>
+    </person>
+  </contributor>
+  <edition>1</edition>
+  <version>
+    <revision-date>2019-04-01</revision-date>
+    <draft>draft</draft>
+  </version>
+  <note type="bibnote">note</note>
+  <language>en</language>
+  <language>fr</language>
+  <script>Latn</script>
+  <abstract language="en" script="Latn">ISO 19115-1:2014 defines the schema required for ...</abstract>
+  <abstract language="fr" script="Latn">L'ISO 19115-1:2014 définit le schéma requis pour ...</abstract>
+  <status>
+    <stage>60</stage>
+    <substage>60</substage>
+    <iteration>final</iteration>
+  </status>
+  <copyright>
+    <from>2014</from>
+    <to>2020</to>
+    <owner>
+      <organization>
+        <name>International Organization for Standardization</name>
+        <abbreviation>ISO</abbreviation>
+        <uri>www.iso.org</uri>
+      </organization>
+    </owner>
+  </copyright>
+  <relation type="updates">
+    <bibitem type="standard">
+      <formattedref>ISO 19115:2003</formattedref>
+    </bibitem>
+    <localityStack>
+      <locality type="section">
+        <referenceFrom>Reference from</referenceFrom>
+      </locality>
+    </localityStack>
+  </relation>
+  <relation type="updates">
+    <bibitem type="standard">
+      <formattedref>ISO 19115:2003/Cor 1:2006</formattedref>
+    </bibitem>
+  </relation>
+  <series type="main">
+    <title type="title-main" format="text/plain" language="en" script="Latn">ISO/IEC FDIS 10118-3</title>
+    <place>
+      <formattedPlace>Serie's place</formattedPlace>
+    </place>
+    <organization>Serie's organization</organization>
+    <abbreviation language="en" script="Latn">ABVR</abbreviation>
+    <from>2009-02-01</from>
+    <to>2010-12-20</to>
+    <number>serie1234</number>
+    <partnumber>part5678</partnumber>
+  </series>
+  <series type="alt">
+    <formattedref>serieref</formattedref>
+    <title format="text/plain">Series Title</title>
+  </series>
+  <medium>
+    <form>medium form</form>
+    <size>medium size</size>
+    <scale>medium scale</scale>
+  </medium>
+  <place>
+    <formattedPlace>bib place</formattedPlace>
+  </place>
+  <extent>
+    <locality type="section">
+      <referenceFrom>Reference from</referenceFrom>
+      <referenceTo>Reference to</referenceTo>
+    </locality>
+  </extent>
+  <accesslocation>accesslocation1</accesslocation>
+  <accesslocation>accesslocation2</accesslocation>
+  <classification type="type">value</classification>
+  <validity>
+    <validityBegins>2010-10-10</validityBegins>
+    <validityEnds>2011-02-03</validityEnds>
+    <revision>2011-03-04</revision>
+  </validity>
+  <ext schema-version="v1.0.3">
+    <doctype>international-standard</doctype>
+    <subdoctype>specification</subdoctype>
+    <flavor>iso</flavor>
+    <horizontal>false</horizontal>
+    <editorialgroup>
+      <technical-committee number="211" type="technicalCommittee">ISO/TC 211 Geographic information/Geomatics</technical-committee>
+      <subcommittee number="122" type="ISO">International Organization for Standardization</subcommittee>
+      <workgroup number="111" type="WG">Workgroup Organization</workgroup>
+    </editorialgroup>
+    <approvalgroup>
+      <agency>Agency</agency>
+      <technical-committee identifier="TC1" prefix="TC">ISO TC</technical-committee>
+      <secretariat>Secretariat</secretariat>
+    </approvalgroup>
+    <ics>
+      <code>35.240.70</code>
+      <text>IT applications in science</text>
+    </ics>
+    <structuredidentifier type="sid">
+      <agency>ISO</agency>
+      <class>Class</class>
+      <docnumber>123</docnumber>
+      <partnumber>4</partnumber>
+      <edition>ed 1</edition>
+      <version>v2</version>
+      <supplementtype>Sup</supplementtype>
+      <supplementnumber>2</supplementnumber>
+      <amendment>AMD 1</amendment>
+      <corrigendum>CORR</corrigendum>
+      <language>en</language>
+      <year>2000</year>
+    </structuredidentifier>
+    <stagename>International Standard published</stagename>
+    <fast-track>false</fast-track>
+    <price-code>A</price-code>
+  </ext>
+</bibdata>
