@@ -1,7 +1,8 @@
 require_relative "doctype"
 require_relative "iso_project_group"
 require_relative "stagename"
-
+# require_relative "subdoctype"
+require_relative "structured_identifier"
 
 module Relaton
   module Iso
@@ -14,9 +15,9 @@ module Relaton
       attribute :editorialgroup, ISOProjectGroup
       attribute :approvalgroup, ISOProjectGroup
       attribute :ics, Bib::ICS, collection: true
-      attribute :structuredidentifier, Bib::StructuredIdentifier, collection: true
+      attribute :structuredidentifier, StructuredIdentifier
       attribute :stagename, Stagename
-      attribute :updates_document_type, Doctype
+      attribute :updates_document_type, :string, values: Doctype::VALUES
       attribute :fast_track, :boolean
       attribute :price_code, :string
 

@@ -168,7 +168,7 @@
     <revision>2011-03-04</revision>
   </validity>
   <ext schema-version="v1.0.3">
-    <doctype>international-standard</doctype>
+    <doctype abbreviation="IS">international-standard</doctype>
     <subdoctype>specification</subdoctype>
     <flavor>iso</flavor>
     <horizontal>false</horizontal>
@@ -187,20 +187,13 @@
       <text>IT applications in science</text>
     </ics>
     <structuredidentifier type="sid">
-      <agency>ISO</agency>
-      <class>Class</class>
-      <docnumber>123</docnumber>
-      <partnumber>4</partnumber>
-      <edition>ed 1</edition>
-      <version>v2</version>
-      <supplementtype>Sup</supplementtype>
-      <supplementnumber>2</supplementnumber>
-      <amendment>AMD 1</amendment>
-      <corrigendum>CORR</corrigendum>
-      <language>en</language>
-      <year>2000</year>
+      <project-number part="1" subpart="2" amendment="3" corrigendum="4" origyr="2020-11-12">
+        123456
+      </project-number>
+      <tc-document-number>654321</tc-document-number>
     </structuredidentifier>
     <stagename>International Standard published</stagename>
+    <updates-document-type>technical-report</updates-document-type>
     <fast-track>false</fast-track>
     <price-code>A</price-code>
   </ext>

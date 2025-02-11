@@ -2,8 +2,8 @@ require_relative "ext"
 
 module Relaton
   module Iso
-    class Bibdata < Bib::BibliographicItem
-      model Bib::Item
+    class Bibdata < Item
+      model Bib::ItemData
 
       attribute :ext, Ext
 
