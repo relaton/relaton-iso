@@ -10,9 +10,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 
-  spec.summary       = "RelatonIso: retrieve ISO Standards for bibliographic " \
+  spec.summary       = "Relaton::Iso: retrieve ISO Standards for bibliographic " \
                        "use using the IsoBibliographicItem model"
-  spec.description   = "RelatonIso: retrieve ISO Standards for bibliographic " \
+  spec.description   = "Relaton::Iso: retrieve ISO Standards for bibliographic " \
                        "use using the IsoBibliographicItem model"
 
   spec.homepage      = "https://github.com/relaton/relaton-iso"

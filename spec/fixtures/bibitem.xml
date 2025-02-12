@@ -1,4 +1,4 @@
-<bibdata type="standard" schema-version="1.0.0">
+<bibitem id="ISO1231994" type="standard" schema-version="1.0.0">
   <fetched>2022-05-02</fetched>
   <formattedref>ISO 123:1994</formattedref>
   <title language="en" locale="en-US" script="Latn">Geographic information -- Metadata</title>
@@ -225,32 +225,4 @@
   <depiction scope="local">
     <image id="example-1234-5678-90ab-cdef12345678" src="https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg" mimetype="image/jpeg" filename="PUB100080.jpg" width="100%" height="auto" alt="ISO logo" title="ISO Logo" longdesc="https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg"/>
   </depiction>
-  <ext schema-version="1.0.0">
-    <doctype abbreviation="std">international-standard</doctype>
-    <subdoctype>specification</subdoctype>
-    <flavor>iso</flavor>
-    <horizontal>true</horizontal>
-    <editorialgroup>
-      <agency>ISO</agency>
-      <technical-committee number="123" type="main" identifier="ISO/TC 123" prefix="ISO/TC">ISO Technical Committee 123</technical-committee>
-      <subcommittee number="1" type="main" identifier="ISO/TC 123/SC 1" prefix="ISO/TC">ISO Subcommittee 1 of Technical Committee 123</subcommittee>
-      <workgroup number="1" type="main" identifier="ISO/TC 123/SC 1/WG 1" prefix="ISO/TC">ISO Workgroup 1 of Subcommittee 1 of Technical Committee 123</workgroup>
-      <secretariat>Secretariat</secretariat>
-    </editorialgroup>
-    <approvalgroup>
-      <technical-committee number="123" type="main" identifier="ISO/TC 123" prefix="ISO/TC">ISO Technical Committee 123</technical-committee>
-    </approvalgroup>
-    <ics>
-      <code>123.456</code>
-      <text>Geographic information / Geographical information systems (GIS)</text>
-    </ics>
-    <structuredidentifier type="standard">
-      <project-number part="1" subpart="2" amendment="3" corrigendum="4" origyr="1994">123456789</project-number>
-      <tc-document-number>123</tc-document-number>
-    </structuredidentifier>
-    <stagename abbreviation="IS">International Standard</stagename>
-    <updates-document-type>international-standard</updates-document-type>
-    <fast-track>false</fast-track>
-    <price-code>XX</price-code>
-  </ext>
-</bibdata>
+</bibitem>

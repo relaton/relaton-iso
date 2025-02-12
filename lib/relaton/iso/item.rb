@@ -4,7 +4,8 @@ require_relative "ext"
 module Relaton
   module Iso
     class Item < Bib::Item
-      # attributes[:contributor].type = Contributor
+      model Bib::ItemData
+
       attribute :ext, Ext
     end
   end
