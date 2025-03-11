@@ -1,12 +1,10 @@
-require_relative "iso_workgroup"
-
 module Relaton
   module Iso
     class ISOProjectGroup < Lutaml::Model::Serializable
       attribute :agency, :string, collection: true
-      attribute :technical_committee, IsoWorkgroup, collection: true
-      attribute :subcommittee, IsoWorkgroup, collection: true
-      attribute :workgroup, IsoWorkgroup, collection: true
+      attribute :technical_committee, Bib::WorkGroup, collection: true
+      attribute :subcommittee, Bib::WorkGroup, collection: true
+      attribute :workgroup, Bib::WorkGroup, collection: true
       attribute :secretariat, :string
 
       xml do

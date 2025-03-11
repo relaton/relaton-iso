@@ -17,7 +17,7 @@ module Relaton
       attribute :ics, Bib::ICS, collection: true
       attribute :structuredidentifier, StructuredIdentifier
       attribute :stagename, Stagename
-      attribute :updates_document_type, :string, values: Doctype::VALUES
+      attribute :updates_document_type, :string, values: Doctype::TYPES
       attribute :fast_track, :boolean
       attribute :price_code, :string
 
