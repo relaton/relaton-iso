@@ -26,7 +26,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
+  spec.add_dependency "isoics", "~> 0.1.6"
   spec.add_dependency "pubid", "~> 0.1.1"
   spec.add_dependency "relaton-bib", "~> 2.0.0-alpha.1"
+  spec.add_dependency "relaton-core", "~> 0.0.3"
   spec.add_dependency "relaton-index", "~> 0.2.12"
 end

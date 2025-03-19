@@ -1,4 +1,5 @@
 # require_relative "contributor"
+require_relative "docidentifier"
 require_relative "ext"
 
 module Relaton
@@ -7,8 +8,9 @@ module Relaton
     end
 
     class Item < Bib::Item
-      model Bib::ItemData
+      model ItemData
 
+      attribute :docidentifier, Docidentifier, collection: true
       attribute :relation, Relation, collection: true
       attribute :ext, Ext
     end

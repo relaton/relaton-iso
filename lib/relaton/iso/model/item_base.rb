@@ -3,7 +3,7 @@ module Relaton
     # The class is for relaton bibitem instances.
     # The in relaton bibitem instances dosn't have schema-version & fetched attributes.
     class ItemBase < Item
-      model Bib::ItemData
+      model ItemData
 
       # we don't need schema-version & fetched attributes in reation/bibitem
       mappings[:xml].instance_variable_get(:@attributes).delete("id")

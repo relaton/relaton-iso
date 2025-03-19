@@ -29,14 +29,18 @@ module Relaton
         ret[:ext] = Ext.new(**ret[:ext]) if ret[:ext]
       end
 
+      def create_docid(**args)
+        Docidentifier.new(**args)
+      end
+
       #
       # Ovverides superclass's method
       #
       # @param item [Hash]
       # @retirn [RelatonIsoBib::IsoBibliographicItem]
-      # def bib_item(item)
-      #   Item.new(**item)
-      # end
+      def bib_item(item)
+        ItemData.new(**item)
+      end
 
       #
       # Ovverides superclass's method
