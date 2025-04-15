@@ -1,6 +1,6 @@
 require_relative "../iso"
 require_relative "queue"
-require_relative "scrapper"
+require_relative "scraper"
 
 module Relaton
   module Iso
@@ -28,7 +28,7 @@ module Relaton
       end
 
       def index
-        @index ||= Relaton::Index.find_or_create :iso, file: HitCollection::INDEXFILE
+        @index ||= Relaton::Index.find_or_create :iso, file: "#{HitCollection::INDEXFILE}.yaml"
       end
 
       #
@@ -98,7 +98,7 @@ module Relaton
       end
 
       def url(path)
-        Scrapper::DOMAIN + path
+        Scraper::DOMAIN + path
       end
 
       #
@@ -150,7 +150,7 @@ module Relaton
       # @return [void]
       #
       def fetch_doc(docpath)
-        doc = Scrapper.parse_page docpath, errors: @errors
+        doc = Scraper.parse_page docpath, errors: @errors
         mutex.synchronize { save_doc doc, docpath }
       rescue StandardError => e
         Util.warn "Fail fetching document: #{url(docpath)}\n#{e.message}\n#{e.backtrace}"

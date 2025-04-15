@@ -1,4 +1,5 @@
 require "relaton/bib/hash_parser_v1"
+require_relative "../iso"
 
 module Relaton
   module Iso

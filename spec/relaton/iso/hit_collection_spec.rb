@@ -43,8 +43,8 @@ describe Relaton::Iso::HitCollection do
     end
 
     it "fing all parts & reverse sort by pubid" do
-      subject.instance_variable_set :@opts, { all_parts: true }
-      expect(subject.find.size).to eq 4
+      ref.all_parts = true
+      expect(subject.find.size).to eq 3
       expect(subject.first.pubid.to_s).to eq "ISO 19115-3:2016"
     end
   end
@@ -64,24 +64,24 @@ describe Relaton::Iso::HitCollection do
       expect do
         subject.create_pubid publisher: "ISO", stage: "ST", number: "19115"
       end.to output(
-        /\[relaton-iso\] WARN: \(ISO 19115-1:2014\) cannot parse typed stage or stage 'ST/
+        /\[relaton-iso\] WARN: \(ISO 19115-1:2014\) cannot parse typed stage or stage 'ST/,
       ).to_stderr_from_any_process
     end
   end
 
   describe "#excludings" do
     it "returns excluded parts" do
-      expect(subject.excludings).to eq [:year, :stage, :iteration]
+      expect(subject.excludings).to eq %i[year stage iteration]
     end
 
     it "returns excluded parts with all_parts" do
-      subject.instance_variable_set :@opts, { all_parts: true }
-      expect(subject.excludings).to eq [:year, :part, :stage, :iteration]
+      ref.all_parts = true
+      expect(subject.excludings).to eq %i[year part stage iteration]
     end
 
     it "returns excluded parts when ref has no part" do
       subject.instance_variable_set :@ref, ::Pubid::Iso::Identifier.create(publisher: "ISO", number: "19115")
-      expect(subject.excludings).to eq [:year, :part, :stage, :iteration]
+      expect(subject.excludings).to eq %i[year part stage iteration]
     end
   end
 
@@ -92,20 +92,21 @@ describe Relaton::Iso::HitCollection do
   describe "#fetch_doc" do
     it "no all_parts" do
       subject.instance_variable_set :@array, [hit1, hit2]
-      expect(hit1).to receive(:fetch).with(nil).and_return :doc
-      expect(subject.fetch_doc({})).to be :doc
+      expect(hit1).to receive(:item).and_return :doc
+      expect(subject.fetch_doc).to be :doc
     end
 
     it "all_parts" do
+      ref.all_parts = true
       subject.instance_variable_set :@array, [hit1, hit2]
-      expect(subject).to receive(:to_all_parts).with("en").and_return :doc
-      expect(subject.fetch_doc(all_parts: true, lang: "en")).to be :doc
+      expect(subject).to receive(:to_all_parts).and_return :doc
+      expect(subject.fetch_doc).to be :doc
     end
 
     it "all_parts with size 1" do
       subject.instance_variable_set :@array, [hit1]
-      expect(hit1).to receive(:fetch).with("en").and_return :doc
-      expect(subject.fetch_doc(all_parts: true, lang: "en")).to be :doc
+      expect(hit1).to receive(:item).and_return :doc
+      expect(subject.fetch_doc).to be :doc
     end
   end
 
@@ -119,14 +120,14 @@ describe Relaton::Iso::HitCollection do
 
     it "fetch first doc when no part" do
       subject.instance_variable_set :@array, [hit_no_part]
-      expect(hit_no_part).to receive(:fetch).with("en").and_return :doc
-      expect(subject.to_all_parts("en")).to be :doc
+      expect(hit_no_part).to receive(:item).and_return :doc
+      expect(subject.to_all_parts).to be :doc
     end
 
     it "fetch all parts" do
       subject.instance_variable_set :@array, [hit1, hit2]
-      expect(hit1).to receive(:fetch).with("en").and_return relation_doc
-      all_parts_item = subject.to_all_parts("en")
+      expect(hit1).to receive(:item).and_return relation_doc
+      all_parts_item = subject.to_all_parts
       expect(all_parts_item).to be_a Relaton::Iso::ItemData
       expect(all_parts_item.relation.size).to eq 2
       expect(all_parts_item.relation[0]).to be_a Relaton::Iso::Relation

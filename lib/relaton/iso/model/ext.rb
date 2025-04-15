@@ -21,6 +21,11 @@ module Relaton
       attribute :fast_track, :boolean
       attribute :price_code, :string
 
+      def initialize(**args)
+        super
+        @schema_version = Relaton.schema_versions["relaton-model-iso"]
+      end
+
       xml do
         root "ext"
         map_attribute "schema-version", to: :schema_version

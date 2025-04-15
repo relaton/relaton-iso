@@ -3,7 +3,7 @@
 module Relaton
   module Iso
     # Scrapper.
-    class Scrapper # rubocop:disable Metrics/ModuleLength
+    class Scraper # rubocop:disable Metrics/ModuleLength
       DOMAIN = "https://www.iso.org"
 
       TYPES = {
@@ -65,6 +65,9 @@ module Relaton
         titles, abstract, langs = fetch_titles_abstract
 
         ItemData.new(
+          id: id.gsub(/[^\w]/, ""),
+          fetched: Date.today.to_s,
+          type: "standard",
           docidentifier: fetch_relaton_docids,
           docnumber: fetch_docnumber,
           edition: edition,
@@ -93,14 +96,20 @@ module Relaton
         @id = did && did.text.split(" | ").first.strip
       end
 
-      def pubid
+      def pubid # rubocop:disable Metrics/AbcSize
         return @pubid if @pubid
 
-        @pubid = Pubid.new(id)
-        @pubid.value.root.edition ||= edition if @pubid.value.base
+        @pubid = ::Pubid::Iso::Identifier.parse(id)
+        @pubid.root.edition ||= edition.content if @pubid.base
         @pubid
       rescue StandardError => e
         Util.error "Failed to parse pubid from #{id}: #{e.message}"
+      end
+
+      def urn
+        pubid_dup = pubid.dup
+        pubid_dup.stage ||= ::Pubid::Iso::Identifier.parse_stage(stage_code)
+        pubid_dup
       end
 
       def edition
@@ -117,11 +126,10 @@ module Relaton
       # @return [Array<RelatonBib::DocumentIdentifier>]
       #
       def fetch_relaton_docids
-        pubid.value.stage ||= ::Pubid::Iso::Identifier.parse_stage(stage_code)
         [
           Docidentifier.new(content: pubid, type: "ISO", primary: true),
           Docidentifier.new(content: pubid, type: "iso-reference"),
-          Docidentifier.new(content: pubid, type: "URN"),
+          Docidentifier.new(content: urn, type: "URN"),
         ]
       end
 
@@ -130,10 +138,10 @@ module Relaton
       #
       # @return [String] English reference identifier
       #
-      # def isoref
-      #   params = pubid.value.to_h.reject { |k, _| k == :typed_stage }
-      #   ::Pubid::Iso::Identifier.create(language: "en", **params).to_s(format: :ref_num_short)
-      # end
+      def isoref
+        params = pubid.value.to_h.reject { |k, _| k == :typed_stage }
+        ::Pubid::Iso::Identifier.create(language: "en", **params).to_s(format: :ref_num_short)
+      end
 
       private
 
@@ -279,7 +287,7 @@ module Relaton
       #
       def fetch_structuredidentifier # rubocop:disable Metrics/MethodLength
         pnum = ProjectNumber.new content: File.basename(@url, ".*")
-        StructuredIdentifier.new(project_number: pnum, type: pubid.value.root.publisher)
+        StructuredIdentifier.new(project_number: pnum, type: pubid.root.publisher)
       end
 
       #
@@ -385,7 +393,7 @@ module Relaton
 
           title << Bib::Title.new(type: types[i], content: p, language: lang, script: script(lang))
         end.compact
-        main = title.map { |t| t.content }.join " - "
+        main = title.map(&:content).join " - "
         title << Bib::Title.new(type: "main", content: main, language: lang, script: script(lang))
       end
 
@@ -510,7 +518,7 @@ module Relaton
 
       # Fetch copyright.
       # @return [Array<Hash>]
-      def fetch_copyright # rubocop:disable Metrics/MethodLength
+      def fetch_copyright # rubocop:disable Metrics/MethodLength,Metrics/AbcSize
         ref = item_ref @doc
         owner_name = ref.match(/.*?(?=\s)/).to_s
         from = ref.match(/(?<=:)\d{4}/).to_s
@@ -523,7 +531,8 @@ module Relaton
         end
         name = Bib::TypedLocalizedString.new content: owner_name
         org = Bib::Organization.new name: [name]
-        [Bib::Copyright.new(owner: [org], from: from)]
+        contrib = Bib::ContributionInfo.new organization: org
+        [Bib::Copyright.new(owner: [contrib], from: from)]
       end
 
       def parse_ext # rubocop:disable Metrics/MethodLength

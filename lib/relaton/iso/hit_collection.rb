@@ -7,7 +7,7 @@ module Relaton
     # Page of hit collection.
     class HitCollection < Relaton::Core::HitCollection
       INDEXFILE = "index-v1"
-      ENDPOINT = "https://raw.githubusercontent.com/relaton/relaton-data-iso/main/"
+      ENDPOINT = "https://raw.githubusercontent.com/relaton/relaton-data-iso/data-v2/"
 
       def opts
         @opts ||= {}
@@ -18,7 +18,11 @@ module Relaton
       end
 
       def ref_pubid_excluded
-        @ref_pubid_excluded ||= ref_pubid_no_year.exclude(*excludings)
+        return @ref_pubid_excluded if defined? @ref_pubid_excluded
+
+        ref_excludings = excludings.dup
+        ref_excludings << :all_parts
+        @ref_pubid_excluded ||= ref_pubid_no_year.exclude(*ref_excludings)
       end
 
       #
@@ -26,9 +30,9 @@ module Relaton
       #
       # @return [Array<Relaton::Iso::Hit>] hits
       #
-      def find
+      def find # rubocop:disable Metrics/AbcSize
         @array = index.search do |row|
-          row[:id].is_a?(Hash) ? pubid_match?(row[:id]) : ref.to_s == row[:id]
+          row[:id].is_a?(Hash) ? pubid_match?(row[:id]) : ref.to_s(with_prf: true) == row[:id]
         end.map { |row| Hit.new row, self }
           .sort_by! { |h| h.pubid.to_s }
           .reverse!
@@ -39,10 +43,10 @@ module Relaton
         pubid = create_pubid(id)
         return false unless pubid
 
-        pubid.base = pubid.base.exclude(:year, :edition) if pubid.base
+        # pubid.base = pubid.base.exclude(:year, :edition) if pubid.base
         dir_excludings = excludings.dup
         dir_excludings << :edition unless pubid.typed_stage_abbrev == "DIR"
-        pubid.exclude(*dir_excludings) == ref_pubid_excluded
+        exclude_id_attrs(pubid, *dir_excludings) == ref_pubid_excluded
       end
 
       def create_pubid(id)
@@ -51,41 +55,50 @@ module Relaton
         Util.warn e.message, key: ref.to_s
       end
 
-      def excludings
+      def exclude_id_attrs(pubid, *attrs)
+        xid = pubid.exclude(*attrs)
+        curr = xid
+        while curr.base
+          curr.base = curr.base.exclude(*attrs)
+          curr = curr.base
+        end
+        xid
+      end
+
+      def excludings # rubocop:disable Metrics/AbcSize
         return @excludings if defined? @excludings
 
-        excl_parts = %i[year]
-        excl_parts << :part if ref.root.part.nil? || opts[:all_parts]
-        if ref.stage.nil? || opts[:all_parts]
-          excl_parts << :stage
-          excl_parts << :iteration
+        excl_attrs = %i[year]
+        excl_attrs << :part if ref.root.part.nil? || ref.root.all_parts
+        if ref.stage.nil? || ref.root.all_parts
+          excl_attrs << :stage
+          excl_attrs << :iteration
         end
         # excl_parts << :edition if ref.root.edition.nil? || all_parts
-        @escludings = excl_parts
+        @escludings = excl_attrs
       end
 
       def index
         @index ||= Relaton::Index.find_or_create :iso, url: "#{ENDPOINT}#{INDEXFILE}.zip", file: "#{INDEXFILE}.yaml"
       end
 
-      def fetch_doc(options)
+      def fetch_doc(options = {})
         @excludeingds = nil if options != opts
         @opts = options
 
-        if !opts[:all_parts] || size == 1
-          any? && first.fetch(opts[:lang])
+        if !ref.root.all_parts || size == 1
+          any? && first.item # (opts[:lang])
         else
-          to_all_parts(opts[:lang])
+          to_all_parts
         end
       end
 
-      # @param lang [String, nil]
       # @return [RelatonIsoBib::IsoBibliographicItem, nil]
-      def to_all_parts(lang = nil) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
+      def to_all_parts # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
         hit = @array.select { |h| h.pubid.part }.min_by { |h| h.pubid.part.to_i }
-        return @array.first&.fetch(lang) unless hit
+        return @array.first&.item unless hit
 
-        bibitem = hit.fetch(lang)
+        bibitem = hit.item
         all_parts_item = bibitem.to_all_parts
         @array.reject { |h| h.pubid.part == hit.pubid.part }.each do |hi|
           all_parts_item.relation << create_relation(hi)
@@ -94,8 +107,8 @@ module Relaton
       end
 
       def create_relation(hit)
-        pubid = Pubid.new hit.pubid
-        docid = Docidentifier.new(content: pubid, type: "ISO", primary: true)
+        # pubid = Pubid.new hit.pubid
+        docid = Docidentifier.new(content: hit.pubid, type: "ISO", primary: true)
         isobib = ItemData.new(formattedref: hit.pubid.to_s, docidentifier: [docid])
         Relation.new(type: "instanceOf", bibitem: isobib)
       end

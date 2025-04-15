@@ -1,8 +1,8 @@
 # encoding: UTF-8
 
-require "relaton/iso/scrapper"
+require "relaton/iso/scraper"
 
-RSpec.describe Relaton::Iso::Scrapper do
+RSpec.describe Relaton::Iso::Scraper do
   let(:doc) { Nokogiri::HTML File.read "spec/fixtures/iso_123.html", encoding: "UTF-8" }
   let(:doc_fr) { Nokogiri::HTML File.read "spec/fixtures/iso_123_fr.html", encoding: "UTF-8" }
   let(:errors) { Hash.new(true) }
@@ -135,6 +135,28 @@ RSpec.describe Relaton::Iso::Scrapper do
         ).and_return []
         expect(subject.send(:parse_abstract, doc, "en")).to be_nil
         expect(errors).to eq abstract: true
+      end
+    end
+
+    describe "#parse_titles" do
+      let(:doc) do
+        Nokogiri::HTML <<~HTML
+          <h1 class="stdTitle">
+            <span class="d-flex justify-content-between align-items-start">
+              <span class="d-block mb-3 h2">ISO 9869-2:2018/Amd 1:2021</span>
+            </span>
+            <span class="lead d-block mb-3">Thermal insulation — Building elements — In-situ measurement of thermal resistance and thermal transmittance — Part 2: Infrared method for frame structure dwelling</span>
+            <span class="lead d-block fw-semibold">Amendment 1: Example of calculation of uncertainty analysis</span>
+          </h1>
+        HTML
+      end
+
+      it "returns array of titles strings" do
+        titles = subject.send(:parse_titles, doc)
+        expect(titles.size).to eq 3
+        expect(titles[0]).to eq "Thermal insulation"
+        expect(titles[1]).to eq "Building elements"
+        expect(titles[2]).to include "In-situ measurement of thermal resistance and thermal transmittance"
       end
     end
 
@@ -380,7 +402,7 @@ RSpec.describe Relaton::Iso::Scrapper do
       it "get date from ID" do
         expect(copyright[0]).to be_instance_of Relaton::Bib::Copyright
         expect(copyright[0].from).to eq "2001"
-        expect(copyright[0].owner[0].name[0].content).to eq "ISO"
+        expect(copyright[0].owner[0].organization.name[0].content).to eq "ISO"
       end
 
       it "parse date from doc" do
@@ -392,7 +414,7 @@ RSpec.describe Relaton::Iso::Scrapper do
 
   context "#get_redirection" do
     before do
-      expect(URI).to receive(:parse).with("#{Relaton::Iso::Scrapper::DOMAIN}/path").and_return :uri
+      expect(URI).to receive(:parse).with("#{Relaton::Iso::Scraper::DOMAIN}/path").and_return :uri
     end
     it "found without redirection" do
       resp = double "response", code: "200"
@@ -404,7 +426,7 @@ RSpec.describe Relaton::Iso::Scrapper do
       resp = double "response", code: "301"
       expect(resp).to receive(:[]).with("location").and_return "/new_path"
       expect(Net::HTTP).to receive(:get_response).with(:uri).and_return resp
-      expect(URI).to receive(:parse).with("#{Relaton::Iso::Scrapper::DOMAIN}/new_path").and_return :uri2
+      expect(URI).to receive(:parse).with("#{Relaton::Iso::Scraper::DOMAIN}/new_path").and_return :uri2
       resp2 = double "response 2", code: "200"
       expect(Net::HTTP).to receive(:get_response).with(:uri2).and_return resp2
       expect(subject.send(:get_redirection, "/path")).to eq [resp2, :uri2]

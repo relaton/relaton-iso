@@ -1,4 +1,3 @@
-# require_relative "contributor"
 require_relative "docidentifier"
 require_relative "ext"
 

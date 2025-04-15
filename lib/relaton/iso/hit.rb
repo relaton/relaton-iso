@@ -5,7 +5,7 @@ module Relaton
     # Hit.
     class Hit < Relaton::Core::Hit
       # @return [RelatonIsoBib::IsoBibliographicItem]
-      attr_writer :fetch
+      attr_writer :item
 
       # @return [Pubid::Iso::Identifier] pubid
       attr_writer :pubid
@@ -18,15 +18,12 @@ module Relaton
       # end
 
       # Parse page.
-      # @param lang [String, nil]
-      # @return [RelatonIso::IsoBibliographicItem]
-      def fetch(_lang = nil)
-        @fetch ||= begin
+      # @return [Relaton::Iso::ItemData]
+      def item
+        @item ||= begin
           url = "#{HitCollection::ENDPOINT}#{hit[:file]}"
           resp = Net::HTTP.get_response URI(url)
-          hash = YAML.safe_load resp.body
-          hash["fetched"] = Date.today.to_s
-          Item.from_hash hash
+          Item.from_yaml resp.body
         end
       end
 
@@ -45,7 +42,7 @@ module Relaton
       def pubid
         return @pubid if defined? @pubid
 
-        create_pubid hit[:id]
+        @pubid = create_pubid hit[:id]
       rescue StandardError
         Util.warn "Unable to create an identifier from #{hit[:id]}"
         @pubid = nil
@@ -54,7 +51,11 @@ module Relaton
       private
 
       def create_pubid(id)
-        @pubid = id.is_a?(Hash) ? ::Pubid::Iso::Identifier.create(**id) : id
+        if id.is_a?(Hash)
+          ::Pubid::Iso::Identifier.create(**id)
+        else
+          id
+        end
       end
     end
   end

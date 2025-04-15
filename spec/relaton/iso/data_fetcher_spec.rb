@@ -188,21 +188,21 @@ describe Relaton::Iso::DataFetcher do
 
     context "#fetch_doc" do
       it "successful" do
-        expect(Relaton::Iso::Scrapper).to receive(:parse_page)
+        expect(Relaton::Iso::Scraper).to receive(:parse_page)
           .with("/page_path", errors: {}).and_return :doc
         expect(subject).to receive(:save_doc).with(:doc, "/page_path")
         subject.send :fetch_doc, "/page_path"
       end
 
       it "Open timeout" do
-        expect(Relaton::Iso::Scrapper).to receive(:parse_page).and_raise Net::OpenTimeout
+        expect(Relaton::Iso::Scraper).to receive(:parse_page).and_raise Net::OpenTimeout
         expect { subject.send :fetch_doc, "/page_path" }
           .to output(/WARN: Fail fetching document: https:\/\/www.iso\.org\/page_path/)
           .to_stderr_from_any_process
       end
 
       it "Read timeout" do
-        expect(Relaton::Iso::Scrapper).to receive(:parse_page).and_raise Net::ReadTimeout
+        expect(Relaton::Iso::Scraper).to receive(:parse_page).and_raise Net::ReadTimeout
         expect { subject.send :fetch_doc, "/page_path" }
           .to output(/WARN: Fail fetching document: https:\/\/www.iso\.org\/page_path/)
           .to_stderr_from_any_process

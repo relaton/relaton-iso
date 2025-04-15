@@ -1,7 +1,7 @@
 ---
 id: ISO/TC211
 type: standard
-schema_version: v1.0.3
+schema_version: v1.4.1
 fetched: '2011-06-22'
 title:
 - language: en
@@ -232,7 +232,7 @@ validity:
   ends: '2011-02-03'
   revision: '2011-03-04'
 ext:
-  schema_version: v1.0.3
+  schema_version: v1.0.5
   doctype:
     content: international-standard
   subdoctype: specification

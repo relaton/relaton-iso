@@ -13,6 +13,19 @@ module Relaton
         map_element "project-number", to: :project_number
         map_element "tc-document-number", to: :tc_document_number
       end
+
+      def remove_date!
+        project_number&.origyr = nil
+      end
+
+      def remove_part!
+        project_number&.part = nil
+      end
+
+      def to_all_parts!
+        remove_date!
+        remove_part!
+      end
     end
   end
 end

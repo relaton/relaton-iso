@@ -1,5 +1,4 @@
-<bibdata type="standard" schema-version="v1.2.9">
-  <fetched>2025-01-30</fetched>
+<bibdata type="standard" schema-version="v1.4.1">
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -44,22 +43,25 @@
   </copyright>
   <relation type="obsoletes">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO 19115-2:2009</formattedref>
+      <formattedref>ISO 19115-2:2009</formattedref>
       <docidentifier type="ISO" primary="true">ISO 19115-2:2009</docidentifier>
     </bibitem>
   </relation>
   <relation type="updates">
     <bibitem type="standard">
-      <formattedref format="text/plain">ISO 19115-2:2019/Amd 1:2022</formattedref>
+      <formattedref>ISO 19115-2:2019/Amd 1:2022</formattedref>
       <docidentifier type="ISO" primary="true">ISO 19115-2:2019/Amd 1:2022</docidentifier>
       <date type="circulated">
         <on>2024-06-11</on>
       </date>
     </bibitem>
   </relation>
-  <place>Geneva</place>
-  <ext schema-version="v1.0.3">
+  <place>
+    <formattedPlace>Geneva</formattedPlace>
+  </place>
+  <ext schema-version="v1.0.5">
     <doctype>international-standard</doctype>
+    <flavor>iso</flavor>
     <editorialgroup>
       <technical-committee number="211" type="TC" identifier="ISO/TC 211">Geographic information/Geomatics</technical-committee>
     </editorialgroup>
