@@ -35,15 +35,15 @@ module Relaton
         end
       end
 
-      private
+      # private
 
-      def add_notes(notes)
-        self.note ||= []
-        Relaton.array(notes).each { |nt| note << Bib::Note.new(**nt) }
-        result = yield
-        Relaton.array(notes).each { note.pop }
-        result
-      end
+      # def add_notes(notes)
+      #   self.note ||= []
+      #   Relaton.array(notes).each { |nt| note << Bib::Note.new(**nt) }
+      #   result = yield
+      #   Relaton.array(notes).each { note.pop }
+      #   result
+      # end
     end
   end
 end
