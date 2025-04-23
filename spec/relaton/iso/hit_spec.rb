@@ -43,7 +43,7 @@ RSpec.describe Relaton::Iso::Hit do
         expect do
           expect(subject).to be_nil
         end.to output(
-          /\[relaton-iso\] WARN: Unable to create an identifier from {:publisher=>"ISO", :number=>"19115", :type=>"TYPE"}/,
+          /\[relaton-iso\] WARN: Unable to create an identifier from #{hit[:id]}/,
         ).to_stderr_from_any_process
       }
     end
