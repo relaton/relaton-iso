@@ -1,4 +1,4 @@
-= RelatonIso: retrieve ISO Standards for bibliographic use using the BibliographicItem model
+= Relaton::Iso: retrieve ISO Standards for bibliographic use using the BibliographicItem model
 
 image:https://img.shields.io/gem/v/relaton-iso.svg["Gem Version", link="https://rubygems.org/gems/relaton-iso"]
 image:https://github.com/relaton/relaton-iso/workflows/macos/badge.svg["Build Status (macOS)", link="https://github.com/relaton/relaton-iso/actions?workflow=macos"]
@@ -8,7 +8,7 @@ image:https://codeclimate.com/github/relaton/relaton-iso/badges/gpa.svg["Code Cl
 image:https://img.shields.io/github/issues-pr-raw/relaton/relaton-iso.svg["Pull Requests", link="https://github.com/relaton/relaton-iso/pulls"]
 image:https://img.shields.io/github/commits-since/relaton/relaton/latest.svg["Commits since latest",link="https://github.com/relaton/relaton/releases"]
 
-RelatonIso is a Ruby gem that implements the https://github.com/metanorma/metanorma-model-iso#iso-bibliographic-item[IsoBibliographicItem model].
+Relaton::Iso is a Ruby gem that implements the https://github.com/metanorma/metanorma-model-iso#iso-bibliographic-item[IsoBibliographicItem model].
 
 You can use it to retrieve metadata of ISO Standards from https://www.iso.org, and access such metadata through the `IsoBibliographicItem` object.
 
@@ -35,107 +35,98 @@ Or install it yourself as:
 
 [source,ruby]
 ----
-require 'relaton_iso'
+require 'relaton/iso'
 => true
 
-hit_collection = RelatonIso::IsoBibliography.search("ISO 19115")
-=> <RelatonIso::HitCollection:0x007fa5bc847038 @ref=19115 @fetched=false>
+hit_collection = Relaton::Iso::Bibliography.search("ISO 19115")
+ => <Relaton::Iso::HitCollection:0x0000000003a9a8 @ref=ISO 19115 @fetched=false>
 
 hit_collection.first
-=> <RelatonIso::Hit:0x007f87e71ea9f8 @text="ISO 19115" @fetched="false" @fullIdentifier="" @title="">
+ => #<Relaton::Iso::Hit:0x00000001398ecdc8 ...>
 
-item = hit_collection[2].fetch
-=> #<RelatonIsoBib::IsoBibliographicItem:0x007fa5dca89510
-...
+item = hit_collection[2].item
+ => #<Relaton::Iso::ItemData:0x0000000139d07070 ...>
 
-item.docidentifier
-=> [#<RelatonIso::DocumentIdentifier:0x0000000112a23a88
-...
+item.docidentifier.first.to_s
+ => "ISO 19115-2:2019"
 
-item.docidentifier.detect { |di| di.type == "URN" }.id
-=> "urn:iso:std:iso:19115:-1:ed-1:stage-60.60:amd:2020:v2"
+item.docidentifier.find { |id| id.type == "URN" }.to_s
+ => "urn:iso:std:iso:19115:-2:stage-90.93"
 ----
 
 === Fetch document by reference and year
 
 [source,ruby]
 ----
-item = RelatonIso::IsoBibliography.get "ISO 19115:2003"
-[relaton-iso] (ISO 19115:2003) Fetching from iso.org ...
-[relaton-iso] (ISO 19115:2003) Found: `ISO 19115:2003`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c83429e30
-...
+item = Relaton::Iso::Bibliography.get "ISO 19115:2003"
+[relaton-iso] INFO: (ISO 19115:2003) Fetching from Relaton repository ...
+[relaton-iso] INFO: (ISO 19115:2003) Found: `ISO 19115:2003`
+ => #<Relaton::Iso::ItemData:0x000000013c4cdac8 ...>
 
-item = RelatonIso::IsoBibliography.get "ISO 19115", "2003"
-[relaton-iso] (ISO 19115:2003) Fetching from iso.org ...
-[relaton-iso] (ISO 19115:2003) Found: `ISO 19115:2003`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x0000000112c9ca80
-...
+item = Relaton::Iso::Bibliography.get "ISO 19115", "2003"
+[relaton-iso] INFO: (ISO 19115:2003) Fetching from Relaton repository ...
+[relaton-iso] INFO: (ISO 19115:2003) Found: `ISO 19115:2003`
+ => #<Relaton::Iso::ItemData:0x000000013c4c5148 ...>
 
-item.docidentifier[0].id
-=> "ISO 19115:2003"
+item.docidentifier[0].to_s
+ => "ISO 19115:2003"
 ----
 
 === Fetch non-part document
 
 [source,ruby]
 ----
-item = RelatonIso::IsoBibliography.get "ISO 19115"
-[relaton-iso] (ISO 19115) Fetching from iso.org ...
-[relaton-iso] (ISO 19115) Found: `ISO 19115:2003`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c830275a8
-...
+item = Relaton::Iso::Bibliography.get "ISO 19115"
+[relaton-iso] INFO: (ISO 19115) Fetching from Relaton repository ...
+[relaton-iso] INFO: (ISO 19115) Found: `ISO 19115:2003`
+ => #<Relaton::Iso::ItemData:0x000000013b6a6418 ...>
 
-item.docidentifier[0].id
-=> "ISO 19115"
+item.docidentifier[0].to_s
+ => "ISO 19115"
 ----
 
 === Fetch a part document
 
 [source,ruby]
 ----
-item = RelatonIso::IsoBibliography.get "ISO 19115-1"
-[relaton-iso] (ISO 19115-1) Fetching from iso.org ...
-[relaton-iso] (ISO 19115-1) Found: `ISO 19115-1:2014`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c83408af0
-...
+item = Relaton::Iso::Bibliography.get "ISO 19115-1"
+[relaton-iso] INFO: (ISO 19115-1) Fetching from Relaton repository ...
+[relaton-iso] INFO: (ISO 19115-1) Found: `ISO 19115-1:2014`
+ => #<Relaton::Iso::ItemData:0x000000013c761410 ...>
 
-item.docidentifier[0].id
-=> "ISO 19115-1"
+item.docidentifier[0].to_s
+ => "ISO 19115-1"
 ----
 
 === Fetch all-parts document
 
 [source,ruby]
 ----
-item = RelatonIso::IsoBibliography.get "ISO 19115 (all parts)"
-[relaton-iso] (ISO 19115) Fetching from iso.org ...
-[relaton-iso] (ISO 19115) Found: `ISO 19115`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007f8ca216e118
-...
+item = Relaton::Iso::Bibliography.get "ISO 19115 (all parts)"
+[relaton-iso] INFO: (ISO 19115 (all parts)) Fetching from Relaton repository ...
+[relaton-iso] INFO: (ISO 19115 (all parts)) Found: `ISO 19115 (all parts)`
+ => #<Relaton::Iso::ItemData:0x000000013bb87950 ...>
 
-item = RelatonIso::IsoBibliography.get "ISO 19115", nil, all_parts: true
-[relaton-iso] (ISO 19115) Fetching from iso.org ...
-[relaton-iso] (ISO 19115) Found: `ISO 19115`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c830f3d38
-...
+item = Relaton::Iso::Bibliography.get "ISO 19115", nil, all_parts: true
+[relaton-iso] INFO: (ISO 19115 (all parts)) Fetching from Relaton repository ...
+[relaton-iso] INFO: (ISO 19115 (all parts)) Found: `ISO 19115 (all parts)`
+ => #<Relaton::Iso::ItemData:0x000000013c855150 ...>
 
-item.docidentifier[0].id
-=> "ISO 19115 (all parts)"
+item.docidentifier[0].to_s
+ => "ISO 19115 (all parts)"
 
-item = RelatonIso::IsoBibliography.get "ISO 19115-1 (all parts)"
-[relaton-iso] (ISO 19115) Fetching from iso.org ...
-[relaton-iso] (ISO 19115) Found: `ISO 19115`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c8290e5a0
+item = Relaton::Iso::Bibliography.get "ISO 19115-1 (all parts)"
+[relaton-iso] INFO: (ISO 19115-1 (all parts)) Fetching from Relaton repository ...
+[relaton-iso] INFO: (ISO 19115-1 (all parts)) Found: `ISO 19115 (all parts)`
+ => #<Relaton::Iso::ItemData:0x000000013b54c590 ...>
 
-item = RelatonIso::IsoBibliography.get "ISO 19115-1", nil, all_parts: true
-[relaton-iso] (ISO 19115) Fetching from iso.org ...
-[relaton-iso] (ISO 19115) Found: `ISO 19115`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007f8c925355b8
-...
+item = Relaton::Iso::Bibliography.get "ISO 19115-1", nil, all_parts: true
+[relaton-iso] INFO: (ISO 19115-1 (all parts)) Fetching from Relaton repository ...
+[relaton-iso] INFO: (ISO 19115-1 (all parts)) Found: `ISO 19115 (all parts)`
+ => #<Relaton::Iso::ItemData:0x000000013b54dad0 ...>
 
-item.docidentifier[0].id
-=> "ISO 19115 (all parts)"
+item.docidentifier[0].to_s
+ => "ISO 19115 (all parts)"
 ----
 
 === Non-standard ISO/IEC documents
@@ -253,28 +244,26 @@ Possible options:
 [source,ruby]
 ----
 item.to_xml
-=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.2.1">
-      <fetched>2022-12-04</fetched>
-      <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
-      <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
+=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.4.1">
+      <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
+      <title language="en" script="Latn" type="title-main" format="text/plain">Metadata</title>
       ...
     </bibitem>"
 
 item.to_xml bibdata: true
-=> "<bibdata type="standard" schema-version="v1.2.1">
-      <fetched>2022-12-04</fetched>
-      <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
+=> "<bibdata type="standard" schema-version="v1.4.1">
+      <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
       ...
-      <ext schema-version="v1.0.3">
+      <ext schema-version="v1.0.5">
         <doctype>international-standard</doctype>
         ...
       </ext>
     </bibdata>"
 
-item.to_xml note: [{ text: "Note", type: "note" }]
-=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.2.1">
+item.to_xml note: [{ content: "Note", type: "note" }]
+=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.4.1">
       ...
-      <note format="text/plain" type="note">Note</note>
+      <note type="note">Note</note>
       ...
     </bibitem>"
 ----
@@ -283,50 +272,63 @@ item.to_xml note: [{ text: "Note", type: "note" }]
 
 [source,ruby]
 ----
-item.title lang: 'en'
-=> #<RelatonBib::TypedTitleStringCollection:0x0000000112783fd0
- @array=
-  [#<RelatonBib::TypedTitleString:0x00000001138e2380
-    @title=#<RelatonBib::FormattedString:0x0000000112d496b8 @content="Geographic information", @format="text/plain", @language=["en"], @script=["Latn"]>,
-    @type="title-intro">,
-   #<RelatonBib::TypedTitleString:0x00000001138e1f70
-    @title=#<RelatonBib::FormattedString:0x0000000112d495c8 @content="Metadata", @format="text/plain", @language=["en"], @script=["Latn"]>,
-    @type="title-main">,
-   #<RelatonBib::TypedTitleString:0x00000001138e1d68
-    @title=
-     #<RelatonBib::FormattedString:0x0000000112d49488 @content="Geographic information – Metadata", @format="text/plain", @language=["en"], @script=["Latn"]>,
-    @type="main">]>
+item.title 'en'
+=> [#<Relaton::Bib::Title:0x000000013e3de2f0
+  @content="Geographic information",
+  @format="text/plain",
+  @language="en",
+  @locale=nil,
+  @script="Latn",
+  @type="title-intro">,
+ #<Relaton::Bib::Title:0x000000013e3de250
+  @content="Metadata",
+  @format="text/plain",
+  @language="en",
+  @locale=nil,
+  @script="Latn",
+  @type="title-main">,
+ #<Relaton::Bib::Title:0x000000013e3de110
+  @content="Geographic information - Metadata",
+  @format="text/plain",
+  @language="en",
+  @locale=nil,
+  @script="Latn",
+  @type="main">]
 
-item.title lang: 'fr'
-=> #<RelatonBib::TypedTitleStringCollection:0x0000000113067458
- @array=
-  [#<RelatonBib::TypedTitleString:0x00000001138e1c28
-    @title=#<RelatonBib::FormattedString:0x0000000112d49438 @content="Information géographique", @format="text/plain", @language=["fr"], @script=["Latn"]>,
-    @type="title-intro">,
-   #<RelatonBib::TypedTitleString:0x00000001138e1b10
-    @title=#<RelatonBib::FormattedString:0x0000000112d49398 @content="Métadonnées", @format="text/plain", @language=["fr"], @script=["Latn"]>,
-    @type="title-main">,
-   #<RelatonBib::TypedTitleString:0x00000001138e1908
-    @title=
-     #<RelatonBib::FormattedString:0x0000000112d491b8
-      @content="Information géographique – Métadonnées",
-      @format="text/plain",
-      @language=["fr"],
-      @script=["Latn"]>,
-    @type="main">]>
+item.title 'fr'
+=> [#<Relaton::Bib::Title:0x000000013e3de070
+  @content="Information géographique",
+  @format="text/plain",
+  @language="fr",
+  @locale=nil,
+  @script="Latn",
+  @type="title-intro">,
+ #<Relaton::Bib::Title:0x000000013e3ddfd0
+  @content="Métadonnées",
+  @format="text/plain",
+  @language="fr",
+  @locale=nil,
+  @script="Latn",
+  @type="title-main">,
+ #<Relaton::Bib::Title:0x000000013e3dde90
+  @content="Information géographique - Métadonnées",
+  @format="text/plain",
+  @language="fr",
+  @locale=nil,
+  @script="Latn",
+  @type="main">]
 
-item = RelatonIso::IsoBibliography.get "ISO 19115:2003"
+item = Relaton::Iso::Bibliography.get "ISO 19115:2003"
 [relaton-iso] (ISO 19115:2003) Fetching from iso.org ...
 [relaton-iso] (ISO 19115:2003) Found: `ISO 19115:2003`
-=> #<RelatonIsoBib::IsoBibliographicItem:0x00007fa8870b69e0
+=> #<Relaton::Iso::ItemData:0x000000013eefe888 ...>
 
-item.abstract lang: 'en'
-=> #<RelatonBib::FormattedString:0x00007fa8870b4f78
- @content=
-  "ISO 19115:2003 defines the schema required for describing geographic information ...",
- @format="text/plain",
- @language=["en"],
- @script=["Latn"]>
+item.abstract 'en'
+=> [#<Relaton::Bib::LocalizedMarkedUpString:0x000000013e4790c0
+  @content= "ISO 19115:2003 defines the schema required for describing geographic information ...",
+  @language="en",
+  @locale=nil,
+  @script="Latn">]
 ----
 
 === Typed links
@@ -335,15 +337,17 @@ Each ISO document has `src` type link and optional `obp`, `rss`, and `pub` link 
 
 [source,ruby]
 ----
-item.link
-=> [#<RelatonBib::TypedUri:0x0000000112d66c40
-  @content=#<Addressable::URI:0x93d71c URI:https://www.iso.org/standard/26020.html>,
+item.source
+=> [#<Relaton::Bib::Uri:0x000000013ee73080
+  @content="https://www.iso.org/standard/26020.html",
   @language=nil,
+  @locale=nil,
   @script=nil,
   @type="src">,
- #<RelatonBib::TypedUri:0x0000000112d66920
-  @content=#<Addressable::URI:0x93d730 URI:https://www.iso.org/contents/data/standard/02/60/26020.detail.rss>,
+ #<Relaton::Bib::Uri:0x000000013ee73030
+  @content="https://www.iso.org/contents/data/standard/02/60/26020.detail.rss",
   @language=nil,
+  @locale=nil,
   @script=nil,
   @type="rss">]
 ----

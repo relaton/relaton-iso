@@ -2,17 +2,17 @@
 
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "relaton_iso/version"
+require "relaton/iso/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "relaton-iso"
-  spec.version       = RelatonIso::VERSION
+  spec.version       = Relaton::Iso::VERSION
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 
-  spec.summary       = "RelatonIso: retrieve ISO Standards for bibliographic " \
+  spec.summary       = "Relaton::Iso: retrieve ISO Standards for bibliographic " \
                        "use using the IsoBibliographicItem model"
-  spec.description   = "RelatonIso: retrieve ISO Standards for bibliographic " \
+  spec.description   = "Relaton::Iso: retrieve ISO Standards for bibliographic " \
                        "use using the IsoBibliographicItem model"
 
   spec.homepage      = "https://github.com/relaton/relaton-iso"
@@ -24,9 +24,11 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
 
-  spec.add_dependency "pubid", "~> 0.1.1"
+  spec.add_dependency "isoics", "~> 0.1.6"
+  spec.add_dependency "pubid-iso", "~> 0.8.0"
+  spec.add_dependency "relaton-bib", "~> 2.0.0-alpha.1"
+  spec.add_dependency "relaton-core", "~> 0.0.4"
   spec.add_dependency "relaton-index", "~> 0.2.12"
-  spec.add_dependency "relaton-iso-bib", "~> 1.20.0"
 end

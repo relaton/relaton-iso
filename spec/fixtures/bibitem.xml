@@ -1,0 +1,228 @@
+<bibitem id="ISO1231994" type="standard" schema-version="1.0.0">
+  <fetched>2022-05-02</fetched>
+  <formattedref>ISO 123:1994</formattedref>
+  <title language="en" locale="en-US" script="Latn">Geographic information -- Metadata</title>
+  <title language="fr" locale="fr-FR" script="Latn">Information géographique -- Métadonnées</title>
+  <uri type="src">https://www.iso.org/standard/22722.html</uri>
+  <uri type="doi">10.1007/978-3-319-99155-2_1</uri>
+  <docidentifier language="en" locale="en-US" script="Latn" type="ISO" scope="global" primary="true">ISO 123:1994</docidentifier>
+  <docidentifier type="DOI">10.1007/978-3-319-99155-2_1</docidentifier>
+  <docnumber>123</docnumber>
+  <date type="published">
+    <on>1994-01-01</on>
+  </date>
+  <date type="confirmed">
+    <from>1994-02-01</from>
+    <to>1994-12-31</to>
+  </date>
+  <contributor>
+    <role type="author">
+      <description language="en" locale="en-US" script="Latn">Role of the author</description>
+    </role>
+    <person>
+      <name>
+        <abbreviation language="en" locale="en-US" script="Latn">Prof. J.</abbreviation>
+        <prefix language="en" locale="en-US" script="Latn">Prof.</prefix>
+        <forename language="en" locale="en-US" script="Latn" initial="J">John</forename>
+        <formatted-initials language="en" locale="en-US" script="Latn">J.D.</formatted-initials>
+        <surname language="en" locale="en-US" script="Latn">Doe</surname>
+        <addition language="en" locale="en-US" script="Latn">PhD</addition>
+        <completename language="en" locale="en-US" script="Latn">Prof. John Doe PhD</completename>
+        <note language="en" locale="en-US" script="Latn" type="legal">J.D.</note>
+        <variant type="pseudonym">
+          <completename language="en" locale="en-US" script="Latn">John Q. Public</completename>
+        </variant>
+      </name>
+      <credential>PhD</credential>
+      <affiliation>
+        <name language="en" locale="en-US" script="Latn">ISO</name>
+        <description language="en" locale="en-US" script="Latn">Affiliation of the author</description>
+        <organization>
+          <name type="primary">International Organization for Standardization</name>
+        </organization>
+      </affiliation>
+      <identifier type="orcid">0000-0002-1825-0097</identifier>
+      <address>
+        <street>1, rue de Varembé</street>
+        <city>Geneva</city>
+        <country>Switzerland</country>
+        <postcode>1211</postcode>
+        <formattedAddress>1, rue de Varembé,<br/>Geneva, Switzerland, 1211</formattedAddress>
+      </address>
+      <phone type="mobile">+41 22 749 01 11</phone>
+      <email>jdoe@email.org</email>
+      <uri type="primary">https://orcid.org/0000-0002-1825-0097</uri>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher">
+      <description>Role of the publisher</description>
+    </role>
+    <organization>
+      <name language="en" locale="en-US" script="Latn" type="primary">International Organization for Standardization</name>
+      <subdivision type="primary">
+        <name>ISO/TC 211</name>
+      </subdivision>
+      <abbreviation>ISO</abbreviation>
+      <identifier type="ISNI">0000 0001 2345 6789</identifier>
+      <address>
+        <street>1, rue de Varembé</street>
+        <city>Geneva</city>
+        <country>Switzerland</country>
+        <postcode>1211</postcode>
+        <formattedAddress>1, rue de Varembé,<br/>Geneva, Switzerland, 1211</formattedAddress>
+      </address>
+      <phone type="main">+41 22 749 01 11</phone>
+      <email>office@iso.org</email>
+      <uri language="en" locale="en-US" script="Latn" type="primary">https://www.iso.org</uri>
+      <logo>
+        <image id="abcd-1234-abcd-1234567890ab" src="https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg" mimetype="image/jpeg" filename="PUB100080.jpg" width="100%" height="auto" alt="ISO logo" title="ISO Logo" longdesc="https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg"/>
+      </logo>
+    </organization>
+  </contributor>
+  <edition number="1">First edition</edition>
+  <version>
+    <revision-date>1994-01-01</revision-date>
+    <draft>PD</draft>
+  </version>
+  <note language="en" locale="en-US" script="Latn" type="errata">This is an errata</note>
+  <language>en</language>
+  <language>fr</language>
+  <locale>en-US</locale>
+  <locale>fr-FR</locale>
+  <script>Latn</script>
+  <abstract language="en" locale="en-US" script="Latn">This is an abstract. <em>This is emphasized</em></abstract>
+  <status>
+    <stage abbreviation="IS">Published</stage>
+    <substage abbreviation="FDIS">Final Draft International Standard</substage>
+    <iteration>3</iteration>
+  </status>
+  <copyright>
+    <from>1994</from>
+    <to>2000</to>
+    <owner>
+      <organization>
+        <name>ISO</name>
+      </organization>
+    </owner>
+    <owner>
+      <person>
+        <name>
+          <completename>John Doe</completename>
+        </name>
+      </person>
+    </owner>
+    <scope>Book preface</scope>
+  </copyright>
+  <relation type="partOf">
+    <description language="en" locale="en-US" script="Latn">Part of the ISO 123 serieso</description>
+    <bibitem>
+      <formattedref>ISO 123-1:1994</formattedref>
+      <docidentifier type="ISO">ISO 123-1:1994</docidentifier>
+    </bibitem>
+    <locality type="section">
+      <referenceFrom>1</referenceFrom>
+      <referenceTo>10</referenceTo>
+    </locality>
+    <sourceLocalityStack connective="or">
+      <sourceLocality type="line">
+        <referenceFrom>7</referenceFrom>
+        <referenceTo>9</referenceTo>
+      </sourceLocality>
+    </sourceLocalityStack>
+  </relation>
+  <relation type="hasPart">
+    <bibitem>
+      <formattedref>ISO 123-2:1994</formattedref>
+      <docidentifier type="ISO">ISO 123-2:1994</docidentifier>
+    </bibitem>
+    <localityStack connective="and">
+      <locality type="volume">
+        <referenceFrom>1</referenceFrom>
+      </locality>
+      <locality type="page">
+        <referenceFrom>2</referenceFrom>
+        <referenceTo>5</referenceTo>
+      </locality>
+    </localityStack>
+    <sourceLocality type="chapter">
+      <referenceFrom>4</referenceFrom>
+      <referenceTo>11</referenceTo>
+    </sourceLocality>
+  </relation>
+  <series type="main">
+    <formattedref>ISO 123</formattedref>
+    <title>ISO 123</title>
+    <place>
+      <city>New York</city>
+      <region iso="US-NY" recommended="true">New York</region>
+      <country iso="US" recommended="true">United States</country>
+      <formattedPlace>New York, United States</formattedPlace>
+      <uri type="primary">https://www.iso.org/series/123</uri>
+    </place>
+    <organization>International Organization for Standardization</organization>
+    <abbreviation>ISO</abbreviation>
+    <from>2000-01-01</from>
+    <to>2000-12-31</to>
+    <number>1</number>
+    <partnumber>1</partnumber>
+    <run>Run 1</run>
+  </series>
+  <medium>
+    <content>cri</content>
+    <genre>statical dataset</genre>
+    <form>c</form>
+    <carrier>cr</carrier>
+    <size>500 kB</size>
+    <scale>1:10,000</scale>
+  </medium>
+  <place>
+    <city>Geneva</city>
+    <region iso="CH-GE" recommended="true">Geneva</region>
+    <country iso="CH" recommended="true">Switzerland</country>
+    <formattedPlace>Geneva, Switzerland</formattedPlace>
+    <uri type="primary">https://www.iso.org/series/123</uri>
+  </place>
+  <price currency="CHF">123.45</price>
+  <price currency="USD">123.45</price>
+  <extent>
+    <locality type="page">
+      <referenceFrom>1</referenceFrom>
+      <referenceTo>10</referenceTo>
+    </locality>
+  </extent>
+  <extent>
+    <localityStack connective="and">
+      <locality type="annex">
+        <referenceFrom>1</referenceFrom>
+      </locality>
+      <locality type="page">
+        <referenceFrom>2</referenceFrom>
+        <referenceTo>5</referenceTo>
+      </locality>
+    </localityStack>
+  </extent>
+  <size>
+    <value type="page">10</value>
+    <value type="article">5</value>
+  </size>
+  <accesslocation>file/path</accesslocation>
+  <license>MIT</license>
+  <classification language="en" locale="en-US" script="Latn" type="ISO" scope="local" primary="true">123</classification>
+  <keyword>
+    <vocab language="en" locale="en-US" script="Latn">geographic</vocab>
+    <taxon language="en" locale="en-US" script="Latn">information</taxon>
+    <vocabid type="AGROVOC" uri="http://aims.fao.org/aos/agrovoc/">
+      <code>1234</code>
+      <term>Test term</term>
+    </vocabid>
+  </keyword>
+  <validity>
+    <validityBegins>1994-01-01</validityBegins>
+    <validityEnds>1994-12-31</validityEnds>
+    <revision>1994-12-31</revision>
+  </validity>
+  <depiction scope="local">
+    <image id="example-1234-5678-90ab-cdef12345678" src="https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg" mimetype="image/jpeg" filename="PUB100080.jpg" width="100%" height="auto" alt="ISO logo" title="ISO Logo" longdesc="https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg"/>
+  </depiction>
+</bibitem>
