@@ -66,7 +66,7 @@ module Relaton
 
         ItemData.new(
           id: id.gsub(/[^\w]/, ""),
-          fetched: Date.today.to_s,
+          # fetched: Date.today.to_s,
           type: "standard",
           docidentifier: fetch_relaton_docids,
           docnumber: fetch_docnumber,
