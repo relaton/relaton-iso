@@ -91,7 +91,7 @@ RSpec.describe Relaton::Iso::Bibliography do
     it "return dates" do
       expect(subject.date.length).to eq 1
       expect(subject.date.first.type).to eq "published"
-      expect(subject.date.first.at).to be_instance_of String
+      expect(subject.date.first.at).to be_instance_of Relaton::Bib::StringDate::Value
     end
 
     it "return document status" do

@@ -7,23 +7,22 @@ require_relative "structured_identifier"
 module Relaton
   module Iso
     class Ext < Lutaml::Model::Serializable
-      attribute :schema_version, :string
+      attribute :schema_version, method: :get_schema_version
       attribute :doctype, Doctype
       attribute :subdoctype, :string
       attribute :flavor, :string
       attribute :horizontal, :boolean
       attribute :editorialgroup, ISOProjectGroup
       attribute :approvalgroup, ISOProjectGroup
-      attribute :ics, Bib::ICS, collection: true
+      attribute :ics, Bib::ICS, collection: true, initialize_empty: true
       attribute :structuredidentifier, StructuredIdentifier
       attribute :stagename, Stagename
       attribute :updates_document_type, :string, values: Doctype::TYPES
       attribute :fast_track, :boolean
       attribute :price_code, :string
 
-      def initialize(**args)
-        super
-        @schema_version = Relaton.schema_versions["relaton-model-iso"]
+      def get_schema_version
+        Relaton.schema_versions["relaton-model-iso"]
       end
 
       xml do

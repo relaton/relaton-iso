@@ -8,6 +8,7 @@ module Relaton
     # It needs for trasition form Relaton v! to Relaton v2.
     #
     module HashParserV1
+      include Core::ArrayWrapper
       include Bib::HashParserV1
       extend self
 

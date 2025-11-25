@@ -1,6 +1,6 @@
 id: ISO1231994
 type: standard
-schema_version: "1.0.0"
+schema_version: "v1.4.1"
 fetched: "2022-05-02"
 formattedref: ISO 123:1994
 title:
@@ -383,7 +383,7 @@ depiction:
       width: 100%
       height: auto
 ext:
-  schema_version: 1.0.0
+  schema_version: v1.0.5
   doctype:
     abbreviation: std
     content: international-standard

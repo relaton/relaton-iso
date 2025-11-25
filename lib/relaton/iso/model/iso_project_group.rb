@@ -1,10 +1,10 @@
 module Relaton
   module Iso
     class ISOProjectGroup < Lutaml::Model::Serializable
-      attribute :agency, :string, collection: true
-      attribute :technical_committee, Bib::WorkGroup, collection: true
-      attribute :subcommittee, Bib::WorkGroup, collection: true
-      attribute :workgroup, Bib::WorkGroup, collection: true
+      attribute :agency, :string, collection: true, initialize_empty: true
+      attribute :technical_committee, Bib::WorkGroup, collection: true, initialize_empty: true
+      attribute :subcommittee, Bib::WorkGroup, collection: true, initialize_empty: true
+      attribute :workgroup, Bib::WorkGroup, collection: true, initialize_empty: true
       attribute :secretariat, :string
 
       xml do

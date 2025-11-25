@@ -354,7 +354,7 @@ RSpec.describe Relaton::Iso::Scraper do
         expect(dates).to be_instance_of Array
         expect(dates.size).to eq 1
         expect(dates.first.type).to eq "published"
-        expect(dates.first.at).to eq "2001-05"
+        expect(dates.first.at.to_s).to eq "2001-05"
       end
 
       it "published from doc when ID is undated" do
@@ -362,7 +362,7 @@ RSpec.describe Relaton::Iso::Scraper do
         expect(dates).to be_instance_of Array
         expect(dates.size).to eq 1
         expect(dates.first.type).to eq "published"
-        expect(dates.first.at).to eq "2001-05"
+        expect(dates.first.at.to_s).to eq "2001-05"
       end
 
       it "published & updated from doc" do
@@ -371,9 +371,9 @@ RSpec.describe Relaton::Iso::Scraper do
         dates = subject.send(:fetch_dates)
         expect(dates.size).to eq 2
         expect(dates[0].type).to eq "published"
-        expect(dates[0].at).to eq "2001"
+        expect(dates[0].at.to_s).to eq "2001"
         expect(dates[1].type).to eq "updated"
-        expect(dates[1].at).to eq "2002-06-07"
+        expect(dates[1].at.to_s).to eq "2002-06-07"
       end
 
       it "from reference" do
@@ -382,7 +382,7 @@ RSpec.describe Relaton::Iso::Scraper do
         dates = subject.send(:fetch_dates)
         expect(dates.size).to eq 1
         expect(dates[0].type).to eq "published"
-        expect(dates[0].at).to eq "2001"
+        expect(dates[0].at.to_s).to eq "2001"
       end
 
       it "corrected" do
@@ -392,7 +392,7 @@ RSpec.describe Relaton::Iso::Scraper do
         dates = subject.send(:fetch_dates)
         expect(dates.size).to eq 2
         expect(dates[1].type).to eq "corrected"
-        expect(dates[1].at).to eq "2002-06-07"
+        expect(dates[1].at.to_s).to eq "2002-06-07"
       end
     end
 

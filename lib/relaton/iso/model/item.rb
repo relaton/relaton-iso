@@ -9,8 +9,8 @@ module Relaton
     class Item < Bib::Item
       model ItemData
 
-      attribute :docidentifier, Docidentifier, collection: true
-      attribute :relation, Relation, collection: true
+      attribute :docidentifier, Docidentifier, collection: true, initialize_empty: true
+      attribute :relation, Relation, collection: true, initialize_empty: true
       attribute :ext, Ext
     end
   end
