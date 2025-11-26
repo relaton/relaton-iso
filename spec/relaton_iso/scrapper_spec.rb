@@ -96,8 +96,8 @@ RSpec.describe RelatonIso::Scrapper do
 
     describe "#fetch_relaton_docids" do
       let(:docid) { subject.fetch_relaton_docids }
-      let(:pubid) { "ISO 123:2001" }
-      let(:isoref) { "ISO 123:2001(E)" }
+      let(:pubid) { "ISO/WDA 123:2001" }
+      let(:isoref) { "ISO/WDA 123:2001(E)" }
       let(:urn) { "urn:iso:std:iso:123:stage-90.93" }
 
       it "returns PubID and URN RelatonBib document identifiers" do

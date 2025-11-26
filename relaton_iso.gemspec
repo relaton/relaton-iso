@@ -24,10 +24,10 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.4.0")
 
   spec.add_dependency "openssl", ">= 3.3.2"
   spec.add_dependency "pubid-iso", "~> 1.15.0"
-  spec.add_dependency "relaton-index", "~> 0.2.16"
+  spec.add_dependency "relaton-index", "~> 0.2.17"
   spec.add_dependency "relaton-iso-bib", "~> 1.20.0"
 end
