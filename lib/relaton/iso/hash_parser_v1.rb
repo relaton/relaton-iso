@@ -12,6 +12,15 @@ module Relaton
       include Bib::HashParserV1
       extend self
 
+      PUBLISHERS = {
+        "IEC" => "International Electrotechnical Commission",
+        "ISO" => "International Organization for Standardization",
+        "IEEE" => "Institute of Electrical and Electronics Engineers",
+        "SAE" => "SAE International",
+        "CIE" => " International Commission on Illumination",
+        "ASME" => "American Society of Mechanical Engineers",
+      }.freeze
+
       private
 
       def ext_hash_to_bib(ret) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
@@ -54,25 +63,72 @@ module Relaton
       end
 
       # @param ret [Hash]
-      def editorialgroup_hash_to_bib(ret)
+      def editorialgroup_hash_to_bib(ret) # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
         eg = ret.dig(:ext, :editorialgroup) || ret[:editorialgroup]
         return unless eg
 
-        ret[:ext][:editorialgroup] = create_iso_project_group(eg)
+        ret[:ext]&.delete(:editorialgroup)
+        ret.delete(:editorialgroup)
+        ret[:contributor] ||= []
+        add_group_contributors(ret, eg, "committee")
       end
 
-      def approvalgroup_hash_to_bib(ret)
+      def approvalgroup_hash_to_bib(ret) # rubocop:disable Metrics/AbcSize
         ag = ret.dig(:ext, :approvalgroup) || ret[:approvalgroup]
         return unless ag
 
-        ret[:ext][:approvalgroup] = create_iso_project_group(ag)
+        ret[:ext]&.delete(:approvalgroup)
+        ret.delete(:approvalgroup)
+        ret[:contributor] ||= []
+        add_group_contributors(ret, ag, "authorizer", role_type: "authorizer")
       end
 
-      def create_iso_project_group(args)
-        args[:technical_committee] = workgroup_hash_to_bib args[:technical_committee]
-        args[:subcommittee] = workgroup_hash_to_bib args[:subcommittee]
-        args[:workgroup] = workgroup_hash_to_bib args[:workgroup]
-        ISOProjectGroup.new(**args)
+      def add_group_contributors(ret, group, description, role_type: "author") # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+        subdiv_types = {
+          technical_committee: "technical-committee",
+          subcommittee: "subcommittee",
+          workgroup: "workgroup",
+        }
+        subdiv_types.each do |key, subdiv_type|
+          array(group[key]).each do |wg|
+            wg[:content] ||= wg.delete(:name)
+            next unless wg[:content]
+
+            prefix = wg[:prefix] || wg[:identifier]&.split("/")&.first || extract_prefix(wg[:content])
+            publisher_name = PUBLISHERS[prefix]
+            name = if publisher_name
+                     [Bib::TypedLocalizedString.new(content: publisher_name)]
+                   elsif prefix
+                     [Bib::TypedLocalizedString.new(content: prefix)]
+                   else
+                     [Bib::TypedLocalizedString.new(content: wg[:content])]
+                   end
+            abbreviation = prefix ? Bib::LocalizedString.new(content: prefix) : nil
+
+            subdivision = Bib::Subdivision.new(
+              type: subdiv_type, subtype: wg[:type],
+              name: [Bib::TypedLocalizedString.new(content: wg[:content])],
+              identifier: wg[:identifier] ? [Bib::OrganizationType::Identifier.new(content: wg[:identifier])] : [],
+            )
+
+            role = Bib::Contributor::Role.new(
+              type: role_type,
+              description: [Bib::LocalizedMarkedUpString.new(content: description)],
+            )
+
+            ret[:contributor] << Bib::Contributor.new(
+              role: [role],
+              organization: Bib::Organization.new(
+                name: name, subdivision: [subdivision], abbreviation: abbreviation,
+              ),
+            )
+          end
+        end
+      end
+
+      def extract_prefix(content)
+        match = content&.match(%r{^([A-Z]+)/})
+        match[1] if match
       end
 
       # @param ret [Hash]

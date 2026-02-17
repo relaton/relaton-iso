@@ -5,41 +5,28 @@ module Relaton
         docid = docidentifier.find(&:primary) || docidentifier.first
         return unless docid
 
-        pubid = without_date ? docid.content.exclude(:year) : docid.content
+        if docid.content.is_a?(String)
+          create_id_from_string(docid.content, without_date)
+        else
+          create_id_from_pubid(docid.content, without_date)
+        end
+      end
+
+      private
+
+      def create_id_from_string(content, without_date)
+        pubid = without_date ? content.sub(/:\d{4}$/, "") : content
+        self.id = pubid.gsub(/\W+/, "")
+      end
+
+      def create_id_from_pubid(content, without_date)
+        pubid = without_date ? content.exclude(:year) : content
         self.id = pubid.to_s(with_prf: true).gsub(/\W+/, "")
       end
 
       def create_relation(**args)
         Relation.new(**args)
       end
-
-      def to_xml(bibdata: false, **opts)
-        add_notes opts[:note] do
-          bibdata ? Bibdata.to_xml(self) : Bibitem.to_xml(self)
-        end
-      end
-
-      def to_yaml(**opts)
-        add_notes opts[:note] do
-          Item.to_yaml(self)
-        end
-      end
-
-      def to_json(**opts)
-        add_notes opts[:note] do
-          Item.to_json(self)
-        end
-      end
-
-      # private
-
-      # def add_notes(notes)
-      #   self.note ||= []
-      #   Relaton.array(notes).each { |nt| note << Bib::Note.new(**nt) }
-      #   result = yield
-      #   Relaton.array(notes).each { note.pop }
-      #   result
-      # end
     end
   end
 end

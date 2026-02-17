@@ -83,7 +83,7 @@ module Relaton
       end
 
       def exclude_year
-        pubid = content.exlude(:year)
+        pubid = content.exclude(:year)
         current_pubid = pubid
         while current_pubid.base
           current_pubid.base = current_pubid.base.exclude(:year)

@@ -390,35 +390,6 @@ ext:
   subdoctype: specification
   flavor: iso
   horizontal: true
-  editorialgroup:
-    agency:
-      - ISO
-    technical_committee:
-      - number: 123
-        type: main
-        identifier: ISO/TC 123
-        prefix: ISO/TC
-        content: ISO Technical Committee 123
-    subcommittee:
-      - number: 1
-        type: main
-        identifier: ISO/TC 123/SC 1
-        prefix: ISO/TC
-        content: ISO Subcommittee 1 of Technical Committee 123
-    workgroup:
-      - number: 1
-        type: main
-        identifier: ISO/TC 123/SC 1/WG 1
-        prefix: ISO/TC
-        content: ISO Workgroup 1 of Subcommittee 1 of Technical Committee 123
-    secretariat: Secretariat
-  approvalgroup:
-    technical_committee:
-      - number: 123
-        type: main
-        identifier: ISO/TC 123
-        prefix: ISO/TC
-        content: ISO Technical Committee 123
   ics:
     - code: "123.456"
       text: Geographic information / Geographical information systems (GIS)

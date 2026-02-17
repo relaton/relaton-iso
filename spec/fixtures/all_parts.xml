@@ -1,5 +1,5 @@
 <bibdata type="standard" schema-version="v1.4.1">
-  <fetched>2025-04-23</fetched>
+  <fetched>2026-02-16</fetched>
   <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
   <title language="en" script="Latn" type="title-main" format="text/plain">Metadata</title>
   <title language="en" script="Latn" type="main" format="text/plain">Geographic information - Metadata</title>
@@ -205,9 +205,6 @@ L'ISO 19115-1:2014 est applicable aux données numériques et services, ses prin
   <ext schema-version="v1.0.5">
     <doctype>international-standard</doctype>
     <flavor>iso</flavor>
-    <editorialgroup>
-      <technical-committee number="211" type="TC" identifier="ISO/TC 211">Geographic information/Geomatics</technical-committee>
-    </editorialgroup>
     <ics>
       <code>35.240.70</code>
       <text>IT applications in science</text>

@@ -25,4 +25,21 @@ describe Relaton::Iso::Docidentifier do
       end
     end
   end
+
+  context "#exclude_year" do
+    let(:type) { "ISO" }
+
+    it "removes year from a simple identifier" do
+      docid = described_class.new content: "ISO 19115:2014", type: type
+      result = docid.exclude_year
+      expect(result.to_s).not_to include("2014")
+      expect(result.to_s(with_prf: true)).to eq("ISO 19115")
+    end
+
+    it "removes year from identifier and its base" do
+      docid = described_class.new content: "ISO 19115-1:2014/Amd 1:2018", type: type
+      result = docid.exclude_year
+      expect(result.to_s(with_prf: true)).to eq("ISO 19115-1/Amd 1")
+    end
+  end
 end

@@ -1,5 +1,5 @@
 ---
-id: ISO/TC211
+id: TC211
 type: standard
 schema_version: v1.4.1
 fetched: '2011-06-22'
@@ -138,14 +138,52 @@ contributor:
     identifier:
     - type: uri
       content: www.person.com
+- role:
+  - type: author
+    description:
+    - content: committee
+  organization:
+    name:
+    - content: International Organization for Standardization
+    subdivision:
+    - name:
+      - content: ISO/TC 211 Geographic information/Geomatics
+      type: technical-committee
+      subtype: technicalCommittee
+    abbreviation:
+      content: ISO
+- role:
+  - type: author
+    description:
+    - content: committee
+  organization:
+    name:
+    - content: International Organization for Standardization
+    subdivision:
+    - name:
+      - content: International Organization for Standardization
+      type: subcommittee
+      subtype: ISO
+- role:
+  - type: author
+    description:
+    - content: committee
+  organization:
+    name:
+    - content: Workgroup Organization
+    subdivision:
+    - name:
+      - content: Workgroup Organization
+      type: workgroup
+      subtype: WG
 edition:
   content: '1'
 version:
 - revision_date: '2019-04-01'
   draft: draft
 note:
-- type: bibnote
-  content: note
+- content: note
+  type: bibnote
 language:
 - en
 - fr
@@ -237,22 +275,9 @@ ext:
     content: international-standard
   subdoctype: specification
   flavor: iso
-  horizontal: false
-  editorialgroup:
-    technical_committee:
-    - number: 211
-      type: technicalCommittee
-      content: ISO/TC 211 Geographic information/Geomatics
-    subcommittee:
-    - number: 122
-      type: ISO
-      content: International Organization for Standardization
-    workgroup:
-    - number: 111
-      type: WG
-      content: Workgroup Organization
   ics:
   - code: 35.240.70
+    text: IT applications in science
   structuredidentifier:
     type: sid
     project_number:
@@ -260,6 +285,7 @@ ext:
       subpart: 2
       content: ISO 1-2:2014
     tc_document_number: 1234
+  horizontal: false
   stagename:
     content: International Standard published
   fast_track: false

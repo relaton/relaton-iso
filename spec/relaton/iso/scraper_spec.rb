@@ -30,7 +30,11 @@ RSpec.describe Relaton::Iso::Scraper do
     expect(bib.place.first).to be_instance_of Relaton::Bib::Place
     expect(bib.ext.doctype).to be_instance_of Relaton::Iso::Doctype
     expect(bib.ext.flavor).to eq "iso"
-    expect(bib.ext.editorialgroup).to be_instance_of Relaton::Iso::ISOProjectGroup
+    eg_contrib = bib.contributor.find do |c|
+      c.role.any? { |r| r.description.any? { |d| d.content == "committee" } }
+    end
+    expect(eg_contrib).not_to be_nil
+    expect(eg_contrib.organization.subdivision.first).to be_instance_of Relaton::Bib::Subdivision
     expect(bib.ext.ics.first).to be_instance_of Relaton::Bib::ICS
     expect(bib.ext.structuredidentifier).to be_instance_of Relaton::Iso::StructuredIdentifier
   end
@@ -234,16 +238,19 @@ RSpec.describe Relaton::Iso::Scraper do
       end
     end
 
-    describe "#fetch_editorialgroup" do
-      it "returns editorialgroup" do
-        wg = subject.send(:fetch_editorialgroup)
-        expect(wg).to be_instance_of Relaton::Iso::ISOProjectGroup
-        expect(wg.technical_committee).to be_instance_of Array
-        expect(wg.technical_committee[0]).to be_instance_of Relaton::Bib::WorkGroup
-        expect(wg.technical_committee[0].content).to eq "Raw materials (including latex) for use in the rubber industry"
-        expect(wg.technical_committee[0].identifier).to eq "ISO/TC 45/SC 3"
-        expect(wg.technical_committee[0].type).to eq "TC"
-        expect(wg.technical_committee[0].number).to eq 45
+    describe "#fetch_editorialgroup_contributor" do
+      it "returns editorialgroup contributor" do
+        contrib = subject.send(:fetch_editorialgroup_contributor)
+        expect(contrib).to be_instance_of Relaton::Bib::Contributor
+        expect(contrib.role.first.type).to eq "author"
+        expect(contrib.role.first.description.first.content).to eq "committee"
+        subdiv = contrib.organization.subdivision.first
+        expect(subdiv).to be_instance_of Relaton::Bib::Subdivision
+        expect(subdiv.type).to eq "technical-committee"
+        expect(subdiv.subtype).to eq "TC"
+        expect(subdiv.name.first.content).to eq "Raw materials (including latex) for use in the rubber industry"
+        expect(subdiv.identifier.first.content).to eq "ISO/TC 45/SC 3"
+        expect(contrib.organization.abbreviation.content).to eq "ISO"
         expect(errors).to eq editorialgroup: false
       end
 
@@ -251,7 +258,7 @@ RSpec.describe Relaton::Iso::Scraper do
         expect(doc).to receive(:at).with(
           "//div[contains(., 'Technical Committe')]/following-sibling::span/a",
         ).and_return nil
-        expect(subject.send(:fetch_editorialgroup)).to be_nil
+        expect(subject.send(:fetch_editorialgroup_contributor)).to be_nil
         expect(errors).to eq editorialgroup: true
       end
     end

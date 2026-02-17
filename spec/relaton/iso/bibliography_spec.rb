@@ -98,8 +98,10 @@ RSpec.describe Relaton::Iso::Bibliography do
       expect(subject.status).to be_instance_of Relaton::Bib::Status
     end
 
-    it "return workgroup" do
-      expect(subject.ext.editorialgroup).to be_instance_of Relaton::Iso::ISOProjectGroup
+    it "return ext without editorialgroup" do
+      expect(subject.ext).to be_instance_of Relaton::Iso::Ext
+      expect(subject.ext.doctype.content).to eq "international-standard"
+      expect(subject.ext).not_to respond_to(:editorialgroup)
     end
 
     it "return relations" do

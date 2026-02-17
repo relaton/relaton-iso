@@ -64,6 +64,10 @@ module Relaton
         @doc, @url = get_page path
         titles, abstract, langs = fetch_titles_abstract
 
+        contributors = fetch_contributors
+        eg_contributor = fetch_editorialgroup_contributor
+        contributors << eg_contributor if eg_contributor
+
         ItemData.new(
           id: id.gsub(/[^\w]/, ""),
           # fetched: Date.today.to_s,
@@ -77,7 +81,7 @@ module Relaton
           status: fetch_status,
           ics: fetch_ics,
           date: fetch_dates,
-          contributor: fetch_contributors,
+          contributor: contributors,
           abstract: abstract,
           copyright: fetch_copyright,
           source: fetch_source(@url),
@@ -535,12 +539,10 @@ module Relaton
         [Bib::Copyright.new(owner: [contrib], from: from)]
       end
 
-      def parse_ext # rubocop:disable Metrics/MethodLength
+      def parse_ext
         Ext.new(
           doctype: fetch_type,
           flavor: "iso",
-          editorialgroup: fetch_editorialgroup,
-          approvalgroup: nil,
           ics: fetch_ics,
           structuredidentifier: fetch_structuredidentifier,
           stagename: nil,
@@ -563,28 +565,55 @@ module Relaton
       end
 
       #
-      # Fetch editorialgroup.
+      # Fetch editorialgroup as a contributor with subdivision.
       #
-      # @param doc [Nokogiri::HTML::Document]
+      # @return [Relaton::Bib::Contributor, nil]
       #
-      # @return [RelatonIsoBib::EditorialGroup, nil]
-      #
-      def fetch_editorialgroup # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-        wg = @doc.at("//div[contains(., 'Technical Committe')]/following-sibling::span/a")
+      def fetch_editorialgroup_contributor # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+        wg = @doc.at(
+          "//div[contains(., 'Technical Committe')]" \
+          "/following-sibling::span/a",
+        )
         @errors[:editorialgroup] &&= wg.nil?
         return unless wg
 
         workgroup = wg.text.split "/"
+        prefix = workgroup[0]
         type = workgroup[1]&.match(/^[A-Z]+/)&.to_s || "TC"
-        # {
-        #   name: "International Organization for Standardization",
-        #   abbreviation: "ISO",
-        #   url: "www.iso.org",
-        # }
-        tc_numb = workgroup[1]&.match(/\d+/)&.to_s&.to_i
         tc_name = wg[:title]
-        tc = Bib::WorkGroup.new(content: tc_name, identifier: wg.text, type: type, number: tc_numb)
-        ISOProjectGroup.new(technical_committee: [tc])
+
+        publisher = PUBLISHERS[prefix]
+        name = if publisher
+                 [Bib::TypedLocalizedString.new(content: publisher[:name])]
+               elsif prefix
+                 [Bib::TypedLocalizedString.new(content: prefix)]
+               else
+                 []
+               end
+        abbreviation = if prefix
+                         Bib::LocalizedString.new(content: prefix)
+                       end
+
+        subdivision = Bib::Subdivision.new(
+          type: "technical-committee",
+          subtype: type,
+          name: [Bib::TypedLocalizedString.new(content: tc_name)],
+          identifier: [Bib::OrganizationType::Identifier.new(
+            content: wg.text,
+          )],
+        )
+
+        role = Bib::Contributor::Role.new(
+          type: "author",
+          description: [Bib::LocalizedMarkedUpString.new(content: "committee")],
+        )
+
+        Bib::Contributor.new(
+          role: [role],
+          organization: Bib::Organization.new(
+            name: name, subdivision: [subdivision], abbreviation: abbreviation,
+          ),
+        )
       end
     end
   end
