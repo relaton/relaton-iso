@@ -143,7 +143,7 @@ module Relaton
       # @return [String] English reference identifier
       #
       def isoref
-        params = pubid.value.to_h.reject { |k, _| k == :typed_stage }
+        params = pubid.to_h.except(:typed_stage)
         ::Pubid::Iso::Identifier.create(language: "en", **params).to_s(format: :ref_num_short)
       end
 

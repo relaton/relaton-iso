@@ -38,17 +38,6 @@ RSpec.describe Relaton::Iso::Bibliography do
     end
   end
 
-  xit "return xml of hits collection" do
-    VCR.use_cassette "hit_collection_xml" do
-      hits = described_class.search "ISO 19115-2"
-      xml = hits.to_xml
-      file_path = "spec/fixtures/hits.xml"
-      File.write file_path, xml, encoding: "UTF-8" unless File.exist? file_path
-      expect(xml).to be_equivalent_to File.read(file_path, encoding: "utf-8")
-        .gsub(/(?<=<fetched>)\d{4}-\d{2}-\d{2}(?=<)/, Date.today.to_s)
-    end
-  end
-
   it "return string of hit collection" do
     VCR.use_cassette "hits" do
       hits = described_class.search "ISO 19115"
@@ -216,10 +205,10 @@ RSpec.describe Relaton::Iso::Bibliography do
       end
     end
 
-    xit "undated reference gets a newest and active" do
+    it "undated reference gets a newest and active" do
       VCR.use_cassette "iso_123" do
         result = described_class.get "ISO 123", nil, keep_year: true
-        expect(result.date.first.at(:year)).to eq 2001
+        expect(result.date.first.at.to_date.year).to eq 2001
       end
     end
 
@@ -489,11 +478,20 @@ RSpec.describe Relaton::Iso::Bibliography do
 
   describe "#isobib_results_filter" do
     context "when data's years matches" do
-      it "returns first hit"
+      it "returns first hit", vcr: "iso_19115_2003" do
+        query_pubid = Pubid::Iso::Identifier.parse("ISO 19115:2003")
+        hits, missed_year_ids = described_class.send(:isobib_search_filter, query_pubid, {})
+        expect(hits).not_to be_empty
+        expect(missed_year_ids).to be_empty
+      end
     end
 
     context "when data's years is not matched" do
-      it "returns missed years"
+      it "returns missed years", vcr: "iso_19115_2015" do
+        query_pubid = Pubid::Iso::Identifier.parse("ISO 19115:2015")
+        _hits, missed_year_ids = described_class.send(:isobib_search_filter, query_pubid, {})
+        expect(missed_year_ids).not_to be_empty
+      end
     end
 
     context "when all parts true" do

@@ -112,7 +112,7 @@ RSpec.describe Relaton::Iso::Scraper do
       end
     end
 
-    xit("#isoref") { expect(subject.isoref).to eq "ISO 123:2001(E)" }
+    it("#isoref") { expect(subject.isoref).to eq "ISO 123:2001(E)" }
 
     it "#fetch_titles_abstract" do
       expect(subject).to receive(:get_page).with("/fr/standard/23281.html").and_return [doc_fr, "url-fr"]

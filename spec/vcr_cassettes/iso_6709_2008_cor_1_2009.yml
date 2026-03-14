@@ -41,21 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 9944:FF99E:2F3FE7:38A797:6993A138
+      - 1B78:11ED6B:DB98D2:109BDA0:69B48E28
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 16 Feb 2026 23:01:04 GMT
+      - Fri, 13 Mar 2026 22:26:44 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk2140027-PDK
+      - cache-iad-kcgs7200169-IAD
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-      - S1771282864.218378,VS0,VE6
+      - S1773440804.294306,VS0,VE2
       Vary:
       - Authorization,Accept-Encoding
       Access-Control-Allow-Origin:
@@ -63,11 +63,11 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 6477d4b8112e311a27ffa4c95815062123f59b63
+      - 844e3b2111df5757e252b5832d37da304e73f1f2
       Expires:
-      - Mon, 16 Feb 2026 23:06:04 GMT
+      - Fri, 13 Mar 2026 22:31:44 GMT
       Source-Age:
-      - '119'
+      - '250'
     body:
       encoding: ASCII-8BIT
       base64_string: |
@@ -14796,7 +14796,7 @@ http_interactions:
         Cv9/UEsBAh4DFAAAAAgAuJaIWl6IteqWGwoAZuOCAA0AGAAAAAAAAQAAAKSB
         AAAAAGluZGV4LXYxLnlhbWxVVAUAA/yo9Wd1eAsAAQT1AQAABBQAAABQSwUG
         AAAAAAEAAQBTAAAA3RsKAAAA
-  recorded_at: Mon, 16 Feb 2026 23:01:04 GMT
+  recorded_at: Fri, 13 Mar 2026 22:26:44 GMT
 - request:
     method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/data-v2/data/iso-6709-2008-cor-1-2009.yaml
@@ -14838,21 +14838,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 82D6:134511:26A9A0:2FC158:6993A1B3
+      - 10A8:22AFC3:E0E78E:10F300A:69B48F2D
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 16 Feb 2026 23:01:08 GMT
+      - Fri, 13 Mar 2026 22:26:53 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk2140088-PDK
+      - cache-iad-kjyo7100114-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1771282868.320817,VS0,VE126
+      - S1773440813.466635,VS0,VE86
       Vary:
       - Authorization,Accept-Encoding
       Access-Control-Allow-Origin:
@@ -14860,9 +14860,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - abccdb10d73fc87c3ec75a958a9c2d025391e251
+      - 539640f49359a497562638223a5d095a7931706a
       Expires:
-      - Mon, 16 Feb 2026 23:06:08 GMT
+      - Fri, 13 Mar 2026 22:31:53 GMT
       Source-Age:
       - '0'
     body:
@@ -14924,5 +14924,5 @@ http_interactions:
         MAogICAgdGV4dDogSVQgYXBwbGljYXRpb25zIGluIHNjaWVuY2UKICBzdHJ1
         Y3R1cmVkaWRlbnRpZmllcjoKICAgIHR5cGU6IElTTwogICAgcHJvamVjdF9u
         dW1iZXI6CiAgICAgIGNvbnRlbnQ6ICc1MzUzOScK
-  recorded_at: Mon, 16 Feb 2026 23:01:08 GMT
+  recorded_at: Fri, 13 Mar 2026 22:26:53 GMT
 recorded_with: VCR 6.4.0
