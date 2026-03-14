@@ -626,7 +626,7 @@ RSpec.describe Relaton::Iso::Bibliography do
   describe "#filter_hits_by_year", vcr: { cassette_name: "iso_19115_2015" } do
     subject { described_class.filter_hits_by_year(hits_collection, year) }
     let(:pubid) { Pubid::Iso::Identifier.parse("ISO 19115") }
-    let(:hits_collection) { Relaton::Iso::HitCollection.new(pubid).find.fetch }
+    let(:hits_collection) { Relaton::Iso::HitCollection.new(pubid).find }
 
     context "when year is missing" do
       let(:year) { "2015" }
