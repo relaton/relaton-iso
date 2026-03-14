@@ -6,7 +6,6 @@ module Relaton
   module Iso
     # Page of hit collection.
     class HitCollection < Relaton::Core::HitCollection
-      INDEXFILE = "index-v1"
       ENDPOINT = "https://raw.githubusercontent.com/relaton/relaton-data-iso/data-v2/"
 
       def opts

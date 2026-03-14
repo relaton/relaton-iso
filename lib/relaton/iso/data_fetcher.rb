@@ -28,7 +28,7 @@ module Relaton
       end
 
       def index
-        @index ||= Relaton::Index.find_or_create :iso, file: "#{HitCollection::INDEXFILE}.yaml"
+        @index ||= Relaton::Index.find_or_create :iso, file: "#{INDEXFILE}.yaml"
       end
 
       #
@@ -202,13 +202,11 @@ module Relaton
         File.write file, serialize(doc), encoding: "UTF-8"
       end
 
-      def to_yaml(doc)
-        Item.to_yaml doc
-      end
+      def to_yaml(doc) = doc.to_yaml
 
-      def to_xml(doc)
-        Bibdata.to_xml doc
-      end
+      def to_xml(doc) = doc.to_xml bibxml: true
+
+      def to_bibxml(doc) = doc.to_rfcxml
 
       #
       # Create thread worker

@@ -1,6 +1,8 @@
+require "relaton/core/processor"
+
 module Relaton
   module Iso
-    class Processor < Relaton::Core::Processor
+    class Processor < Core::Processor
       attr_reader :idtype
 
       def initialize # rubocop:disable Lint/MissingSuper
@@ -55,23 +57,20 @@ module Relaton
       # Returns hash of XML grammar
       # @return [String]
       def grammar_hash
-        require "relaton/bib/version"
-        require_relative "version"
-        Digest::MD5.hexdigest Relaton::Iso::VERSION + Relaton::Bib::VERSION
+        require_relative "../iso"
+        Iso.grammar_hash
       end
 
       # Returns number of workers
       # @return [Integer]
-      def threads
-        3
-      end
+      def threads = 3
 
       #
       # Remove index file
       #
       def remove_index_file
         require_relative "hit_collection"
-        Relaton::Index.find_or_create(:iso, url: true, file: "#{HitCollection::INDEXFILE}.yaml").remove_file
+        Index.find_or_create(:iso, url: true, file: "#{INDEXFILE}.yaml").remove_file
       end
     end
   end

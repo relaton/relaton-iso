@@ -250,15 +250,16 @@ describe Relaton::Iso::DataFetcher do
     context "#serialize" do
       it("yaml") { expect(subject.serialize(doc)).to include "content: ISO/IEC 123" }
 
-      xit "bibxml" do
+      it "bibxml" do
         subject.instance_variable_set(:@format, "bibxml")
         expect(subject.serialize(doc)).to include '<reference anchor="ISO/IEC.123"'
       end
 
       it "xml" do
         subject.instance_variable_set(:@format, "xml")
-        expect(subject.serialize(doc)).to include '<docidentifier type="ISO" ' \
-          'primary="true">ISO/IEC 123</docidentifier>'
+        expect(subject.serialize(doc)).to include(
+          '<docidentifier type="ISO" primary="true">ISO/IEC 123</docidentifier>',
+        )
       end
     end
   end
