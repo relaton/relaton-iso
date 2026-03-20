@@ -468,6 +468,52 @@ RSpec.describe Relaton::Iso::Bibliography do
     end
   end
 
+  context "publication date filtering" do
+    # ISO 19115:2003 has published date "2003-05" (i.e. 2003-05-01)
+    it "publication_date_before returns edition before given date", vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", "2003",
+                                   publication_date_before: Date.new(2004, 1, 1))
+      expect(result).not_to be_nil
+      expect(result.docidentifier.first.content).to eq "ISO 19115:2003"
+    end
+
+    it "publication_date_after returns edition on or after given date", vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", "2003",
+                                   publication_date_after: Date.new(2003, 1, 1))
+      expect(result).not_to be_nil
+      expect(result.docidentifier.first.content).to eq "ISO 19115:2003"
+    end
+
+    it "combined date filters return edition within range", vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", "2003",
+                                   publication_date_after: Date.new(2003, 1, 1),
+                                   publication_date_before: Date.new(2004, 1, 1))
+      expect(result).not_to be_nil
+      expect(result.docidentifier.first.content).to eq "ISO 19115:2003"
+    end
+
+    it "returns nil when year matches but exact date fails filter", vcr: "iso_19115_2003" do
+      # ISO 19115:2003 published 2003-05, filtering after 2003-06 should fail
+      result = described_class.get("ISO 19115", "2003",
+                                   publication_date_after: Date.new(2003, 6, 1))
+      expect(result).to be_nil
+    end
+
+    it "returns nil when no editions match the filter", vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", "2003",
+                                   publication_date_before: Date.new(2002, 1, 1))
+      expect(result).to be_nil
+    end
+
+    it "skips to_most_recent_reference when date filter is present", vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", "2003",
+                                   publication_date_before: Date.new(2004, 1, 1))
+      expect(result).not_to be_nil
+      # Should retain year since date filter skips to_most_recent_reference
+      expect(result.docidentifier.first.content).to eq "ISO 19115:2003"
+    end
+  end
+
   describe "#isobib_results_filter" do
     context "when data's years matches" do
       it "returns first hit", vcr: "iso_19115_2003" do

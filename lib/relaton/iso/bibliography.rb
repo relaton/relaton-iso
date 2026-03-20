@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "date"
+
 # require 'relaton_iso/iso_bibliographic_item'
 # require "relaton_iso/scrapper"
 # require "relaton_iso/hit_collection"
@@ -44,12 +46,19 @@ module Relaton
 
         hits, missed_year_ids = isobib_search_filter(query_pubid, opts)
         tip_ids = look_up_with_any_types_stages(hits, ref, opts)
-        ret = hits.fetch_doc
+
+        date_filter = opts[:publication_date_before] || opts[:publication_date_after]
+        if date_filter && !query_pubid.root.all_parts
+          ret = find_match_by_date(hits, query_pubid, opts)
+        else
+          ret = hits.fetch_doc(date_filter ? opts : {})
+        end
         return fetch_ref_err(query_pubid, missed_year_ids, tip_ids) unless ret
 
         response_pubid = ret.docidentifier.find(&:primary) # .sub(" (all parts)", "")
         Util.info "Found: `#{response_pubid}`", key: query_pubid.to_s
-        get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts]
+        get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts] ||
+          opts[:publication_date_before] || opts[:publication_date_after]
         return ret if get_all
 
         ret.to_most_recent_reference
@@ -108,6 +117,78 @@ module Relaton
       end
 
       private
+
+      # Find the best match among hits using date filters.
+      # @param hits [Relaton::Iso::HitCollection]
+      # @param pubid [Pubid::Iso::Identifier]
+      # @param opts [Hash]
+      # @return [Relaton::Iso::ItemData, nil]
+      def find_match_by_date(hits, pubid, opts) # rubocop:disable Metrics/AbcSize
+        candidates = []
+        hits.each { |h| candidates << h if year_in_range?(hit_year(h), opts) }
+        candidates.sort_by { |h| -hit_year(h) }.each do |h|
+          ret = fetch_and_check_date(h, pubid, opts)
+          return ret if ret
+        end
+        nil
+      end
+
+      # Extract year from a hit as an integer.
+      # @param hit [Relaton::Iso::Hit]
+      # @return [Integer]
+      def hit_year(hit)
+        yr = hit.pubid&.year || hit.hit[:year]
+        yr.to_i
+      end
+
+      # Check if a year falls within the date filter range.
+      # @param year [Integer]
+      # @param opts [Hash]
+      # @return [Boolean]
+      def year_in_range?(year, opts)
+        return false if year.zero?
+
+        if opts[:publication_date_before]
+          return false if year > opts[:publication_date_before].year
+        end
+        if opts[:publication_date_after]
+          return false if year < opts[:publication_date_after].year
+        end
+        true
+      end
+
+      # Check if the item's published date falls within the filter range.
+      # @param item [Relaton::Iso::ItemData]
+      # @param opts [Hash]
+      # @return [Boolean]
+      def publication_date_in_range?(item, opts)
+        pub_date_entry = item.date.find { |d| d.type == "published" }
+        return true unless pub_date_entry&.at
+
+        pub_date = pub_date_entry.at.to_date
+        return true unless pub_date
+
+        if opts[:publication_date_before]
+          return false if pub_date >= opts[:publication_date_before]
+        end
+        if opts[:publication_date_after]
+          return false if pub_date < opts[:publication_date_after]
+        end
+        true
+      end
+
+      # Fetch the item for a hit and check if its publication date is in range.
+      # @param hit [Relaton::Iso::Hit]
+      # @param pubid [Pubid::Iso::Identifier]
+      # @param opts [Hash]
+      # @return [Relaton::Iso::ItemData, nil]
+      def fetch_and_check_date(hit, pubid, opts)
+        ret = hit.item
+        if publication_date_in_range?(ret, opts)
+          Util.info "Found: `#{ret.docidentifier.first.content}`", key: pubid.to_s
+          ret
+        end
+      end
 
       def check_year(year, hit) # rubocop:disable Metrics/AbcSize
         (hit.pubid.base.nil? && hit.pubid.year.to_s == year.to_s) ||
