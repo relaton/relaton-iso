@@ -31,7 +31,7 @@ module Relaton
       #
       def find # rubocop:disable Metrics/AbcSize
         @array = index.search do |row|
-          row[:id].is_a?(Hash) ? pubid_match?(row[:id]) : ref.to_s(with_prf: true) == row[:id]
+          row[:id].is_a?(Hash) || row[:id].is_a?(::Pubid::Core::Identifier::Base) ? pubid_match?(row[:id]) : ref.to_s(with_prf: true) == row[:id]
         end.map { |row| Hit.new row, self }
           .sort_by! { |h| h.pubid.to_s }
           .reverse!
@@ -49,6 +49,8 @@ module Relaton
       end
 
       def create_pubid(id)
+        return id if id.is_a?(::Pubid::Core::Identifier::Base)
+
         ::Pubid::Iso::Identifier.create(**id)
       rescue StandardError => e
         Util.warn e.message, key: ref.to_s
@@ -74,15 +76,24 @@ module Relaton
           excl_attrs << :iteration
         end
         # excl_parts << :edition if ref.root.edition.nil? || all_parts
-        @escludings = excl_attrs
+        @excludings = excl_attrs
       end
 
       def index
-        @index ||= Relaton::Index.find_or_create :iso, url: "#{ENDPOINT}#{INDEXFILE}.zip", file: "#{INDEXFILE}.yaml"
+        @index ||= Relaton::Index.find_or_create(
+          :iso,
+          url: "#{ENDPOINT}#{INDEXFILE}.zip",
+          file: "#{INDEXFILE}.yaml",
+          id_keys: %i[publisher number copublisher part year edition type stage
+                      iteration joint_document tctype sctype wgtype tcnumber
+                      scnumber wgnumber dirtype base supplements addendum
+                      jtc_dir month amendments corrigendums language],
+          pubid_class: ::Pubid::Iso::Identifier,
+        )
       end
 
       def fetch_doc(options = {})
-        @excludeingds = nil if options != opts
+        @excludings = nil if options != opts
         @opts = options
 
         if !ref.root.all_parts || size == 1
