@@ -105,7 +105,11 @@ module Relaton
 
       # @return [RelatonIsoBib::IsoBibliographicItem, nil]
       def to_all_parts # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity
-        hit = @array.select { |h| h.pubid.part }.min_by { |h| h.pubid.part.to_i }
+        parts = @array.select { |h| h.pubid.part }
+        if opts[:publication_date_before] || opts[:publication_date_after]
+          parts = parts.select { |h| Bibliography.send(:year_in_range?, (h.pubid.year || h.hit[:year]).to_i, opts) }
+        end
+        hit = parts.min_by { |h| h.pubid.part.to_i }
         return @array.first&.item unless hit
 
         bibitem = hit.item
