@@ -1,5 +1,5 @@
 <bibdata type="standard" schema-version="v1.4.1">
-  <fetched>2026-02-16</fetched>
+  <fetched>2026-03-20</fetched>
   <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
   <title language="en" script="Latn" type="title-main" format="text/plain">Metadata</title>
   <title language="en" script="Latn" type="main" format="text/plain">Geographic information - Metadata</title>
@@ -22,6 +22,19 @@
       <name>International Organization for Standardization</name>
       <abbreviation>ISO</abbreviation>
       <uri>www.iso.org</uri>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="author">
+      <description>committee</description>
+    </role>
+    <organization>
+      <name>International Organization for Standardization</name>
+      <subdivision type="technical-committee" subtype="TC">
+        <name>Geographic information/Geomatics</name>
+        <identifier>ISO/TC 211</identifier>
+      </subdivision>
+      <abbreviation>ISO</abbreviation>
     </organization>
   </contributor>
   <edition>1</edition>
@@ -102,6 +115,19 @@
           <name>International Organization for Standardization</name>
           <abbreviation>ISO</abbreviation>
           <uri>www.iso.org</uri>
+        </organization>
+      </contributor>
+      <contributor>
+        <role type="author">
+          <description>committee</description>
+        </role>
+        <organization>
+          <name>International Organization for Standardization</name>
+          <subdivision type="technical-committee" subtype="TC">
+            <name>Geographic information/Geomatics</name>
+            <identifier>ISO/TC 211</identifier>
+          </subdivision>
+          <abbreviation>ISO</abbreviation>
         </organization>
       </contributor>
       <edition>1</edition>

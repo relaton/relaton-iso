@@ -10,4 +10,9 @@ VCR.configure do |config|
   }
   config.hook_into :webmock
   config.configure_rspec_metadata!
+
+  # Ignore index download requests — handled by a global WebMock stub instead
+  config.ignore_request do |request|
+    URI(request.uri).path.end_with?("index-v1.zip")
+  end
 end
