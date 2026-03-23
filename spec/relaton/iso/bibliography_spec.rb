@@ -525,6 +525,18 @@ RSpec.describe Relaton::Iso::Bibliography do
       expect(rel_docids).to include("ISO 19115-1:2014")
     end
 
+    it "filters out corrected date after the cut-off", vcr: "iso_iec_2382_2015" do
+      result = described_class.get("ISO/IEC 2382", "2015",
+                                   publication_date_before: Date.new(2020, 1, 1))
+      expect(result).not_to be_nil
+      # published date (2015-05) should be kept
+      pub_date = result.date.find { |d| d.type == "published" }
+      expect(pub_date).not_to be_nil
+      # corrected date (2022-10) should be filtered out
+      corrected_date = result.date.find { |d| d.type == "corrected" }
+      expect(corrected_date).to be_nil
+    end
+
     it "skips to_most_recent_reference when date filter is present", vcr: "iso_19115_2003" do
       result = described_class.get("ISO 19115", "2003",
                                    publication_date_before: Date.new(2004, 1, 1))

@@ -60,7 +60,7 @@ module Relaton
         get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts] ||
           opts[:publication_date_before] || opts[:publication_date_after]
         if get_all
-          filter_relations_by_date(ret, opts) if date_filter
+          filter_item_by_date(ret, opts) if date_filter
           return ret
         end
 
@@ -121,13 +121,23 @@ module Relaton
 
       private
 
-      # Filter out relations whose referenced document falls outside the date range.
+      # Filter out relations and dates that fall outside the date range.
       # @param item [Relaton::Iso::ItemData]
       # @param opts [Hash]
-      def filter_relations_by_date(item, opts)
-        return unless item.relation&.any?
+      def filter_item_by_date(item, opts)
+        if item.relation&.any?
+          item.relation.reject! { |rel| relation_outside_date_range?(rel, opts) }
+        end
 
-        item.relation.reject! { |rel| relation_outside_date_range?(rel, opts) }
+        # Filter dates that occurred after the cut-off (keep published date always)
+        if item.date&.any? && opts[:publication_date_before]
+          item.date.reject! do |d|
+            next false if d.type == "published"
+
+            date_val = d.at&.to_date || d.from&.to_date
+            date_val && date_val >= opts[:publication_date_before]
+          end
+        end
       end
 
       # Check if a relation's bibitem date falls outside the given date range.
