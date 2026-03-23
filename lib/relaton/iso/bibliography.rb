@@ -59,7 +59,10 @@ module Relaton
         Util.info "Found: `#{response_pubid}`", key: query_pubid.to_s
         get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts] ||
           opts[:publication_date_before] || opts[:publication_date_after]
-        return ret if get_all
+        if get_all
+          filter_relations_by_date(ret, opts) if date_filter
+          return ret
+        end
 
         ret.to_most_recent_reference
       rescue ::Pubid::Core::Errors::ParseError
@@ -117,6 +120,45 @@ module Relaton
       end
 
       private
+
+      # Filter out relations whose referenced document falls outside the date range.
+      # @param item [Relaton::Iso::ItemData]
+      # @param opts [Hash]
+      def filter_relations_by_date(item, opts)
+        return unless item.relation&.any?
+
+        item.relation.reject! { |rel| relation_outside_date_range?(rel, opts) }
+      end
+
+      # Check if a relation's bibitem date falls outside the given date range.
+      # @param rel [Relaton::Iso::Relation]
+      # @param opts [Hash]
+      # @return [Boolean]
+      def relation_outside_date_range?(rel, opts)
+        rel_date = relation_date(rel)
+        return false unless rel_date
+
+        return true if opts[:publication_date_before] && rel_date >= opts[:publication_date_before]
+        return true if opts[:publication_date_after] && rel_date < opts[:publication_date_after]
+
+        false
+      end
+
+      # Extract a Date from the relation's bibitem using circulated/published date or docidentifier year.
+      # @param rel [Relaton::Iso::Relation]
+      # @return [Date, nil]
+      def relation_date(rel)
+        bib = rel.bibitem
+        date_entry = bib.date&.find { |d| d.type == "circulated" } ||
+                     bib.date&.find { |d| d.type == "published" }
+        return date_entry.at.to_date if date_entry&.at
+
+        docid = bib.docidentifier&.find(&:primary)&.content || bib.formattedref
+        return unless docid
+
+        year = docid.to_s[/:(\d{4})/, 1]
+        Date.new(year.to_i, 1, 1) if year
+      end
 
       # Find the best match among hits using date filters.
       # @param hits [Relaton::Iso::HitCollection]

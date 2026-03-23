@@ -505,6 +505,26 @@ RSpec.describe Relaton::Iso::Bibliography do
       expect(result).to be_nil
     end
 
+    it "filters out relations published after the cut-off date", vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", "2003",
+                                   publication_date_before: Date.new(2010, 1, 1))
+      expect(result).not_to be_nil
+      rel_docids = result.relation.map { |r| r.bibitem.docidentifier&.find(&:primary)&.content.to_s }
+      # ISO 19115-1:2014 has circulated date 2014-03-19, should be filtered out
+      expect(rel_docids).not_to include("ISO 19115-1:2014")
+      # ISO 19115:2003/Cor 1:2006 has circulated date 2014-03-19, also filtered out
+      expect(rel_docids).not_to include("ISO 19115:2003/Cor 1:2006")
+    end
+
+    it "keeps relations published before the cut-off date", vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", "2003",
+                                   publication_date_before: Date.new(2020, 1, 1))
+      expect(result).not_to be_nil
+      rel_docids = result.relation.map { |r| r.bibitem.docidentifier&.find(&:primary)&.content.to_s }
+      # Both relations have circulated date 2014-03-19, which is before 2020
+      expect(rel_docids).to include("ISO 19115-1:2014")
+    end
+
     it "skips to_most_recent_reference when date filter is present", vcr: "iso_19115_2003" do
       result = described_class.get("ISO 19115", "2003",
                                    publication_date_before: Date.new(2004, 1, 1))
