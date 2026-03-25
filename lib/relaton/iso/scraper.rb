@@ -132,7 +132,7 @@ module Relaton
       def fetch_relaton_docids
         [
           Docidentifier.new(content: pubid, type: "ISO", primary: true),
-          Docidentifier.new(content: pubid, type: "iso-reference"),
+          Docidentifier.new(content: isoref, type: "iso-reference"),
           Docidentifier.new(content: urn, type: "URN"),
         ]
       end

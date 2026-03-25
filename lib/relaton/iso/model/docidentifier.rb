@@ -97,13 +97,13 @@ module Relaton
 
         case type
         when "URN" then content.urn
-        when "iso-reference" then iso_reference
+        when "iso-reference", "iso-with-lang" then iso_reference
         else content.to_s with_prf: true
         end
       end
 
       def iso_reference
-        return content.to_s(format: :ref_num_short, with_prf: true) if content.language
+        return content.to_s(format: :ref_num_short, with_prf: true) # if content.language
 
         pubid_dup = content.dup
         pubid_dup.language = "en"

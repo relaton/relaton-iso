@@ -2,7 +2,7 @@ describe Relaton::Iso::Docidentifier do
   subject { described_class.new content: id, type: type }
 
   context "PRF" do
-    let(:id) { "ISO/PRF TR 17716.2" }
+    let(:id) { "ISO/PRF TR 17716.2(E)" }
 
     context "ISO" do
       let(:type) { "ISO" }
@@ -18,10 +18,17 @@ describe Relaton::Iso::Docidentifier do
       end
     end
 
+    context "iso-with-lang" do
+      let(:type) { "iso-with-lang" }
+      it "should render PRF identifier" do
+        expect(subject.to_s).to eq "ISO/PRF TR 17716.2(E)"
+      end
+    end
+
     context "URN" do
       let(:type) { "URN" }
       it "should render PRF identifier" do
-        expect(subject.to_s).to eq "urn:iso:std:iso:tr:17716:stage-draft.v2"
+        expect(subject.to_s).to eq "urn:iso:std:iso:tr:17716:stage-draft.v2:en"
       end
     end
   end
