@@ -6,10 +6,6 @@ module Relaton
   module Iso
     # Fetch all the documents from ISO website.
     class DataFetcher < Core::DataFetcher
-      def gh_issue_channel
-        ["relaton/relaton-iso", "Error fetching ISO documents"]
-      end
-
       #
       # The queue is used to store the ICS page paths beeing fetching in the current run.
       #
@@ -55,7 +51,7 @@ module Relaton
         iso_queue.save
         # index.sort! { |a, b| compare_docids a, b }
         index.save
-        repot_errors
+        report_errors
       end
 
       private

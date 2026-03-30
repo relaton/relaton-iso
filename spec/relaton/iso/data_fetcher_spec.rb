@@ -61,17 +61,8 @@ describe Relaton::Iso::DataFetcher do
       expect(subject).to receive(:fetch_docs).with(no_args)
       expect(subject.index).to receive(:save).with(no_args)
       expect(subject.iso_queue).to receive(:save).with(no_args)
+      expect(subject).to receive(:report_errors)
       subject.fetch
-    end
-
-    it "#repot_errors" do
-      errors = subject.instance_variable_get(:@errors)
-      errors[:id] = false
-      errors[:title] = true
-      expect(subject.gh_issue).to receive(:create_issue)
-      expect do
-        subject.repot_errors
-      end.to output("[relaton-iso] ERROR: Failed to fetch title\n").to_stderr_from_any_process
     end
 
     it "#fetch_ics" do
