@@ -23,7 +23,7 @@ RSpec.describe Relaton::Iso::Scraper do
     expect(bib.status).to be_instance_of Relaton::Bib::Status
     expect(bib.date.first).to be_instance_of Relaton::Bib::Date
     expect(bib.contributor.first).to be_instance_of Relaton::Bib::Contributor
-    expect(bib.abstract.first).to be_instance_of Relaton::Bib::LocalizedMarkedUpString
+    expect(bib.abstract.first).to be_instance_of Relaton::Bib::Abstract
     expect(bib.copyright.first).to be_instance_of Relaton::Bib::Copyright
     expect(bib.source.first).to be_instance_of Relaton::Bib::Uri
     expect(bib.relation.first).to be_instance_of Relaton::Iso::Relation
@@ -270,7 +270,7 @@ RSpec.describe Relaton::Iso::Scraper do
         expect(relations.size).to eq 1
         expect(relations.first.type).to eq "obsoletes"
         expect(relations.first.bibitem).to be_instance_of Relaton::Iso::ItemData
-        expect(relations.first.bibitem.formattedref).to eq "ISO 123:1985"
+        expect(relations.first.bibitem.formattedref.content).to eq "ISO 123:1985"
         expect(relations.first.bibitem.docidentifier.first.content).to eq "ISO 123:1985"
         expect(relations.first.bibitem.docidentifier.first.type).to eq "ISO"
         expect(relations.first.bibitem.docidentifier.first.primary).to be true

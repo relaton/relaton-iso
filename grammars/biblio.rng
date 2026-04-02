@@ -1142,11 +1142,11 @@ NOTE: This should preferably be encoded as  a URI or short identifier, rather th
         <a:documentation>Information about how long the current description of the bibliographic item is valid for</a:documentation>
       </ref>
     </optional>
-    <optional>
+    <zeroOrMore>
       <ref name="depiction">
         <a:documentation>Depiction of the bibliographic item, typically an image</a:documentation>
       </ref>
-    </optional>
+    </zeroOrMore>
   </define>
   <define name="ReducedBibliographicItem">
     <a:documentation>Reduced description of a bibliographic resource, without mandatory title and docidentifier, used for document relations
@@ -1939,10 +1939,10 @@ Detailed in https://www.relaton.org/model/relations/</a:documentation>
       <value>hasAnnotation</value>
       <value>draftOf</value>
       <value>hasDraft</value>
-      <value>preliminaryDraftOf</value>
-      <value>hasPreliminaryDraft</value>
-      <value>revisionDraftOf</value>
-      <value>hasRevisionDraft</value>
+      <value>predecessorDraftOf</value>
+      <value>hasPredecessorDraft</value>
+      <value>successorDraftOf</value>
+      <value>hasSuccessorDraft</value>
       <value>editionOf</value>
       <value>hasEdition</value>
       <value>updates</value>
@@ -2063,13 +2063,13 @@ provided that it is not the entire bibliographic item that is so related</a:docu
           <ref name="LocalizedString"/>
         </element>
       </optional>
-      <oneOrMore>
+      <zeroOrMore>
         <element name="taxon">
           <a:documentation>The keywords as a hierarchical taxonomy. For example, the sequence of `taxon` elements
 `pump`, `centrifugal pump`, `line shaft pump` represents a taxonomic classification</a:documentation>
           <ref name="LocalizedString"/>
         </element>
-      </oneOrMore>
+      </zeroOrMore>
       <zeroOrMore>
         <ref name="vocabid">
           <a:documentation>Identifiers for the keyword as a controlled vocabulary</a:documentation>

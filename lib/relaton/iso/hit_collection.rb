@@ -123,7 +123,7 @@ module Relaton
       def create_relation(hit)
         # pubid = Pubid.new hit.pubid
         docid = Docidentifier.new(content: hit.pubid, type: "ISO", primary: true)
-        isobib = ItemData.new(formattedref: hit.pubid.to_s, docidentifier: [docid])
+        isobib = ItemData.new(formattedref: Bib::Formattedref.new(content: hit.pubid.to_s), docidentifier: [docid])
         Relation.new(type: "instanceOf", bibitem: isobib)
       end
     end

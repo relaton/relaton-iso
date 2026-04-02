@@ -175,7 +175,7 @@ module Relaton
         @errors[:abstract] &&= abstract_content.empty?
         return if abstract_content.empty?
 
-        Bib::LocalizedMarkedUpString.new(content: abstract_content, language: lang, script: script(lang))
+        Bib::Abstract.new(content: abstract_content, language: lang, script: script(lang))
       end
 
       # Returns available languages.
@@ -379,7 +379,7 @@ module Relaton
       def create_relations(rel, type, date)
         rel.css("a").map do |rid|
           docid = Docidentifier.new(type: "ISO", content: rid.text, primary: true)
-          bibitem = ItemData.new(docidentifier: [docid], formattedref: rid.text, date: date)
+          bibitem = ItemData.new(docidentifier: [docid], formattedref: Bib::Formattedref.new(content: rid.text), date: date)
           Relation.new type: type, bibitem: bibitem
         end
       end

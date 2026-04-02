@@ -1,4 +1,4 @@
-<bibdata type="standard" schema-version="v1.4.1">
+<bibdata type="standard" schema-version="v1.5.6">
   <fetched>2022-05-02</fetched>
   <formattedref>ISO 123:1994</formattedref>
   <title language="en" locale="en-US" script="Latn">Geographic information -- Metadata</title>
@@ -211,21 +211,17 @@
   <classification language="en" locale="en-US" script="Latn" type="ISO" scope="local" primary="true">123</classification>
   <keyword>
     <vocab language="en" locale="en-US" script="Latn">geographic</vocab>
-    <taxon language="en" locale="en-US" script="Latn">information</taxon>
+    <taxon language="en" locale="en-US" script="Latn">geography</taxon>
+    <taxon language="en" locale="en-US" script="Latn">geographic information</taxon>
     <vocabid type="AGROVOC" uri="http://aims.fao.org/aos/agrovoc/">
       <code>1234</code>
       <term>Test term</term>
     </vocabid>
   </keyword>
-  <validity>
-    <validityBegins>1994-01-01</validityBegins>
-    <validityEnds>1994-12-31</validityEnds>
-    <revision>1994-12-31</revision>
-  </validity>
   <depiction scope="local">
     <image id="example-1234-5678-90ab-cdef12345678" src="https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg" mimetype="image/jpeg" filename="PUB100080.jpg" width="100%" height="auto" alt="ISO logo" title="ISO Logo" longdesc="https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg"/>
   </depiction>
-  <ext schema-version="v1.0.5">
+  <ext schema-version="v1.1.2">
     <doctype abbreviation="std">international-standard</doctype>
     <subdoctype>specification</subdoctype>
     <flavor>iso</flavor>

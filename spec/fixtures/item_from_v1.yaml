@@ -1,7 +1,7 @@
 ---
 id: TC211
 type: standard
-schema_version: v1.4.1
+schema_version: v1.5.6
 fetched: '2011-06-22'
 title:
 - language: en
@@ -193,9 +193,11 @@ abstract:
 - language: en
   script: Latn
   content: ISO 19115-1:2014 defines the schema required for ...
+  format: text/plain
 - language: fr
   script: Latn
   content: L'ISO 19115-1:2014 définit le schéma requis pour ...
+  format: text/plain
 status:
   stage:
     content: '60'
@@ -245,7 +247,10 @@ series:
   number: serie1234
   partnumber: part5678
 - type: alt
-  formattedref: serieref
+  formattedref:
+    language: en
+    script: Latn
+    content: serieref
   title:
   - content: Series Title
 medium:
@@ -266,11 +271,11 @@ classification:
 - content: value
   type: type
 validity:
-  begins: '2010-10-10'
-  ends: '2011-02-03'
-  revision: '2011-03-04'
+  begins: '2010-10-10T12:21:00+00:00'
+  ends: '2011-02-03T18:30:00+00:00'
+  revision: '2011-03-04T09:00:00+00:00'
 ext:
-  schema_version: v1.0.5
+  schema_version: v1.1.2
   doctype:
     content: international-standard
   subdoctype: specification

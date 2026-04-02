@@ -134,7 +134,7 @@ RSpec.describe Relaton::Iso::Bibliography do
         end
 
         it "include all matched documents without part" do
-          expect(subject.relation.map { |r| r.bibitem.formattedref })
+          expect(subject.relation.map { |r| r.bibitem.formattedref&.content })
             .to include("ISO 19115-1:2014/Amd 1:2018", "ISO 19115-2:2019", "ISO 19115-2:2009")
         end
       end

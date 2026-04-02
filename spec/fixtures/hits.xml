@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
-  <bibitem id="ISO1911522019" type="standard" schema-version="v1.4.1">
+  <bibitem id="ISO1911522019" type="standard" schema-version="v1.5.6">
   <fetched>2026-03-13</fetched>
   <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
   <title language="en" script="Latn" type="title-main" format="text/plain">Metadata</title>
@@ -63,7 +63,7 @@
     <formattedPlace>Geneva</formattedPlace>
   </place>
 </bibitem>
-  <bibitem id="ISO1911522009" type="standard" schema-version="v1.4.1">
+  <bibitem id="ISO1911522009" type="standard" schema-version="v1.5.6">
   <fetched>2026-03-13</fetched>
   <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
   <title language="en" script="Latn" type="title-main" format="text/plain">Metadata</title>

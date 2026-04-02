@@ -1,6 +1,6 @@
 id: ISO1231994
 type: standard
-schema_version: "v1.4.1"
+schema_version: "v1.5.6"
 fetched: "2022-05-02"
 formattedref: ISO 123:1994
 title:
@@ -352,24 +352,24 @@ classification:
     primary: true
 keyword:
   - vocab:
-      - content: geographic
+      content: geographic
+      language: en
+      script: Latn
+      locale: en-US
+    taxon:
+      - content: geography
         language: en
         script: Latn
         locale: en-US
-    taxon:
-      - content: information
+      - content: geographic information
         language: en
         script: Latn
         locale: en-US
     vocabid:
-      type: AGROVOC
-      uri: http://aims.fao.org/aos/agrovoc/
-      code: "1234"
-      term: Test term
-validity:
-  begins: "1994-01-01"
-  ends: "1994-12-31"
-  revision: "1994-12-31"
+      - type: AGROVOC
+        uri: http://aims.fao.org/aos/agrovoc/
+        code: "1234"
+        term: Test term
 depiction:
   scope: local
   image:
@@ -383,7 +383,7 @@ depiction:
       width: 100%
       height: auto
 ext:
-  schema_version: v1.0.5
+  schema_version: v1.1.2
   doctype:
     abbreviation: std
     content: international-standard

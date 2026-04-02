@@ -244,24 +244,24 @@ Possible options:
 [source,ruby]
 ----
 item.to_xml
-=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.4.1">
+=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.5.6">
       <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
       <title language="en" script="Latn" type="title-main" format="text/plain">Metadata</title>
       ...
     </bibitem>"
 
 item.to_xml bibdata: true
-=> "<bibdata type="standard" schema-version="v1.4.1">
+=> "<bibdata type="standard" schema-version="v1.5.6">
       <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
       ...
-      <ext schema-version="v1.0.5">
+      <ext schema-version="v1.1.2">
         <doctype>international-standard</doctype>
         ...
       </ext>
     </bibdata>"
 
 item.to_xml note: [{ content: "Note", type: "note" }]
-=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.4.1">
+=> "<bibitem id="ISO19115-1-2014" type="standard" schema-version="v1.5.6">
       ...
       <note type="note">Note</note>
       ...
