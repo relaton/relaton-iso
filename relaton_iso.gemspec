@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "isoics", "~> 0.1.6"
   spec.add_dependency "openssl", "~> 3.3.2" # 3.3.0 raised an error on Ruby 3.4.7
   spec.add_dependency "pubid-iso", "~> 1.15.8"
-  spec.add_dependency "relaton-bib", "~> 2.0.0-alpha.4"
+  spec.add_dependency "relaton-bib", "~> 2.0.0-alpha.7"
   spec.add_dependency "relaton-core", "~> 0.0.12"
   spec.add_dependency "relaton-index", "~> 0.2.12"
 end
