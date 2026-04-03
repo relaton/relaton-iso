@@ -26,6 +26,20 @@ module Relaton
 
       attribute :content, Pubid
 
+      # iso-tc identifiers are TC document numbers, not ISO standard
+      # identifiers — parsing them through Pubid adds a spurious
+      # "ISO" prefix (#178)
+      def initialize(arg = nil, **kwargs)
+        if arg.is_a?(Hash)
+          raw_content = arg["content"] if arg["type"] == "iso-tc"
+          super(arg)
+        else
+          raw_content = kwargs[:content] if kwargs[:type] == "iso-tc"
+          super(**kwargs)
+        end
+        @content = raw_content if raw_content.is_a?(String)
+      end
+
       def content_to_xml(model, parent, doc)
         doc.add_xml_fragment parent, model.to_s
       end
@@ -48,41 +62,19 @@ module Relaton
 
       def remove_stage!
         remove_attr! :stage
-        # return if content.is_a? String
-
-        # content.stage = nil
-        # base = content.base
-        # while base
-        #   base.stage = nil
-        #   base = base.base
-        # end
       end
 
       def remove_part!
         remove_attr! :part
-        # return if content.is_a? String
-
-        # content.part = nil
-        # base = content.base
-        # while base
-        #   base.part = nil
-        #   base = base.base
-        # end
       end
 
       def remove_date!
         remove_attr! :year
-        # return if content.is_a? String
-
-        # content.year = nil
-        # base = content.base
-        # while base
-        #   base.year = nil
-        #   base = base.base
-        # end
       end
 
       def exclude_year
+        return content if content.is_a? String
+
         pubid = content.exclude(:year)
         current_pubid = pubid
         while current_pubid.base
@@ -103,17 +95,19 @@ module Relaton
       end
 
       def iso_reference
-        return content.to_s(format: :ref_num_short, with_prf: true) # if content.language
+        content.to_s(format: :ref_num_short, with_prf: true)
 
-        pubid_dup = content.dup
-        pubid_dup.language = "en"
-        pubid_dup.to_s(format: :ref_num_short, with_prf: true)
+        # return content.to_s(format: :ref_num_short, with_prf: true) if content.language
+
+        # pubid_dup = content.dup
+        # pubid_dup.language = "en"
+        # pubid_dup.to_s(format: :ref_num_short, with_prf: true)
       end
 
       private
 
       def remove_attr!(attr)
-        return false if content.is_a? String
+        return if content.is_a? String
 
         content.send("#{attr}=", nil)
         base = content.base
@@ -121,7 +115,6 @@ module Relaton
           base.send("#{attr}=", nil)
           base = base.base
         end
-        true
       end
     end
   end

@@ -33,6 +33,25 @@ describe Relaton::Iso::Docidentifier do
     end
   end
 
+  context "iso-tc" do
+    let(:id) { "17301" }
+    let(:type) { "iso-tc" }
+
+    it "should not add ISO prefix" do
+      expect(subject.to_s).to eq "17301"
+    end
+
+    it "preserves content as plain string" do
+      expect(subject.content).to be_a String
+    end
+
+    it "round-trips through XML without ISO prefix" do
+      xml = subject.to_xml
+      expect(xml).to include("17301")
+      expect(xml).not_to include("ISO 17301")
+    end
+  end
+
   context "#exclude_year" do
     let(:type) { "ISO" }
 
