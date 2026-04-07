@@ -85,7 +85,7 @@ module RelatonIso
         copyright: fetch_copyright,
         link: fetch_link(@url),
         relation: fetch_relations,
-        place: ["Geneva"],
+        place: [RelatonBib::Place.new(city: "Geneva")],
         structuredidentifier: fetch_structuredidentifier,
       )
     end
