@@ -13,6 +13,8 @@ http_interactions:
       - "*/*"
       User-Agent:
       - Ruby
+      Host:
+      - raw.githubusercontent.com
   response:
     status:
       code: 200
@@ -39,21 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 3009:409FD:49094B:5040B7:69268BF8
+      - A7A4:142FF0:22FD72:2A4869:69D56815
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 26 Nov 2025 05:15:07 GMT
+      - Tue, 07 Apr 2026 20:32:55 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk1780116-PDK
+      - cache-iad-kcgs7200050-IAD
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-      - S1764134107.173298,VS0,VE2
+      - S1775593975.172038,VS0,VE2
       Vary:
       - Authorization,Accept-Encoding
       Access-Control-Allow-Origin:
@@ -61,11 +63,11 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - a7431f012c6c7a5f6b7979cf92344c0e2341be64
+      - d0ec06df738ee424873fa9f5e513d19414229433
       Expires:
-      - Wed, 26 Nov 2025 05:20:07 GMT
+      - Tue, 07 Apr 2026 20:37:55 GMT
       Source-Age:
-      - '226'
+      - '177'
     body:
       encoding: ASCII-8BIT
       base64_string: |
@@ -15054,5 +15056,5 @@ http_interactions:
         ftD/H1BLAQIeAxQAAAAIABeFwlrt8+B9S0kKAMP3hAANABgAAAAAAAEAAACk
         gQAAAABpbmRleC12MS55YW1sVVQFAAMN1D1odXgLAAEE6QMAAAR2AAAAUEsF
         BgAAAAABAAEAUwAAAJJJCgAAAA==
-  recorded_at: Wed, 26 Nov 2025 05:15:07 GMT
-recorded_with: VCR 6.3.1
+  recorded_at: Tue, 07 Apr 2026 20:32:55 GMT
+recorded_with: VCR 6.4.0

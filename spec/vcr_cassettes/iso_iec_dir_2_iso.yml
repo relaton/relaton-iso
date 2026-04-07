@@ -13,6 +13,8 @@ http_interactions:
       - "*/*"
       User-Agent:
       - Ruby
+      Host:
+      - raw.githubusercontent.com
   response:
     status:
       code: 200
@@ -39,21 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 3009:409FD:49094B:5040B7:69268BF8
+      - A7A4:142FF0:22FD72:2A4869:69D56815
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 26 Nov 2025 05:14:50 GMT
+      - Tue, 07 Apr 2026 20:32:23 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk1780080-PDK
+      - cache-iad-kjyo7100170-IAD
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-      - S1764134090.295267,VS0,VE6
+      - S1775593944.747369,VS0,VE2
       Vary:
       - Authorization,Accept-Encoding
       Access-Control-Allow-Origin:
@@ -61,11 +63,11 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 263046f90d6e769afec7415ce5861ec8242b20c2
+      - ae235dce05dbead522e331ce146143ae7769ced1
       Expires:
-      - Wed, 26 Nov 2025 05:19:50 GMT
+      - Tue, 07 Apr 2026 20:37:23 GMT
       Source-Age:
-      - '209'
+      - '146'
     body:
       encoding: ASCII-8BIT
       base64_string: |
@@ -15054,7 +15056,7 @@ http_interactions:
         ftD/H1BLAQIeAxQAAAAIABeFwlrt8+B9S0kKAMP3hAANABgAAAAAAAEAAACk
         gQAAAABpbmRleC12MS55YW1sVVQFAAMN1D1odXgLAAEE6QMAAAR2AAAAUEsF
         BgAAAAABAAEAUwAAAJJJCgAAAA==
-  recorded_at: Wed, 26 Nov 2025 05:14:50 GMT
+  recorded_at: Tue, 07 Apr 2026 20:32:23 GMT
 - request:
     method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/static/ISO_IEC_DIR_2_ISO.yaml
@@ -15096,21 +15098,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 6E44:2FA6B1:EE6BBB:103EA85:69268CCA
+      - 1BBA:22A160:C151F:EA96D:69D569DF
       Accept-Ranges:
       - bytes
       Date:
-      - Wed, 26 Nov 2025 05:14:54 GMT
+      - Tue, 07 Apr 2026 20:32:31 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-pdk-kpdk1780105-PDK
+      - cache-iad-kjyo7100106-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1764134094.341572,VS0,VE65
+      - S1775593951.271650,VS0,VE64
       Vary:
       - Authorization,Accept-Encoding
       Access-Control-Allow-Origin:
@@ -15118,9 +15120,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 4bccbf18e96a2272c3113507cec8b17fc48692e2
+      - 821814e30552fd01698a2d37e38fbcec181a3ce1
       Expires:
-      - Wed, 26 Nov 2025 05:19:54 GMT
+      - Tue, 07 Apr 2026 20:37:31 GMT
       Source-Age:
       - '0'
     body:
@@ -15149,5 +15151,5 @@ http_interactions:
         ICAgYmliaXRlbToKICAgICAgZm9ybWF0dGVkcmVmOiBJU08vSUVDIERJUiAy
         CiAgICAgIGRvY2lkOgogICAgICAgIC0gaWQ6IElTTy9JRUMgRElSIDIKICAg
         ICAgICAgIHR5cGU6IElTTwogICAgICAgICAgcHJpbWFyeTogdHJ1ZQo=
-  recorded_at: Wed, 26 Nov 2025 05:14:54 GMT
-recorded_with: VCR 6.3.1
+  recorded_at: Tue, 07 Apr 2026 20:32:31 GMT
+recorded_with: VCR 6.4.0

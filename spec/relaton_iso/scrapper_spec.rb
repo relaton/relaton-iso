@@ -28,7 +28,7 @@ RSpec.describe RelatonIso::Scrapper do
     expect(bib.copyright.first).to be_instance_of RelatonBib::CopyrightAssociation
     expect(bib.link.first).to be_instance_of RelatonBib::TypedUri
     expect(bib.relation.first).to be_instance_of RelatonBib::DocumentRelation
-    expect(bib.place.first.name).to eq "Geneva"
+    expect(bib.place.first.city).to eq "Geneva"
     expect(bib.structuredidentifier).to be_instance_of RelatonIsoBib::StructuredIdentifier
   end
 
