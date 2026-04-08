@@ -41,21 +41,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - A7A4:142FF0:22FD72:2A4869:69D56815
+      - 761A:2CCF33:12EED:17780:69D57C76
       Accept-Ranges:
       - bytes
       Date:
-      - Tue, 07 Apr 2026 20:24:53 GMT
+      - Tue, 07 Apr 2026 21:51:59 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-iad-kcgs7200048-IAD
+      - cache-iad-kjyo7100162-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1775593493.408065,VS0,VE111
+      - S1775598719.002216,VS0,VE146
       Vary:
       - Authorization,Accept-Encoding
       Access-Control-Allow-Origin:
@@ -63,9 +63,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 3b310a6c8455d53b126c6ac0ffec00818da65c07
+      - b1d63f25df3463530f120d15bcb44cb1b5c70830
       Expires:
-      - Tue, 07 Apr 2026 20:29:53 GMT
+      - Tue, 07 Apr 2026 21:56:59 GMT
       Source-Age:
       - '0'
     body:
@@ -15056,7 +15056,7 @@ http_interactions:
         ftD/H1BLAQIeAxQAAAAIABeFwlrt8+B9S0kKAMP3hAANABgAAAAAAAEAAACk
         gQAAAABpbmRleC12MS55YW1sVVQFAAMN1D1odXgLAAEE6QMAAAR2AAAAUEsF
         BgAAAAABAAEAUwAAAJJJCgAAAA==
-  recorded_at: Tue, 07 Apr 2026 20:24:53 GMT
+  recorded_at: Tue, 07 Apr 2026 21:51:59 GMT
 - request:
     method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-iso/main/data/iso-19115-2003.yaml
@@ -15080,7 +15080,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '5224'
+      - '5230'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -15088,7 +15088,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"1b566375bb80122c38e08af3ea0c6eb530ff04fe492492f28f980fe2150e9250"
+      - W/"efc887eac2f5ee35df9f5da1fd0312eb6f7b32f53c98b998656629fe6006f0b6"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -15098,21 +15098,21 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - EE5E:6235B:35847E:3F8301:69D5681E
+      - D932:6DF19:135D4:17F01:69D57C87
       Accept-Ranges:
       - bytes
       Date:
-      - Tue, 07 Apr 2026 20:25:02 GMT
+      - Tue, 07 Apr 2026 21:52:09 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-iad-kjyo7100095-IAD
+      - cache-iad-kcgs7200107-IAD
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1775593503.651239,VS0,VE112
+      - S1775598730.683005,VS0,VE122
       Vary:
       - Authorization,Accept-Encoding
       Access-Control-Allow-Origin:
@@ -15120,9 +15120,9 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 0a3682156a83ca2d8745e2d19bef04c742875187
+      - 209fe270d312669b9103264bc3b455b68eff9f6f
       Expires:
-      - Tue, 07 Apr 2026 20:30:02 GMT
+      - Tue, 07 Apr 2026 21:57:09 GMT
       Source-Age:
       - '0'
     body:
@@ -15236,14 +15236,14 @@ http_interactions:
         LSB0eXBlOiBjaXJjdWxhdGVkCiAgICAgIHZhbHVlOiAnMjAxNC0wMy0xOScK
         ICAgIGZvcm1hdHRlZHJlZjoKICAgICAgY29udGVudDogSVNPIDE5MTE1OjIw
         MDMvQ29yIDE6MjAwNgogICAgICBmb3JtYXQ6IHRleHQvcGxhaW4KcGxhY2U6
-        Ci0gR2VuZXZhCmV4dDoKICBzY2hlbWEtdmVyc2lvbjogdjEuMC4zCiAgZG9j
-        dHlwZToKICAgIHR5cGU6IGludGVybmF0aW9uYWwtc3RhbmRhcmQKICBlZGl0
-        b3JpYWxncm91cDoKICAgIHRlY2huaWNhbF9jb21taXR0ZWU6CiAgICAtIG5h
-        bWU6IEdlb2dyYXBoaWMgaW5mb3JtYXRpb24vR2VvbWF0aWNzCiAgICAgIG51
-        bWJlcjogMjExCiAgICAgIHR5cGU6IFRDCiAgICAgIGlkZW50aWZpZXI6IElT
-        Ty9UQyAyMTEKICBpY3M6CiAgLSBjb2RlOiAzNS4yNDAuNzAKICAgIHRleHQ6
-        IElUIGFwcGxpY2F0aW9ucyBpbiBzY2llbmNlCiAgc3RydWN0dXJlZGlkZW50
-        aWZpZXI6CiAgICBwcm9qZWN0X251bWJlcjogJzI2MDIwJwogICAgdHlwZTog
-        SVNPCg==
-  recorded_at: Tue, 07 Apr 2026 20:25:02 GMT
+        Ci0gY2l0eTogR2VuZXZhCmV4dDoKICBzY2hlbWEtdmVyc2lvbjogdjEuMC4z
+        CiAgZG9jdHlwZToKICAgIHR5cGU6IGludGVybmF0aW9uYWwtc3RhbmRhcmQK
+        ICBlZGl0b3JpYWxncm91cDoKICAgIHRlY2huaWNhbF9jb21taXR0ZWU6CiAg
+        ICAtIG5hbWU6IEdlb2dyYXBoaWMgaW5mb3JtYXRpb24vR2VvbWF0aWNzCiAg
+        ICAgIG51bWJlcjogMjExCiAgICAgIHR5cGU6IFRDCiAgICAgIGlkZW50aWZp
+        ZXI6IElTTy9UQyAyMTEKICBpY3M6CiAgLSBjb2RlOiAzNS4yNDAuNzAKICAg
+        IHRleHQ6IElUIGFwcGxpY2F0aW9ucyBpbiBzY2llbmNlCiAgc3RydWN0dXJl
+        ZGlkZW50aWZpZXI6CiAgICBwcm9qZWN0X251bWJlcjogJzI2MDIwJwogICAg
+        dHlwZTogSVNPCg==
+  recorded_at: Tue, 07 Apr 2026 21:52:09 GMT
 recorded_with: VCR 6.4.0

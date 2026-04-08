@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <documents>
   <bibitem id="ISO19115-2-2019" type="standard" schema-version="v1.2.9">
-    <fetched>2024-02-02</fetched>
+    <fetched>2026-04-07</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -59,10 +59,12 @@
         </date>
       </bibitem>
     </relation>
-    <place>Geneva</place>
+    <place>
+      <city>Geneva</city>
+    </place>
   </bibitem>
   <bibitem id="ISO19115-2-2009" type="standard" schema-version="v1.2.9">
-    <fetched>2024-02-02</fetched>
+    <fetched>2026-04-07</fetched>
     <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
     <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
     <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for imagery and gridded data</title>
@@ -115,6 +117,8 @@
         </date>
       </bibitem>
     </relation>
-    <place>Geneva</place>
+    <place>
+      <city>Geneva</city>
+    </place>
   </bibitem>
 </documents>

@@ -1,5 +1,5 @@
 <bibdata type="standard" schema-version="v1.2.9">
-  <fetched>2025-01-30</fetched>
+  <fetched>2026-04-07</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="title-part" format="text/plain" language="en" script="Latn">Part 2: Extensions for acquisition and processing</title>
@@ -57,7 +57,9 @@
       </date>
     </bibitem>
   </relation>
-  <place>Geneva</place>
+  <place>
+    <city>Geneva</city>
+  </place>
   <ext schema-version="v1.0.3">
     <doctype>international-standard</doctype>
     <editorialgroup>

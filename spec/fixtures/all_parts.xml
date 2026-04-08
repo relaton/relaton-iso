@@ -1,5 +1,5 @@
 <bibdata type="standard" schema-version="v1.2.9">
-  <fetched>2025-03-19</fetched>
+  <fetched>2026-04-07</fetched>
   <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
   <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
   <title type="main" format="text/plain" language="en" script="Latn">Geographic information – Metadata</title>
@@ -78,7 +78,7 @@
   </relation>
   <relation type="instanceOf">
     <bibitem type="standard">
-      <fetched>2025-03-19</fetched>
+      <fetched>2026-04-07</fetched>
       <title type="title-intro" format="text/plain" language="en" script="Latn">Geographic information</title>
       <title type="title-main" format="text/plain" language="en" script="Latn">Metadata</title>
       <title type="title-part" format="text/plain" language="en" script="Latn">Part 1: Fundamentals</title>
@@ -177,7 +177,9 @@ L'ISO 19115-1:2014 est applicable aux données numériques et services, ses prin
           </date>
         </bibitem>
       </relation>
-      <place>Geneva</place>
+      <place>
+        <city>Geneva</city>
+      </place>
     </bibitem>
   </relation>
   <relation type="instanceOf">
@@ -198,7 +200,9 @@ L'ISO 19115-1:2014 est applicable aux données numériques et services, ses prin
       <docidentifier type="ISO" primary="true">ISO 19115-2:2009</docidentifier>
     </bibitem>
   </relation>
-  <place>Geneva</place>
+  <place>
+    <city>Geneva</city>
+  </place>
   <ext schema-version="v1.0.3">
     <doctype>international-standard</doctype>
     <editorialgroup>
