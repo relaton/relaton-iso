@@ -218,7 +218,8 @@ copyright:
 relation:
 - type: updates
   bibitem:
-    formattedref: ISO 19115:2003
+    formattedref:
+      content: ISO 19115:2003
   locality_stack:
   - locality:
     - type: section
@@ -226,7 +227,8 @@ relation:
 - type: updates
   bibitem:
     type: standard
-    formattedref: ISO 19115:2003/Cor 1:2006
+    formattedref:
+      content: ISO 19115:2003/Cor 1:2006
 series:
 - type: main
   title:
