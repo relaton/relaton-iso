@@ -1,133 +1,122 @@
 module Relaton
   module Iso
-    class Pubid < Lutaml::Model::Type::Value
-      module Renderer
-      end
-
-      class << self
-        def cast(value)
-          value.is_a?(String) ? ::Pubid::Iso::Identifier.parse(value) : value
-        rescue StandardError
-          Util.warn "Failed to parse Pubid: #{value}"
-          value
-        end
-      end
-
-      ::Lutaml::Model::Config::AVAILABLE_FORMATS.each do |format|
-        define_method(:"to_#{format}") { value.to_s with_prf: true }
-      end
-
-      def to_h = value.to_h
-      def urn = value.urn
-    end
-
     class Docidentifier < Bib::Docidentifier
-      include Pubid::Renderer
+      attribute :content, :string
 
-      attribute :content, Pubid
+      attr_reader :pubid
 
-      # iso-tc identifiers are TC document numbers, not ISO standard
-      # identifiers — parsing them through Pubid adds a spurious
-      # "ISO" prefix (#178). Bypass Pubid casting for iso-tc content
-      # in both direct construction and XML deserialization paths.
       def initialize(arg = nil, **kwargs)
-        if arg.is_a?(Hash)
-          raw_content = arg["content"] if arg["type"] == "iso-tc"
-          super(arg)
-        else
-          raw_content = kwargs[:content] if kwargs[:type] == "iso-tc"
-          super(**kwargs)
-        end
-        @content = raw_content if raw_content.is_a?(String)
+        arg.is_a?(Hash) ? super(arg) : super(**kwargs)
+        # Content may have been set before type during lutaml init. Re-run
+        # the setter so type-dependent parsing (e.g. iso-tc bypass) applies.
+        raw = arg.is_a?(Hash) ? (arg["content"] || arg[:content]) : kwargs[:content]
+        self.content = raw if raw
       end
 
-      # Capture raw iso-tc content before Pubid casting (#178).
-      # The lutaml-model setter is defined via define_method, so we
-      # wrap it with alias_method instead of super.
       alias_method :original_content=, :content=
+      alias_method :original_content, :content
+
       def content=(value)
-        if value.is_a?(String) && type == "iso-tc"
-          @iso_tc_raw = value
+        @pubid = nil
+        @raw_content = nil
+
+        if type == "iso-tc" && value.is_a?(String)
+          @raw_content = value
+        else
+          parsed =
+            case value
+            when ::Pubid::Iso::Identifier::Base then value
+            when String
+              begin
+                ::Pubid::Iso::Identifier.parse(value)
+              rescue StandardError
+                Util.warn "Failed to parse Pubid: #{value}"
+                nil
+              end
+            end
+
+          if parsed
+            @pubid = parsed
+          elsif value.is_a?(String)
+            @raw_content = value
+          end
         end
-        send(:original_content=, value)
+
+        send(:original_content=, to_s)
       end
 
-      def content_to_xml(model, parent, doc)
-        doc.add_xml_fragment parent, model.to_s
+      def content
+        return @raw_content if @raw_content
+        return render_pubid(@pubid) if @pubid
+
+        original_content
       end
 
-      def content_to_key_value(model, doc)
-        doc["content"] = model.to_s
+      def to_s
+        content.to_s
       end
 
       def to_all_parts!
-        if content.is_a? String
-          Util.warn "Cannot convert String to all parts: #{content}"
-          return
-        end
+        return unless @pubid
 
         remove_part!
         remove_date!
         remove_stage!
-        content.all_parts = true
+        @pubid.all_parts = true
+        refresh_content!
       end
 
       def remove_stage!
-        remove_attr! :stage
+        remove_attr!(:stage)
       end
 
       def remove_part!
-        remove_attr! :part
+        remove_attr!(:part)
       end
 
       def remove_date!
-        remove_attr! :year
+        remove_attr!(:year)
       end
 
       def exclude_year
-        return content if content.is_a? String
+        return @raw_content if @raw_content
+        return nil unless @pubid
 
-        pubid = content.exclude(:year)
-        current_pubid = pubid
-        while current_pubid.base
-          current_pubid.base = current_pubid.base.exclude(:year)
-          current_pubid = current_pubid.base
+        pubid = @pubid.exclude(:year)
+        current = pubid
+        while current.base
+          current.base = current.base.exclude(:year)
+          current = current.base
         end
         pubid
       end
 
-      def to_s
-        return content if content.is_a? String
-        return @iso_tc_raw if @iso_tc_raw
+      private
 
+      def render_pubid(pubid)
         case type
-        when "URN" then content.urn
-        when "iso-reference", "iso-with-lang" then iso_reference
-        else content.to_s with_prf: true
+        when "URN" then pubid.urn
+        when "iso-reference", "iso-with-lang"
+          pubid.to_s(format: :ref_num_short, with_prf: true)
+        else
+          pubid.to_s(with_prf: true)
         end
       end
 
-      def iso_reference
-        content.to_s(format: :ref_num_short, with_prf: true)
-
-        # return content.to_s(format: :ref_num_short, with_prf: true) if content.language
-
-        # pubid_dup = content.dup
-        # pubid_dup.language = "en"
-        # pubid_dup.to_s(format: :ref_num_short, with_prf: true)
-      end
-
-      private
-
       def remove_attr!(attr)
-        return if content.is_a? String
+        return unless @pubid
 
-        content.send("#{attr}=", nil)
-        base = content.base
+        @pubid.send("#{attr}=", nil)
+        base = @pubid.base
         while base
           base.send("#{attr}=", nil)
           base = base.base
         end
+        refresh_content!
+      end
+
+      def refresh_content!
+        send(:original_content=, to_s)
       end
     end
   end

@@ -194,7 +194,7 @@ module Relaton
 
       def write_file(file, doc, docid)
         @files << file
-        index.add_or_update docid.content.to_h, file
+        index.add_or_update docid.pubid.to_h, file
         File.write file, serialize(doc), encoding: "UTF-8"
       end
 
