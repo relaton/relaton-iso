@@ -2,7 +2,8 @@ id: ISO1231994
 type: standard
 schema_version: "v1.5.6"
 fetched: "2022-05-02"
-formattedref: ISO 123:1994
+formattedref:
+  content: ISO 123:1994
 title:
   - content: Geographic information -- Metadata
     language: en
@@ -36,7 +37,7 @@ date:
     to: "1994-12-31"
 contributor:
   - role:
-      type: author
+    - type: author
       description:
         - content: Role of the author
           language: en
@@ -129,7 +130,7 @@ contributor:
         - type: primary
           content: https://orcid.org/0000-0002-1825-0097
   - role:
-      type: publisher
+    - type: publisher
       description:
         - content: Role of the publisher
     organization:
@@ -142,7 +143,7 @@ contributor:
         subdivision:
           - type: primary
             name:
-                content: ISO/TC 211
+              - content: ISO/TC 211
         abbreviation:
           content: ISO
         identifier:
@@ -167,7 +168,7 @@ contributor:
             script: Latn
             locale: en-US
         logo:
-          image:
+        - image:
             id: abcd-1234-abcd-1234567890ab
             src: https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg
             mimetype: image/jpeg
@@ -230,7 +231,8 @@ relation:
       script: Latn
       locale: en-US
     bibitem:
-      formattedref: ISO 123-1:1994
+      formattedref:
+        content: ISO 123-1:1994
       docidentifier:
         - type: ISO
           content: ISO 123-1:1994
@@ -250,7 +252,8 @@ relation:
             reference_to: "9"
   - type: hasPart
     bibitem:
-      formattedref: ISO 123-2:1994
+      formattedref:
+        content: ISO 123-2:1994
       docidentifier:
         - type: ISO
           content: ISO 123-2:1994
@@ -268,7 +271,8 @@ relation:
         reference_to: "11"
 series:
   - type: main
-    formattedref: ISO 123
+    formattedref:
+      content: ISO 123
     title:
       - content: ISO 123
     place:
@@ -371,7 +375,7 @@ keyword:
         code: "1234"
         term: Test term
 depiction:
-  scope: local
+- scope: local
   image:
     - id: example-1234-5678-90ab-cdef12345678
       src: https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg
