@@ -5,7 +5,6 @@ require_relative "structured_identifier"
 module Relaton
   module Iso
     class Ext < Bib::Ext
-      attribute :schema_version, method: :get_schema_version
       attribute :doctype, Doctype
       attribute :structuredidentifier, StructuredIdentifier
       attribute :horizontal, :boolean
@@ -14,9 +13,7 @@ module Relaton
       attribute :fast_track, :boolean
       attribute :price_code, :string
 
-      def get_schema_version
-        Relaton.schema_versions["relaton-model-iso"]
-      end
+      def get_schema_version = Relaton.schema_versions["relaton-model-iso"]
 
       xml do
         root "ext"

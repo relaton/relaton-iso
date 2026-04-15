@@ -7,8 +7,10 @@ gemspec
 
 gem "byebug"
 gem "equivalent-xml"
+gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 gem "pry-byebug"
 gem "rake", "~> 13.0"
+gem "relaton-bib", github: "relaton/relaton-bib", branch: "upd-lutaml-model-to-0-8-0"
 gem "rspec", "~> 3.0"
 gem "rubocop"
 gem "rubocop-performance"
