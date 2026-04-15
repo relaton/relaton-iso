@@ -16,7 +16,7 @@ module Relaton
       def get_schema_version = Relaton.schema_versions["relaton-model-iso"]
 
       xml do
-        root "ext"
+        map_attribute "schema-version", to: :schema_version, render_default: true
         map_element "horizontal", to: :horizontal
         map_element "stagename", to: :stagename
         map_element "updates-document-type", to: :updates_document_type
