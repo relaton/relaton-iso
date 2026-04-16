@@ -23,10 +23,6 @@ module Relaton
         pubid = without_date ? content.exclude(:year) : content
         self.id = pubid.to_s(with_prf: true).gsub(/\W+/, "")
       end
-
-      def create_relation(**args)
-        Relation.new(**args)
-      end
     end
   end
 end
