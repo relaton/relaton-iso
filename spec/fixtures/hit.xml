@@ -1,5 +1,5 @@
 <bibdata type="standard" schema-version="v1.5.6">
-  <fetched>2026-03-20</fetched>
+  <fetched>2026-04-21</fetched>
   <title language="en" script="Latn" type="title-intro" format="text/plain">Geographic information</title>
   <title language="en" script="Latn" type="title-main" format="text/plain">Metadata</title>
   <title language="en" script="Latn" type="title-part" format="text/plain">Part 2: Extensions for acquisition and processing</title>
@@ -12,8 +12,8 @@
   <uri type="obp">https://www.iso.org/obp/ui/en/#!iso:std:67039:en</uri>
   <uri type="rss">https://www.iso.org/contents/data/standard/06/70/67039.detail.rss</uri>
   <docidentifier type="ISO" primary="true">ISO 19115-2:2019</docidentifier>
-  <docidentifier type="iso-reference">ISO 19115-2:2019(E)</docidentifier>
-  <docidentifier type="URN">urn:iso:std:iso:19115:-2:stage-90.93</docidentifier>
+  <docidentifier type="iso-reference">ISO 19115-2:2019</docidentifier>
+  <docidentifier type="URN">ISO/WDA 19115-2</docidentifier>
   <docnumber>19115</docnumber>
   <date type="published">
     <on>2019-01</on>
@@ -73,7 +73,7 @@
   <place>
     <formattedPlace>Geneva</formattedPlace>
   </place>
-  <ext schema-version="v1.1.2">
+  <ext schema-version="v1.0.5">
     <doctype>international-standard</doctype>
     <flavor>iso</flavor>
     <ics>

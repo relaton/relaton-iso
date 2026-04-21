@@ -36,12 +36,12 @@ date:
     to: "1994-12-31"
 contributor:
   - role:
-      type: author
-      description:
-        - content: Role of the author
-          language: en
-          script: Latn
-          locale: en-US
+      - type: author
+        description:
+          - content: Role of the author
+            language: en
+            script: Latn
+            locale: en-US
     person:
       name:
         abbreviation:
@@ -129,9 +129,9 @@ contributor:
         - type: primary
           content: https://orcid.org/0000-0002-1825-0097
   - role:
-      type: publisher
-      description:
-        - content: Role of the publisher
+      - type: publisher
+        description:
+          - content: Role of the publisher
     organization:
         name:
           - type: primary
@@ -167,16 +167,16 @@ contributor:
             script: Latn
             locale: en-US
         logo:
-          image:
-            id: abcd-1234-abcd-1234567890ab
-            src: https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg
-            mimetype: image/jpeg
-            filename: PUB100080.jpg
-            alt: ISO logo
-            title: ISO Logo
-            longdesc: https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg
-            width: 100%
-            height: auto
+          - image:
+              id: abcd-1234-abcd-1234567890ab
+              src: https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg
+              mimetype: image/jpeg
+              filename: PUB100080.jpg
+              alt: ISO logo
+              title: ISO Logo
+              longdesc: https://www.iso.org/files/live/sites/isoorg/files/store/en/PUB100080.jpg
+              width: 100%
+              height: auto
 edition:
   number: "1"
   content: First edition

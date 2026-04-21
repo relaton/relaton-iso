@@ -5,7 +5,7 @@ require_relative "structured_identifier"
 module Relaton
   module Iso
     class Ext < Bib::Ext
-      attribute :schema_version, method: :get_schema_version
+      attribute :schema_version, :string, default: -> { get_schema_version }
       attribute :doctype, Doctype
       attribute :structuredidentifier, StructuredIdentifier
       attribute :horizontal, :boolean
@@ -20,6 +20,7 @@ module Relaton
 
       xml do
         root "ext"
+        map_attribute "schema-version", to: :schema_version
         map_element "horizontal", to: :horizontal
         map_element "stagename", to: :stagename
         map_element "updates-document-type", to: :updates_document_type
