@@ -186,10 +186,16 @@ module Relaton
       end
 
       # Extract year from a hit as an integer.
+      #
+      # Amendments, corrigendums and supplements carry no year on their own
+      # identifier; the year lives on the underlying standard reachable via
+      # `root` (which walks the full base chain, however deeply nested). Fall
+      # back to it so a date filter does not drop such references (issue #181).
+      #
       # @param hit [Relaton::Iso::Hit]
       # @return [Integer]
       def hit_year(hit)
-        yr = hit.pubid&.year || hit.hit[:year]
+        yr = hit.pubid&.year || hit.hit[:year] || hit.pubid&.root&.year
         yr.to_i
       end
 
