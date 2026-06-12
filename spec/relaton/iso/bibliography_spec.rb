@@ -546,6 +546,19 @@ RSpec.describe Relaton::Iso::Bibliography do
       expect(result.docidentifier.first.content).to eq "ISO 32000-2:2020/DAM 1"
     end
 
+    # If the index references a data file that 404s, the fetched item has no
+    # docidentifier; under a date filter it must degrade to "not found" rather
+    # than raise (regression for the crash exposed by the fix above).
+    it "returns nil instead of raising when the data file fails to load" do
+      empty_item = instance_double(Relaton::Iso::ItemData, docidentifier: [])
+      allow_any_instance_of(Relaton::Iso::Hit).to receive(:item).and_return(empty_item)
+      expect do
+        result = described_class.get("ISO 32000-2:2020/DAM 1", nil,
+                                     publication_date_before: Date.new(2026, 1, 1))
+        expect(result).to be_nil
+      end.not_to raise_error
+    end
+
     it "filters out corrected date after the cut-off", vcr: "iso_iec_2382_2015" do
       result = described_class.get("ISO/IEC 2382", "2015",
                                    publication_date_before: Date.new(2020, 1, 1))
