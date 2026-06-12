@@ -242,6 +242,10 @@ module Relaton
       # @return [Relaton::Iso::ItemData, nil]
       def fetch_and_check_date(hit, pubid, opts)
         ret = hit.item
+        # A data file that fails to load (e.g. the index references a file that
+        # 404s) yields an item with no docidentifier; skip it rather than crash.
+        return unless ret&.docidentifier&.first
+
         if publication_date_in_range?(ret, opts)
           Util.info "Found: `#{ret.docidentifier.first.content}`", key: pubid.to_s
           ret
