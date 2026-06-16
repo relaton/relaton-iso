@@ -166,6 +166,8 @@ describe Relaton::Iso::DataParser do
     expect(build({ "deliverableType" => "TR" }).ext.doctype.content).to eq "technical-report"
     expect(build({ "supplementType" => "Amd" }).ext.doctype.content).to eq "amendment"
     expect(build({ "supplementType" => "Cor" }).ext.doctype.content).to eq "technical-corrigendum"
+    expect(build({ "supplementType" => "Add" }).ext.doctype.content).to eq "addendum"
+    expect(build({ "supplementType" => "Suppl" }).ext.doctype.content).to eq "supplement"
   end
 
   it "splits the rss URL path by zero-padded id (4- and 5-digit ids)" do
