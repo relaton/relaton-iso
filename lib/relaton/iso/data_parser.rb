@@ -36,6 +36,7 @@ module Relaton
         "Amd" => "amendment",
         "Cor" => "technical-corrigendum",
         "Add" => "addendum",
+        "Suppl" => "supplement",
       }.freeze
 
       DOC_URL = "https://www.iso.org/standard/%d.html"
