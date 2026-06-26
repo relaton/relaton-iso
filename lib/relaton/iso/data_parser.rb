@@ -37,6 +37,7 @@ module Relaton
         "Cor" => "technical-corrigendum",
         "Add" => "addendum",
         "Suppl" => "supplement",
+        "Ext" => "extract",
       }.freeze
 
       DOC_URL = "https://www.iso.org/standard/%d.html"
