@@ -535,6 +535,29 @@ RSpec.describe Relaton::Iso::Bibliography do
       expect(rel_docids).to include("ISO 19115-1:2014")
     end
 
+    # Regression for metanorma/iso-10303#705: a *yearless* (undated) citation
+    # combined with a publication-date cutoff must still render undated. The
+    # cutoff only bounds which edition is selected (here 2003, before the 2004
+    # cutoff); it must not retain the year. Before the fix, the presence of
+    # `publication_date_before` alone forced `get_all` true and skipped
+    # `to_most_recent_reference`, so the year survived (e.g. "ISO 10303-41:2022"
+    # for an undated `ISO 10303-41` citation in a dated document).
+    it "strips the year for an undated query under a cutoff", vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", nil,
+                                   publication_date_before: Date.new(2004, 1, 1))
+      expect(result).not_to be_nil
+      expect(result.docidentifier.first.content).to eq "ISO 19115"
+    end
+
+    it "retains the year for an undated query under a cutoff when keep_year is set",
+       vcr: "iso_19115_2003" do
+      result = described_class.get("ISO 19115", nil,
+                                   publication_date_before: Date.new(2004, 1, 1),
+                                   keep_year: true)
+      expect(result).not_to be_nil
+      expect(result.docidentifier.first.content).to eq "ISO 19115:2003"
+    end
+
     # Regression for issue #181: an amendment carries no year on its own
     # identifier (the year lives on the base standard), so a date filter must
     # not drop it. Metanorma passes such a filter when the citing document sets
@@ -571,12 +594,35 @@ RSpec.describe Relaton::Iso::Bibliography do
       expect(corrected_date).to be_nil
     end
 
-    it "skips to_most_recent_reference when date filter is present", vcr: "iso_19115_2003" do
+    it "retains the year under a cutoff when the query carries an explicit year",
+       vcr: "iso_19115_2003" do
       result = described_class.get("ISO 19115", "2003",
                                    publication_date_before: Date.new(2004, 1, 1))
       expect(result).not_to be_nil
-      # Should retain year since date filter skips to_most_recent_reference
+      # Year retained because the citation itself is dated ("2003"), not merely
+      # because a cutoff is present (see the undated-query regression above).
       expect(result.docidentifier.first.content).to eq "ISO 19115:2003"
+    end
+
+    # metanorma/metanorma-standoc#941: a standard withdrawn by a successor
+    # published after the cutoff was still the current edition as of the citing
+    # document's date, so its stage is rewound 95.99 -> 60.60.
+    it "rewinds withdrawn status when the withdrawal postdates the cutoff",
+       vcr: "iso_31_0" do
+      result = described_class.get("ISO 31-0", nil,
+                                   publication_date_before: Date.new(2005, 1, 1))
+      expect(result).not_to be_nil
+      expect(result.status.stage.content).to eq "60"
+      expect(result.status.substage.content).to eq "60"
+    end
+
+    it "keeps withdrawn status when the withdrawal predates the cutoff",
+       vcr: "iso_31_0" do
+      result = described_class.get("ISO 31-0", nil,
+                                   publication_date_before: Date.new(2015, 1, 1))
+      expect(result).not_to be_nil
+      expect(result.status.stage.content).to eq "95"
+      expect(result.status.substage.content).to eq "99"
     end
   end
 

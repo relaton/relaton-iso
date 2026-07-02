@@ -57,12 +57,14 @@ module Relaton
 
         response_pubid = ret.docidentifier.find(&:primary) # .sub(" (all parts)", "")
         Util.info "Found: `#{response_pubid}`", key: query_pubid.to_s
-        get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts] ||
-          opts[:publication_date_before] || opts[:publication_date_after]
-        if get_all
-          filter_item_by_date(ret, opts) if date_filter
-          return ret
-        end
+        # A publication-date cutoff only bounds which edition is selected; it must
+        # not by itself retain the year. An undated citation stays undated (year
+        # stripped) unless the citation genuinely asks for a year via an explicit
+        # year, keep_year, or all_parts.
+        filter_item_by_date(ret, opts) if date_filter
+        get_all = (query_pubid.root.year && opts[:keep_year].nil?) ||
+          opts[:keep_year] || opts[:all_parts]
+        return ret if get_all
 
         ret.to_most_recent_reference
       rescue ::Pubid::Core::Errors::ParseError
@@ -126,6 +128,7 @@ module Relaton
       # @param opts [Hash]
       def filter_item_by_date(item, opts)
         if item.relation&.any?
+          rewind_withdrawn_status(item, opts)
           item.relation.reject! { |rel| relation_outside_date_range?(rel, opts) }
         end
 
@@ -138,6 +141,29 @@ module Relaton
             date_val && date_val >= opts[:publication_date_before]
           end
         end
+      end
+
+      # ISO harmonized stage 95.99 = withdrawn, 60.60 = published. relaton stores
+      # only the current stage with no history, but a standard withdrawn by a
+      # successor published *after* the cutoff was, as of the cutoff, still the
+      # current (published) edition. Rewind 95 -> 60 in that case so a citing
+      # document does not render an anachronistic "withdrawn/replaced" annotation.
+      # A withdrawal with no obsoletedBy successor (or one that predates the
+      # cutoff) is left untouched. metanorma/metanorma-standoc#941.
+      # @param item [Relaton::Iso::ItemData]
+      # @param opts [Hash]
+      def rewind_withdrawn_status(item, opts)
+        cutoff = opts[:publication_date_before] or return
+        st = item.status or return
+        (st.stage&.content == "95" && st.substage&.content == "99") or return
+
+        obs = item.relation.select { |rel| rel.type == "obsoletedBy" }
+        return if obs.empty?
+        # Only rewind when every obsoleting successor postdates the cutoff.
+        obs.all? { |rel| (d = relation_date(rel)) && d >= cutoff } or return
+
+        st.stage.content = "60"
+        st.substage.content = "60"
       end
 
       # Check if a relation's bibitem date falls outside the given date range.
