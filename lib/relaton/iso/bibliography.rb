@@ -57,12 +57,14 @@ module Relaton
 
         response_pubid = ret.docidentifier.find(&:primary) # .sub(" (all parts)", "")
         Util.info "Found: `#{response_pubid}`", key: query_pubid.to_s
-        get_all = (query_pubid.root.year && opts[:keep_year].nil?) || opts[:keep_year] || opts[:all_parts] ||
-          opts[:publication_date_before] || opts[:publication_date_after]
-        if get_all
-          filter_item_by_date(ret, opts) if date_filter
-          return ret
-        end
+        # A publication-date cutoff only bounds which edition is selected; it must
+        # not by itself retain the year. An undated citation stays undated (year
+        # stripped) unless the citation genuinely asks for a year via an explicit
+        # year, keep_year, or all_parts.
+        filter_item_by_date(ret, opts) if date_filter
+        get_all = (query_pubid.root.year && opts[:keep_year].nil?) ||
+          opts[:keep_year] || opts[:all_parts]
+        return ret if get_all
 
         ret.to_most_recent_reference
       rescue ::Pubid::Core::Errors::ParseError
