@@ -128,6 +128,7 @@ module Relaton
       # @param opts [Hash]
       def filter_item_by_date(item, opts)
         if item.relation&.any?
+          rewind_withdrawn_status(item, opts)
           item.relation.reject! { |rel| relation_outside_date_range?(rel, opts) }
         end
 
@@ -140,6 +141,29 @@ module Relaton
             date_val && date_val >= opts[:publication_date_before]
           end
         end
+      end
+
+      # ISO harmonized stage 95.99 = withdrawn, 60.60 = published. relaton stores
+      # only the current stage with no history, but a standard withdrawn by a
+      # successor published *after* the cutoff was, as of the cutoff, still the
+      # current (published) edition. Rewind 95 -> 60 in that case so a citing
+      # document does not render an anachronistic "withdrawn/replaced" annotation.
+      # A withdrawal with no obsoletedBy successor (or one that predates the
+      # cutoff) is left untouched. metanorma/metanorma-standoc#941.
+      # @param item [Relaton::Iso::ItemData]
+      # @param opts [Hash]
+      def rewind_withdrawn_status(item, opts)
+        cutoff = opts[:publication_date_before] or return
+        st = item.status or return
+        (st.stage&.content == "95" && st.substage&.content == "99") or return
+
+        obs = item.relation.select { |rel| rel.type == "obsoletedBy" }
+        return if obs.empty?
+        # Only rewind when every obsoleting successor postdates the cutoff.
+        obs.all? { |rel| (d = relation_date(rel)) && d >= cutoff } or return
+
+        st.stage.content = "60"
+        st.substage.content = "60"
       end
 
       # Check if a relation's bibitem date falls outside the given date range.

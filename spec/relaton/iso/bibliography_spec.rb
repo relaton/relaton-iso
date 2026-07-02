@@ -603,6 +603,27 @@ RSpec.describe Relaton::Iso::Bibliography do
       # because a cutoff is present (see the undated-query regression above).
       expect(result.docidentifier.first.content).to eq "ISO 19115:2003"
     end
+
+    # metanorma/metanorma-standoc#941: a standard withdrawn by a successor
+    # published after the cutoff was still the current edition as of the citing
+    # document's date, so its stage is rewound 95.99 -> 60.60.
+    it "rewinds withdrawn status when the withdrawal postdates the cutoff",
+       vcr: "iso_31_0" do
+      result = described_class.get("ISO 31-0", nil,
+                                   publication_date_before: Date.new(2005, 1, 1))
+      expect(result).not_to be_nil
+      expect(result.status.stage.content).to eq "60"
+      expect(result.status.substage.content).to eq "60"
+    end
+
+    it "keeps withdrawn status when the withdrawal predates the cutoff",
+       vcr: "iso_31_0" do
+      result = described_class.get("ISO 31-0", nil,
+                                   publication_date_before: Date.new(2015, 1, 1))
+      expect(result).not_to be_nil
+      expect(result.status.stage.content).to eq "95"
+      expect(result.status.substage.content).to eq "99"
+    end
   end
 
   describe "#isobib_results_filter" do
