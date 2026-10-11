@@ -20,13 +20,11 @@ RSpec.describe RelatonIso::DocumentIdentifier do
       expect(subject.id).to eq "urn:iso:std:iso:tr:11071:-2:ser"
     end
 
-    it "handle NoEditionError" do
+    # pubid-iso >= alpha.28 generates the URN for an edition-less base
+    # instead of raising NoEditionError, so no warning is emitted.
+    it "generates the URN for an amendment without a base edition" do
       pubid = described_class.new id: Pubid::Iso::Identifier.parse("ISO 1111/Amd"), type: type
-      expect do
-        pubid.id
-      end.to output(
-        /\[relaton-iso\] WARN: URN identifier can't be generated for `ISO 1111\/Amd`: Base document must have edition/,
-      ).to_stderr_from_any_process
+      expect(pubid.id).to eq "urn:iso:std:iso:1111:amd"
     end
   end
 
